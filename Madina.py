@@ -5,121 +5,32 @@ from shapely import affinity
 import geopandas as gpd
 import pandas as pd
 import pydeck as pdk
+from pydeck.types import String
 import numpy as np
 import networkx as nx
 import time
-import momepy
 from networkx.classes.function import path_weight
 import math
 import random
 
+from betweenness_functions import update_light_graph
 
-'''
-    def insert_nodes(self, points, labels):
-        node_gdf = self.layers['network_nodes']['gdf'].drop(self.STYLE_COLUMNS, axis=1, errors='ignore')
-        edge_gdf = self.layers['network_edges']['gdf'].drop(self.STYLE_COLUMNS, axis=1, errors='ignore')
-
-        node_id = int(node_gdf.iloc[-1]["id"]) + 1
-        node_ids = []
-        node_types = []
-        node_geometries = []
-        edge_id = int(edge_gdf.iloc[-1]["id"])
-
-        edge_dict = edge_gdf.to_dict()
-
-        for i, point in enumerate(points):
-            nearest_street_distance = 9999999999999999999
-            nearest_street_id = None
-            point_on_the_street = None
-            # TODO: filter street only segmwents
-            street_segment_ids = [idx for idx in edge_dict["type"] if edge_dict["type"][idx] == "street"]
-            for idx in street_segment_ids:
-                street_segment = edge_dict["geometry"][idx]
-                distance = street_segment.distance(point)
-                if distance < nearest_street_distance:
-                    nearest_street_distance = distance
-                    nearest_street_id = idx
-                    old_street_segment = edge_dict["geometry"][nearest_street_id]
-                    point_on_the_street = street_segment.interpolate(street_segment.project(point))
-
-            ## insert project node, and point node
-            projected_node_id = node_id
-            node_id = node_id + 1
-
-            node_ids.append(projected_node_id)
-            node_types.append("project_node")
-            node_geometries.append(point_on_the_street)
-
-            point_node_id = node_id
-            node_id = node_id + 1
-            node_ids.append(point_node_id)
-            node_types.append(labels[i])
-            node_geometries.append(point)
-
-            ## insert segmented street and projection edge
-            start_segment = geo.LineString((old_street_segment.coords[0], point_on_the_street))
-            end_segment = geo.LineString((point_on_the_street, old_street_segment.coords[1]))
-
-            edge_id = edge_id + 1
-            edge_dict["id"][edge_id] = edge_id
-            edge_dict["start"][edge_id] = edge_dict["start"][nearest_street_id]
-            edge_dict["end"][edge_id] = projected_node_id
-            edge_dict["length"][edge_id] = start_segment.length
-            edge_dict["type"][edge_id] = "street"
-            edge_dict["geometry"][edge_id] = start_segment
-
-            edge_id = edge_id + 1
-            edge_dict["id"][edge_id] = edge_id
-            edge_dict["start"][edge_id] = projected_node_id
-            edge_dict["end"][edge_id] = edge_dict["end"][nearest_street_id]
-            edge_dict["length"][edge_id] = end_segment.length
-            edge_dict["type"][edge_id] = "street"
-            edge_dict["geometry"][edge_id] = end_segment
-
-            projection_segment = geo.LineString((point, point_on_the_street))
-
-            edge_id = edge_id + 1
-            edge_dict["id"][edge_id] = edge_id
-            edge_dict["start"][edge_id] = point_node_id
-            edge_dict["end"][edge_id] = projected_node_id
-            edge_dict["length"][edge_id] = 0  # projection_segment.length
-            edge_dict["type"][edge_id] = "project_line"
-            edge_dict["geometry"][edge_id] = projection_segment
-
-            ## remove old street
-            [edge_dict[k].pop(nearest_street_id) for k in edge_dict.keys()]
-
-        d = {"id": node_ids,
-             "type": node_types,
-             'geometry': node_geometries
-             }
-        new_node_gdf = gpd.GeoDataFrame(d, crs="EPSG:4326")
-        new_node_gdf.set_index("id")
-
-        node_gdf = pd.concat([node_gdf, new_node_gdf], ignore_index=True)
-        node_gdf.set_index("id")
-        edge_gdf = gpd.GeoDataFrame(edge_dict, crs="EPSG:4326")
-        edge_gdf.set_index("id")
-
-        self.layers['network_nodes']['gdf'] = node_gdf
-        self.color_layer('network_nodes')
-        self.layers['network_edges']['gdf'] = edge_gdf
-        self.color_layer('network_edges')
-        return node_gdf, edge_gdf
-'''
 
 class Zonal:
-    # TODO: Make this a point based system. Points are the base, and each line is a sequence of points. each polygon is a ring. Everything reference the base points. All cad is line-based, lines are disjoint by nature. Here, everything is connected by nature
-
-    # TODO: the Zonal object could have multiple networks. an implimintation could be a dictionsry similar to the layers
+    # TODO: the Zonal object could have multiple networks. an implementation could be a dictionary similar to the layers
     default_map_name = "Zonal_map"
-    default_crs = "EPSG:4326" # WGS 84, the geographic coordinate system used in GPS
-    # default_crs = "EPSG:3857" # Web Mercator, the geographic coordinate system used Google Maps and most other web-based maps.
-    # default_crs = 'EPSG:8836' # Saudi Arabia - onshore and offshore.
 
+    # "EPSG:4326", is WGS 84, the geographic coordinate system used in GPS, and is used to visualize maps using Deck
     default_geographic_crs = "EPSG:4326"
-    default_projected_crs = "EPSG:3857"
 
+    # "EPSG:3857", is a projected coordinate system used for rendering maps in Google Maps, OpenStreetMap. Used as a
+    # default projected coordinate system in case one was not given at initialization. This is a very low accuracy
+    # projected coordinate system
+    # TODO: implement a function that sets a better accuracy projected crs if one is not
+    #  given at initialization. Ideas: use Universal Transverse Mercator (UTM) where the appropriate grid is chosen
+    #  based on layer content. another idea: if one (or many) layers have a usable projected coordinate system,
+    #  use it to unify all layer into (The most occurring?) one
+    default_projected_crs = "EPSG:3857"
 
     # Default colors applied initially  by the function "color by attribute".
     default_colors = {
@@ -144,9 +55,36 @@ class Zonal:
     STYLE_COLUMNS = ["color"]
     default_layer_names = ['streets', 'blocks', 'parcels', 'network_nodes', 'network_edges']
 
-    def __init__(self, centerX, centerY, scope):
-        self.centerX = centerX
-        self.centerY = centerY
+    def __init__(self, scope, projected_crs=None):
+
+        # if scope was a GeoSeries or a GeoDataFrame, strip down into geometry.
+        if isinstance(scope, gpd.geoseries.GeoSeries):
+            scope_projected_crs = scope.crs
+            scope = scope[0]
+        elif isinstance(scope, gpd.GeoDataFrame):
+            scope_projected_crs = scope["geometry"].crs
+            scope = scope.iloc[0]["geometry"]
+
+        # if projected_crs was given, it would be used. this overrides if a Geoseries or a GeoDataFrame was given
+        # with a crs
+        if projected_crs is not None:
+            self.default_projected_crs = projected_crs
+        else:
+            self.default_projected_crs = scope_projected_crs
+
+            # raise a TypeError in case scope is not a polygon
+        if not isinstance(scope, geo.polygon.Polygon):
+            raise TypeError
+
+
+        geographic_scope_gdf = gpd.GeoDataFrame({"id": [0], "geometry": [scope]}, crs=self.default_projected_crs)
+        geographic_scope_gdf = geographic_scope_gdf.to_crs(self.default_geographic_crs)
+        geographic_scope = geographic_scope_gdf.at[0, "geometry"]
+        self.centerX_projected = geographic_scope_gdf["geometry"].to_crs(self.default_projected_crs).at[0].centroid.coords[0][0]
+        self.centerY_projected = geographic_scope_gdf["geometry"].to_crs(self.default_projected_crs).at[0].centroid.coords[0][1]
+        self.centerX_geographic = geographic_scope.centroid.coords[0][0]
+        self.centerY_geographic = geographic_scope.centroid.coords[0][1]
+
         self.scope = scope
         self.layers = {}
         self.G = None
@@ -156,15 +94,18 @@ class Zonal:
         A function to return a string representation of the object for debugging and/or development
         :return:
         """
-        return "CenterX :" + str(self.centerX) + ", centerY: " + str(self.centerY)
+        return "CenterX :" + str(self.centerX_geographic) + ", centerY: " + str(self.centerY_geographic)
 
     def load_layer(self, layer_name, file_path, do_not_load=False, allow_out_of_scope=False):
         if do_not_load:
             return
         else:
-            self.layers[layer_name] = {'gdf': gpd.read_file(file_path).to_crs(self.default_crs),
+            gdf = gpd.read_file(file_path)
+            original_crs = gdf.crs
+            self.layers[layer_name] = {'gdf': gdf.to_crs(self.default_projected_crs),
                                        'show': True,
-                                       "file_path": file_path
+                                       "file_path": file_path,
+                                       "original_crs": original_crs
                                        }
             self.color_layer(layer_name)
             if allow_out_of_scope:
@@ -187,69 +128,179 @@ class Zonal:
             'name': ['scope'],
             'geometry': [self.scope]
         },
-            crs=self.default_crs)
+            crs=self.default_projected_crs)
         layer_gdf = self.layers[layer_name]['gdf']
 
         if clip_by is not None:
             self.layers[layer_name]['gdf'] = gpd.clip(layer_gdf, scope_gdf)
 
         if xoff is not None:
-            for idx, row in layer_gdf.iterrows():
-                layer_gdf.at[idx, "geometry"] = affinity.translate(row["geometry"], xoff=xoff, yoff=yoff)
+            for idx in layer_gdf.index:
+                layer_gdf.at[idx, "geometry"] = affinity.translate(layer_gdf.at[idx, "geometry"], xoff=xoff, yoff=yoff)
 
         return
 
-    def create_deck_map(self, save_to_desk=False, show_in_notebook=True):
+    def create_deck_map(self, layer_list=[], save_as=None, basemap=False):
+        if not layer_list:
+            for layer_name in self.layers:
+                if self.layers[layer_name]["show"]:
+                    layer_list.append({"gdf": self.layers[layer_name]["gdf"]})
+        else:
+            for layer_id, layer_dict in enumerate(layer_list):
+                if "layer" in layer_dict:
+                    layer_dict['gdf'] = self.layers[layer_dict["layer"]]["gdf"]
+                    layer_list[layer_id] = layer_dict
+        map = self.save_map(
+            layer_list,
+            centerX=self.centerX_geographic,
+            centerY=self.centerY_geographic,
+            basemap=basemap,
+            filename=save_as
+        )
+        return map
+
+    @staticmethod
+    def save_map(gdf_list, centerX=46.6725, centerY=24.7425, basemap=False, zoom=15, filename="output_map.html"):
         pdk_layers = []
-        for layer_name in self.layers:
-            if self.layers[layer_name]["show"]:
-                pdk_layer = pdk.Layer(
-                    'GeoJsonLayer',
-                    self.layers[layer_name]["gdf"],
-                    opacity=1,
-                    stroked=True,
-                    filled=True,
-                    extruded=False if "extrude" not in self.layers[layer_name] else self.layers[layer_name]["extrude"],
-                    get_elevation=0 if "extrude_attribute" not in self.layers[layer_name] else self.layers[layer_name][
-                        "extrude_attribute"],
-                    wireframe=True,
-                    get_width=0.1,
-                    # get_radius= 5,
-                    # get_line_color='[bs, 255, bs]',
-                    get_line_color="color",
-                    pickable=True
+        for gdf_dict in gdf_list:
+            local_gdf = gdf_dict["gdf"].copy(deep=True)
+            local_gdf["geometry"] = local_gdf["geometry"].to_crs("EPSG:4326")
+
+            radius_attribute = 10
+            if "radius" in gdf_dict:
+                radius_attribute = "radius"
+                local_gdf["radius"] = 1 + local_gdf[gdf_dict["radius"]] * 5
+
+            width_attribute = 1
+            width_scale = 1
+            if "width" in gdf_dict:
+                width_attribute = "width"
+                if "width_scale" in gdf_dict:
+                    width_scale = gdf_dict["width_scale"]
+                local_gdf["width"] = local_gdf[gdf_dict["width"]] * width_scale
+
+            if "opacity" in gdf_dict:
+                opacity = gdf_dict["opacity"]
+            else:
+                opacity = 1
+
+            if ("color_by_attribute" in gdf_dict) or ("color_method" in gdf_dict) or ("color" in gdf_dict):
+                args = {arg: gdf_dict[arg] for arg in ['color_by_attribute', 'color_method', 'color'] if
+                        arg in gdf_dict}
+                local_gdf = Zonal.color_gdf(local_gdf, **args)
+
+            pdk_layer = pdk.Layer(
+                'GeoJsonLayer',
+                local_gdf.reset_index(),
+                opacity=opacity,
+                stroked=True,
+                filled=True,
+                # extruded=False if "extrude" not in self.layers[layer_name] else self.layers[layer_name]["extrude"],
+                # get_elevation=0 if "extrude_attribute" not in self.layers[layer_name] else self.layers[layer_name][
+                #    "extrude_attribute"],
+                wireframe=True,
+                get_line_width=width_attribute,
+                get_radius=radius_attribute,
+                # get_line_color='[155, 155, 155]',
+                get_line_color='color',
+                get_fill_color="color",
+                pickable=True,
+            )
+            pdk_layers.append(pdk_layer)
+
+            if "text" in gdf_dict:
+                # if numerical, round within four decimals, else, do nothing
+                try:
+                    local_gdf["text"] = round(local_gdf[gdf_dict["text"]], 6).astype('string')
+                except TypeError:
+                    local_gdf["text"] = local_gdf[gdf_dict["text"]].astype('string')
+
+                # formatting a centroid point to be [lat, long]
+                local_gdf["coordinates"] = local_gdf["geometry"].centroid
+                local_gdf["coordinates"] = [[p.coords[0][0], p.coords[0][1]] for p in local_gdf["coordinates"]]
+
+                layer = pdk.Layer(
+                    "TextLayer",
+                    local_gdf.reset_index(),
+                    pickable=True,
+                    get_position="coordinates",
+                    get_text="text",
+                    get_size=16,
+                    get_color='color',
+                    get_angle=0,
+                    background=True,
+                    get_background_color=[0, 0, 0, 125],
+                    # Note that string constants in pydeck are explicitly passed as strings
+                    # This distinguishes them from columns in a data set
+                    get_text_anchor=String("middle"),
+                    get_alignment_baseline=String("center"),
                 )
-                pdk_layers.append(pdk_layer)
+                pdk_layers.append(layer)
 
         initial_view_state = pdk.ViewState(
-            latitude=self.centerY,
-            longitude=self.centerX,
-            zoom=16,
+            # latitude=self.centerY,
+            latitude=centerY,
+            # longitude=self.centerX,
+            longitude=centerX,
+            zoom=zoom,
             max_zoom=20,
-            pitch=45,
+            pitch=0,
             bearing=0
         )
 
-        r = pdk.Deck(
-            layers=pdk_layers,
-            initial_view_state=initial_view_state,
-            # map_provider=None
-        )
+        if basemap:
+            r = pdk.Deck(
+                layers=pdk_layers,
+                initial_view_state=initial_view_state,
+                # map_provider='google_maps',
+                # map_style='satellite' # "dark"
+            )
+        else:
+            r = pdk.Deck(
+                layers=pdk_layers,
+                initial_view_state=initial_view_state,
+                map_provider=None,
+                parameters={
+                    "clearColor": [0.00, 0.00, 0.00, 1]
+                    # "clearColor": [0.10, 0.10, 0.10, 1]
+                },
+                # tooltip={"text": "{name}\n{address}"}
+                # width='100%',
+                # height=2500,
+            )
 
-        if save_to_desk:
+        if filename is not None:
             r.to_html(
-                self.default_map_name + ".html",
+                filename,
                 css_background_color="cornflowerblue"
             )
-        if show_in_notebook:
-            return r
-        return
+
+        return r
 
     def color_layer(self, layer_name, color_by_attribute=None, color_method="single_color", color=None):
-        """
-        A method to set geometry color
+        if layer_name in self.default_colors.keys() and color_by_attribute is None and color is None:
+            # set default colors first. all default layers call without specifying "color_by_attribute"
+            # default layer creation always calls self.color_layer(layer_name) without any other parameters
+            color = self.default_colors[layer_name]
+            color_method = "single_color"
+            if type(color) is dict:
+                # the default color is categorical..
+                color_by_attribute = color["__attribute_name__"]
+                color_method = "categorical"
+        self.layers[layer_name]["gdf"] = self.color_gdf(
+            self.layers[layer_name]["gdf"],
+            color_by_attribute=color_by_attribute,
+            color_method=color_method,
+            color=color
+        )
+        return
 
-        :param layer_name: string, layer name
+    @staticmethod
+    def color_gdf(gdf, color_by_attribute=None, color_method="single_color", color=None):
+        """
+        A static method to set geometry color
+
+        :param gdf: GeoDataFrame to be colored.
         :param color_by_attribute: string, attribute name, or column name to
         visualize geometry by
         :param color_method: string, "single_color" to color all geometry by the same color.
@@ -260,18 +311,10 @@ class Zonal:
         expects nothing for a default color map, or a color map name
         :return: nothing
         """
-        if layer_name in self.default_colors.keys() and color_by_attribute is None and color is None:
-            # set default colors first. all default layers call without specifying "color_by_attribute"
-            # default layer creation always calls self.color_layer(layer_name) without any other parameters
-            color = self.default_colors[layer_name]
-            color_method = "single_color"
-            if type(color) is dict:
-                # the default color is categorical..
-                color_by_attribute = color["__attribute_name__"]
-                color_method = "categorical"
-        elif color_by_attribute is None and color is None:
+
+        if color_by_attribute is None and color is None:
             # if "color_by_attribute" is not given, and its not a default layer, assuming color_method == "single_color"
-            #if no color is given, assign random color, else, color=color
+            # if no color is given, assign random color, else, color=color
             color = [random.random() * 255, random.random() * 255, random.random() * 255]
             color_method = "single_color"
         elif color is None:
@@ -279,32 +322,33 @@ class Zonal:
             if color_method == "single_color":
                 # if color by attribute is given, and color method is single color, this is redundant but just in case:
                 color = [random.random() * 255, random.random() * 255, random.random() * 255]
-            if color_method == "categorical" :
+            if color_method == "categorical":
                 color = {}
-                for distinct_value in  self.layers[layer_name]["gdf"][color_by_attribute].unique():
+                for distinct_value in gdf[color_by_attribute].unique():
                     color[distinct_value] = [random.random() * 255, random.random() * 255, random.random() * 255]
 
-        #create color column
+        # create color column
         if color_method == "single_color":
-            color_column = [color] * len(self.layers[layer_name]["gdf"])
+            color_column = [color] * len(gdf)
         elif color_method == "categorical":
             color_column = []
-            for value in self.layers[layer_name]["gdf"][color_by_attribute]:
+            for value in gdf[color_by_attribute]:
                 if value in color.keys():
                     color_column.append(color[value])
                 else:
                     color_column.append(color["__other__"])
         elif color_method == "gradient":
-            cbc = self.layers[layer_name]["gdf"][color_by_attribute]  # color by column
+            cbc = gdf[color_by_attribute]  # color by column
             nc = 255 * (cbc - cbc.min()) / (cbc.max() - cbc.min())  # normalized column
-            color_column = [[255 - v, 0 + v, 0] for v in nc]            # convert normalized values to color spectrom.
+            color_column = [[255 - v, 0 + v, 0] for v in nc]  # convert normalized values to color spectrom.
             # TODO: insert color map options here..
         elif color_method == 'quantile':
-            scaled_percentile_rank = 255 * self.layers[layer_name]["gdf"][color_by_attribute].rank(pct=True)
-            color_column = [[255 - v, 0 + v, 0] for v in scaled_percentile_rank]  # convert normalized values to color spectrom.
+            scaled_percentile_rank = 255 * gdf[color_by_attribute].rank(pct=True)
+            color_column = [[255 - v, 0 + v, 0] for v in
+                            scaled_percentile_rank]  # convert normalized values to color spectrom.
 
-        self.layers[layer_name]["gdf"]["color"] = color_column
-        return
+        gdf["color"] = color_column
+        return gdf
 
     def create_layer_from_geometry(self, geometry, geotype, layer_name, visibility=True, color=None):
         d = {'id':
@@ -318,7 +362,11 @@ class Zonal:
         #        if geotype == 'polygon':
         #            d["area"] = [segment.area for segment in geometry],
 
-        gdf = gpd.GeoDataFrame(d, crs=self.default_crs)
+        gdf = gpd.GeoDataFrame(d, crs=self.default_projected_crs)
+        gdf = gdf.set_index('id')
+        # utm_crs = gdf["geometry"].estimate_utm_crs()
+        # print (utm_crs)
+        # gdf["geometry"] = gdf["geometry"].to_crs(utm_crs)
         self.layers[layer_name] = {'gdf': gdf, 'show': visibility}
         self.color_layer(layer_name)
         return
@@ -363,15 +411,15 @@ class Zonal:
         rays = []
 
         main_ray = geo.LineString([
-            (self.centerX, self.centerY),
-            (self.centerX, self.centerY + radius)
+            (self.centerX_projected, self.centerY_projected),
+            (self.centerX_projected, self.centerY_projected + radius)
         ])
         rays.append(main_ray)
         for i in range(nrays - 1):
             rays.append(
                 affinity.rotate(main_ray,
                                 (i + 1) / nrays * 360,
-                                origin=(self.centerX, self.centerY)
+                                origin=(self.centerX_projected, self.centerY_projected)
                                 )
             )
 
@@ -456,15 +504,14 @@ class Zonal:
         self.create_layer_from_geometry(parcels, geotype='polygon', layer_name='parcels', visibility=True)
         return
 
-    def create_street_nodes_edges(self, temporary_copy=False):
+    def create_street_nodes_edges(self, weight_attribute=None, temporary_copy=False):
         ## The goal of this function is to ensure topological integrity of the network, provide lists of nodes and edges needed to produce a NetworkX Graph
         ## TODO: Thi function could be faster when avoiding the use of node_gdf = node_gdf.append(). construct a dictionary first, then when finished, make the node_gdf.
 
-        #street_geometry = geo.MultiLineString(
-#            list(self.layers['streets']['gdf']['geometry'])
-#        )
+        # street_geometry = geo.MultiLineString(
+        #            list(self.layers['streets']['gdf']['geometry'])
+        #        )
         street_gdf = self.layers["streets"]['gdf']
-
 
         node_dict = {
             "id": [],
@@ -474,27 +521,28 @@ class Zonal:
             "type": [],
             "weight": [],
             "nearest_street_id": [],
-            "nearest_street_distance": [],
+            "nearest_street_node_distance": [],
         }
 
-        node_gdf = gpd.GeoDataFrame(node_dict, crs="EPSG:4326").astype({'id': 'int32'})
-        node_gdf.set_index("id")
+        node_gdf = gpd.GeoDataFrame(node_dict, crs=self.default_projected_crs).astype({'id': 'int32'})
+        node_gdf = node_gdf.set_index("id")
         edge_dict = {
             "id": [],
             "start": [],
             "end": [],
             "length": [],
+            "weight": [],
             "type": [],
             "geometry": [],
             "parent_street_id": [],
         }
-        edge_gdf = gpd.GeoDataFrame(edge_dict, crs="EPSG:4326").astype({'id': 'int32'})
-        edge_gdf.set_index("id")
+        edge_gdf = gpd.GeoDataFrame(edge_dict, crs=self.default_projected_crs).astype({'id': 'int32'})
+        edge_gdf = edge_gdf.set_index("id")
 
         node_id = 0
         edge_id = 0
-        for idx, street_row in street_gdf.iterrows():
-            street = street_row["geometry"]
+        for street_idx in street_gdf.index:
+            street = street_gdf.at[street_idx, "geometry"]
             node_snapping_tolerance = 0.0005
             ## Add ends to node list, get IDs, make sure to avoid duplicates.
             start_point_index = None
@@ -507,11 +555,11 @@ class Zonal:
                 start_point = geo.Point(street.coords[0])
                 end_point = geo.Point(street.coords[1])
 
-            for idx, row in node_gdf.iterrows():
-                if row["geometry"].almost_equals(start_point, decimal=6):
-                    start_point_index = idx
-                if row["geometry"].almost_equals(end_point, decimal=6):
-                    end_point_index = idx
+            for node_idx in node_gdf.index:
+                if node_gdf.at[node_idx, "geometry"].almost_equals(start_point, decimal=6):
+                    start_point_index = node_idx
+                if node_gdf.at[node_idx, "geometry"].almost_equals(end_point, decimal=6):
+                    end_point_index = node_idx
                 # TODO: this loop could either be iliminated by a better loockup, or terminated earlier
 
             if start_point_index is None:
@@ -526,7 +574,7 @@ class Zonal:
                      "type": "street_node",
                      "weight": 0,
                      "nearest_street_id": None,
-                     "nearest_street_distance": 0,
+                     "nearest_street_node_distance": 0,
                      }
                     , ignore_index=True)
             if end_point_index is None:
@@ -540,7 +588,7 @@ class Zonal:
                      "type": "street_node",
                      "weight": 0,
                      "nearest_street_id": None,
-                     "nearest_street_distance": 0,
+                     "nearest_street_node_distance": None,
                      }
                     , ignore_index=True)
 
@@ -551,27 +599,26 @@ class Zonal:
                     "start": start_point_index,
                     "end": end_point_index,
                     "length": street.length,
+                    "weight": street_gdf.at[street_idx, weight_attribute] if weight_attribute is not None else street.length,
                     "type": "street",
                     "geometry": street,
-                    "parent_street_id": street_row["id"],
+                    "parent_street_id": street_idx,
                 }
                 , ignore_index=True)
             edge_id += 1
-
-        if temporary_copy:
-            return node_gdf, edge_gdf
-        else:
-            self.layers['network_nodes'] = {'gdf': node_gdf, 'show': True}
-            self.color_layer('network_nodes')
-            self.layers['network_edges'] = {'gdf': edge_gdf, 'show': True}
-            self.color_layer('network_edges')
-            return
+        node_gdf = node_gdf.set_index('id')
+        edge_gdf = edge_gdf.set_index("id")
+        self.layers['network_nodes'] = {'gdf': node_gdf, 'show': True}
+        self.color_layer('network_nodes')
+        self.layers['network_edges'] = {'gdf': edge_gdf, 'show': True}
+        self.color_layer('network_edges')
+        return
 
     def insert_nodes(self, label, layer_name=None, filter=None, attachment_method="project",
                      representative_point="nearest_point", node_weight_attribute=None,
-                     projection_edge_cost_attribute=None, source_identifier="id", temporary_copy=False,
+                     projection_edge_cost_attribute=None, source_identifier="id",
                      node_gdf=None, edge_gdf=None, source_gdf=None):
-        # attachment_method= "project" | "snap"
+        # attachment_method= "project" | "snap" | "light_insert"
         # representative_point="nearest_point" | "centroid"
         # labels = "origin" | "destination" | "observer"
 
@@ -579,26 +626,25 @@ class Zonal:
         #  layer insert/delete/update operation.
         # TODO : for now, focus on a given layer as input, deal with a filter later..
 
-        if not temporary_copy:
-            print("permanent copy")
-            node_gdf = self.layers['network_nodes']['gdf'].drop(self.STYLE_COLUMNS, axis=1, errors='ignore')
-            edge_gdf = self.layers['network_edges']['gdf'].drop(self.STYLE_COLUMNS, axis=1, errors='ignore')
-            source_gdf = self.layers[layer_name]["gdf"]
+        node_gdf = self.layers['network_nodes']['gdf'].drop(self.STYLE_COLUMNS, axis=1, errors='ignore')
+        edge_gdf = self.layers['network_edges']['gdf'].drop(self.STYLE_COLUMNS, axis=1, errors='ignore')
+        source_gdf = self.layers[layer_name]["gdf"]
         # TODO: keep track of a layer's identifier in the Zonal object layers...
-          # self.layers[layer_name]["identifier"]
+        # self.layers[layer_name]["identifier"]
 
         # counters to keep track of what a new node should have as an id. Increment prior to each use.
-        new_node_id = int(node_gdf.iloc[-1]["id"])
-        new_edge_id = int(edge_gdf.iloc[-1]["id"])
+        # new_node_id = int(node_gdf.iloc[-1]["id"])
+        new_node_id = int(max(node_gdf.index))
+        # new_edge_id = int(edge_gdf.iloc[-1]["id"])
+        new_edge_id = int(max(edge_gdf.index))
 
         # dictionaries are much more effecient for insertion than pandas df/gdfs.
-        edge_dict = edge_gdf.to_dict()
-        node_dict = node_gdf.to_dict()
+        edge_dict = edge_gdf.reset_index().to_dict()
+        node_dict = node_gdf.reset_index().to_dict()
 
-        for source_id, row in source_gdf.iterrows():
-            print ("inserting node " + str(source_id))
+        for source_idx in source_gdf.index:
             # TODO: handle variations of geometries and representative point options here.
-            source_representative_point = row["geometry"].centroid
+            source_representative_point = source_gdf.at[source_idx, "geometry"].centroid
 
             nearest_street_distance = 9999999999999999999
             nearest_street_id = None
@@ -614,6 +660,45 @@ class Zonal:
                     point_on_the_street = street_segment.interpolate(street_segment.project(
                         source_representative_point))  ## gives a point on te street where the source point is projected
 
+
+
+
+
+            #start_segment = geo.LineString((old_street_segment.coords[0], point_on_the_street))
+            #end_segment = geo.LineString((point_on_the_street, old_street_segment.coords[1]))
+
+            def cut(line, distance):
+                # Cuts a line in two at a distance from its starting point
+                if distance <= 0.0:
+                    return [
+                        geo.LineString([line.coords[0], line.coords[0]]),
+                        geo.LineString(line)]
+                elif distance >= line.length:
+                    return [
+                        geo.LineString(line),
+                        geo.LineString([line.coords[-1], line.coords[-1]])
+                        ]
+
+                coords = list(line.coords)
+                for i, p in enumerate(coords):
+                    pd = line.project(geo.Point(p))
+                    if pd == distance:
+                        return [
+                            geo.LineString(coords[:i + 1]),
+                            geo.LineString(coords[i:])]
+                    if pd > distance:
+                        cp = line.interpolate(distance)
+                        return [
+                            geo.LineString(coords[:i] + [(cp.x, cp.y)]),
+                            geo.LineString([(cp.x, cp.y)] + coords[i:])]
+            cut_lines = cut(
+                old_street_segment,
+                old_street_segment.project(source_representative_point)
+            )
+            start_segment = cut_lines[0]
+            end_segment = cut_lines[1]
+
+
             if attachment_method == "project":
                 # need to store representative point (labeled as origin)
                 # + a projection line (labeled as "projection_line"
@@ -624,17 +709,17 @@ class Zonal:
                 node_dict["id"][representative_point_id] = representative_point_id
                 node_dict["geometry"][representative_point_id] = source_representative_point
                 node_dict["source_layer"][representative_point_id] = layer_name
-                node_dict["source_id"][representative_point_id] = row[source_identifier]
+                node_dict["source_id"][representative_point_id] = source_idx
                 node_dict["type"][representative_point_id] = label
-                node_dict["weight"][representative_point_id] = 0 if node_weight_attribute is None else row[
-                    node_weight_attribute]
+                node_dict["weight"][representative_point_id] = \
+                    0 if node_weight_attribute is None else source_gdf.at[source_idx, node_weight_attribute]
 
                 new_node_id += 1
                 project_point_id = new_node_id
                 node_dict["id"][project_point_id] = project_point_id
                 node_dict["geometry"][project_point_id] = point_on_the_street
                 node_dict["source_layer"][project_point_id] = layer_name
-                node_dict["source_id"][project_point_id] = row[source_identifier]
+                node_dict["source_id"][project_point_id] = source_idx
                 node_dict["type"][project_point_id] = "project_point"
                 node_dict["weight"][project_point_id] = 0
 
@@ -645,99 +730,152 @@ class Zonal:
                 edge_dict["id"][projection_segment_id] = projection_segment_id
                 edge_dict["start"][projection_segment_id] = representative_point_id
                 edge_dict["end"][projection_segment_id] = project_point_id
-                edge_dict["length"][projection_segment_id] = 0 if projection_edge_cost_attribute is None else row[
-                    projection_edge_cost_attribute]
+                edge_dict["length"][projection_segment_id] = \
+                    0 if projection_edge_cost_attribute is None else source_gdf.at[
+                        source_idx, projection_edge_cost_attribute]
                 # projection_segment.length
                 edge_dict["type"][projection_segment_id] = "project_line"
                 edge_dict["geometry"][projection_segment_id] = projection_segment
 
-
-            elif attachment_method == "snap":
+            elif attachment_method in ["snap", "light_insert"]:
                 # need to only store point_on_the_street (labeled as origin)
                 new_node_id += 1
                 project_point_id = new_node_id
                 node_dict["id"][project_point_id] = project_point_id
                 node_dict["geometry"][project_point_id] = point_on_the_street
                 node_dict["source_layer"][project_point_id] = layer_name
-                node_dict["source_id"][project_point_id] = row[source_identifier]
+                node_dict["source_id"][project_point_id] = source_idx
                 node_dict["type"][project_point_id] = label
-                node_dict["weight"][project_point_id] = 0 if node_weight_attribute is None else row[
-                    node_weight_attribute]
+                node_dict["weight"][project_point_id] = \
+                    0 if node_weight_attribute is None else source_gdf.at[source_idx, node_weight_attribute]
+
+                ## These two are needed for light inserts to be used later in network operations..
+
+                ## this is for numerical accuricy so things add up precisely to the original length/weight values
+                left_edge_weight = edge_dict["weight"][
+                                            nearest_street_id] * start_segment.length/old_street_segment.length
+                right_edge_weight = edge_dict["weight"][
+                                            nearest_street_id] - left_edge_weight
+                node_dict["nearest_street_id"][project_point_id] = nearest_street_id
+                node_dict["nearest_street_node_distance"][project_point_id] = \
+                    {
+                        "left":
+                            {
+                                "node_id": edge_dict["start"][nearest_street_id],
+                                "distance": start_segment.length,
+                                "weight": left_edge_weight,
+                                "geometry": start_segment
+                                ## TODO: This should be a weight, from the edge layer, not a length... but weighted by length obviosly`
+                            },
+                        "right":
+                            {
+                                "node_id": edge_dict["end"][nearest_street_id],
+                                "distance": old_street_segment.length - start_segment.length, ## this is for numerical accuricy so things add up precisely to the original length/weight values
+                                "weight": right_edge_weight,
+                                "geometry": end_segment
+                                ## TODD: This too should be a weight, but adjusted to lengrh.
+                            }
+                    }
+
             else:
                 print("method is incorrect or not implemented.")
 
-            ## insert segmented street
-            start_segment = geo.LineString((old_street_segment.coords[0], point_on_the_street))
-            end_segment = geo.LineString((point_on_the_street, old_street_segment.coords[1]))
+            # insert segmented street
+            if attachment_method in ["snap", "project"]:
+                new_edge_id += 1
+                edge_dict["id"][new_edge_id] = new_edge_id
+                edge_dict["start"][new_edge_id] = edge_dict["start"][nearest_street_id]
+                edge_dict["end"][new_edge_id] = project_point_id
+                edge_dict["length"][new_edge_id] = start_segment.length
+                edge_dict["weight"][new_edge_id] = edge_dict["weight"][nearest_street_id] * start_segment.length/old_street_segment.length
+                edge_dict["type"][new_edge_id] = "street"
+                edge_dict["geometry"][new_edge_id] = start_segment
+                edge_dict["parent_street_id"][new_edge_id] = edge_dict["parent_street_id"][nearest_street_id]
 
-            new_edge_id += 1
-            edge_dict["id"][new_edge_id] = new_edge_id
-            edge_dict["start"][new_edge_id] = edge_dict["start"][nearest_street_id]
-            edge_dict["end"][new_edge_id] = project_point_id
-            edge_dict["length"][new_edge_id] = start_segment.length
-            edge_dict["type"][new_edge_id] = "street"
-            edge_dict["geometry"][new_edge_id] = start_segment
-            edge_dict["parent_street_id"][new_edge_id] = edge_dict["parent_street_id"][nearest_street_id]
+                new_edge_id += 1
+                edge_dict["id"][new_edge_id] = new_edge_id
+                edge_dict["start"][new_edge_id] = project_point_id
+                edge_dict["end"][new_edge_id] = edge_dict["end"][nearest_street_id]
+                edge_dict["length"][new_edge_id] = end_segment.length
+                edge_dict["weight"][new_edge_id] = edge_dict["weight"][nearest_street_id] * end_segment.length/old_street_segment.length
+                edge_dict["type"][new_edge_id] = "street"
+                edge_dict["geometry"][new_edge_id] = end_segment
+                edge_dict["parent_street_id"][new_edge_id] = edge_dict["parent_street_id"][nearest_street_id]
 
-            new_edge_id += 1
-            edge_dict["id"][new_edge_id] = new_edge_id
-            edge_dict["start"][new_edge_id] = project_point_id
-            edge_dict["end"][new_edge_id] = edge_dict["end"][nearest_street_id]
-            edge_dict["length"][new_edge_id] = end_segment.length
-            edge_dict["type"][new_edge_id] = "street"
-            edge_dict["geometry"][new_edge_id] = end_segment
-            edge_dict["parent_street_id"][new_edge_id] = edge_dict["parent_street_id"][nearest_street_id]
+                # remove old street
+                [edge_dict[k].pop(nearest_street_id) for k in edge_dict.keys()]
 
-            ## remove old street
-            [edge_dict[k].pop(nearest_street_id) for k in edge_dict.keys()]
+        node_gdf = gpd.GeoDataFrame(node_dict, crs=self.default_projected_crs)
+        node_gdf = node_gdf.set_index("id")
 
-        node_gdf = gpd.GeoDataFrame(node_dict, crs="EPSG:4326")
-        node_gdf.set_index("id")
+        edge_gdf = gpd.GeoDataFrame(edge_dict, crs=self.default_projected_crs)
+        edge_gdf = edge_gdf.set_index("id")
 
-        edge_gdf = gpd.GeoDataFrame(edge_dict, crs="EPSG:4326")
-        edge_gdf.set_index("id")
+        self.layers['network_nodes']['gdf'] = node_gdf
+        self.color_layer('network_nodes')
+        self.layers['network_edges']['gdf'] = edge_gdf
+        self.color_layer('network_edges')
 
-        if temporary_copy:
-            return node_gdf, edge_gdf
-        else:
-            self.layers['network_nodes']['gdf'] = node_gdf
-            self.color_layer('network_nodes')
-            self.layers['network_edges']['gdf'] = edge_gdf
-            self.color_layer('network_edges')
+        # TODO: re-apply style with new points.
+        return node_gdf, edge_gdf
 
-            # TODO: re-apply style with new points.
-            return node_gdf, edge_gdf
+    def create_graph(self, light_graph=True, dense_graph=True, d_graph=True):
+        edge_gdf = self.layers['network_edges']['gdf']
 
-    def create_graph(self, temporary_copy=False, node_gdf=None, edge_gdf=None):
-        if not temporary_copy:
+        if light_graph:
             node_gdf = self.layers['network_nodes']['gdf']
-            edge_gdf = self.layers['network_edges']['gdf']
-        G = nx.Graph()
-        for idx, edge in edge_gdf.iterrows():
-            G.add_edge(int(edge["start"]), int(edge["end"]), weight=edge["length"], type=edge["type"], id=edge["id"], )
+            node_gdf = node_gdf[node_gdf["type"] == "street_node"]
+            ## no need to filter edges, because in light graph, they haven't been inseted
+            G = nx.Graph()
+            for idx in edge_gdf.index:
+                G.add_edge(
+                    int(edge_gdf.at[idx, "start"]),
+                    int(edge_gdf.at[idx, "end"]),
+                    weight=edge_gdf.at[idx, "weight"],
+                    type=edge_gdf.at[idx, "type"],
+                    id=idx
+                )
 
-        for idx, node in node_gdf.iterrows():
-            G.nodes[int(node["id"])]['type'] = node["type"]
+            for idx in node_gdf.index:
+                G.nodes[int(idx)]['type'] = node_gdf.at[idx, "type"]
 
-        if temporary_copy:
-            return G
-        else:
             self.G = G
-            return
+        if dense_graph:
+            node_gdf = self.layers['network_nodes']['gdf']
+            od_list = list(node_gdf[node_gdf["type"].isin(["origin", "destination"])].index)
+            graph = self.G.copy()
+            update_light_graph(
+                self,
+                graph=graph,
+                add_nodes=od_list
+            )
+            self.od_graph = graph
 
-    def closest_destination(self, beta=0.003):
+        if d_graph:
+            node_gdf = self.layers['network_nodes']['gdf']
+            od_list = list(node_gdf[node_gdf["type"] == "destination"].index)
+            graph = self.G.copy()
+            update_light_graph(
+                self,
+                graph=graph,
+                add_nodes=od_list
+            )
+            self.d_graph = graph
+        return
+
+    def closest_destination(self, beta=0.003, light_graph=True):
         node_gdf = self.layers['network_nodes']['gdf']
         origins = node_gdf[node_gdf["type"] == "origin"]
         destinations = node_gdf[node_gdf["type"] == "destination"]
         distance, path = nx.multi_source_dijkstra(
             self.G,
-            sources=list(destinations["id"]),
+            sources=list(destinations.index),
             weight='weight'
         )
-        for idx, origin in origins.iterrows():
-            node_gdf.at[origin['id'], 'closest_destination'] = path[origin['id']][0]
-            node_gdf.at[origin['id'], 'closest_destination_distance'] = distance[origin['id']]
-            node_gdf.at[origin['id'], 'closest_destination_gravity'] = 1 / pow(math.e, (beta * distance[origin['id']]))
+        for idx in origins.index:
+            node_gdf.at[idx, 'closest_destination'] = path[idx][0]
+            node_gdf.at[idx, 'closest_destination_distance'] = distance[idx]
+            node_gdf.at[idx, 'closest_destination_gravity'] = 1 / pow(math.e, (beta * distance[idx]))
 
         self.layers['network_nodes']['gdf'] = node_gdf
         return
@@ -768,7 +906,7 @@ class Zonal:
 
                 # terminate loop if current path is longer than  shortest_path_length * detour_ratio
                 if path_weight(self.G, path, weight="weight") > shortest_path_length * detour_ratio:
-                    #if path_weight(self.G, path, weight="weight") > search_radius * detour_ratio:
+                    # if path_weight(self.G, path, weight="weight") > search_radius * detour_ratio:
                     break
                 else:
                     path_count = path_count + 1
@@ -823,11 +961,16 @@ class Zonal:
     # TODO: finish and test THESE FUNCTIONS
     def node_degree(self):
         ## calculate degrees
+        node_gdf = self.layers["network_nodes"]['gdf']
         degrees = dict(self.G.degree)
-        for i in degrees:
-            self.node_gdf.loc[i, "degree"] = degrees[i]
 
-    def redundant_paths():
+        for i in node_gdf.index:
+            if i in degrees:
+                node_gdf.loc[i, "degree"] = degrees[i]
+            else:
+                node_gdf.loc[i, "degree"] = 0
+
+    def redundant_paths(self):
         pass
         return
 
@@ -958,7 +1101,7 @@ class Project:
         pass
 
     def project_page(self):
-        return html
+        return
 
     def project_map(self):
         return
