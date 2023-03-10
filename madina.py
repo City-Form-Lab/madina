@@ -15,7 +15,7 @@ import random
 
 from betweenness_functions import update_light_graph
 
-# commmit
+
 class Zonal:
     # TODO: the Zonal object could have multiple networks. an implementation could be a dictionary similar to the layers
     default_map_name = "Zonal_map"

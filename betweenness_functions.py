@@ -15,13 +15,14 @@ import shapely
 from shapely import affinity
 from shapely.ops import unary_union
 
+# cURRENT_BEST
+
 
 
 def best_path_generator_so_far(self, o_idx, search_radius=800, detour_ratio=1.15, turn_penalty=False):
-    #print("got in")
+
     graph = self.d_graph
     update_light_graph(self, graph, add_nodes=[o_idx])
-    #print("updated light_graph")
     o_graph, d_idxs, distance_matrix, scope_nodes = get_od_subgraph_2(
         self,
         o_idx,
@@ -32,25 +33,73 @@ def best_path_generator_so_far(self, o_idx, search_radius=800, detour_ratio=1.15
         turn_penalty=turn_penalty,
         o_graph=graph
     )
-    #print("generated d_idxs and scope")
+
 
     d_allowed_distances = {}
     for d_idx in d_idxs.keys():
         d_allowed_distances[d_idx] = d_idxs[d_idx] * detour_ratio
-    #print(f"{d_allowed_distances = }")
     paths, distances = _bfs_paths_many_targets_iterative(self,
                                                          graph,
                                                          o_idx,
                                                          d_allowed_distances,
                                                          distance_matrix=distance_matrix,
+                                                         turn_penalty=turn_penalty,
                                                          od_scope=scope_nodes,
-                                                         turn_penalty=turn_penalty
                                                          )
+    
+
+
     update_light_graph(self, graph, remove_nodes=[o_idx])
     return paths, distances, d_idxs
+'''
+def best_path_generator_so_far(self, o_idx, search_radius=800, detour_ratio=1.15, turn_penalty=False):
+    #print ("using double sided dijkstra and recursive")
+    # print("got in")
+
+    
+    #od_scope, distance_matrix, d_idxs = explore_exploit_graph(self, o_idx, search_radius, detour_ratio, turn_penalty=False)
+    # print("updated light_graph")
+    graph, d_idxs, distance_matrix, scope_nodes = get_od_subgraph_2(
+        self,
+        o_idx,
+        search_radius=search_radius,
+        detour_ratio=detour_ratio,
+        output_map=False,
+        graph_type="double_sided_dijkstra",
+        turn_penalty=turn_penalty,
+        o_graph=None
+    )
+
+    # print("generated d_idxs and scope")
+    #print ("subgraph generated")
+
+    graph = self.d_graph
+    update_light_graph(self, graph, add_nodes=[o_idx])
+    #print ("updated light graph by adding origin")
+
+    d_allowed_distances = {}
+    for d_idx in d_idxs.keys():
+        d_allowed_distances[d_idx] = d_idxs[d_idx] * detour_ratio
+    # print(f"{d_allowed_distances = }")
+
+    paths, distances = bfs_paths(self,
+            graph,
+            o_idx,
+            d_allowed_distances,
+            #weight_limit=search_radius * detour_ratio,
+            distance_termination="network",
+            batching=True,
+            #other_targets=[],
+            distance_matrix=distance_matrix,
+            turn_penalty=turn_penalty
+    )
+    update_light_graph(self, graph, remove_nodes=[o_idx])
+    return paths, distances, d_idxs
+'''
 
 
 
+# cURRENT_BEST, SHOULD MOVE TO una/madina?
 def insert_nodes_v2(self, label, layer_name, weight_attribute):
     start = time.time()
     node_gdf = self.layers["network_nodes"]["gdf"]
@@ -124,7 +173,7 @@ def insert_nodes_v2(self, label, layer_name, weight_attribute):
         node_dict["type"][new_node_id] = label
         node_dict["degree"][new_node_id] = 0
         node_dict["weight"][new_node_id] = \
-            1 if weight_attribute is None else source_gdf.at[source_id, weight_attribute]
+            1.0 if weight_attribute is None else source_gdf.at[source_id, weight_attribute]
 
         left_edge_weight = \
             edge_gdf.at[closest_edge_id, "weight"] * start_segment.length / closest_edge_geometry.length
@@ -155,55 +204,11 @@ def insert_nodes_v2(self, label, layer_name, weight_attribute):
     self.color_layer('network_nodes')
     post_processing_time = time.time() - start
 
-    #print(
+    # print(
     #    f"{sum_cutting_time = :6.3f}s\t{sum_search_time = :6.3f}s\t{post_processing_time = :6.3f}s\t{pre_processing_time = :6.3f}s")
     return node_gdf
 
-
-def get_elastic_weight(self, search_radius, detour_ratio, beta, decay=False, turn_penalty=False, retained_d_idxs=None):
-    node_gdf = self.layers["network_nodes"]["gdf"]
-    origins = node_gdf[node_gdf["type"] == "origin"]
-
-    o_reach = {}
-    o_gravity = {}
-
-    for o_idx in origins.index:
-        if retained_d_idxs is None:
-            d_idxs, _, _ = turn_o_scope(self, o_idx, search_radius, detour_ratio,
-                                                          turn_penalty=turn_penalty, o_graph=None, return_paths=False)
-        else:
-            d_idxs = retained_d_idxs[o_idx]
-        o_reach[o_idx] = int(len(d_idxs))
-
-        # d_gravity = {}
-        # for d_idx  in d_idxs:
-        #    d_gravity[d_idx] = 1 / pow(math.e, (beta * d_idxs[d_idx]))
-        # o_gravity[o_idx] = sum(d_gravity.values())
-
-        o_gravity[o_idx] = sum(1 / pow(math.e, (beta * np.array(list(d_idxs.values())))))
-
-    a = 0.5
-    b = 1
-
-    if decay:
-        access = o_gravity
-    else:
-        access = o_reach
-
-    min_access = min(access.values())
-    max_access = max(access.values())
-    for o_idx in origins.index:
-        scaled_access = (b - a) * ((access[o_idx] - min_access) / (max_access - min_access)) + a
-        scaled_weight = origins.at[o_idx, "weight"] * scaled_access
-
-        #TODO: This overrides original weights by elastic weights. should think of a way to pass this as options for una algorithms.
-        node_gdf.at[o_idx, "weight"] = scaled_weight
-        node_gdf.at[o_idx, "gravity"] = o_gravity[o_idx]
-        node_gdf.at[o_idx, "reach"] = o_reach[o_idx]
-
-    return
-
-
+# dEBUGGING fUNCTION/ mOVE TO una?
 def visualize_graph(self, graph):
     node_gdf = self.layers["network_nodes"]["gdf"]
     edge_gdf = self.layers["network_edges"]["gdf"]
@@ -229,20 +234,20 @@ def visualize_graph(self, graph):
             "end_node": end_nodes,
         }, crs=node_gdf.crs)
 
-
     layers = []
     if edge_gdf.shape[0] > 0:
         layers.append({"gdf": edge_gdf, "color": [125, 125, 125], "opacity": 0.05})
 
     if graph_nodes[graph_nodes["type"] == "origin"].shape[0] > 0:
         layers.append({"gdf": graph_nodes[graph_nodes["type"] == "street_node"].reset_index(), "color": [0, 255, 125],
-             "opacity": 0.05, "text": "id"})
+                       "opacity": 0.05, "text": "id"})
 
     if graph_nodes[graph_nodes["type"] == "origin"].shape[0] > 0:
         layers.append({"gdf": graph_nodes[graph_nodes["type"] == "origin"], "opacity": 0.25, "color": [255, 0, 125]})
 
     if graph_nodes[graph_nodes["type"] == "destination"].shape[0] > 0:
-        layers.append({"gdf": graph_nodes[graph_nodes["type"] == "destination"], "opacity": 0.05, "color": [0, 125, 255],
+        layers.append(
+            {"gdf": graph_nodes[graph_nodes["type"] == "destination"], "opacity": 0.05, "color": [0, 125, 255],
              "text": "type"})
 
     if graph_edges.shape[0] > 0:
@@ -256,10 +261,10 @@ def visualize_graph(self, graph):
 
     return edge_gdf, graph_nodes, graph_edges
 
-
-def get_od_subgraph_2(self, o_idx, search_radius=800, detour_ratio=1.15,
+# dEPRECIATED
+def     get_od_subgraph_2(self, o_idx, search_radius=800, detour_ratio=1.15,
                       output_map=False, graph_type="geometric", turn_penalty=False, o_graph=None):
-    #print (f"got to get_od_subgraph_2, {o_idx = }\t {search_radius = }\t {graph_type = }")
+    # print (f"got to get_od_subgraph_2, {o_idx = }\t {search_radius = }\t {graph_type = }")
     if o_graph is None:
         graph = self.d_graph.copy()
         graph.graph["added_nodes"] = self.d_graph.graph["added_nodes"].copy()
@@ -278,7 +283,7 @@ def get_od_subgraph_2(self, o_idx, search_radius=800, detour_ratio=1.15,
         scope_nodes, distance_matrix, d_idxs = explore_exploit_graph(self, o_idx, search_radius, detour_ratio,
                                                                      turn_penalty=turn_penalty)
     elif graph_type == "trail_blazer":
-        #scope_nodes, distance_matrix, d_idxs = bfs_subgraph_generation(self, o_idx, search_radius, detour_ratio,
+        # scope_nodes, distance_matrix, d_idxs = bfs_subgraph_generation(self, o_idx, search_radius, detour_ratio,
         #                                                               turn_penalty=turn_penalty, o_graph=graph)
         scope_nodes, distance_matrix, d_idxs = bfs_subgraph_generation(self,
                                                                        o_idx,
@@ -290,7 +295,7 @@ def get_od_subgraph_2(self, o_idx, search_radius=800, detour_ratio=1.15,
 
     return graph, d_idxs, distance_matrix, scope_nodes
 
-
+# dEPRECIATED
 def geometric_scope(self, o_idx, search_radius, detour_ratio, turn_penalty=False, batched=True, o_graph=None):
     node_gdf = self.layers["network_nodes"]["gdf"]
     scopes = []
@@ -351,7 +356,7 @@ def geometric_scope(self, o_idx, search_radius, detour_ratio, turn_penalty=False
             scope_nodes[d_idx] = list(node_gdf[node_gdf.intersects(scope)].index)
         return scope_nodes
 
-
+# dEPRECIATED
 def network_scope(self, o_idx, search_radius, detour_ratio, turn_penalty=False, batched=True):
     node_gdf = self.layers["network_nodes"]["gdf"]
 
@@ -382,7 +387,7 @@ def network_scope(self, o_idx, search_radius, detour_ratio, turn_penalty=False, 
     scope_nodes = node_gdf[node_gdf.index.isin(scope_nodes)]
     return scope_nodes
 
-
+# dEPRECIATED
 def scope_to_graph(self, od_scope, o_idx, d_idxs):
     edge_gdf = self.layers["network_edges"]["gdf"]
     node_gdf = self.layers["network_nodes"]["gdf"]
@@ -480,7 +485,53 @@ def scope_to_graph(self, od_scope, o_idx, d_idxs):
 
     return G
 
+# mOVE TO UNA?
+def get_elastic_weight(self, search_radius, detour_ratio, beta, decay=False, turn_penalty=False, retained_d_idxs=None):
 
+
+    node_gdf = self.layers["network_nodes"]["gdf"]
+    origins = node_gdf[node_gdf["type"] == "origin"]
+
+    o_reach = {}
+    o_gravity = {}
+
+    for o_idx in origins.index:
+        if retained_d_idxs is None:
+            d_idxs, _, _ = turn_o_scope(self, o_idx, search_radius, detour_ratio,
+                                        turn_penalty=turn_penalty, o_graph=None, return_paths=False)
+        else:
+            d_idxs = retained_d_idxs[o_idx]
+        o_reach[o_idx] = int(len(d_idxs))
+
+        # d_gravity = {}
+        # for d_idx  in d_idxs:
+        #    d_gravity[d_idx] = 1 / pow(math.e, (beta * d_idxs[d_idx]))
+        # o_gravity[o_idx] = sum(d_gravity.values())
+
+        o_gravity[o_idx] = sum(1.0 / pow(math.e, (beta * np.array(list(d_idxs.values())))))
+
+    a = 0.5
+    b = 1
+
+    if decay:
+        access = o_gravity
+    else:
+        access = o_reach
+
+    min_access = min(access.values())
+    max_access = max(access.values())
+    for o_idx in origins.index:
+        scaled_access = (b - a) * ((access[o_idx] - min_access) / (max_access - min_access)) + a
+        scaled_weight = origins.at[o_idx, "weight"] * scaled_access
+
+        # TODO: This overrides original weights by elastic weights. should think of a way to pass this as options for una algorithms.
+        node_gdf.at[o_idx, "elastic_weight"] = scaled_weight
+        node_gdf.at[o_idx, "gravity"] = o_gravity[o_idx]
+        node_gdf.at[o_idx, "reach"] = o_reach[o_idx]
+
+    return
+
+# mOVE TO UNA?
 def get_od_subgraph(self, o_idx, d_idxs=None, search_radius=800, detour_ratio=1.15,
                     shortest_distance=0, output_map=False, trim=False,
                     distance_method="geometric", turn_penalty=False):
@@ -724,7 +775,7 @@ def get_od_subgraph(self, o_idx, d_idxs=None, search_radius=800, detour_ratio=1.
     else:
         return G
 
-
+# mOVE TO UNA?
 def get_o_scope(self, graph, o_idx, search_radius, detour_ratio, get_paths=False):
     # lengths, paths = ___
     if get_paths:
@@ -771,6 +822,8 @@ def get_o_scope(self, graph, o_idx, search_radius, detour_ratio, get_paths=False
                 o_scope[node_idx] = lengths[node_idx]
                 # o_scope_lengths_paths[node_idx] = lengths[node_idx]
         return d_idxs, o_scope
+
+# dEORECIATED..
 
 
 def explore_exploit_graph(self, o_idx, search_radius, detour_ratio, turn_penalty=False):
@@ -876,9 +929,9 @@ def explore_exploit_graph(self, o_idx, search_radius, detour_ratio, turn_penalty
     )
     return od_scope, distance_matrix, d_idxs
 
-
+# cURRENT_BEST
 def bfs_subgraph_generation(self, o_idx, search_radius=800, detour_ratio=1.15, turn_penalty=False, o_graph=None):
-    #print (f"got into bfs_subgraph_generation, {o_idx = }\t{search_radius = }\t {detour_ratio = }\t {turn_penalty}\t {o_graph = }")
+    # print (f"got into bfs_subgraph_generation, {o_idx = }\t{search_radius = }\t {detour_ratio = }\t {turn_penalty}\t {o_graph = }")
 
     '''
     Suggested Pseudocode:
@@ -918,7 +971,7 @@ def bfs_subgraph_generation(self, o_idx, search_radius=800, detour_ratio=1.15, t
                                                       turn_penalty=turn_penalty, o_graph=o_graph)
         graph = o_graph
 
-    #visualize_graph(self, graph)
+    # visualize_graph(self, graph)
 
     if (len(d_idxs) == 0):
         if (o_graph is None):
@@ -1103,18 +1156,7 @@ def bfs_subgraph_generation(self, o_idx, search_radius=800, detour_ratio=1.15, t
     return od_scope, distance_matrix, d_idxs
 
 
-def una_reach():
-    return
-
-
-def una_gravity():
-    return
-
-
-def una_centrality():
-    return
-
-
+# dEORECIATED..
 def bfs_paths(self, graph, source, target, weight_limit=0, distance_termination="geometric", batching=True,
               other_targets=[], distance_matrix=None, turn_penalty=False):
     if distance_termination == "geometric":
@@ -1383,7 +1425,7 @@ def _bfs_paths_many_targets(graph, source, targets=[], targets_remaining=None, v
 
 '''
 
-
+# dEORECIATED..
 def _bfs_paths_many_targets(graph, source, targets=None, targets_remaining=[], visited=[],
                             distance_termination="geometric", distance_matrix=None, start_time=0.0, paths=None,
                             distances=None, current_weight=0):
@@ -1446,7 +1488,7 @@ def _bfs_paths_many_targets(graph, source, targets=None, targets_remaining=[], v
 
 from collections import deque
 
-
+# dEORECIATED..
 def turn_penalty_value(self, previous_node, current_node, next_node):
     node_gdf = self.layers["network_nodes"]["gdf"]
     edge_gdf = self.layers["network_edges"]["gdf"]
@@ -1484,12 +1526,11 @@ def turn_penalty_value(self, previous_node, current_node, next_node):
     # print (f"{previous_node = }\t{current_node = }\t{next_node = }\t{angle = }")
     if angle > 45:
         # print(f"{previous_node = }\t{current_node = }\t{next_node = }\t{angle = }")
-        return 62.3
-
+        return 62.3 # enable this as a parameter
     else:
         return 0
 
-
+# cURRENT bESR
 def _bfs_paths_many_targets_iterative(self, graph, o_idx, d_idxs, distance_matrix=None, turn_penalty=False,
                                       od_scope=None):
     # TODO: implement this as an iterative function with a queue
@@ -1552,7 +1593,6 @@ def _bfs_paths_many_targets_iterative(self, graph, o_idx, d_idxs, distance_matri
             spent_weight = graph.edges[(source, neighbor)]["weight"]
             neighbor_current_weight = current_weight + spent_weight + turn_cost
             neighbor_targets_remaining = []
-            # print (f"{source = }\t{neighbor = }{spent_weight = }")
             '''
             for target in targets_remaining:
                 if neighbor_current_weight <= d_idxs[target]:
@@ -1566,8 +1606,9 @@ def _bfs_paths_many_targets_iterative(self, graph, o_idx, d_idxs, distance_matri
             # TODO think if flipping distance_matrix indexing is better for this
             for target in targets_remaining:
                 if neighbor in distance_matrix[target]:
-                    if (distance_matrix[target][neighbor] + neighbor_current_weight) <= d_idxs[target]:
+                    if round(distance_matrix[target][neighbor] + neighbor_current_weight, 6) <= round(d_idxs[target],6):
                         neighbor_targets_remaining.append(target)
+
 
             if neighbor in neighbor_targets_remaining:
                 paths[neighbor].append([x for x in visited if x not in d_idxs] + [neighbor])
@@ -1583,11 +1624,11 @@ def _bfs_paths_many_targets_iterative(self, graph, o_idx, d_idxs, distance_matri
             q.appendleft((visited + [neighbor], neighbor, neighbor_targets_remaining, neighbor_current_weight))
     return paths, distances
 
-
+# cURRENT bESR
 def turn_o_scope(self, o_idx, search_radius, detour_ratio, turn_penalty=True, o_graph=None, return_paths=True):
     node_gdf = self.layers["network_nodes"]["gdf"]
     destinations = node_gdf[node_gdf["type"] == "destination"].index
-    #print(f"turn_o_scope: {o_idx = }")
+    # print(f"turn_o_scope: {o_idx = }")
 
     if o_graph is None:
         graph = self.d_graph
@@ -1595,7 +1636,7 @@ def turn_o_scope(self, o_idx, search_radius, detour_ratio, turn_penalty=True, o_
     else:
         graph = o_graph
 
-    #visualize_graph(self, graph)
+    # visualize_graph(self, graph)
     o_scope = {o_idx: 0}
     d_idxs = {}
     o_scope_paths = {}
@@ -1871,8 +1912,10 @@ def parallel_betweenness_2(self,
                            num_cores=4,
                            path_detour_penalty="equal",
                            origin_weights=False,
+                           origin_weight_attribute = None,
                            closest_destination=True,
                            destination_weights=False,
+                           destination_weight_attribute = None,
                            perceived_distance=False,
                            light_graph=True,
                            turn_penalty=False,
@@ -1907,8 +1950,10 @@ def parallel_betweenness_2(self,
             beta=beta,
             path_detour_penalty=path_detour_penalty,
             origin_weights=origin_weights,
+            origin_weight_attribute=origin_weight_attribute,
             closest_destination=closest_destination,
             destination_weights=destination_weights,
+            destination_weight_attribute=destination_weight_attribute,
             perceived_distance=perceived_distance,
             light_graph=light_graph,
             turn_penalty=turn_penalty,
@@ -1950,8 +1995,10 @@ def parallel_betweenness_2(self,
                     beta=beta,
                     path_detour_penalty=path_detour_penalty,
                     origin_weights=origin_weights,
+                    origin_weight_attribute=origin_weight_attribute,
                     closest_destination=closest_destination,
                     destination_weights=destination_weights,
+                    destination_weight_attribute=destination_weight_attribute,
                     perceived_distance=perceived_distance,
                     light_graph=light_graph,
                     turn_penalty=turn_penalty,
@@ -1978,8 +2025,6 @@ def parallel_betweenness_2(self,
 
     for idx in edge_gdf.index:
         edge_gdf.at[idx, "betweenness"] = sum([batch[idx] for batch in batch_results])
-
-
 
     # not sure if this assignment is necessary,
     self.layers['network_nodes']['gdf'] = node_gdf
@@ -2084,7 +2129,8 @@ def update_light_graph(self, graph, add_nodes=[], remove_nodes=[]):
                         int(chain_nodes[seq]),
                         int(chain_nodes[seq + 1]),
                         # TODO: change this to either defaults to distance or a specified column for a weight..
-                        weight=max(chain_distances[seq + 1] - chain_distances[seq], 0),     ##avoiding small negative numbers due to numerical error when two nodes are superimposed.
+                        weight=max(chain_distances[seq + 1] - chain_distances[seq], 0),
+                        ##avoiding small negative numbers due to numerical error when two nodes are superimposed.
                         id=edge_id
                     )
                     accumilated_weight += (chain_distances[seq + 1] - chain_distances[seq])
@@ -2202,7 +2248,8 @@ def one_betweenness_3(
             destination_ids = [int(origins.at[origin_idx, "closest_destination"])]
         else:
             # accissible_destinations = destinations_accessible_from_origin(self, origin_idx, search_radius=search_radius)
-            d_idxs, o_scope, _ = turn_o_scope(self, origin_idx, search_radius, detour_ratio, turn_penalty=turn_penalty, return_paths=False)
+            d_idxs, o_scope, _ = turn_o_scope(self, origin_idx, search_radius, detour_ratio, turn_penalty=turn_penalty,
+                                              return_paths=False)
             # accissible_destinations = list(d_idxs.keys())
             # for accissible_destination_idx, od_shortest_distance in accissible_destinations.items():
             for accissible_destination_idx, od_shortest_distance in d_idxs.items():
@@ -2283,11 +2330,11 @@ def one_betweenness_3(
                     # this_path_weight = path_weight(graph, path, weight="weight")
 
                     if this_path_weight > shortest_path_distance * detour_ratio:
-                            # TODO: trailblazer algorithm sometimes produces paths that exceeds this limin. revisit
-                            pass
-                        #print(
-                        #    f"o: {origin_idx}\td:{destination_idx}\t{path}\{this_path_weight}\t "
-                        #    f"exceeded limit {shortest_path_distance * detour_ratio}")
+                        # TODO: trailblazer algorithm sometimes produces paths that exceeds this limin. revisit
+                        pass
+                    # print(
+                    #    f"o: {origin_idx}\td:{destination_idx}\t{path}\{this_path_weight}\t "
+                    #    f"exceeded limit {shortest_path_distance * detour_ratio}")
                     '''
                     if path_count == 0:  # The shortest path.
                         shortest_path_distance = this_path_weight
@@ -2366,7 +2413,7 @@ def one_betweenness_3(
 
 
 ## This is a development version....
-def one_betweenness_2(
+def     one_betweenness_2(
         self,
         search_radius=1000,
         origins=None,
@@ -2376,8 +2423,10 @@ def one_betweenness_2(
         decay_method="exponent",
         path_detour_penalty="equal",  # "exponent" | "power"
         origin_weights=False,
+        origin_weight_attribute=None,
         closest_destination=False,
         destination_weights=False,
+        destination_weight_attribute=None,
         perceived_distance=False,
         light_graph=True,
         turn_penalty=False,
@@ -2413,7 +2462,7 @@ def one_betweenness_2(
         '''
 
         if (retained_d_idxs is None) or (retained_paths is None) or (retained_distances is None):
-            #print(f"{origin_idx  = } is not retreaved, generating it right now")
+            # print(f"{origin_idx  = } is not retreaved, generating it right now")
             '''
             paths, weights, d_idxs = get_od_paths(self, origin_idx, search_radius, detour_ratio, output_map=False,
                                                   algorithm="bfs",
@@ -2423,20 +2472,19 @@ def one_betweenness_2(
                                                   result="paths",
                                                   turn_penalty=turn_penalty)
                                                   '''
-            
-            paths, weights, d_idxs = best_path_generator_so_far(self, origin_idx, search_radius=search_radius, detour_ratio=detour_ratio, turn_penalty=turn_penalty)
+
+            paths, weights, d_idxs = best_path_generator_so_far(self, origin_idx, search_radius=search_radius,
+                                                                detour_ratio=detour_ratio, turn_penalty=turn_penalty)
             if rertain_expensive_data:
-                #print(f"{origin_idx  = } is retaining generated data")
-                #retain_paths[origin_idx] = paths
-                #retain_distances[origin_idx] = weights
+                # print(f"{origin_idx  = } is retaining generated data")
+                # retain_paths[origin_idx] = paths
+                # retain_distances[origin_idx] = weights
                 retain_d_idxs[origin_idx] = d_idxs
         else:
             # print(f"{origin_idx  = } is using retained data")
             paths = retained_paths[origin_idx]
             weights = retained_distances[origin_idx]
             d_idxs = retained_d_idxs[origin_idx]
-
-
 
         destination_count = len(d_idxs)
 
@@ -2483,7 +2531,7 @@ def one_betweenness_2(
                     if this_path_weight > shortest_path_distance * detour_ratio:
                         # TODO: trailblazer algorithm sometimes produces paths that exceeds this limin. revisit
                         pass
-                        #print(
+                        # print(
                         #    f"o: {origin_idx}\td:{destination_idx}\t{path}\{this_path_weight}\t "
                         #    f"exceeded limit {shortest_path_distance * detour_ratio}")
 
@@ -2525,14 +2573,23 @@ def one_betweenness_2(
                 for seq, path_probability in enumerate(this_od_paths["probability"]):
                     betweennes_contribution = path_probability
                     if origin_weights:
-                        betweennes_contribution *= origins.at[origin_idx, "weight"]
+                        if origin_weight_attribute:
+                            betweennes_contribution *= origins.at[origin_idx, origin_weight_attribute]
+                        else:
+                            betweennes_contribution *= origins.at[origin_idx, "weight"]
                     if decay:
                         betweennes_contribution *= this_od_paths[decay_method][0]
                     if not closest_destination:
                         this_d_gravity = 1 / pow(math.e, (beta * shortest_path_distance))
                         if destination_weights:
-                            this_d_gravity *= destinations.at[destination_idx, "weight"]
-                        trip_probability = this_d_gravity / od_sum_gravities
+                            if destination_weight_attribute:
+                                this_d_gravity *= destinations.at[destination_idx, destination_weight_attribute]
+                            else:
+                                this_d_gravity *= destinations.at[destination_idx, "weight"]
+                        if (this_d_gravity == 0) and (od_sum_gravities == 0):
+                            trip_probability = 0  # to cover a case where ypu can only access destinations of weight 0
+                        else:
+                            trip_probability = this_d_gravity / od_sum_gravities
                         betweennes_contribution *= trip_probability
 
                     for edge_id in this_od_paths["path_edges"][seq]:
@@ -2578,27 +2635,29 @@ def empty_network_dicts():
     return node_dict, edge_dict
 
 
-def flatten_multi_edge_segments(source_gdf):
+def flatten_multi_edge_segments(source_gdf, flatten_multiLineStrings=True, flatten_LineStrings=False):
     ls_dict = {"source_index": [], "geometry": []}
 
-    for source_idx in source_gdf.index:
-        geometry = source_gdf.at[source_idx, "geometry"]
-        geom_type = geometry.geom_type
-        if geom_type == 'LineString':
-            ls_dict["source_index"].append(source_idx)
-            ls_dict["geometry"].append(geometry)
-        elif geom_type == 'MultiLineString':
-            for ls in list(geometry):
+    if flatten_multiLineStrings:
+        for source_idx in source_gdf.index:
+            geometry = source_gdf.at[source_idx, "geometry"]
+            geom_type = geometry.geom_type
+            if geom_type == 'LineString':
                 ls_dict["source_index"].append(source_idx)
-                ls_dict["geometry"].append(ls)
-        else:
-            raise TypeError(f"geometries could only be of types 'LineString' and 'MultiLineString', {geom_type} is "
-                            f"not valid")
+                ls_dict["geometry"].append(geometry)
+            elif geom_type == 'MultiLineString':
+                for ls in list(geometry):
+                    ls_dict["source_index"].append(source_idx)
+                    ls_dict["geometry"].append(ls)
+            else:
+                raise TypeError(f"geometries could only be of types 'LineString' and 'MultiLineString', {geom_type} is "
+                                f"not valid")
 
     good_lines = {"source_index": [], "geometry": []}
+
     for geometry_seq, geometry in enumerate(ls_dict["geometry"]):
         number_of_nodes = len(geometry.coords)
-        if number_of_nodes != 2:
+        if (number_of_nodes != 2) and flatten_LineStrings:
             # bad segment, segmenting to individual segments
             for i in range(number_of_nodes - 1):
                 # create new segment
@@ -2632,9 +2691,11 @@ def insert_nodes_edges(
             sorted_gdf = gdf.sort_values(weight_attribute, ascending=False)
         else:
             sorted_gdf = gdf.sort_values("length", ascending=False)
-        street_geometry = geo.MultiLineString(
-            list(sorted_gdf["geometry"])
-        )
+        #street_geometry = geo.MultiLineString(
+        #    list(sorted_gdf["geometry"])
+        #)
+        street_geometry = list(sorted_gdf["geometry"])
+
 
     # find proper index for new nodes and edges
     if len(node_dict["id"]) == 0:
@@ -2652,7 +2713,8 @@ def insert_nodes_edges(
     redundant_edges = 0
     list_len = len(street_geometry)
     # TODO: Change this to use indexes instead of enumirate
-    for street_iloc, street in enumerate(list(street_geometry)):
+    #for street_iloc, street in enumerate(list(street_geometry)):
+    for street_iloc, street in enumerate(street_geometry):
         counter += 1
         if counter % 100 == 0:
             print(f'{counter = }, progress = {counter / list_len * 100:5.2f}')
@@ -2670,6 +2732,16 @@ def insert_nodes_edges(
         # print (f"street {street_iloc = } had {len(street.coords)} points")
 
         # FInd nearest points to start and end, reject if greater than tolerance.
+
+        # todo: use a spatial index here to eliminate the two loops
+        # create a dataframe containing all start end end points. keep a reference of what segment they come from.
+        #point_gdf["nearest_point_id"] = point_gdf.apply(
+            #lambda x: point_gdf["geometry"].sindex.nearest(point_gdf["geometry"])
+        #)
+        #match = point_gdf["geometry"].sindex.nearest(point_gdf["geometry"])
+        # add a column call node assignment, where we start from the longest street, look in the spatial index
+        # to find all "unassigned" points within the proximity
+
         smallest_distance_to_start = 9999999999999999
         for node_seq, node_point in enumerate(node_dict["geometry"]):
             distance = node_point.distance(start_point)
@@ -2921,6 +2993,7 @@ def create_street_nodes_edges(self,
     else:
         node_dict = self.layers["network_nodes"]['gdf'].to_dict()
         edge_dict = self.layers["network_edges"]['gdf'].to_dict()
+
 
     if flatten_polylines:
         line_geometry_gdf = flatten_multi_edge_segments(line_geometry_gdf)
