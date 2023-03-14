@@ -40,19 +40,6 @@ class UNA:
         """
         raise NotImplementedError
 
-
-
-    @staticmethod
-    def turn_o_scope(zonal: Zonal, origin_idx, search_radius, detour_ratio, turn_penalty=True,
-                     origin_graph=None, return_paths=True):
-        """
-        TODO: Fill out function spec - Unsure what this function does.
-        Returns:
-            Not entirely sure. @azizH please advise
-
-        """
-        raise NotImplementedError
-
     @staticmethod
     def calculate_accessibility_metrics(zonal: Zonal, reach=False, gravity=False, closest_facility=False, alpha=1,
                                         beta=None, search_radius=None, weight=None):

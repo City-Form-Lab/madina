@@ -48,6 +48,16 @@ class Network:
         """
         raise NotImplementedError
 
+    def turn_o_scope(self, origin_idx, search_radius, detour_ratio, turn_penalty=True,
+                     origin_graph=None, return_paths=True):
+        """
+        TODO: Fill out function spec - Unsure what this function does.
+        Returns:
+            Not entirely sure. @azizH please advise
+
+        """
+        raise NotImplementedError
+
     def _get_nodes_at_distance(self, origin_node, distance, method='geometric'):
         """
         Gets all nodes at distance `distance` from the origin `origin_idx` using the method `method`.
