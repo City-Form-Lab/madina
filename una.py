@@ -40,16 +40,7 @@ class UNA:
         """
         raise NotImplementedError
 
-    @staticmethod
-    def get_od_subgraph(zonal: Zonal, origin_idx, distance):
-        """
-        Creates a subgraph of the city network `zonal` from all nodes <= `distance` from the node at `origin_idx`
 
-        Returns:
-            A smaller Zonal subgraph (?)
-
-        """
-        raise NotImplementedError
 
     @staticmethod
     def turn_o_scope(zonal: Zonal, origin_idx, search_radius, detour_ratio, turn_penalty=True,
@@ -78,34 +69,4 @@ class UNA:
         """
         raise NotImplementedError
 
-    def _get_nodes_at_distance(self, zonal: Zonal, origin_node, distance, method='geometric'):
-        """
-        Gets all nodes at distance `distance` from the origin `origin_idx` using the method `method`.
-        Approximation of functionality from ln 496-592 of b_f.py
 
-        Returns:
-            The distance first-class function to be used to find nodes
-        """
-        # TODO: Copy over remainder of distance methods. What does 'trail_blazer' mean?
-        method_dict = {
-            'geometric': self._get_nodes_at_geometric_distance,
-            'network': self._get_nodes_at_network_distance,
-            'trail_blazer': self._get_nodes_at_bf_distance
-
-        }
-        return method_dict[method](zonal, origin_node, distance)
-
-    def _get_nodes_at_geometric_distance(self, zonal: Zonal, origin_node, distance):
-        raise NotImplementedError
-
-    def _get_nodes_at_network_distance(self, zonal: Zonal, origin_node, distance):
-        raise NotImplementedError
-
-    def _get_nodes_at_bf_distance(self, zonal: Zonal, origin_node, distance):
-        raise NotImplementedError
-
-    def _scan_for_intersections(self, zonal: Zonal, node_snapping_tolerance=1):
-        '''
-        TODO: Fill out function spec
-        '''
-        raise NotImplementedError

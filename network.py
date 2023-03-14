@@ -37,3 +37,45 @@ class Network:
         TODO: Fill out function spec
         """
         raise NotImplementedError
+
+    def get_od_subgraph(self, origin_idx, distance):
+        """
+        Creates a subgraph of the city network `self` from all nodes <= `distance` from the node at `origin_idx`
+
+        Returns:
+            A smaller network graph (?)
+
+        """
+        raise NotImplementedError
+
+    def _get_nodes_at_distance(self, origin_node, distance, method='geometric'):
+        """
+        Gets all nodes at distance `distance` from the origin `origin_idx` using the method `method`.
+        Approximation of functionality from ln 496-592 of b_f.py
+
+        Returns:
+            The distance first-class function to be used to find nodes
+        """
+        # TODO: Copy over remainder of distance methods. What does 'trail_blazer' mean?
+        method_dict = {
+            'geometric': self._get_nodes_at_geometric_distance,
+            'network': self._get_nodes_at_network_distance,
+            'trail_blazer': self._get_nodes_at_bf_distance
+
+        }
+        return method_dict[method](origin_node, distance)
+
+    def _get_nodes_at_geometric_distance(self, origin_node, distance):
+        raise NotImplementedError
+
+    def _get_nodes_at_network_distance(self, origin_node, distance):
+        raise NotImplementedError
+
+    def _get_nodes_at_bf_distance(self, origin_node, distance):
+        raise NotImplementedError
+
+    def _scan_for_intersections(self, node_snapping_tolerance=1):
+        '''
+        TODO: Fill out function spec
+        '''
+        raise NotImplementedError
