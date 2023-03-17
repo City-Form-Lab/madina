@@ -11,6 +11,13 @@ class Network:
     """
 
     def __init__(self, nodes: GeoDataFrame, edges: GeoDataFrame, projected_crs: str, weight_attribute=None):
+
+        if not nodes:
+            pass
+
+        if not edges:
+            pass
+
         self.nodes = nodes
         self.edges = edges
         self.crs = projected_crs
@@ -100,8 +107,19 @@ class Network:
     def _get_nodes_at_bf_distance(self, origin_node, distance):
         raise NotImplementedError
 
-    def _scan_for_intersections(self, node_snapping_tolerance=1):
+    def scan_for_intersections(self, node_snapping_tolerance=1):
         '''
         TODO: Fill out function spec
         '''
         raise NotImplementedError
+
+    def fuse_degree_2_nodes(self, tolerance_angle):
+        '''
+        TODO: Fill out function spec
+        '''
+        raise NotImplementedError
+
+    def network_to_layer(self):
+        return {'gdf': self.nodes, 'show': True}, {'gdf': self.edges, 'show': True}
+
+
