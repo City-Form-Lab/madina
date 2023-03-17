@@ -32,9 +32,23 @@ class Network:
         self.nodes.at[idx, label] = new_value
         return
 
-    def create_graph(self, light_graph: bool, dense_graph: bool, d_graph: bool):
+    def create_graph(self, light_graph: bool, dense_graph: bool, dest_graph: bool):
         """
-        TODO: Fill out function spec
+        Creates
+        `light_graph` - contains only network nodes and edges
+
+        `dense_graph` - contains all origin and destination nodes
+
+        `dest_graph` - contains all destination nodes
+
+        Returns:
+            A new graph (tentatively)
+        """
+        raise NotImplementedError
+
+    def visualize_graph(self):
+        """
+        Creates an HTML map of the `zonal` object.
         """
         raise NotImplementedError
 
@@ -51,9 +65,11 @@ class Network:
     def turn_o_scope(self, origin_idx, search_radius, detour_ratio, turn_penalty=True,
                      origin_graph=None, return_paths=True):
         """
-        TODO: Fill out function spec - Unsure what this function does.
+        Runs a modified Dijkstra algorithm from the `origin_idx`, with a `turn_penalty` for
+        making a turn along the path. Bounds the search by `search_radius`
+
         Returns:
-            Not entirely sure. @azizH please advise
+            A tuple of destination indices, origin scope, and paths from origin to destination
 
         """
         raise NotImplementedError

@@ -34,14 +34,7 @@ class UNA:
         raise NotImplementedError
 
     @staticmethod
-    def visualize_graph(zonal: Zonal):
-        """
-        Creates an HTML map of the `zonal` object.
-        """
-        raise NotImplementedError
-
-    @staticmethod
-    def calculate_accessibility_metrics(zonal: Zonal, reach=False, gravity=False, closest_facility=False, alpha=1,
+    def accessibility(zonal: Zonal, reach=False, gravity=False, closest_facility=False, alpha=1,
                                         beta=None, search_radius=None, weight=None):
         """
         Modifies the input zonal with accessibility metrics such as `reach`, `gravity`, and `closest_facility` analysis.
@@ -55,5 +48,16 @@ class UNA:
 
         """
         raise NotImplementedError
+
+    @staticmethod
+    def service_area(zonal: Zonal, origin_ids=None, search_radius=None):
+        """
+        Calculates the service area of the origins in `origin_ids`.
+
+        Returns:
+            a tuple of destinations accessible from the origins, edges traversed, and a pandas GeoDataFrame of their scope
+        """
+        raise NotImplementedError
+
 
 
