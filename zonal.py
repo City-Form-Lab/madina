@@ -90,7 +90,10 @@ class Zonal:
         # if flatten_polylines:
         #     line_geometry_gdf = flatten_multi_edge_segments(line_geometry_gdf)
 
-        nodes, edges = self._load_nodes_and_edges(node_dict, edge_dict, line_geometry_gdf, node_snapping_tolerance, weight_attribute, discard_redundant_edges)
+        nodes, edges = self._load_nodes_and_edges_from_gdf(
+            node_dict, edge_dict, line_geometry_gdf, node_snapping_tolerance,
+            weight_attribute, discard_redundant_edges
+        )
 
         self.network = Network(nodes, edges, self.projected_crs, weight_attribute)
 
@@ -138,6 +141,9 @@ class Zonal:
         Returns:
             A new `Zonal` object with
         """
+        raise NotImplementedError
+
+    def color_layer(self, label, by_attribute=None, method="single", color_scheme = None):
         raise NotImplementedError
 
     def describe(self):
@@ -205,8 +211,8 @@ class Zonal:
 
         return
 
-    def _load_nodes_and_edges(self, node: dict, edge: dict, source: GeoDataFrame, node_snapping_tolerance: int,
-                              weight_attribute: int, discard_redundant_edges: bool):
+    def _load_nodes_and_edges_from_gdf(self, node: dict, edge: dict, source: GeoDataFrame, node_snapping_tolerance: int,
+                                       weight_attribute: int, discard_redundant_edges: bool):
         """
         TODO: Fill out function spec
         """
