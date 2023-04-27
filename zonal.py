@@ -1,9 +1,11 @@
 import warnings
 import geopandas as gpd
+import numpy as np
 import pydeck as pdk
 
 from network import Network
 from network_utils import empty_network_template, DEFAULT_COLORS
+from pydeck.types import String
 from zonal_utils import get_color_column
 
 from geopandas import GeoDataFrame, GeoSeries
@@ -185,7 +187,7 @@ class Zonal:
             color_scheme
         )
 
-        return
+        return self.layers[label]['gdf']
 
     def describe(self):
         """
@@ -240,13 +242,13 @@ class Zonal:
 
         gdf_layers = []
 
-        if not zonal_layers:
+        if not zonal_layers and not add_layers:
             for label in self.layers:
                 if self.layers[label]["show"]:
-                    gdf_layers.append({"label": label, "gdf": self.layers[label]["gdf"]})
+                    gdf_layers.append({"label": label, "gdf": self.layers[label]["gdf"].copy(deep=True)})
         else:
             for label in zonal_layers:
-                gdf_layers.append({"label": label, "gdf": self.layers[label]["gdf"]})
+                gdf_layers.append({"label": label, "gdf": self.layers[label]["gdf"].copy(deep=True)})
             for label in add_layers:
                 add_layer = add_layers[label]
 
@@ -270,7 +272,114 @@ class Zonal:
         Returns:
             An HTML map
         """
-        raise NotImplementedError
+        map_layers = []
+
+        for layer in layers:
+
+            local_gdf = layer['gdf']
+
+            radius, width, width_scale, opacity = [1, 1, 1, 1]
+
+            if 'radius' in layer:
+                radius = layer['radius']
+                r_series = local_gdf[layer['radius']]
+                r_series = (r_series - r_series.mean()) / r_series.std()
+                r_series = r_series.apply(lambda x: max(1,x) + 3 if not np.isnan(x) else 0.5)
+                local_gdf['radius'] = r_series
+
+            if 'width' in layer:
+                if 'width_scale' in layer:
+                    ws = layer['width_scale']
+                    local_gdf['width'] = local_gdf[layer['width']] * ws
+
+            if 'opacity' in layer:
+                opacity = layer['opacity']
+
+            if ("by_attribute" in layer) or ("method" in layer) or ("color_scheme" in layer):
+                args = {arg: layer[arg] for arg in ['by_attribute', 'method', 'color_scheme'] if
+                        arg in layer}
+                local_gdf = self.color_layer(local_gdf, **args)
+
+            map_layer = pdk.Layer(
+                'GeoJsonLayer',
+                local_gdf.reset_index(),
+                opacity=opacity,
+                stroked=True,
+                filled=True,
+                wireframe=True,
+                get_line_width=width,
+                get_radius=radius,
+                get_line_color='color_scheme',
+                get_fill_color="color_scheme",
+                pickable=True,
+            )
+            map_layers.append(map_layer)
+
+            if 'text' in layer:
+                if type(local_gdf[layer["text"]]) in (int, float):
+                    local_gdf["text"] = round(local_gdf[layer["text"]], 6).astype('string')
+                elif type(local_gdf[layer["text"]]) == str:
+                    local_gdf["text"] = local_gdf[layer["text"]].astype('string')
+                else:
+                    raise TypeError("data type of 'text' field must be number or string")
+
+                with warnings.catch_warnings():
+                    warnings.simplefilter("ignore", category=UserWarning)
+                    local_gdf["coordinates"] = local_gdf["geometry"].centroid
+                local_gdf["coordinates"] = [[p.coords[0][0], p.coords[0][1]] for p in local_gdf["coordinates"]]
+
+                layer = pdk.Layer(
+                    "TextLayer",
+                    local_gdf.reset_index(),
+                    pickable=True,
+                    get_position="coordinates",
+                    get_text="text",
+                    get_size=16,
+                    get_color='color_scheme',
+                    get_angle=0,
+                    background=True,
+                    get_background_color=[0, 0, 0, 125],
+                    # Note that string constants in pydeck are explicitly passed as strings
+                    # This distinguishes them from columns in a data set
+                    get_text_anchor=String("middle"),
+                    get_alignment_baseline=String("center"),
+                )
+                map_layers.append(layer)
+
+            initial_view_state = pdk.ViewState(
+                # latitude=self.centerY,
+                latitude=center_y,
+                # longitude=self.centerX,
+                longitude=center_x,
+                zoom=zoom,
+                max_zoom=20,
+                pitch=0,
+                bearing=0
+            )
+
+            if basemap:
+                r = pdk.Deck(
+                    layers=map_layers,
+                    initial_view_state=initial_view_state,
+                )
+            else:
+                r = pdk.Deck(
+                    layers=map_layers,
+                    initial_view_state=initial_view_state,
+                    map_provider=None,
+                    parameters={
+                        "clearColor": [0.00, 0.00, 0.00, 1]
+                    },
+                )
+
+            if output_filename is not None:
+                r.to_html(
+                    output_filename,
+                    css_background_color="cornflowerblue"
+                )
+
+            return r
+
 
     def _set_scope(self, scope: GeoSeries | GeoDataFrame, projected_crs: str):
         """
