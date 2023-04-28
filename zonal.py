@@ -7,6 +7,7 @@ from network import Network
 from network_utils import empty_network_template, DEFAULT_COLORS
 from pydeck.types import String
 from zonal_utils import get_color_column
+from layer import *
 
 from geopandas import GeoDataFrame, GeoSeries
 from shapely import affinity
@@ -35,7 +36,7 @@ class Zonal:
     DEFAULT_COLORS = DEFAULT_COLORS
 
     def __init__(self, scope: GeoSeries | GeoDataFrame = None, projected_crs: str = None,
-                 layers: dict = None):
+                 layers: list = None):
 
         self.network = None
         if scope:
@@ -47,9 +48,9 @@ class Zonal:
 
         self.projected_crs = projected_crs
 
-        self.layers = {} if layers is None else layers
+        self.layers = Layers(layers)
 
-    def load_layer(self, label, file_path, allow_out_of_scope=False):
+    def load_layer(self, label, file_path, allow_out_of_scope=False, pos=None, first=False, before=None, after=None):
         """
         Loads a new layer from file path `file_path` with the label `label`.
         If `allow_out_of_scope` enabled, clips the CRS.
@@ -63,12 +64,9 @@ class Zonal:
         gdf.set_index('id')
         original_crs = gdf.crs
 
-        self.layers[label] = {
-            'gdf': gdf.to_crs(self.DEFAULT_PROJECTED_CRS),
-            'show': True,
-            'file_path': file_path,
-            'original_crs': original_crs
-        }
+        layer = Layer(label, gdf, True, original_crs, file_path)
+
+        self.layers.add(layer, pos, first, before, after)
 
         self.color_layer(label)
 
@@ -97,15 +95,15 @@ class Zonal:
         if source_layer not in self.layers:
             raise ValueError(f"Source layer {source_layer} not in zonal zonal_layers")
 
-        line_geometry_gdf = self.layers[source_layer]["gdf"].copy()
+        line_geometry_gdf = self.layers[source_layer].gdf.copy()
         line_geometry_gdf["length"] = line_geometry_gdf["geometry"].length
         line_geometry_gdf = line_geometry_gdf[line_geometry_gdf["length"] > 0]
 
         if 'network_nodes' not in self.layers:
             node_dict, edge_dict = empty_network_template['node'], empty_network_template['edge']
         else:
-            node_dict = self.layers["network_nodes"]['gdf'].to_dict()
-            edge_dict = self.layers["network_edges"]['gdf'].to_dict()
+            node_dict = self.layers["network_nodes"].gdf.to_dict()
+            edge_dict = self.layers["network_edges"].gdf.to_dict()
 
         # if flatten_polylines:
         #     line_geometry_gdf = flatten_multi_edge_segments(line_geometry_gdf)
@@ -126,8 +124,8 @@ class Zonal:
         # TODO: we need a Layers internal class
         self.layers['network_nodes'], self.layers['network_edges'] = self.network.network_to_layer()
 
-        # self.color_layer('network_nodes')
-        # self.color_layer('network_edges')
+        self.color_layer('network_nodes')
+        self.color_layer('network_edges')
 
         return
 
@@ -180,14 +178,14 @@ class Zonal:
                 by_attribute = color["__attribute_name__"]
                 method = "categorical"
 
-        self.layers[label]["gdf"] = self._color_layer(
+        self.layers[label].gdf = self._color_layer(
             label,
             by_attribute,
             method,
             color_scheme
         )
 
-        return self.layers[label]['gdf']
+        return self.layers[label].gdf
 
     def describe(self):
         """
@@ -198,14 +196,14 @@ class Zonal:
             print("No zonal_layers yet, load a layer using 'load_layer(layer_name, file_path)'")
         else:
 
-            for key in self.layers.keys():
+            for key in self.layers:
                 print(f"Layer name: {key}")
-                print(f"\tVisible?: {self.layers[key]['show']}")
-                print(f"\tFile path: {self.layers[key]['file_path']}")
-                print(f"\tOriginal projection: {self.layers[key]['original_crs']}")
-                print(f"\tCurrent projection: {self.layers[key]['gdf'].crs}")
-                print(f"\tColumn names: {list(self.layers[key]['gdf'].columns)}")
-                print(f"\tNumber of rows: {self.layers[key]['gdf'].shape[0]}")
+                print(f"\tVisible?: {self.layers[key].show}")
+                print(f"\tFile path: {self.layers[key].file_path}")
+                print(f"\tOriginal projection: {self.layers[key].crs}")
+                print(f"\tCurrent projection: {self.layers[key].gdf.crs}")
+                print(f"\tColumn names: {list(self.layers[key].gdf.columns)}")
+                print(f"\tNumber of rows: {self.layers[key].gdf.shape[0]}")
 
         geo_center_x, geo_center_y = self.geo_center
         proj_center_x, proj_center_y = self.projected_center
@@ -244,11 +242,11 @@ class Zonal:
 
         if not zonal_layers and not add_layers:
             for label in self.layers:
-                if self.layers[label]["show"]:
-                    gdf_layers.append({"label": label, "gdf": self.layers[label]["gdf"].copy(deep=True)})
+                if self.layers[label].show:
+                    gdf_layers.append({"label": label, "gdf": self.layers[label].gdf.copy(deep=True)})
         else:
             for label in zonal_layers:
-                gdf_layers.append({"label": label, "gdf": self.layers[label]["gdf"].copy(deep=True)})
+                gdf_layers.append({"label": label, "gdf": self.layers[label].gdf.copy(deep=True)})
             for label in add_layers:
                 add_layer = add_layers[label]
 
@@ -429,10 +427,10 @@ class Zonal:
         },
             crs=self.DEFAULT_PROJECTED_CRS)
 
-        layer_gdf = self.layers[label]['gdf']
+        layer_gdf = self.layers[label].gdf
 
         if clip:
-            self.layers[label]['gdf'] = gpd.clip(layer_gdf, scope_gdf)
+            self.layers[label].gdf = gpd.clip(layer_gdf, scope_gdf)
 
         if x_offset:
             for idx in layer_gdf.index:
@@ -450,7 +448,7 @@ class Zonal:
             A GeoDataFrame object with a color column added.
 
         """
-        gdf = self.layers[label]["gdf"]
+        gdf = self.layers[label].gdf
 
         if not method:
             if by_attribute:
