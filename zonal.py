@@ -70,7 +70,7 @@ class Zonal:
             'original_crs': original_crs
         }
 
-        # self.color_layer(layer_name)
+        self.color_layer(label)
 
         if None in self.geo_center:
             with warnings.catch_warnings():
@@ -379,7 +379,6 @@ class Zonal:
                 )
 
             return r
-
 
     def _set_scope(self, scope: GeoSeries | GeoDataFrame, projected_crs: str):
         """
