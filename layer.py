@@ -54,6 +54,7 @@ class Layers:
             replaced_layer = self.layers[key]
             del self.label_layers[replaced_layer]
             self.layers[key] = value
+            self.label_layers[value.label] = value
         else:
             raise TypeError("Only keys with type str or int may be used to set.")
 
