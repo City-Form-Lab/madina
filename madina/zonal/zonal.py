@@ -1,19 +1,14 @@
 import warnings
 import geopandas as gpd
-import numpy as np
-import pydeck as pdk
 
 from network import Network
 from network_utils import empty_network_template, DEFAULT_COLORS
-from pydeck.types import String
-from zonal_utils import get_color_column
+from zonal_utils import flatten_multi_edge_segments, load_nodes_edges_from_gdf
 from layer import *
 
 from geopandas import GeoDataFrame, GeoSeries
-from shapely import affinity
 
 from typing import Union
-
 
 
 class Zonal:
@@ -40,9 +35,9 @@ class Zonal:
 
         self.layers = Layers(layers)
 
-    def load_layer(self, label, file_path, allow_out_of_scope=False, pos=None, first=False, before=None, after=None):
+    def load_layer(self, layer_name: str, file_path: str, allow_out_of_scope=False, pos=None, first=False, before=None, after=None):
         """
-        Loads a new layer from file path `file_path` with the label `label`.
+        Loads a new layer from file path `file_path` with the layer name `layer_name`.
         If `allow_out_of_scope` is false, clips the CRS to the scope of the Zonal object
 
         Returns:
@@ -54,7 +49,7 @@ class Zonal:
         gdf.set_index('id')
         original_crs = gdf.crs
 
-        layer = Layer(label, gdf.to_crs(self.DEFAULT_PROJECTED_CRS), True, original_crs, file_path)
+        layer = Layer(layer_name, gdf.to_crs(self.DEFAULT_PROJECTED_CRS), True, original_crs, file_path)
         self.layers.add(layer, pos, first, before, after)
 
         if None in self.geo_center:
@@ -65,8 +60,8 @@ class Zonal:
 
         if not allow_out_of_scope:
             # TODO: Check scope is not None?
-            self.layers[label].gdf = gpd.clip(
-                self.layers[label].gdf,
+            self.layers[layer_name].gdf = gpd.clip(
+                self.layers[layer_name].gdf,
                 gpd.GeoDataFrame({
                         'name': ['scope'], 
                         'geometry': [self.scope]
@@ -77,12 +72,10 @@ class Zonal:
 
         return
 
-    def create_street_network(self, source_layer, flatten_polylines=True, node_snapping_tolerance=1,
-                              fuse_2_degree_edges=True, tolerance_angle=10, solve_intersections=True,
-                              loose_edge_trim_tolerance=0.001, weight_attribute=None, discard_redundant_edges=False, ):
+    def create_street_network(self, source_layer: str, node_snapping_tolerance=1,
+                              weight_attribute=None, discard_redundant_edges=False):
         """
-        Creates a street network layer from the `source_layer`.
-        Maps to create_street_nodes_edges in `betweenness functions`
+        Creates a street network layer from the `source_layer` with the given arguments.
 
         Returns:
             None
@@ -101,27 +94,14 @@ class Zonal:
             node_dict = self.layers["network_nodes"].gdf.to_dict()
             edge_dict = self.layers["network_edges"].gdf.to_dict()
 
-        # if flatten_polylines:
-        #     line_geometry_gdf = flatten_multi_edge_segments(line_geometry_gdf)
-
-        nodes, edges = self._load_nodes_and_edges_from_gdf(
+        nodes, edges = load_nodes_edges_from_gdf(
             node_dict, edge_dict, line_geometry_gdf, node_snapping_tolerance,
             weight_attribute, discard_redundant_edges
         )
 
         self.network = Network(nodes, edges, self.projected_crs, weight_attribute)
 
-        if fuse_2_degree_edges:
-            self.network.fuse_degree_2_nodes(tolerance_angle)
-
-        if solve_intersections:
-            self.network.scan_for_intersections(node_snapping_tolerance)
-
-        # TODO: we need a Layers internal class
         self.layers['network_nodes'], self.layers['network_edges'] = self.network.network_to_layer()
-
-        self.color_layer('network_nodes')
-        self.color_layer('network_edges')
 
         return
 
@@ -227,12 +207,3 @@ class Zonal:
         self.geo_center = (geographic_scope.centroid.coords[0][0], geographic_scope.centroid.coords[0][1])
 
         return
-
-    def _load_nodes_and_edges_from_gdf(self, node: dict, edge: dict, source: GeoDataFrame, node_snapping_tolerance: int,
-                                       weight_attribute: int, discard_redundant_edges: bool):
-        """
-        Assumes a nodes and edge table has been created from the geometry.
-        Takes a layer that's a different geometry and maps them to the closest network edge.
-        Creates a table that contains this new snapped geometry with the weight of the node, along with closest nodes.
-        """
-        raise NotImplementedError
