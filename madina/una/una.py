@@ -1,4 +1,4 @@
-from madina import Zonal
+from madina.zonal.zonal import Zonal
 
 
 class UNA:

@@ -12,8 +12,10 @@ from layer import *
 from geopandas import GeoDataFrame, GeoSeries
 from shapely import affinity
 
+from typing import Union
 
-def _get_geographic_scope(scope: GeoSeries | GeoDataFrame):
+
+def _get_geographic_scope(scope: Union[GeoSeries, GeoDataFrame]):
     """
     Strips the provided `scope` down to its geometry.
 
@@ -35,7 +37,7 @@ class Zonal:
     DEFAULT_GEOGRAPHIC_CRS = "EPSG:3857"
     DEFAULT_COLORS = DEFAULT_COLORS
 
-    def __init__(self, scope: GeoSeries | GeoDataFrame = None, projected_crs: str = None,
+    def __init__(self, scope: Union[GeoSeries, GeoDataFrame] = None, projected_crs: str = None,
                  layers: list = None):
 
         self.network = None
@@ -378,7 +380,7 @@ class Zonal:
 
             return r
 
-    def _set_scope(self, scope: GeoSeries | GeoDataFrame, projected_crs: str):
+    def _set_scope(self, scope: Union[GeoSeries, GeoDataFrame], projected_crs: str):
         """
         Sets the `Zonal` object's scope and projection.
 
@@ -393,10 +395,7 @@ class Zonal:
         else:
             scope_projected_crs = scope["geometry"].crs
 
-        self.projected_crs = projected_crs
-
-        if not self.projected_crs:
-            self.projected_crs = scope_projected_crs
+        self.projected_crs = projected_crs if projected_crs != None else scope_projected_crs
 
         geo_scope = gpd.GeoDataFrame({"id": [0], "geometry": [scope_geometry]}, crs=self.projected_crs)
         reprojected_geo_scope = geo_scope.to_crs(self.DEFAULT_GEOGRAPHIC_CRS)
