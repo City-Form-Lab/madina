@@ -174,13 +174,13 @@ class Network:
         if d_graph:
             d_list = list(self.nodes[self.nodes["type"] == "destination"].index)
             graph = self.light_graph.copy() # TODO: Consider deep copies?
-            self._update_light_graph(graph, add_nodes=d_list)
+            self.update_light_graph(graph, add_nodes=d_list)
             self.d_graph = graph
 
         if od_graph:
             od_list = list(self.nodes[self.nodes["type"].isin(["origin", "destination"])].index)
             graph = self.light_graph.copy()
-            self._update_light_graph(graph, add_nodes=od_list)
+            self.update_light_graph(graph, add_nodes=od_list)
             self.od_graph = graph
 
         return
@@ -213,7 +213,7 @@ class Network:
         """
         raise NotImplementedError
     
-    def _update_light_graph(self, graph: nx.Graph, add_nodes: list = [], remove_nodes: list = []):
+    def update_light_graph(self, graph: nx.Graph, add_nodes: list = [], remove_nodes: list = []):
         """
         Updates the given graph object by adding nodes to and removing nodes from it.
 
