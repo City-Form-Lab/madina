@@ -5,7 +5,7 @@ from madina.zonal.network import Network
 from madina.una.una_utils import turn_o_scope
 
 
-def get_elastic(network: Network,
+def get_elastic_weight(network: Network,
                 search_radius: float, 
                 detour_ratio: float, 
                 beta: float, 

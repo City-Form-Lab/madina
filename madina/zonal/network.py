@@ -5,7 +5,7 @@ import networkx as nx
 from geopandas import GeoDataFrame
 from shapely import geometry as geo
 
-from layer import *
+from madina.zonal.layer import *
 # street nodes, origin nodes, destination_nodes are the different types of nodes
 
 

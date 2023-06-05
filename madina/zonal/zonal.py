@@ -1,10 +1,10 @@
 import warnings
 import geopandas as gpd
 
-from network import Network
-from network_utils import empty_network_template, DEFAULT_COLORS
-from zonal_utils import flatten_multi_edge_segments, load_nodes_edges_from_gdf
-from layer import *
+from madina.zonal.layer import *
+from madina.zonal.network import Network
+from madina.zonal.network_utils import empty_network_template, DEFAULT_COLORS
+from madina.zonal.zonal_utils import flatten_multi_edge_segments, load_nodes_edges_from_gdf
 
 from geopandas import GeoDataFrame, GeoSeries
 
