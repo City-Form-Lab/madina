@@ -15,7 +15,7 @@ def turn_o_scope(network: Network,
     o_idx: origin index, integer, coming from the node_gdf
     o_graph: reusing updated graphs (e. g. doing inelastic after elastic), optional
     """
-    node_gdf = network.nodes["gdf"]
+    node_gdf = network.nodes
     destinations = node_gdf[node_gdf["type"] == "destination"].index
     # print(f"turn_o_scope: {o_idx = }")
 
@@ -82,10 +82,9 @@ def turn_o_scope(network: Network,
 def turn_penalty_value(network: Network, previous_node, current_node, next_node):
     """
     TODO: fill out the spec
-    TODO: Ask if this is deprecated
     """
-    node_gdf = network.nodes["gdf"]
-    edge_gdf = network.edges["gdf"]
+    node_gdf = network.nodes
+    edge_gdf = network.edges
     angle = angle_deviation_between_two_lines(
         [
             node_gdf.at[previous_node, "geometry"],

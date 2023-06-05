@@ -25,3 +25,6 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+
+# UNA Test Data
+Cities/

@@ -171,8 +171,8 @@ def one_betweenness_2(
     TODO: fill out the spec
     """
     
-    node_gdf = network.nodes["gdf"]
-    edge_gdf = network.edges["gdf"]
+    node_gdf = network.nodes
+    edge_gdf = network.edges
 
     # graph = self.G.copy()
 

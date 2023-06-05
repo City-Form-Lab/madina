@@ -83,10 +83,10 @@ def get_od_subgraph(network: Network, o_idx, search_radius=800, detour_ratio=1.1
 
     return graph, d_idxs, distance_matrix, scope_nodes
 
-def geometric_scope(self, o_idx, search_radius, detour_ratio, turn_penalty=False, batched=True, o_graph=None):
-    node_gdf = self.layers["network_nodes"]["gdf"]
+def geometric_scope(network: Network, o_idx, search_radius, detour_ratio, turn_penalty=False, batched=True, o_graph=None):
+    node_gdf = network.nodes
     scopes = []
-    d_idxs, o_scope, o_scope_paths = turn_o_scope(self, o_idx, search_radius, detour_ratio, turn_penalty=turn_penalty,
+    d_idxs, o_scope, o_scope_paths = turn_o_scope(network, o_idx, search_radius, detour_ratio, turn_penalty=turn_penalty,
                                                   o_graph=o_graph)
 
     for d_idx in d_idxs.keys():
@@ -418,8 +418,8 @@ def bfs_paths_many_targets_iterative(network: Network, graph, o_idx, d_idxs, dis
 
     # TODO: should this also be done in graph generation to limit scope? prob yes but need to keep track of predecessor.
 
-    node_gdf = network.nodes["gdf"]
-    edge_gdf = network.edges["gdf"]
+    node_gdf = network.nodes
+    edge_gdf = network.edges
 
     paths = {}
     distances = {}

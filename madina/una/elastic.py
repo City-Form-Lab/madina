@@ -16,7 +16,7 @@ def get_elastic_weight(network: Network,
     TODO: fill function spec
     """
 
-    node_gdf = network.nodes["gdf"]
+    node_gdf = network.nodes
     origins = node_gdf[node_gdf["type"] == "origin"]
 
     o_reach = {}

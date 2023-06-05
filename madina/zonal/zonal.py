@@ -88,11 +88,11 @@ class Zonal:
         line_geometry_gdf["length"] = line_geometry_gdf["geometry"].length
         line_geometry_gdf = line_geometry_gdf[line_geometry_gdf["length"] > 0]
 
-        if 'network_nodes' not in self.layers:
+        if self.network is None:
             node_dict, edge_dict = empty_network_template['node'], empty_network_template['edge']
         else:
-            node_dict = self.layers["network_nodes"].gdf.to_dict()
-            edge_dict = self.layers["network_edges"].gdf.to_dict()
+            node_dict = self.network.nodes.to_dict()
+            edge_dict = self.network.edges.to_dict()
 
         nodes, edges = load_nodes_edges_from_gdf(
             node_dict, edge_dict, line_geometry_gdf, node_snapping_tolerance,
@@ -101,32 +101,32 @@ class Zonal:
 
         self.network = Network(nodes, edges, self.projected_crs, weight_attribute)
 
-        self.layers['network_nodes'], self.layers['network_edges'] = self.network.network_to_layer()
+        # self.layers['network_nodes'], self.layers['network_edges'] = self.network.network_to_layer()
 
         return
 
-    def insert_nodes(self, label: str, layer_name: str, weight_attribute: int):
+    def insert_node(self, label: str, layer_name: str, weight_attribute: int):
         """
         Inserts a node into a layer within the `Zonal`.
 
         Returns:
             None
         """
-        raise NotImplementedError
+        self.network.insert_node(self.layers[layer_name].gdf, label, layer_name, weight_attribute, self.projected_crs)
 
-    def create_graph(self, light_graph, dense_graph, d_graph):
+    def create_graph(self, light_graph=False, d_graph=True, od_graph=False):
         """
         Enables the creation of three kinds of graphs.
 
         Args:
             `light_graph` - contains only network nodes and edges
-            `dense_graph` - contains all origin, destination, network, etc. nodes
-            `dest_graph` - contains all destination nodes and network intersectionsa
+            `od_graph` - contains all origin, destination, network, etc. nodes
+            `d_graph` - contains all destination nodes and network intersectionsa
 
         Returns:
             None
         """
-        raise NotImplementedError
+        self.network.create_graph(light_graph, d_graph, od_graph)
 
     def describe(self):
         """

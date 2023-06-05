@@ -19,11 +19,8 @@ class Network:
 
     def __init__(self, nodes: GeoDataFrame, edges: GeoDataFrame, projected_crs: str, weight_attribute=None):
 
-        if not nodes:
-            pass
-
-        if not edges:
-            pass
+        if nodes.empty or edges.empty:
+            pass # throw Error here
 
         self.nodes = nodes
         self.edges = edges
@@ -34,7 +31,7 @@ class Network:
         self.od_graph = None
         return
 
-    def insert_node(self, source_gdf: GeoDataFrame ,label: str, layer_name: str, weight_attribute: float):
+    def insert_node(self, source_gdf: GeoDataFrame ,label: str, layer_name: str, weight_attribute: float, projected_crs: str):
         """
         Insert nodes from the source layer to the network's `self.nodes` GeoDataFrame, recording their
         source layer name, label, weight, as well as their relationship to the closest street segment
@@ -128,7 +125,7 @@ class Network:
                         }
                 }
 
-        self.nodes = GeoDataFrame(node_dict, crs=self.default_projected_crs)
+        self.nodes = GeoDataFrame(node_dict, crs=projected_crs)
         self.nodes = self.nodes.set_index("id")
         return
         
@@ -139,7 +136,7 @@ class Network:
         self.nodes.at[idx, label] = new_value
         return
 
-    def create_graph(self, light_graph: bool, d_graph: bool, od_graph: bool):
+    def create_graph(self, light_graph=False, d_graph=True, od_graph=False):
         """
         Creates the corresponding graphs in the Network object based on the current nodes and edges
         `light_graph` - contains only network nodes and edges
