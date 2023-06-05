@@ -12,7 +12,8 @@ def turn_o_scope(network: Network,
                   return_paths=True):
     """
     TODO: fill out the spec
-    TODO: what is `o_idx` and `o_graph`
+    o_idx: origin index, integer, coming from the node_gdf
+    o_graph: reusing updated graphs (e. g. doing inelastic after elastic), optional
     """
     node_gdf = network.nodes["gdf"]
     destinations = node_gdf[node_gdf["type"] == "destination"].index
