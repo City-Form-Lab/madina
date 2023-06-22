@@ -23,3 +23,4 @@ A library to simplify creating workflows for urban planning research. Tools to w
 - Add turn penalty argument to the betweenness pipeline
 - Rewrite specs for most UNA functions
 - Add map cleaning, visualization, and generative geometry
+- Rewrite logic for reprojections: Use the first loaded layer's built in projection as the overall projection, and reproject every other layer to that projection. Assume all layers are valid (nothing like the Somerville network case). Give a warning (PYTHONIC) to users when reprojections actually happen.

@@ -2,7 +2,9 @@ import time
 
 import numpy as np
 import networkx as nx
+from pygeos import Geometry
 from geopandas import GeoDataFrame
+from shapely import wkt
 from shapely import geometry as geo
 
 from madina.zonal.layer import *
@@ -46,9 +48,24 @@ class Network:
 
         # TODO: check whether source_gdf is a node layer?
 
-        node_dict = self.nodes.reset_index().to_dict()
+        # print("begin network insert node")
+        # print(self.edges["geometry"])
+        # print(self.edges["geometry"])
+        # print(self.edges["geometry"].at[0])
+        # print(type(self.edges["geometry"].at[0]))
+        # print(source_gdf["geometry"])
+        # print(type(source_gdf["geometry"].at[0]))
+        # print([Geometry(wkt.dumps(source_gdf["geometry"].at[i])) for i in range(len(source_gdf.index))])
+        # print([Geometry(wkt.dumps(source_gdf["geometry"].at[i])) for i in range(len(source_gdf.index))][0])
+        # print(type([Geometry(wkt.dumps(source_gdf["geometry"].at[i])) for i in range(len(source_gdf.index))][0]))
+        # print(self.edges["geometry"].sindex)
+        # print(len(source_gdf.index))
 
-        match = self.edges["geometry"].sindex.nearest(source_gdf["geometry"])
+        node_dict = self.nodes.reset_index().to_dict()
+        match = self.edges["geometry"].sindex.nearest([Geometry(wkt.dumps(source_gdf["geometry"].at[i])) for i in range(len(source_gdf.index))])
+
+        # print(len(node_dict), node_dict.values())
+        # print(match)
 
         def cut(line, distance):
             # Cuts a line in two at a distance from its starting point
@@ -78,10 +95,13 @@ class Network:
         new_node_id = int(self.nodes.index[-1])  # increment before use.
 
         for source_iloc, source_id in enumerate(source_gdf.index):
+            
+            # print("adding node", source_iloc, source_id)
 
             source_representative_point = source_gdf.at[source_id, "geometry"].centroid
             closest_edge_id = match[1][source_iloc]
             closest_edge_geometry = self.edges.at[closest_edge_id, "geometry"]
+            # print("finds match", closest_edge_id, closest_edge_geometry)
             distance_along_closest_edge = closest_edge_geometry.project(source_representative_point)
             point_on_nearest_edge = closest_edge_geometry.interpolate(
                 distance_along_closest_edge)  ## gives a point on te street where the source point is projected

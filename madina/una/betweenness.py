@@ -30,13 +30,13 @@ def parallel_betweenness(network: Network,
                          rertain_expensive_data=False
                          ):
     """
-    TODO: fill out the spec
+    TODO: fill out the specE
     """
-    node_gdf = network.nodes['gdf']
-    edge_gdf = network.edges['gdf']
+    node_gdf = network.nodes
+    edge_gdf = network.edges
 
     origins = node_gdf[
-        (node_gdf["type"] == "origin")
+    (node_gdf["type"] == "origin")
     ]
 
     retain_paths = {}
@@ -83,7 +83,7 @@ def parallel_betweenness(network: Network,
         diagnostics_gdfs = []
         num_procs = num_cores  # psutil.cpu_count(logical=logical)
 
-        origins = origins.sample(frac=1)
+        # origins = origins.sample(frac=1)
         # TODO: this is a temporary check, need to see why indices are becoming floats
         origins.index = origins.index.astype("int")
         splitted_origins = np.array_split(origins, num_procs)
@@ -135,8 +135,8 @@ def parallel_betweenness(network: Network,
         edge_gdf.at[idx, "betweenness"] = sum([batch[idx] for batch in batch_results])
 
     # not sure if this assignment is necessary,
-    network.nodes['gdf'] = node_gdf
-    network.edges['gdf'] = edge_gdf
+    network.nodes = node_gdf
+    network.edges = edge_gdf
     return_dict = {"edge_gdf": edge_gdf}
     if rertain_expensive_data:
         return_dict["retained_paths"] = retain_paths

@@ -24,14 +24,17 @@ class Zonal:
                  layers: list = None):
 
         self.network = None
-        if scope:
+        if scope is not None:
             self._set_scope(scope, projected_crs)
         else:
             self.scope = scope
             self.projected_center = (None, None)
             self.geo_center = (None, None)
 
-        self.projected_crs = projected_crs
+        if projected_crs is not None:
+            self.projected_crs = projected_crs
+        else:
+            self.projected_crs = self.DEFAULT_PROJECTED_CRS
 
         self.layers = Layers(layers)
 
@@ -49,16 +52,16 @@ class Zonal:
         gdf.set_index('id')
         original_crs = gdf.crs
 
-        layer = Layer(layer_name, gdf.to_crs(self.DEFAULT_PROJECTED_CRS), True, original_crs, file_path)
+        layer = Layer(layer_name, gdf.to_crs(self.projected_crs), True, original_crs, file_path)
         self.layers.add(layer, pos, first, before, after)
 
         if None in self.geo_center:
             with warnings.catch_warnings():
                 warnings.simplefilter("ignore", category=UserWarning)
-                centroid_point = gdf.to_crs(self.DEFAULT_GEOGRAPHIC_CRS).dissolve().centroid.iloc[0]
+                centroid_point = gdf.to_crs(self.projected_crs).dissolve().centroid.iloc[0]
             self.geo_center = centroid_point.coords[0]
 
-        if not allow_out_of_scope:
+        if not allow_out_of_scope and self.scope is not None:
             # TODO: Check scope is not None?
             self.layers[layer_name].gdf = gpd.clip(
                 self.layers[layer_name].gdf,
@@ -66,7 +69,7 @@ class Zonal:
                         'name': ['scope'], 
                         'geometry': [self.scope]
                     },
-                    crs=self.DEFAULT_PROJECTED_CRS
+                    crs=self.projected_crs
                 )
             )
 
@@ -112,6 +115,10 @@ class Zonal:
         Returns:
             None
         """
+        print("checking insert_node")
+        for layer_label in self.layers.layers:
+            print(layer_label)
+        print(layer_name, self.layers[layer_name].gdf.index)
         self.network.insert_node(self.layers[layer_name].gdf, label, layer_name, weight_attribute, self.projected_crs)
 
     def create_graph(self, light_graph=False, d_graph=True, od_graph=False):
