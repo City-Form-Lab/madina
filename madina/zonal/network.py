@@ -19,7 +19,7 @@ class Network:
     Internal class, meant to represent a network within the Zonal object.
     """
 
-    def __init__(self, nodes: GeoDataFrame, edges: GeoDataFrame, projected_crs: str, weight_attribute=None):
+    def __init__(self, nodes: GeoDataFrame, edges: GeoDataFrame, projected_crs: str, turn_threshold_degree: float, turn_penalty_amount: float, weight_attribute=None,):
 
         if nodes.empty or edges.empty:
             pass # throw Error here
@@ -27,6 +27,8 @@ class Network:
         self.nodes = nodes
         self.edges = edges
         self.crs = projected_crs
+        self.turn_threshold_degree = turn_threshold_degree
+        self.turn_penalty_amount = turn_penalty_amount
         self.weight_attribute = weight_attribute
         self.light_graph = None
         self.d_graph = None

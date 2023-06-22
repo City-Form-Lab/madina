@@ -76,7 +76,8 @@ class Zonal:
         return
 
     def create_street_network(self, source_layer: str, node_snapping_tolerance=1,
-                              weight_attribute=None, discard_redundant_edges=False):
+                              weight_attribute=None, discard_redundant_edges=False,
+                              turn_threshold_degree=45, turn_penalty_amount=30):
         """
         Creates a street network layer from the `source_layer` with the given arguments.
 
@@ -102,7 +103,7 @@ class Zonal:
             weight_attribute, discard_redundant_edges
         )
 
-        self.network = Network(nodes, edges, self.projected_crs, weight_attribute)
+        self.network = Network(nodes, edges, self.projected_crs, turn_threshold_degree, turn_penalty_amount, weight_attribute)
 
         # self.layers['network_nodes'], self.layers['network_edges'] = self.network.network_to_layer()
 

@@ -93,8 +93,8 @@ def turn_penalty_value(network: Network, previous_node, current_node, next_node)
         ]
     )
     angle = min(angle, abs(angle - 180))
-    if angle > 45:
-        return 62.3 #62.3 #30.0 enable this as a parameter
+    if angle > network.turn_threshold_degree:
+        return network.turn_penalty_amount
     else:
         return 0
     
