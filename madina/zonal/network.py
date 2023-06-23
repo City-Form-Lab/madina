@@ -50,17 +50,6 @@ class Network:
         # TODO: check whether source_gdf is a node layer?
 
         # print("begin network insert node")
-        # print(self.edges["geometry"])
-        # print(self.edges["geometry"])
-        # print(self.edges["geometry"].at[0])
-        # print(type(self.edges["geometry"].at[0]))
-        # print(source_gdf["geometry"])
-        # print(type(source_gdf["geometry"].at[0]))
-        # print([Geometry(wkt.dumps(source_gdf["geometry"].at[i])) for i in range(len(source_gdf.index))])
-        # print([Geometry(wkt.dumps(source_gdf["geometry"].at[i])) for i in range(len(source_gdf.index))][0])
-        # print(type([Geometry(wkt.dumps(source_gdf["geometry"].at[i])) for i in range(len(source_gdf.index))][0]))
-        # print(self.edges["geometry"].sindex)
-        # print(len(source_gdf.index))
 
         node_dict = self.nodes.reset_index().to_dict()
         match = self.edges["geometry"].sindex.nearest(geometry=source_gdf["geometry"], return_all=False)

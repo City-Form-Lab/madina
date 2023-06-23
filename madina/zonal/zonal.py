@@ -114,10 +114,10 @@ class Zonal:
         Returns:
             None
         """
-        print("checking insert_node")
-        for layer_label in self.layers.layers:
-            print(layer_label)
-        print(layer_name, self.layers[layer_name].gdf.index)
+        # print("checking insert_node")
+        # for layer_label in self.layers.layers:
+        #     print(layer_label)
+        # print(layer_name, self.layers[layer_name].gdf.index)
         self.network.insert_node(self.layers[layer_name].gdf, label, layer_name, weight_attribute, self.projected_crs)
 
     def create_graph(self, light_graph=False, d_graph=True, od_graph=False):
