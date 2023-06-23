@@ -2,7 +2,6 @@ import time
 
 import numpy as np
 import networkx as nx
-from pygeos import Geometry
 from geopandas import GeoDataFrame
 from shapely import wkt
 from shapely import geometry as geo
@@ -64,7 +63,7 @@ class Network:
         # print(len(source_gdf.index))
 
         node_dict = self.nodes.reset_index().to_dict()
-        match = self.edges["geometry"].sindex.nearest([Geometry(wkt.dumps(source_gdf["geometry"].at[i])) for i in range(len(source_gdf.index))])
+        match = self.edges["geometry"].sindex.nearest(geometry=source_gdf["geometry"], return_all=False)
 
         # print(len(node_dict), node_dict.values())
         # print(match)

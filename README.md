@@ -27,7 +27,7 @@ A library to simplify creating workflows for urban planning research. Tools to w
 
 - ✅Make sure refactored code yields identical results as the old code
 - ✅Add turn penalty argument to the betweenness pipeline
-- Upgrade dependencies to the newest versions
+- ✅Upgrade dependencies to the newest versions
 - Rewrite specs for most UNA functions
   - Write docstrings and comments in the code for the ease of future development
   - Construct a Python Documentation with `Sphinx` and `ReadtheDocs` (Maybe later, depends)

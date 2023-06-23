@@ -8,8 +8,6 @@ from madina.zonal.zonal_utils import flatten_multi_edge_segments, load_nodes_edg
 
 from geopandas import GeoDataFrame, GeoSeries
 
-from typing import Union
-
 
 class Zonal:
     """
@@ -20,7 +18,7 @@ class Zonal:
     DEFAULT_GEOGRAPHIC_CRS = "EPSG:3857"
     DEFAULT_COLORS = DEFAULT_COLORS
 
-    def __init__(self, scope: Union[GeoSeries, GeoDataFrame] = None, projected_crs: str = None,
+    def __init__(self, scope: GeoSeries | GeoDataFrame = None, projected_crs: str = None,
                  layers: list = None):
 
         self.network = None
@@ -176,7 +174,7 @@ class Zonal:
             print(f"\tThen,  insert origins and destinations using 'insert_nodes(label, layer_name, weight_attribute)'")
             print(f"\tFinally, when done, create a network by calling 'create_street_network()'")
 
-    def _set_scope(self, scope: Union[GeoSeries, GeoDataFrame], projected_crs: str):
+    def _set_scope(self, scope: GeoSeries | GeoDataFrame, projected_crs: str):
         """
         Sets the `Zonal` object's scope and projection.
 
@@ -184,7 +182,7 @@ class Zonal:
             None
         """
 
-        def _get_geographic_scope(scope: Union[GeoSeries, GeoDataFrame]):
+        def _get_geographic_scope(scope: GeoSeries | GeoDataFrame):
             """
             Strips the provided `scope` down to its geometry.
 
