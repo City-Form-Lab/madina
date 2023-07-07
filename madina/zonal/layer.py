@@ -12,9 +12,6 @@ class Layers:
             for layer in layers:
                 self.layers.append(layer.label)
                 self.label_layers[layer.label] = layer
-
-            print(self)
-
         return
 
     def __getitem__(self, item):
@@ -140,7 +137,6 @@ class Layers:
         self.layers.insert(pos, label)
         self.label_layers[label] = layer
 
-        print(self)
         return
 
     def get_layer_at_pos(self, pos: int):

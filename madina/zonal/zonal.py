@@ -1,13 +1,13 @@
-import warnings
-import geopandas as gpd
-
 from madina.zonal.layer import *
 from madina.zonal.network import Network
-from madina.zonal.network_utils import empty_network_template, DEFAULT_COLORS
-from madina.zonal.zonal_utils import flatten_multi_edge_segments, load_nodes_edges_from_gdf
+from madina.zonal.network_utils import _node_edge_builder,  _discard_redundant_edges, _tag_edges, _effecient_node_insertion
+from madina.zonal.zonal_utils import _prepare_geometry, DEFAULT_COLORS
 
+
+import warnings
 from geopandas import GeoDataFrame, GeoSeries
-
+import geopandas as gpd
+import pandas as pd
 from typing import Union
 
 
@@ -46,13 +46,23 @@ class Zonal:
         Returns:
             None
         """
-        gdf = gpd.read_file(file_path)
+        gdf = gpd.read_file(
+            file_path,
+            engine='pyogrio'
+            )
+        
         gdf_rows, _ = gdf.shape
         gdf['id'] = range(gdf_rows)
         gdf.set_index('id')
         original_crs = gdf.crs
 
-        layer = Layer(layer_name, gdf.to_crs(self.projected_crs), True, original_crs, file_path)
+        layer = Layer(
+            layer_name,
+            gdf, #.to_crs(self.projected_crs),
+            True,
+            original_crs,
+            file_path
+            )
         self.layers.add(layer, pos, first, before, after)
 
         if None in self.geo_center:
@@ -75,9 +85,17 @@ class Zonal:
 
         return
 
-    def create_street_network(self, source_layer: str, node_snapping_tolerance=1,
-                              weight_attribute=None, discard_redundant_edges=False,
-                              turn_threshold_degree=45, turn_penalty_amount=30):
+    def create_street_network(
+            self,
+            source_layer: str ="streets",
+            weight_attribute=None,
+            node_snapping_tolerance: Union[int, float] = 0.0,
+            prepare_geometry=False,
+            tag_edges=False,
+            discard_redundant_edges=True,
+            turn_threshold_degree=45,
+            turn_penalty_amount=30,
+        ) -> None:
         """
         Creates a street network layer from the `source_layer` with the given arguments.
 
@@ -86,41 +104,42 @@ class Zonal:
         """
 
         if source_layer not in self.layers:
-            raise ValueError(f"Source layer {source_layer} not in zonal zonal_layers")
+            raise ValueError(f"Source layer {source_layer} not in zonal zonal_layers, available layers are: {self.layers.layers}")
 
-        line_geometry_gdf = self.layers[source_layer].gdf.copy()
-        line_geometry_gdf["length"] = line_geometry_gdf["geometry"].length
-        line_geometry_gdf = line_geometry_gdf[line_geometry_gdf["length"] > 0]
+        geometry_gdf = self.layers[source_layer].gdf
+        if prepare_geometry:
+            geometry_gdf = _prepare_geometry(geometry_gdf)
 
-        if self.network is None:
-            node_dict, edge_dict = empty_network_template['node'], empty_network_template['edge']
-        else:
-            node_dict = self.network.nodes.to_dict()
-            edge_dict = self.network.edges.to_dict()
-
-        nodes, edges = load_nodes_edges_from_gdf(
-            node_dict, edge_dict, line_geometry_gdf, node_snapping_tolerance,
-            weight_attribute, discard_redundant_edges
+        node_gdf, edge_gdf = _node_edge_builder(
+            geometry_gdf,
+            weight_attribute=weight_attribute,
+            tolerance=node_snapping_tolerance
         )
 
-        self.network = Network(nodes, edges, self.projected_crs, turn_threshold_degree, turn_penalty_amount, weight_attribute)
+        if discard_redundant_edges:
+            edge_gdf = _discard_redundant_edges(edge_gdf)
 
-        # self.layers['network_nodes'], self.layers['network_edges'] = self.network.network_to_layer()
 
+        if tag_edges:
+            edge_gdf = _tag_edges(edge_gdf, tolerance=node_snapping_tolerance)
+
+
+        self.network = Network(node_gdf, edge_gdf, self.projected_crs, turn_threshold_degree, turn_penalty_amount, weight_attribute)
         return
 
-    def insert_node(self, label: str, layer_name: str, weight_attribute: int):
+    def insert_node(self, layer_name: str, label: str ="origin", weight_attribute: str = None):
         """
         Inserts a node into a layer within the `Zonal`.
 
         Returns:
             None
         """
-        print("checking insert_node")
-        for layer_label in self.layers.layers:
-            print(layer_label)
-        print(layer_name, self.layers[layer_name].gdf.index)
-        self.network.insert_node(self.layers[layer_name].gdf, label, layer_name, weight_attribute, self.projected_crs)
+        n_node_gdf = self.network.nodes
+        n_edge_gdf = self.network.edges
+        source_gdf = self.layers[layer_name].gdf
+        inserted_node_gdf = _effecient_node_insertion(n_node_gdf, n_edge_gdf, source_gdf, layer_name=layer_name, label=label, weight_attribute=weight_attribute)
+        self.network.nodes = pd.concat([n_node_gdf, inserted_node_gdf])
+        return 
 
     def create_graph(self, light_graph=False, d_graph=True, od_graph=False):
         """

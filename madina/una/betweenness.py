@@ -261,8 +261,8 @@ def one_betweenness_2(
                 for path, this_path_weight in zip(paths[destination_idx], weights[destination_idx]):
                     inner_path_edges = list(nx.utils.pairwise(path[1:-1]))
                     inner_edge_ids = [network.light_graph.edges[edge]["id"] for edge in inner_path_edges]
-                    edge_ids = [node_gdf.at[path[0], 'nearest_street_id']] + inner_edge_ids + [
-                        node_gdf.at[path[-1], 'nearest_street_id']]
+                    edge_ids = [node_gdf.at[path[0], 'nearest_edge_id']] + inner_edge_ids + [
+                        node_gdf.at[path[-1], 'nearest_edge_id']]
                     # this_path_weight = path_weight(graph, path, weight="weight")
 
                     if this_path_weight > shortest_path_distance * detour_ratio:
