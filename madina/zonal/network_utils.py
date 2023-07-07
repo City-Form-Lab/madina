@@ -3,7 +3,7 @@ import numpy as np
 import geopandas as gpd
 import pandas as pd
 import shapely.geometry as geo
-from pygeos.lib import get_x, get_y, get_point
+from shapely import get_x, get_y, get_point
 
 def _node_edge_builder(geometry_gdf, weight_attribute=None, tolerance=0.0):
     if tolerance == 0:
@@ -285,7 +285,7 @@ def _discard_redundant_edges(edge_gdf: GeoDataFrame):
         
         keep.add(this_edg_duplicates["weight"].idxmin())
         redundnt_edge_queue = redundnt_edge_queue - set(this_edg_duplicates.index.values)
-
+    
     remove_edges = set(redundnt_edge_ids) - keep
     unique_edges = list(set(edge_gdf.index.values) - remove_edges)
     return edge_gdf.loc[unique_edges]
