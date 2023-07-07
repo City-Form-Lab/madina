@@ -33,112 +33,7 @@ class Network:
         self.d_graph = None
         self.od_graph = None
         return
-
-    def insert_node(self, source_gdf: GeoDataFrame ,label: str, layer_name: str, weight_attribute: float, projected_crs: str):
-        """
-        Insert nodes from the source layer to the network's `self.nodes` GeoDataFrame, recording their
-        source layer name, label, weight, as well as their relationship to the closest street segment
-
-        Args:
-            source_gdf: The GeoDataFrame describing the source layer from which the nodes will be added
-            label: The label for the newly inserted nodes
-            layer_name: The name of the source layer
-            weight_attribute: The data attribute in `source_gdf` that contains the weight for the added node,
-                              or None which means the weight for all inserted nodes is 1
-        """
-
-        # TODO: check whether source_gdf is a node layer?
-
-        # print("begin network insert node")
-
-        node_dict = self.nodes.reset_index().to_dict()
-        match = self.edges["geometry"].sindex.nearest(geometry=source_gdf["geometry"], return_all=False)
-
-        # print(len(node_dict), node_dict.values())
-        # print(match)
-
-        def cut(line, distance):
-            # Cuts a line in two at a distance from its starting point
-            if distance <= 0.0:
-                return [
-                    geo.LineString([line.coords[0], line.coords[0]]),
-                    geo.LineString(line)]
-            elif distance >= line.length:
-                return [
-                    geo.LineString(line),
-                    geo.LineString([line.coords[-1], line.coords[-1]])
-                ]
-
-            coords = list(line.coords)
-            for i, p in enumerate(coords):
-                pd = line.project(geo.Point(p))
-                if pd == distance:
-                    return [
-                        geo.LineString(coords[:i + 1]),
-                        geo.LineString(coords[i:])]
-                if pd > distance:
-                    cp = line.interpolate(distance)
-                    return [
-                        geo.LineString(coords[:i] + [(cp.x, cp.y)]),
-                        geo.LineString([(cp.x, cp.y)] + coords[i:])]
-
-        new_node_id = int(self.nodes.index[-1])  # increment before use.
-
-        for source_iloc, source_id in enumerate(source_gdf.index):
-            
-            # print("adding node", source_iloc, source_id)
-
-            source_representative_point = source_gdf.at[source_id, "geometry"].centroid
-            closest_edge_id = match[1][source_iloc]
-            closest_edge_geometry = self.edges.at[closest_edge_id, "geometry"]
-            # print("finds match", closest_edge_id, closest_edge_geometry)
-            distance_along_closest_edge = closest_edge_geometry.project(source_representative_point)
-            point_on_nearest_edge = closest_edge_geometry.interpolate(
-                distance_along_closest_edge)  ## gives a point on te street where the source point is projected
-            
-            try:
-                cut_lines = cut(closest_edge_geometry, distance_along_closest_edge)
-                start_segment = cut_lines[0]
-                end_segment = cut_lines[1]
-            except:
-                # TODO: test cases where this exception occurs.
-                continue
-
-            new_node_id += 1
-            project_point_id = new_node_id
-            node_dict["id"][new_node_id] = new_node_id
-            node_dict["geometry"][new_node_id] = point_on_nearest_edge
-            node_dict["source_layer"][new_node_id] = layer_name
-            node_dict["source_id"][new_node_id] = source_id
-            node_dict["type"][new_node_id] = label
-            node_dict["degree"][new_node_id] = 0
-            node_dict["weight"][new_node_id] = \
-                1.0 if weight_attribute is None else source_gdf.at[source_id, weight_attribute]
-
-            left_edge_weight = \
-                self.edges.at[closest_edge_id, "weight"] * start_segment.length / closest_edge_geometry.length
-            right_edge_weight = self.edges.at[closest_edge_id, "weight"] - left_edge_weight
-            node_dict["nearest_street_id"][new_node_id] = closest_edge_id
-            node_dict["nearest_street_node_distance"][new_node_id] = \
-                {
-                    "left":
-                        {
-                            "node_id": self.edges.at[closest_edge_id, "start"],
-                            "weight": left_edge_weight,
-                            "geometry": start_segment
-                        },
-                    "right":
-                        {
-                            "node_id": self.edges.at[closest_edge_id, "end"],
-                            "weight": right_edge_weight,
-                            "geometry": end_segment
-                        }
-                }
-
-        self.nodes = GeoDataFrame(node_dict, crs=projected_crs)
-        self.nodes = self.nodes.set_index("id")
-        return
-        
+    
     def set_node_value(self, idx, label, new_value):
         """
         Sets the node at (`idx`, `label`) value in the network to `new_value`.
@@ -249,7 +144,7 @@ class Network:
                     graph.graph["added_nodes"].append(node_idx)
 
             edge_nodes = {}
-            for key, value in self.nodes.loc[graph.graph["added_nodes"]].groupby("nearest_street_id"):
+            for key, value in self.nodes.loc[graph.graph["added_nodes"]].groupby("nearest_edge_id"):
                 edge_nodes[int(key)] = list(value.index)
                 
             for edge_id in edge_nodes:
@@ -259,34 +154,32 @@ class Network:
 
                 if len(insert_neighbors) == 0:
                     continue
-
+                    #self.nodes.at[node_idx, ""]
                 if len(neighbors) == 1:
                     node_idx = neighbors[0]
-                    left_edge = self.nodes.at[node_idx, "nearest_street_node_distance"]["left"]
-                    right_edge = self.nodes.at[node_idx, "nearest_street_node_distance"]["right"]
                     graph.add_edge(
-                        int(left_edge["node_id"]),
+                        int(self.nodes.at[node_idx, "edge_end_node"]),
                         int(node_idx),
-                        weight=max(left_edge["weight"], 0),
+                        weight=max(self.nodes.at[node_idx, "weight_to_end"], 0),
                         id=edge_id
                     )
                     graph.add_edge(
                         int(node_idx),
-                        int(right_edge["node_id"]),
-                        weight=max(right_edge["weight"], 0),
+                        int(self.nodes.at[node_idx, "edge_start_node"]),
+                        weight=max(self.nodes.at[node_idx, 'weight_to_start'], 0),
                         id=edge_id
                     )
-                    graph.remove_edge(int(left_edge["node_id"]), int(right_edge["node_id"]))
+                    graph.remove_edge(self.nodes.at[node_idx, "edge_end_node"], int(self.nodes.at[node_idx, "edge_start_node"]))
                     
                 else:
                     # start a chain addition of neighbors, starting from the 'left',
                     # so, need to sort based on distance from left
                     segment_weight = self.edges.at[edge_id, "weight"]
 
-                    chain_start = self.nodes.at[neighbors[0], "nearest_street_node_distance"]["left"]["node_id"]
-                    chain_end = self.nodes.at[neighbors[0], "nearest_street_node_distance"]["right"]["node_id"]
+                    chain_start = self.nodes.at[neighbors[0], "edge_end_node"]
+                    chain_end = self.nodes.at[neighbors[0], "edge_start_node"]
 
-                    chain_distances = [self.nodes.at[node, "nearest_street_node_distance"]["left"]["weight"] for node in neighbors]
+                    chain_distances = [self.nodes.at[node, "weight_to_end"] for node in neighbors]
 
                     if len(existing_neighbors) == 0:  # if there are no existing neighbors, remove the original edge
                         graph.remove_edge(int(chain_start), int(chain_end))
@@ -335,7 +228,7 @@ class Network:
             weight = graph.adj[node_idx][start]["weight"] \
                     + graph.adj[node_idx][end]["weight"]
 
-            original_edge_id = self.nodes.at[node_idx, "nearest_street_id"]
+            original_edge_id = self.nodes.at[node_idx, "nearest_edge_id"]
 
             # remove node after we got the attributes we needed..
             graph.remove_node(node_idx)
