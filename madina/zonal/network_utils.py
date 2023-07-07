@@ -224,6 +224,7 @@ def _tolerance_network_nodes_edges(geometry_gdf, weight_attribute=None, toleranc
     snapping_distance = []
 
     # making sure geometry is snapped as well. Theooritically, this could be done in the previous loop, an could be done slightly more eddecoenctly by not accessing node_gdf, not using append,..
+    #geometry_gdf["geometry"].sort_index()
     for segment_geometry, segment_start_node, segment_end_node in zip(geometry_gdf["geometry"].sort_index(), edge_collector["start"], edge_collector["end"]):
         start = node_gdf.at[segment_start_node, 'geometry'].coords[0]
         end = node_gdf.at[segment_end_node, 'geometry'].coords[0]
@@ -246,7 +247,7 @@ def _tolerance_network_nodes_edges(geometry_gdf, weight_attribute=None, toleranc
             "length":   geometry_gdf["geometry"].length,
             "weight":   geometry_gdf["weight"],
             "type":     pd.Series(["street"] * edge_count, dtype="category"),
-            "parent_street_id": pd.Series(list(geometry_gdf.index), dtype="int64"),
+            "parent_street_id": pd.Series(list(geometry_gdf.sort_index().index), dtype="int64"),
             "start":    pd.Series(edge_collector["start"], dtype="int64"),
             "end":      pd.Series(edge_collector["end"], dtype="int64"),
             "snapped":  pd.Series(snapped, dtype=bool),
