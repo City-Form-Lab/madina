@@ -8,20 +8,38 @@ import warnings
 from geopandas import GeoDataFrame, GeoSeries
 import geopandas as gpd
 import pandas as pd
-from typing import Union
 
 
 class Zonal:
-    """
-    Represents a zonal map with scope 'scope' and projection 'projected_crs'.
-    Composed of zonal_layers, which...
-    """
+    """Base class for geographic data in madina composed of multiple geographic layers."""
+
     DEFAULT_PROJECTED_CRS = "EPSG:4326"
     DEFAULT_GEOGRAPHIC_CRS = "EPSG:3857"
     DEFAULT_COLORS = DEFAULT_COLORS
 
     def __init__(self, scope: GeoSeries | GeoDataFrame = None, projected_crs: str = None,
                  layers: list = None):
+        """
+        Initializes a Zonal object with the given geographic scope and overall CRS.
+
+        Parameters
+        ----------
+        scope: GeoSeries or GeoDataFrame, *optional*, defaults to None
+            The scope of the Zonal object, determined by the geometry of the
+            first element in the GeoSeries or the GeoDataFrame.
+        projected_crs: str, *optional*, defaults to None
+            The overall CRS of the Zonal object, all layers in the object will 
+            be treated as in this CRS. If None, EPSG:4326 (WGS 84) will be used.
+        
+        Examples
+        -------
+        >>> from Madina.zonal.zonal import Zonal
+        >>> city = Zonal(projected_crs = "EPSG:4326")
+
+        Warnings
+        --------
+        The layers argument need to be rewritten. Leave it blank for now.
+        """
 
         self.network = None
         if scope is not None:
@@ -38,13 +56,38 @@ class Zonal:
 
         self.layers = Layers(layers)
 
-    def load_layer(self, layer_name: str, file_path: str, allow_out_of_scope=False, pos=None, first=False, before=None, after=None):
+    def load_layer(
+            self, 
+            layer_name: str, 
+            file_path: str, 
+            allow_out_of_scope=False, 
+            pos=None, 
+            first=False, 
+            before=None, 
+            after=None
+        ) -> None:
         """
-        Loads a new layer from file path `file_path` with the layer name `layer_name`.
-        If `allow_out_of_scope` is false, clips the CRS to the scope of the Zonal object
+        Loads a new geographic layer into the Zonal object from local files.
 
-        Returns:
-            None
+        Parameters
+        ----------
+        layer_name: str
+            The name of the new layer
+        file_path: str
+            The file path to the file storing the geographic layer
+        allow_out_of_scope: bool, *optional*, defaults to False
+            If False, clips the layer to the scope of the Zonal object
+
+        Examples
+        -------
+        >>> from Madina.zonal.zonal import Zonal
+        >>> city = Zonal(projected_crs = "EPSG:4326")
+        >>> city.load_layer("pedestrian_network", "../data/my_city_pedestrian_network.geojson")
+
+        Warnings
+        --------
+        Pos, first, before, and after that were used for visualization need documentation.
+        Leave them blank for now until visualization is implemented.
         """
         gdf = gpd.read_file(
             file_path,
@@ -58,7 +101,7 @@ class Zonal:
 
         layer = Layer(
             layer_name,
-            gdf, #.to_crs(self.projected_crs),
+            gdf,
             True,
             original_crs,
             file_path
@@ -72,7 +115,6 @@ class Zonal:
             self.geo_center = centroid_point.coords[0]
 
         if not allow_out_of_scope and self.scope is not None:
-            # TODO: Check scope is not None?
             self.layers[layer_name].gdf = gpd.clip(
                 self.layers[layer_name].gdf,
                 gpd.GeoDataFrame({
@@ -87,20 +129,51 @@ class Zonal:
 
     def create_street_network(
             self,
-            source_layer: str ="streets",
-            weight_attribute=None,
-            node_snapping_tolerance: Union[int, float] = 0.0,
+            source_layer: str = "streets",
+            weight_attribute: str = None,
+            node_snapping_tolerance: int | float = 0.0,
             prepare_geometry=False,
             tag_edges=False,
             discard_redundant_edges=True,
-            turn_threshold_degree=45,
-            turn_penalty_amount=30,
+            turn_threshold_degree: int | float = 45,
+            turn_penalty_amount: int | float = 30,
         ) -> None:
         """
-        Creates a street network layer from the `source_layer` with the given arguments.
+        Creates a network from the given layer with the given arguments.
 
-        Returns:
-            None
+        Parameters
+        ----------
+        source_layer: str, defaults to "streets"
+            The name of the layer used to create the street network. Must be a layer composed of
+            lines that has been already loaded into the Zonal object.
+        weight_attribute: str, defaults to "None"
+            The attribute name of the layer that will be used as the edge weight in the created 
+            network. If None, the geometric length of the edges will be used
+        node_snapping_tolerance: int, float, defaults to 0
+            If greater than 0, snaps nodes that are closer than ``node_snapping_tolerance`` together
+        prepare_geometry: bool, defaults to False
+            If True, runs simple fixes to the geometry of the sourcelayer
+        tag_edges: bool, defaults to False
+            If True, attach tags to edges that are problematic
+        discard_redundant_edges: bool, defaults to False
+            If True, delete repetitive edges connecting the same nodes, preserving the shortest one
+        turn_threshold_degree: int, float, defaults to 45
+            The threshold of a turn to be considered penalizable
+        turn_penalty_amount: int, float, defaults to 30
+            The penalty added to a turn
+
+        Examples
+        --------
+        >>> from Madina.zonal.zonal import Zonal
+        >>> city = Zonal(projected_crs = "EPSG:4326")
+        >>> city.load_layer("pedestrian_network", "../data/my_city_pedestrian_network.geojson")
+        >>> city.create_street_network(
+        ...     source_layer="pedestrian_network",
+        ...     node_snapping_tolerance=1.5
+        ...     discard_redundant_edges=True,
+        ...     turn_threshold_degree=60,
+        ...     turn_penalty_amount=42.3
+        ... )
         """
 
         if source_layer not in self.layers:
@@ -129,10 +202,17 @@ class Zonal:
 
     def insert_node(self, layer_name: str, label: str ="origin", weight_attribute: str = None):
         """
-        Inserts a node into a layer within the `Zonal`.
+        Insert nodes from a given layer to the network
 
-        Returns:
-            None
+        Parameters
+        ----------
+        layer_name: str
+            The name of the layer from which nodes will be inserted
+        label: str, defaults to "origin"
+            The label of the inserted nodes in the network
+        weight_attribute: str, defaults to None
+            The attribute in the layer ``layer_name`` that will be used as the weight of the
+            inserted nodes. If None, all weights will be assigned as 1
         """
         n_node_gdf = self.network.nodes
         n_edge_gdf = self.network.edges
@@ -145,10 +225,16 @@ class Zonal:
         """
         Enables the creation of three kinds of graphs.
 
-        Args:
-            `light_graph` - contains only network nodes and edges
-            `od_graph` - contains all origin, destination, network, etc. nodes
-            `d_graph` - contains all destination nodes and network intersectionsa
+        Parameters
+        ----------
+        light_graph: bool, defaults to False
+            If true, generate a graph in the network that contains only network nodes and edges.
+        d_graph: bool, defaults to True
+            If true, generate a graph in the network that contains the network nodes and edges, as
+            well as the destination nodes.
+        od_graph: bool, defaults to False
+            If true, generate a graph in the network thatcontains all origin nodes, destination
+            nodes, and network nodes and edges.
 
         Returns:
             None
@@ -157,11 +243,22 @@ class Zonal:
 
     def describe(self):
         """
-        Returns:
-            a string representation of the `Zonal`
+        Prints information about the Zonal Object
+
+        Examples
+        --------
+        >>> from Madina.zonal.zonal import Zonal
+        >>> city = Zonal(projected_crs = "EPSG:4326")
+        >>> city.describe()
+        No layers yet, load a layer using 'load_layer(layer_name, file_path)'
+        No scope yet. If needed (When your zonal_layers contain data that is outside of your analysis scope, setting a scope speeds up the analysis), set a scope using 'set_scope(scope)'
+        No center yet, add a layer or set a scope to define a center
+        No network graph yet. First, insert a layer that contains network segments (streets, sidewalks, ..) and call create_street_network(layer_name, weight_attribute=None)
+        Then, insert origins and destinations using 'insert_nodes(label, layer_name, weight_attribute)'
+        Finally, when done, create a network by calling 'create_street_network()'
         """
         if len(self.layers) == 0:
-            print("No zonal_layers yet, load a layer using 'load_layer(layer_name, file_path)'")
+            print("No layers yet, load a layer using 'load_layer(layer_name, file_path)'")
         else:
 
             for key in self.layers:
@@ -176,8 +273,9 @@ class Zonal:
         geo_center_x, geo_center_y = self.geo_center
         proj_center_x, proj_center_y = self.projected_center
         if self.scope is None:
-            print(
-                "No scope yet. If needed (When your zonal_layers contain data that is outside of your analysis scope, setting a scope speeds up the analysis), set a scope using 'set_scope(scope)'")
+            print("No scope yet. If needed (When your zonal_layers contain data that is outside of\
+                   your analysis scope, setting a scope speeds up the analysis), set a scope using\
+                   'set_scope(scope)'")
 
             if self.geo_center is None:
                 print(f"No center yet, add a layer or set a scope to define a center")
@@ -190,29 +288,18 @@ class Zonal:
                   f"Scope projected center: ({proj_center_x}, {proj_center_y}), "
                   f"Scope geographic center: ({geo_center_x}, {geo_center_y})")
         if self.network is None:
-            print(
-                f"No network graph yet. First, insert a layer that contains network segments (streets, sidewalks, ..) and call create_street_network(layer_name,  weight_attribute=None)")
-            print(f"\tThen,  insert origins and destinations using 'insert_nodes(label, layer_name, weight_attribute)'")
+            print(f"No network graph yet. First, insert a layer that contains network segments\
+                   (streets, sidewalks, ..) and call create_street_network(layer_name,\
+                    weight_attribute=None)")
+            print(f"\tThen, insert origins and destinations using 'insert_nodes(label, layer_name,\
+                   weight_attribute)'")
             print(f"\tFinally, when done, create a network by calling 'create_street_network()'")
 
     def _set_scope(self, scope: GeoSeries | GeoDataFrame, projected_crs: str):
-        """
-        Sets the `Zonal` object's scope and projection.
-
-        Returns:
-            None
-        """
 
         def _get_geographic_scope(scope: GeoSeries | GeoDataFrame):
-            """
-            Strips the provided `scope` down to its geometry.
-
-            Returns:
-                Geometry of `scope`
-            """
             if not (isinstance(scope, GeoSeries) or isinstance(scope, GeoDataFrame)):
                 raise ValueError("scope must be a geopandas `Geoseries` or `GeoDataFrame` type")
-
             return scope[0] if isinstance(scope, GeoSeries) else scope.iloc[0]["geometry"]
         
         scope_geometry = _get_geographic_scope(scope)

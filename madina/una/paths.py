@@ -14,8 +14,11 @@ from madina.una.una_utils import \
 
 def path_generator(network: Network, o_idx, search_radius=800, detour_ratio=1.15, turn_penalty=False):
     """
-    TODO: fill out the spec
+    Generate all possible paths, their weights, and the destination nodes that can be
+    reached from the given origin.
     """
+
+    # Adding the origin to the destination graph
     graph = network.d_graph
     network.update_light_graph(graph, add_nodes=[o_idx])
 
@@ -45,7 +48,7 @@ def path_generator(network: Network, o_idx, search_radius=800, detour_ratio=1.15
                                                          )
     
 
-
+    # Removing the origin from the destination graph to restore it
     network.update_light_graph(graph, remove_nodes=[o_idx])
     return paths, distances, d_idxs
 
@@ -54,6 +57,7 @@ def get_od_subgraph(network: Network, o_idx, search_radius=800, detour_ratio=1.1
                       output_map=False, graph_type="geometric", turn_penalty=False, o_graph=None):
     
     if o_graph is None:
+        # In case the origin graph (one origin + all destinations) is not created
         graph = network.d_graph.copy()
         graph.graph["added_nodes"] = network.d_graph.graph["added_nodes"].copy()
         network.update_light_graph(graph, add_nodes=[o_idx])
@@ -396,6 +400,10 @@ def bfs_subgraph_generation(network, o_idx, search_radius=800, detour_ratio=1.15
 
 def bfs_paths_many_targets_iterative(network: Network, graph, o_idx, d_idxs, distance_matrix=None, turn_penalty=False,
                                       od_scope=None):
+    '''
+    Generate all the paths from the given origin to all destinations, given the distance matrix and
+    the nodes it can reach (the od_scope)8
+    '''
     # TODO: implement this as an iterative function with a queue
 
     # remove any unnecccisary checks for other algorithms and methods. fucus on network distance.

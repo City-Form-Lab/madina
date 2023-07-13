@@ -12,8 +12,13 @@ def turn_o_scope(network: Network,
                   return_paths=True):
     """
     TODO: fill out the spec
+    A dijkstra to collect all destination nodes as well as street nodes
+    reachable from the given origin.
     o_idx: origin index, integer, coming from the node_gdf
     o_graph: reusing updated graphs (e. g. doing inelastic after elastic), optional
+    o_scope: street node index -> distance
+    d_idxs: destination node index -> distance
+    o_scope_paths: street node index -> path
     """
     node_gdf = network.nodes
     destinations = node_gdf[node_gdf["type"] == "destination"].index

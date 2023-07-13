@@ -174,8 +174,6 @@ def one_betweenness_2(
     node_gdf = network.nodes
     edge_gdf = network.edges
 
-    # graph = self.G.copy()
-
     batch_betweenness_tracker = {edge_id: 0 for edge_id in list(edge_gdf.index)}
 
     counter = 0
@@ -184,37 +182,13 @@ def one_betweenness_2(
     retain_d_idxs = {}
     for origin_idx in tqdm(origins.index):
         counter += 1
-        '''
-        paths, weights, d_idxs = best_path_generator_so_far(self, origin_idx, search_radius=search_radius,
-                                                            detour_ratio=detour_ratio, turn_penalty=turn_penalty)
-        
-        paths, weights, d_idxs = get_od_paths(self, origin_idx, search_radius, detour_ratio, output_map=False,
-                                              algorithm="bfs",
-                                              graph_method="double_sided_dijkstra", trim=False,
-                                              distance_termination="network",
-                                              batching=True,
-                                              result="paths",
-                                              turn_penalty=turn_penalty)
-        '''
 
         if (retained_d_idxs is None) or (retained_paths is None) or (retained_distances is None):
-            # print(f"{origin_idx  = } is not retreaved, generating it right now")
-            '''
-            paths, weights, d_idxs = get_od_paths(self, origin_idx, search_radius, detour_ratio, output_map=False,
-                                                  algorithm="bfs",
-                                                  graph_method="double_sided_dijkstra", trim=False,
-                                                  distance_termination="network",
-                                                  batching=True,
-                                                  result="paths",
-                                                  turn_penalty=turn_penalty)
-                                                  '''
-
+            # paths and weights are dicts: d_idx -> list[path/weight]
             paths, weights, d_idxs = path_generator(network, origin_idx, search_radius=search_radius,
                                                     detour_ratio=detour_ratio, turn_penalty=turn_penalty)
             if rertain_expensive_data:
                 # print(f"{origin_idx  = } is retaining generated data")
-                # retain_paths[origin_idx] = paths
-                # retain_distances[origin_idx] = weights
                 retain_d_idxs[origin_idx] = d_idxs
         else:
             # print(f"{origin_idx  = } is using retained data")
@@ -230,7 +204,6 @@ def one_betweenness_2(
 
         od_sum_gravities = 0
         if closest_destination:
-            #destination_ids = [int(origins.at[origin_idx, "closest_destination"])]
             destination_ids = [min(d_idxs, key=d_idxs.get)]
         else:
             for accissible_destination_idx, od_shortest_distance in d_idxs.items():
