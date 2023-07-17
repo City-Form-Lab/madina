@@ -7,20 +7,11 @@ Welcome to Madina's documentation!
 ==================================
 
 .. toctree::
-   :maxdepth: 2
    :hidden:
-   :caption: 🚀 Tutorials
 
    tutorial/installation
-   tutorial/preparation
    tutorial/betweenness
-
-.. toctree::
-   :maxdepth: 2
-   :hidden:
-   :caption: 📚 API Reference
-
-   reference/zonal
+   reference/reference
 
 Madina is a library to simplify the creation of workflows for urban planning
 research. Powered by `GeoPandas <https://geopandas.org/en/stable/>`_ and other

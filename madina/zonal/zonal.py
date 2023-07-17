@@ -11,7 +11,27 @@ import pandas as pd
 
 
 class Zonal:
-    """Base class for geographic data in madina composed of multiple geographic layers."""
+    """
+    Base class for geographic data in madina composed of multiple geographic layers.
+
+    Parameters
+    ----------
+    scope: GeoSeries or GeoDataFrame, *optional*, defaults to None
+        The scope of the Zonal object, determined by the geometry of the
+        first element in the GeoSeries or the GeoDataFrame.
+    projected_crs: str, *optional*, defaults to None
+        The overall CRS of the Zonal object, all layers in the object will 
+        be treated as in this CRS. If None, EPSG:4326 (WGS 84) will be used.
+    
+    Examples
+    --------
+    >>> from Madina.zonal.zonal import Zonal
+    >>> city = Zonal(projected_crs = "EPSG:4326")
+
+    Warnings
+    --------
+    The ``layers`` argument in the constructor need to be rewritten. Leave it blank for now.
+    """
 
     DEFAULT_PROJECTED_CRS = "EPSG:4326"
     DEFAULT_GEOGRAPHIC_CRS = "EPSG:3857"
@@ -19,28 +39,7 @@ class Zonal:
 
     def __init__(self, scope: GeoSeries | GeoDataFrame = None, projected_crs: str = None,
                  layers: list = None):
-        """
-        Initializes a Zonal object with the given geographic scope and overall CRS.
-
-        Parameters
-        ----------
-        scope: GeoSeries or GeoDataFrame, *optional*, defaults to None
-            The scope of the Zonal object, determined by the geometry of the
-            first element in the GeoSeries or the GeoDataFrame.
-        projected_crs: str, *optional*, defaults to None
-            The overall CRS of the Zonal object, all layers in the object will 
-            be treated as in this CRS. If None, EPSG:4326 (WGS 84) will be used.
         
-        Examples
-        -------
-        >>> from Madina.zonal.zonal import Zonal
-        >>> city = Zonal(projected_crs = "EPSG:4326")
-
-        Warnings
-        --------
-        The layers argument need to be rewritten. Leave it blank for now.
-        """
-
         self.network = None
         if scope is not None:
             self._set_scope(scope, projected_crs)

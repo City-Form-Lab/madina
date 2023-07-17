@@ -11,7 +11,6 @@ conda create --name una
 conda install python=3.11
 conda install -c conda-forge geopandas
 conda install -c conda-forge tqdm
-conda install numba
 ```
 
 ## Download Madina using Git
