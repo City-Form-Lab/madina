@@ -8,4 +8,5 @@ The API Reference of Madina consists of two parts: the :doc:`Zonal <zonal>` clas
   :maxdepth: 2
 
   Zonal <zonal>
+  Network <network>
   UNA <una>

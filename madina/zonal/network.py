@@ -12,13 +12,34 @@ from madina.zonal.layer import *
 
 class Network:
     """
-    A road network with nodes `nodes` and edges `edges` weighted with factor `weight_attribute`,
-    projected onto the `projected_crs` coordinate system.
+    A network data structure composed of weighted nodes and edges that can be used to carry out
+    network operations like betweenness and elastic weight calculation
 
-    Internal class, meant to represent a network within the Zonal object.
+    Parameters
+    ----------
+    nodes: GeoDataFrame
+        The nodes in the network
+    edges: GeoDataFrame
+        The edges in the network
+    projected_crs: str
+        The CRS that the nodes and edges are in
+    turn_threshold_degree: float, defaults to 45
+        The threshold of a turn to be considered penalizable
+    turn_penalty_amount: float, defaults to 30
+        The penalty added to a turn
+    weight_attribute: 
+        The attribute name of the layer that was used as the edge weight in the created 
+        network. If None, the geometric length of the edges was used
     """
 
-    def __init__(self, nodes: GeoDataFrame, edges: GeoDataFrame, projected_crs: str, turn_threshold_degree: float, turn_penalty_amount: float, weight_attribute=None,):
+    def __init__(self, 
+                 nodes: GeoDataFrame, 
+                 edges: GeoDataFrame, 
+                 projected_crs: str, 
+                 turn_threshold_degree: float = 45, 
+                 turn_penalty_amount: float = 30, 
+                 weight_attribute: str = None
+                 ):
 
         if nodes.empty or edges.empty:
             pass # throw Error here
@@ -34,9 +55,18 @@ class Network:
         self.od_graph = None
         return
     
-    def set_node_value(self, idx, label, new_value):
+    def set_node_value(self, idx: int, label: str, new_value):
         """
         Sets the node at (`idx`, `label`) value in the network to `new_value`.
+
+        Parameters
+        ----------
+        idx: int
+            The index of the node to set value
+        label: str
+            The label of the given node to set to the new value
+        new_value: any
+            The new value to set to, raises exception if the type does not match with old label
         """
         self.nodes.at[idx, label] = new_value
         return
@@ -48,13 +78,14 @@ class Network:
         `d_graph` - contains all destination nodes
         `od_graph` - contains all origin and destination nodes
 
-        Args:
-            light_graph: if true, create `self.light_graph`
-            d_graph: if true, create `self.d_graph`
-            od_graph: if true, create `self.od_graph`
-
-        Returns:
-            none
+        Parameters
+        ----------
+        light_graph: bool, defaults to False
+            if true, create `self.light_graph`
+        d_graph: bool, defaults to True
+            if true, create `self.d_graph`
+        od_graph: bool, defaults to False
+            if true, create `self.od_graph`
         """
 
         if light_graph:
@@ -90,42 +121,25 @@ class Network:
     def visualize_graph(self):
         """
         Creates an HTML map of the `zonal` object.
+
+        Warnings
+        --------
+        Not Implemented Yet
         """
         raise NotImplementedError
 
-    def get_od_subgraph(self, origin_idx, distance):
-        """
-        Creates a subgraph of the city network `self` from all nodes <= `distance` from the node at `origin_idx`
-
-        Returns:
-            A smaller network graph (?)
-
-        """
-        raise NotImplementedError
-
-    def turn_o_scope(self, origin_idx, search_radius, detour_ratio, turn_penalty=True,
-                     origin_graph=None, return_paths=True):
-        """
-        Runs a modified Dijkstra algorithm from the `origin_idx`, with a `turn_penalty` for
-        making a turn along the path. Bounds the search by `search_radius`
-
-        Returns:
-            A tuple of destination indices, origin scope, and paths from origin to destination
-
-        """
-        raise NotImplementedError
-    
     def update_light_graph(self, graph: nx.Graph, add_nodes: list = [], remove_nodes: list = []):
         """
         Updates the given graph object by adding nodes to and removing nodes from it.
 
-        Args:
-            graph: The given networkx Graph object to be edited
-            add_nodes: a list of nodes to be added
-            remove_nodes: a list of nodes to be removed
-
-        Returns:
-            none
+        Parameters
+        ----------
+        graph: networkx.Graph
+            The given networkx Graph object to be edited
+        add_nodes: list, defaults to an empty list
+            a list of nodes to be added
+        remove_nodes: list, defaults to an empty list
+            a list of nodes to be removed
         """
         
         if "added_nodes" not in graph.graph:
@@ -241,40 +255,3 @@ class Network:
             )
             
         return graph
-
-    def _get_nodes_at_distance(self, origin_node, distance, method='geometric'):
-        """
-        Gets all nodes at distance `distance` from the origin `origin_idx` using the method `method`.
-        Approximation of functionality from ln 496-592 of b_f.py
-
-        Returns:
-            The distance first-class function to be used to find nodes
-        """
-        # TODO: Copy over remainder of distance methods. What does 'trail_blazer' mean?
-        method_dict = {
-            'geometric': self._get_nodes_at_geometric_distance,
-            'network': self._get_nodes_at_network_distance,
-            'trail_blazer': self._get_nodes_at_bf_distance
-
-        }
-        return method_dict[method](origin_node, distance)
-
-    def _get_nodes_at_geometric_distance(self, origin_node, distance):
-        raise NotImplementedError
-
-    def _get_nodes_at_network_distance(self, origin_node, distance):
-        raise NotImplementedError
-
-    def _get_nodes_at_bf_distance(self, origin_node, distance):
-        raise NotImplementedError
-
-    def scan_for_intersections(self, node_snapping_tolerance=1):
-        raise NotImplementedError
-
-    def fuse_degree_2_nodes(self, tolerance_angle):
-        raise NotImplementedError
-
-    def network_to_layer(self):
-        return Layer('network_nodes', self.nodes, True, '', ''), Layer('network_edges', self.edges, True, '', '')
-
-

@@ -16,6 +16,7 @@ def get_elastic_weight(network: Network,
                 turn_penalty=False, 
                 retained_d_idxs=None):
     """
+    Assign elastic weights to the origins in the given network
     TODO: fill function spec
     """
 

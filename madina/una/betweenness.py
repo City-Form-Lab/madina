@@ -30,7 +30,8 @@ def parallel_betweenness(network: Network,
                          rertain_expensive_data=False
                          ):
     """
-    TODO: fill out the specE
+    Calculates the betweenness value of the given network
+    TODO: Fill out the spec
     """
     node_gdf = network.nodes
     edge_gdf = network.edges

@@ -134,8 +134,8 @@ class Zonal:
             prepare_geometry=False,
             tag_edges=False,
             discard_redundant_edges=True,
-            turn_threshold_degree: int | float = 45,
-            turn_penalty_amount: int | float = 30,
+            turn_threshold_degree: float = 45,
+            turn_penalty_amount: float = 30,
         ) -> None:
         """
         Creates a network from the given layer with the given arguments.
@@ -156,9 +156,9 @@ class Zonal:
             If True, attach tags to edges that are problematic
         discard_redundant_edges: bool, defaults to False
             If True, delete repetitive edges connecting the same nodes, preserving the shortest one
-        turn_threshold_degree: int, float, defaults to 45
+        turn_threshold_degree: float, defaults to 45
             The threshold of a turn to be considered penalizable
-        turn_penalty_amount: int, float, defaults to 30
+        turn_penalty_amount: float, defaults to 30
             The penalty added to a turn
 
         Examples
