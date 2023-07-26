@@ -78,7 +78,7 @@ class Zonal:
             If False, clips the layer to the scope of the Zonal object
 
         Examples
-        -------
+        --------
         >>> from Madina.zonal.zonal import Zonal
         >>> city = Zonal(projected_crs = "EPSG:4326")
         >>> city.load_layer("pedestrian_network", "../data/my_city_pedestrian_network.geojson")

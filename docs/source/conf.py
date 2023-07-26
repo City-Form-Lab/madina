@@ -19,7 +19,8 @@ release = '0.0.1'
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
-    "myst_parser",
+    # "myst_parser",
+    "myst_nb",
     "sphinx.ext.autodoc",
     "sphinx.ext.viewcode",
     "sphinx.ext.autosummary",
@@ -40,3 +41,5 @@ html_static_path = ['_static']
 numpydoc_show_class_members = False
 autodoc_typehints = "none"
 autosummary_generate = True
+
+nb_execution_mode = "off"
