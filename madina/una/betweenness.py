@@ -21,17 +21,84 @@ def parallel_betweenness(network: Network,
                          closest_destination=True,
                          destination_weights=False,
                          destination_weight_attribute = None,
-                         perceived_distance=False,
-                         light_graph=True,
                          turn_penalty=False,
                          retained_d_idxs=None,
                          retained_paths=None,
                          retained_distances=None,
-                         rertain_expensive_data=False
+                         retain_expensive_data=False
                          ):
     """
-    Calculates the betweenness value of the given network
-    TODO: Fill out the spec
+    Calculates the betweenness value on the designated network between the given 
+    Origin-Destination pair
+
+    Parameters
+    ----------
+    network: Network
+        The network object to run betweenness analysis on
+    search_radius: int, defaults to 1000
+        The length within which trips will be made from an origin to a destination
+    detour_ratio: float, defaults to 1.15
+        The ratio between the longest path that will be considered between an O-D pair and the
+        shortest path between that O-D pair
+    decay: boolean, defaults to ``True``
+        Whether or not the total number of trips generated decay over the distance of trips
+    decay_method: str in ["exponent", "power"], defaults to "exponent"
+        The method in which the trip number decay will take place
+    beta: float, defaults to 0.003
+        The parameter that controls the speed of the decay over distance
+    num_cores: int, defaults to 4
+        The number of threads to split the calculation into
+    path_detour_penalty: str in ["equal", "exponent", "power"], defaults to "equal"
+        The penalty for paths that are longer than the shortest path between an O-D pair
+    origin_weights: boolean, defaults to ``False``
+        Whether or not origins have individual weights; origins will all be considered equal if
+        set to ``False``
+    origin_weight_attribute: str, defaults to None
+        Which attribute to use as the weight of origins. If None, use the "weight" attribute
+    closest_destination: boolean, defaults to ``True``
+        Whether or not an origin only generates trips to the closest destination
+    destination_weights: boolean, defaults to ``False``
+        Whether or not destinations have individual weights; destinations will all be considered
+        equal if set to ``False``
+    destination_weight_attribute: str, defaults to None
+        Which attribute to use as the weight of destinations. If None, use the "weight" attribute
+    turn_penalty: boolean, defaults to ``False``
+        Whether or not to include turn penalty when calculating the length of a path
+
+    Examples
+    --------
+    >>> from madina.zonal.zonal import Zonal
+    >>> city = Zonal(projected_crs = "EPSG:4326")
+    >>> city.load_layer("pedestrian_network", "../data/my_city_pedestrian_network.geojson")
+    >>> city.create_street_network(
+    ...     source_layer="pedestrian_network",
+    ...     node_snapping_tolerance=1.5
+    ...     discard_redundant_edges=True,
+    ...     turn_threshold_degree=60,
+    ...     turn_penalty_amount=42.3
+    ... )
+    >>> city.load_layer("residential_units", "../data/my_city_residential_units.geojson")
+    >>> city.insert_node("residential_units", "origin", weight_attribute="population_census_2020_adjusted")
+    >>> city.load_layer("subway_stops", "../data/City_Transit_Stations.geojson")
+    >>> city.insert_node("subway_stops", "origin", weight_attribute="ridership_2019")
+    >>> betweenness_output = parallel_betweenness(
+    ...     city.network,
+    ...     search_radius=800,
+    ...     decay=True,
+    ...     decay_method="exponent",
+    ...     beta=0.001,
+    ...     path_detour_penalty="equal"
+    ...     origin_weights=True,
+    ...     closest_destination=False,
+    ...     destination_weights=True,
+    ...     num_cores=8,
+    ...     turn_penalty=True,
+    ... )
+
+    Warnings
+    --------
+    Avoid using the 4 parameters related to retaining elastic weight data as they have not yet
+    been thoroughly tested.
     """
     node_gdf = network.nodes
     edge_gdf = network.edges
@@ -63,17 +130,15 @@ def parallel_betweenness(network: Network,
             closest_destination=closest_destination,
             destination_weights=destination_weights,
             destination_weight_attribute=destination_weight_attribute,
-            perceived_distance=perceived_distance,
-            light_graph=light_graph,
             turn_penalty=turn_penalty,
             retained_d_idxs=retained_d_idxs,
             retained_paths=retained_paths,
             retained_distances=retained_distances,
-            rertain_expensive_data=rertain_expensive_data
+            rertain_expensive_data=retain_expensive_data
         )
         batch_results = betweennes_results["batch_betweenness_tracker"]
         batch_results = [batch_results]
-        if rertain_expensive_data:
+        if retain_expensive_data:
             retain_paths = betweennes_results["retained_paths"]
             retain_distances = betweennes_results["retained_distances"]
             retain_d_idxs = betweennes_results["retained_d_idxs"]
@@ -108,19 +173,17 @@ def parallel_betweenness(network: Network,
                     closest_destination=closest_destination,
                     destination_weights=destination_weights,
                     destination_weight_attribute=destination_weight_attribute,
-                    perceived_distance=perceived_distance,
-                    light_graph=light_graph,
                     turn_penalty=turn_penalty,
                     retained_d_idxs=retained_d_idxs,
                     retained_paths=retained_paths,
                     retained_distances=retained_distances,
-                    rertain_expensive_data=rertain_expensive_data
+                    rertain_expensive_data=retain_expensive_data
                 ) for df in splitted_origins]
             for result in concurrent.futures.as_completed(execution_results):
                 try:
                     one_betweennes_output = result.result()
                     batch_results.append(one_betweennes_output["batch_betweenness_tracker"])
-                    if rertain_expensive_data:
+                    if retain_expensive_data:
                         retain_paths = {**retain_paths, **one_betweennes_output["retained_paths"]}
                         retain_distances = {**retain_distances, **one_betweennes_output["retained_distances"]}
                         retain_d_idxs = {**retain_d_idxs, **one_betweennes_output["retained_d_idxs"]}
@@ -139,7 +202,7 @@ def parallel_betweenness(network: Network,
     network.nodes = node_gdf
     network.edges = edge_gdf
     return_dict = {"edge_gdf": edge_gdf}
-    if rertain_expensive_data:
+    if retain_expensive_data:
         return_dict["retained_paths"] = retain_paths
         return_dict["retained_distances"] = retain_distances
         return_dict["retained_d_idxs"] = retain_d_idxs
@@ -160,13 +223,11 @@ def one_betweenness_2(
         closest_destination=False,
         destination_weights=False,
         destination_weight_attribute=None,
-        perceived_distance=False,
-        light_graph=True,
         turn_penalty=False,
         retained_d_idxs=None,
         retained_paths=None,
         retained_distances=None,
-        rertain_expensive_data=False
+        retain_expensive_data=False
 ):
     """
     TODO: fill out the spec
@@ -188,7 +249,7 @@ def one_betweenness_2(
             # paths and weights are dicts: d_idx -> list[path/weight]
             paths, weights, d_idxs = path_generator(network, origin_idx, search_radius=search_radius,
                                                     detour_ratio=detour_ratio, turn_penalty=turn_penalty)
-            if rertain_expensive_data:
+            if retain_expensive_data:
                 # print(f"{origin_idx  = } is retaining generated data")
                 retain_d_idxs[origin_idx] = d_idxs
         else:
@@ -314,7 +375,7 @@ def one_betweenness_2(
     print(f"core {origins.iloc[0].name} done.")
 
     return_dict = {"batch_betweenness_tracker": batch_betweenness_tracker}
-    if rertain_expensive_data:
+    if retain_expensive_data:
         return_dict["retained_paths"] = retain_paths
         return_dict["retained_distances"] = retain_distances
         return_dict["retained_d_idxs"] = retain_d_idxs

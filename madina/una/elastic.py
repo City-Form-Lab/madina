@@ -16,8 +16,54 @@ def get_elastic_weight(network: Network,
                 turn_penalty=False, 
                 retained_d_idxs=None):
     """
-    Assign elastic weights to the origins in the given network
-    TODO: fill function spec
+    Assign elastic weights to the origins in the designated network. The weights will be saved
+    in the ``weight`` attribute in the Network object
+
+    Parameters
+    ----------
+    network: Network
+        The network object to run elastic weight analysis on
+    search_radius: float
+        The length within which trips will be made from an origin to a destination
+    detour_ratio: float
+        The ratio between the longest path that will be considered between an O-D pair and the
+        shortest path between that O-D pair
+    beta: float
+        The parameter that controls the speed of the decay over distance
+    decay: boolean, defaults to ``False``
+        Whether or not the total number of trips generated decay over the distance of trips. Only
+        supports exponential decay for now
+    turn_penalty: boolean, defaults to ``False``
+        Whether or not to include turn penalty when calculating the length of a path
+
+    Examples
+    --------
+    >>> from madina.zonal.zonal import Zonal
+    >>> city = Zonal(projected_crs = "EPSG:4326")
+    >>> city.load_layer("pedestrian_network", "../data/my_city_pedestrian_network.geojson")
+    >>> city.create_street_network(
+    ...     source_layer="pedestrian_network",
+    ...     node_snapping_tolerance=1.5
+    ...     discard_redundant_edges=True,
+    ...     turn_threshold_degree=60,
+    ...     turn_penalty_amount=42.3
+    ... )
+    >>> city.load_layer("residential_units", "../data/my_city_residential_units.geojson")
+    >>> city.insert_node("residential_units", "origin", weight_attribute="population_census_2020_adjusted")
+    >>> city.load_layer("subway_stops", "../data/City_Transit_Stations.geojson")
+    >>> city.insert_node("subway_stops", "origin", weight_attribute="ridership_2019")
+    >>> get_elastic_weight(
+    ...     city.network,
+    ...     search_radius=800,
+    ...     decay=True,
+    ...     beta=0.001,
+    ...     turn_penalty=True,
+    ... )
+
+    Warnings
+    --------
+    Avoid using the parameter related to retaining elastic weight data as it have not yet
+    been thoroughly tested.
     """
 
     node_gdf = network.nodes

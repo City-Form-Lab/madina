@@ -79,7 +79,7 @@ class Zonal:
 
         Examples
         --------
-        >>> from Madina.zonal.zonal import Zonal
+        >>> from madina.zonal.zonal import Zonal
         >>> city = Zonal(projected_crs = "EPSG:4326")
         >>> city.load_layer("pedestrian_network", "../data/my_city_pedestrian_network.geojson")
 
@@ -163,7 +163,7 @@ class Zonal:
 
         Examples
         --------
-        >>> from Madina.zonal.zonal import Zonal
+        >>> from madina.zonal.zonal import Zonal
         >>> city = Zonal(projected_crs = "EPSG:4326")
         >>> city.load_layer("pedestrian_network", "../data/my_city_pedestrian_network.geojson")
         >>> city.create_street_network(
@@ -212,6 +212,21 @@ class Zonal:
         weight_attribute: str, defaults to None
             The attribute in the layer ``layer_name`` that will be used as the weight of the
             inserted nodes. If None, all weights will be assigned as 1
+
+        Examples
+        --------
+        >>> from madina.zonal.zonal import Zonal
+        >>> city = Zonal(projected_crs = "EPSG:4326")
+        >>> city.load_layer("pedestrian_network", "../data/my_city_pedestrian_network.geojson")
+        >>> city.create_street_network(
+        ...     source_layer="pedestrian_network",
+        ...     node_snapping_tolerance=1.5
+        ...     discard_redundant_edges=True,
+        ...     turn_threshold_degree=60,
+        ...     turn_penalty_amount=42.3
+        ... )
+        >>> city.load_layer("residential_units", "../data/my_city_residential_units.geojson")
+        >>> city.insert_node("residential_units", "origin", weight_attribute="population_census_2020_adjusted")
         """
         n_node_gdf = self.network.nodes
         n_edge_gdf = self.network.edges
@@ -246,7 +261,7 @@ class Zonal:
 
         Examples
         --------
-        >>> from Madina.zonal.zonal import Zonal
+        >>> from madina.zonal.zonal import Zonal
         >>> city = Zonal(projected_crs = "EPSG:4326")
         >>> city.describe()
         No layers yet, load a layer using 'load_layer(layer_name, file_path)'
