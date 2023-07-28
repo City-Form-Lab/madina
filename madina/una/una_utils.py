@@ -64,6 +64,7 @@ def turn_o_scope(network: Network,
             if len(list(graph.neighbors(neighbor))) == 1:
                 continue
 
+            # TODO: think about an explanation of this check.
             if neighbor_weight > max(search_radius, furthest_dest_weight * detour_ratio / 2):
                 continue
 
