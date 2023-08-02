@@ -127,9 +127,9 @@ def parallel_betweenness(network: Network,
                     print(str(ex))
                     pass
         end = time.time()
-        print("-------------------------------------------")
-        print(f"All cores done in {round(end - start, 2)}")
-        print("-------------------------------------------")
+        #print("-------------------------------------------")
+        #print(f"All cores done in {round(end - start, 2)}")
+        #print("-------------------------------------------")
 
     for idx in edge_gdf.index:
         edge_gdf.at[idx, "betweenness"] = sum([batch[idx] for batch in batch_results])
@@ -145,6 +145,8 @@ def parallel_betweenness(network: Network,
     return return_dict
 
 
+
+import warnings 
 def one_betweenness_2(
         network: Network,
         search_radius=1000,
@@ -182,8 +184,14 @@ def one_betweenness_2(
     retain_paths = {}
     retain_distances = {}
     retain_d_idxs = {}
-    for origin_idx in tqdm(origins.index):
+    #for origin_idx in tqdm(origins.index):
+    for origin_idx in origins.index:
         counter += 1
+
+        if origins.at[origin_idx, 'weight'] == 0:
+            #print (f"{origin_idx = } has weight of 0, skipping." )
+            continue
+
         '''
         paths, weights, d_idxs = best_path_generator_so_far(self, origin_idx, search_radius=search_radius,
                                                             detour_ratio=detour_ratio, turn_penalty=turn_penalty)
@@ -223,9 +231,8 @@ def one_betweenness_2(
             d_idxs = retained_d_idxs[origin_idx]
 
         destination_count = len(d_idxs)
-
         if destination_count == 0:
-            # print(f"o:{origin_idx} has no destinations")
+            #print(f"o:{origin_idx} has no destinations")
             continue
 
         od_sum_gravities = 0
@@ -253,6 +260,7 @@ def one_betweenness_2(
                 }
 
                 path_count = len(paths[destination_idx])
+
                 # shortest_path_distance = 0
                 if path_count == 0:
                     print(f"o:{origin_idx}\td:{destination_idx} have no paths...?")
@@ -267,14 +275,14 @@ def one_betweenness_2(
 
                     if this_path_weight > shortest_path_distance * detour_ratio:
                         # TODO: trailblazer algorithm sometimes produces paths that exceeds this limin. revisit
-                        pass
-                        # print(
-                        #    f"o: {origin_idx}\td:{destination_idx}\t{path}\{this_path_weight}\t "
-                        #    f"exceeded limit {shortest_path_distance * detour_ratio}")
+                        #print(
+                        #   f"o: {origin_idx}\td:{destination_idx}\t{path}\{this_path_weight}\t "
+                        #   f"exceeded limit {shortest_path_distance * detour_ratio}")
+                        continue
 
-                    if this_path_weight < 1:
+                    if this_path_weight < 0.01:
                         # to solve issue with short paths, or if o/d were on the same location.
-                        this_path_weight = 1
+                            this_path_weight = 0.01
                     this_od_paths["path_length"].append(this_path_weight)
                     this_od_paths["one_over_squared_length"].append(1 / (this_path_weight ** 2))
                     this_od_paths["one_over_e_beta_length"].append(1 / pow(math.e, (beta * this_path_weight)))
@@ -282,16 +290,14 @@ def one_betweenness_2(
                 # TODO:  change of name to match the attribute. gotta fix later..
                 if decay_method == "exponent":
                     decay_method = "one_over_e_beta_length"
-                if decay_method == "power":
+                elif decay_method == "power":
                     decay_method = "one_over_squared_length"
-                sum_one_over_squared_length = 0
-
+                
+                sum_detour_penalty = 0
                 if path_detour_penalty == "exponent":
-                    path_detour_penalty = "one_over_e_beta_length"
-                    sum_one_over_squared_length = sum(this_od_paths[path_detour_penalty])
-                if path_detour_penalty == "power":
-                    path_detour_penalty = "one_over_squared_length"
-                    sum_one_over_squared_length = sum(this_od_paths[path_detour_penalty])
+                    sum_detour_penalty = sum(this_od_paths["one_over_e_beta_length"])
+                elif path_detour_penalty == "power":
+                    sum_detour_penalty = sum(this_od_paths["one_over_squared_length"])
 
                 this_od_paths["probability"] = []
 
@@ -302,10 +308,38 @@ def one_betweenness_2(
                         this_od_paths["probability"].append(
                             1 / len(this_od_paths["path_edges"])
                         )
-                    else:
+                    elif path_detour_penalty == "exponent":
                         this_od_paths["probability"].append(
-                            this_od_paths[path_detour_penalty][seq] / sum_one_over_squared_length
+                            this_od_paths['one_over_e_beta_length'][seq] / sum_detour_penalty
                         )
+                    elif path_detour_penalty == "power":
+                        this_od_paths["probability"].append(
+                            this_od_paths['one_over_squared_length'][seq] / sum_detour_penalty
+                        )
+
+                        #this_od_paths["probability"].append(
+                        #    this_od_paths[path_detour_penalty][seq] / sum_one_over_squared_length
+                        #)
+                        #warnings.filterwarnings("error")
+                        #try:
+
+                        #except:
+                        #    print (this_od_paths[path_detour_penalty])
+                        #    print (this_od_paths[path_detour_penalty][seq])
+                        #    print (sum_one_over_squared_length)
+                        #    print (f"{sum(this_od_paths[path_detour_penalty]) = }")
+                        '''
+                        with warnings.catch_warnings():
+                            warnings.filterwarnings("ignore")
+                            this_od_paths["probability"].append(
+                                this_od_paths[path_detour_penalty][seq] / sum_one_over_squared_length
+                            )
+                            for warning in warnings:
+                                print ("here")
+                                print(warning)
+                                #print (f"{this_od_paths[path_detour_penalty][seq] = }\t{sum_one_over_squared_length = }")
+                                '''
+
 
                 for seq, path_probability in enumerate(this_od_paths["probability"]):
                     betweennes_contribution = path_probability
@@ -332,12 +366,14 @@ def one_betweenness_2(
                     for edge_id in this_od_paths["path_edges"][seq]:
                         batch_betweenness_tracker[edge_id] += betweennes_contribution
             except Exception as e:
+                print(f"................o: {origin_idx}\td: {destination_idx} faced an error........")
+                print(path)
+                print(e.__doc__)
                 pass
-                #print(f"................o: {origin_idx}\td: {destination_idx} faced an error........")
-                #print(path)
-                #print(e.__doc__)
 
-    print(f"core {origins.iloc[0].name} done.")
+
+
+    #print(f"core {origins.iloc[0].name} done.")
 
     return_dict = {"batch_betweenness_tracker": batch_betweenness_tracker}
     if rertain_expensive_data:

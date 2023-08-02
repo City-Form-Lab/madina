@@ -86,7 +86,7 @@ def get_od_subgraph(network: Network, o_idx, search_radius=800, detour_ratio=1.1
 def geometric_scope(network: Network, o_idx, search_radius, detour_ratio, turn_penalty=False, batched=True, o_graph=None):
     node_gdf = network.nodes
     scopes = []
-    d_idxs, o_scope, o_scope_paths = turn_o_scope(network, o_idx, search_radius, detour_ratio, turn_penalty=turn_penalty,
+    d_idxs, o_scope, o_scope_paths = turn_o_scope(network, o_idx, search_radius, turn_penalty=turn_penalty,
                                                   o_graph=o_graph)
 
     for d_idx in d_idxs.keys():
@@ -148,7 +148,7 @@ def explore_exploit_graph(network: Network, o_idx:int, search_radius, detour_rat
     od_scope = set()
     distance_matrix = {}
 
-    d_idxs, o_scope, o_scope_paths = turn_o_scope(network, o_idx, search_radius, detour_ratio, turn_penalty=turn_penalty)
+    d_idxs, o_scope, o_scope_paths = turn_o_scope(network, o_idx, search_radius, turn_penalty=turn_penalty)
     graph = network.d_graph
     network.update_light_graph(graph, add_nodes=[o_idx])
     if len(d_idxs) == 0:
@@ -247,13 +247,11 @@ def bfs_subgraph_generation(network, o_idx, search_radius=800, detour_ratio=1.15
 
     if o_graph is None:
         # d_idxs, o_scope, o_scope_paths = get_o_scope(self, graph, o_idx, search_radius, detour_ratio, get_paths=True)
-        d_idxs, o_scope, o_scope_paths = turn_o_scope(network, o_idx, search_radius, detour_ratio,
-                                                      turn_penalty=turn_penalty)
+        d_idxs, o_scope, o_scope_paths = turn_o_scope(network, o_idx, search_radius, turn_penalty=turn_penalty)
         graph = network.d_graph
         network.update_light_graph(graph, add_nodes=[o_idx])
     else:
-        d_idxs, o_scope, o_scope_paths = turn_o_scope(network, o_idx, search_radius, detour_ratio,
-                                                      turn_penalty=turn_penalty, o_graph=o_graph)
+        d_idxs, o_scope, o_scope_paths = turn_o_scope(network, o_idx, search_radius, turn_penalty=turn_penalty, o_graph=o_graph)
         graph = o_graph
 
     # visualize_graph(self, graph)

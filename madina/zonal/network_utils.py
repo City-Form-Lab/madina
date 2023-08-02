@@ -6,7 +6,7 @@ import shapely.geometry as geo
 from pygeos.lib import get_x, get_y, get_point
 
 def _node_edge_builder(geometry_gdf, weight_attribute=None, tolerance=0.0):
-    if tolerance == 0:
+    if tolerance == 0.0:
         # use vectorized implementaytion
         point_xy = GeoPandaExtractor(geometry_gdf.geometry.values.data)
         node_indexer, node_points, node_dgree, edge_start_node, edge_end_node = _vectorized_node_edge_builder(
@@ -24,10 +24,11 @@ def _node_edge_builder(geometry_gdf, weight_attribute=None, tolerance=0.0):
         index = pd.Index(np.arange(edge_count), name="id")
         length = pd.Series(
             geometry_gdf["geometry"].length.values, fastpath=True, index=index)
+
         edge_gdf = gpd.GeoDataFrame(
             {
                 "length":   length,
-                "weight":   length if weight_attribute is None else pd.Series(geometry_gdf[weight_attribute].apply(lambda x: max(1, x)), fastpath=True, index=index),
+                "weight":   length if weight_attribute is None else geometry_gdf.apply(lambda x: max(x[weight_attribute], 1) if x[weight_attribute] >= 0 else x["geometry"].length, axis=1),
                 "type":     pd.Series(np.repeat(np.array(["street"], dtype=object), repeats=edge_count), fastpath=True, index=index, dtype="category"),
                 "parent_street_id": pd.Series(geometry_gdf.index.values, fastpath=True, index=index),
                 "start":    pd.Series(edge_start_node, fastpath=True, index=index),
@@ -142,8 +143,11 @@ def GeoPandaExtractor(poly_line_data):
     )
 
 def _tolerance_network_nodes_edges(geometry_gdf, weight_attribute=None, tolerance=1.0):
-    geometry_gdf["weight"] = geometry_gdf["geometry"].length if weight_attribute is None else geometry_gdf[weight_attribute].apply(
-        lambda x: max(1, x))
+    #geometry_gdf["weight"] = geometry_gdf["geometry"].length if weight_attribute is None else geometry_gdf[weight_attribute].apply(
+    #    lambda x: max(1, x))
+    
+    geometry_gdf["weight"] = geometry_gdf["geometry"].length if weight_attribute is None else geometry_gdf.apply(lambda x: max(x[weight_attribute], 0.01) if x[weight_attribute] != 0 else x["geometry"].length, axis=1)
+
     geometry_gdf = geometry_gdf.sort_values("weight", ascending=False)
 
     #geometry_gdf = geometry_gdf[geometry_gdf["weight"] >= tolerance].reset_index(drop=True)
@@ -289,6 +293,133 @@ def _discard_redundant_edges(edge_gdf: GeoDataFrame):
     remove_edges = set(redundnt_edge_ids) - keep
     unique_edges = list(set(edge_gdf.index.values) - remove_edges)
     return edge_gdf.loc[unique_edges]
+
+
+
+from shapely.ops import split, snap
+def _split_redundant_edges(node_gdf: GeoDataFrame,edge_gdf: GeoDataFrame):
+    ## finding edges that share the same start and end, including those who start and end at the same node
+    edge_stack = pd.DataFrame(
+        {
+            'edge_id': np.concatenate([edge_gdf.index.values, edge_gdf.index.values]), 
+            'start': np.concatenate([edge_gdf['start'].values, edge_gdf['end'].values]),
+            'end': np.concatenate([edge_gdf['end'].values, edge_gdf['start'].values]),
+        }
+    )
+
+    redundnt_edge_ids = np.unique(edge_stack[edge_stack.duplicated(subset=['start','end'], keep=False)]['edge_id'].values)
+    redundnt_edge_queue = set(redundnt_edge_ids)
+
+    new_node_id = node_gdf.index.max()
+    node_ids = []
+    node_geometries = []
+
+    edge_geometries = []
+    edge_weights = []
+    edge_parent_street_ids = []
+    edge_starts = []
+    edge_ends = []
+
+
+    remove_edges = []
+
+    # TODO: update degrees of end nodes of all dropped edges..
+    while redundnt_edge_queue:
+        edge_idx = redundnt_edge_queue.pop()
+
+        this_edge_start = edge_gdf.at[edge_idx, 'start']
+        this_edge_end = edge_gdf.at[edge_idx, 'end']
+
+        # finding parallel edges to the current..
+        this_edg_duplicates = edge_gdf[
+            ((edge_gdf['start'] == this_edge_start) & (edge_gdf['end'] == this_edge_end))
+            | ((edge_gdf['end'] == this_edge_start) & (edge_gdf['start'] == this_edge_end))
+            ]
+
+        # looped edge, no need to process.
+        if len(this_edg_duplicates.index.values) == 1:
+            continue
+
+        # sort by weight, and skip the first edge (.index[1:]), the shortest edge kept intact, while the rest are split.
+        for edge_idx in this_edg_duplicates.sort_values('weight').index[1:]:
+            line = edge_gdf.at[edge_idx, 'geometry'] 
+            split_point = line.interpolate(0.5, normalized=True)
+            splited_lines = list(split(snap(line, split_point, 0.1), split_point).geoms)
+            
+            # construct central nodes
+            new_node_id += 1
+            node_ids.append(new_node_id)
+            node_geometries.append(split_point)
+
+            # construct two edges
+            edge_geometries.append(splited_lines[0])
+            edge_geometries.append(splited_lines[1])
+
+            edge_weights.append(edge_gdf.at[edge_idx, 'weight']/2.0)
+            edge_weights.append(edge_gdf.at[edge_idx, 'weight']/2.0)
+
+            edge_parent_street_ids.append(edge_gdf.at[edge_idx, 'parent_street_id'])
+            edge_parent_street_ids.append(edge_gdf.at[edge_idx, 'parent_street_id'])
+
+            edge_starts.append(edge_gdf.at[edge_idx, 'start'])
+            edge_ends.append(new_node_id)
+            edge_starts.append(new_node_id)
+            edge_ends.append(edge_gdf.at[edge_idx, 'end'])
+
+            remove_edges.append(edge_idx)
+
+        # remove already processed edges
+        redundnt_edge_queue = redundnt_edge_queue - set(this_edg_duplicates.index.values)
+    
+    # construct new node and edge gdfs..
+    node_index = pd.Index(node_ids, name="id")
+    node_count = len(node_ids)
+    node_geometry_series = gpd.GeoSeries(
+        data=node_geometries,
+        index=node_index, 
+        crs=node_gdf.crs
+    )
+    new_node_gdf = gpd.GeoDataFrame(
+        {
+            "source_layer": pd.Series(np.repeat(np.array(["streets"], dtype=object), repeats=node_count), fastpath=True, index=node_index, dtype="category"),
+            "source_id":    pd.Series(np.repeat(np.array([0], dtype=np.int32), repeats=node_count), fastpath=True, index=node_index, dtype=np.int32),
+            "type":         pd.Series(np.repeat(np.array(["street_node"], dtype=object), repeats=node_count), fastpath=True, index=node_index, dtype="category"),
+            "weight":       pd.Series(np.repeat(np.array([0.0], dtype=np.float32), repeats=node_count), fastpath=True, index=node_index, dtype=np.float32),
+            "degree":       pd.Series(np.repeat(np.array([2], dtype=np.int32), repeats=node_count), fastpath=True, index=node_index),
+        },
+        index=node_index,
+        geometry=node_geometry_series
+    )
+
+
+    edge_count = len(edge_geometries)
+    new_edge_id = edge_gdf.index.max() + 1
+    edge_index = pd.Index(np.arange(start= new_edge_id, stop=new_edge_id + edge_count), name="id")
+    #print (edge_index)
+    edge_geometry_series = gpd.GeoSeries(
+        data=edge_geometries,
+        index=edge_index, 
+        crs=edge_gdf.crs
+    )
+    length = pd.Series(edge_geometry_series.length.values, fastpath=True, index=edge_index)
+    new_edge_gdf = gpd.GeoDataFrame(
+        {
+            "length":   length,
+            "weight":   pd.Series(np.array(edge_weights), fastpath=True, index=edge_index),
+            "type":     pd.Series(np.repeat(np.array(["street"], dtype=object), repeats=edge_count), fastpath=True, index=edge_index, dtype="category"),
+            "parent_street_id": pd.Series(np.array(edge_parent_street_ids), fastpath=True, index=edge_index),
+            "start":    pd.Series(np.array(edge_starts), fastpath=True, index=edge_index),
+            "end":      pd.Series(np.array(edge_ends), fastpath=True, index=edge_index),
+        },
+        index=edge_index,
+        geometry=edge_geometry_series
+    )
+    #print (f"{edge_gdf.shape = }\t{edge_gdf.drop(index=remove_edges).shape = }\t{len(remove_edges) = }")
+    #print (f"{pd.concat([edge_gdf.drop(index=remove_edges), new_edge_gdf]).shape = }")
+
+    return pd.concat([node_gdf, new_node_gdf]),  pd.concat([edge_gdf.drop(index=remove_edges), new_edge_gdf])
+
+
 
 def _tag_edges(edge_gdf, tolerance=1.0):
     edge_gdf["tag"] = ""

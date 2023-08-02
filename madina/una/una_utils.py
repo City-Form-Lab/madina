@@ -6,7 +6,6 @@ from madina.zonal.network import Network
 def turn_o_scope(network: Network,
                   o_idx,
                   search_radius: float,
-                  detour_ratio: float,
                   turn_penalty=True,
                   o_graph=None,
                   return_paths=True):
@@ -65,7 +64,8 @@ def turn_o_scope(network: Network,
                 continue
 
             # TODO: think about an explanation of this check.
-            if neighbor_weight > max(search_radius, furthest_dest_weight * detour_ratio / 2):
+            #if neighbor_weight > max(search_radius, furthest_dest_weight * detour_ratio / 2):
+            if neighbor_weight > search_radius:
                 continue
 
             if (neighbor in destinations) and (neighbor_weight <= search_radius):
@@ -86,6 +86,17 @@ def turn_penalty_value(network: Network, previous_node, current_node, next_node)
     """
     node_gdf = network.nodes
     edge_gdf = network.edges
+    previous_segment = edge_gdf[
+        (edge_gdf['start'] == previous_node) & (edge_gdf['end'] == current_node) | 
+        (edge_gdf['end'] == previous_node) & (edge_gdf['start'] == current_node) 
+    ]
+
+    next_segment = edge_gdf[
+        (edge_gdf['start'] == current_node) & (edge_gdf['end'] == next_node) | 
+        (edge_gdf['end'] == current_node) & (edge_gdf['start'] == next_node) 
+    ]
+
+    
     angle = angle_deviation_between_two_lines(
         [
             node_gdf.at[previous_node, "geometry"],

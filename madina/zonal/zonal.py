@@ -1,7 +1,11 @@
 from madina.zonal.layer import *
 from madina.zonal.network import Network
-from madina.zonal.network_utils import _node_edge_builder,  _discard_redundant_edges, _tag_edges, _effecient_node_insertion
+from madina.zonal.network_utils import _node_edge_builder,  _discard_redundant_edges, _split_redundant_edges, _tag_edges, _effecient_node_insertion
 from madina.zonal.zonal_utils import _prepare_geometry, DEFAULT_COLORS
+
+# this silences a warning about depreciating pygeos out of geopandas
+import os
+os.environ['USE_PYGEOS'] = '0'
 
 
 import warnings
@@ -86,7 +90,8 @@ class Zonal:
             node_snapping_tolerance: Union[int, float] = 0.0,
             prepare_geometry=False,
             tag_edges=False,
-            discard_redundant_edges=True,
+            discard_redundant_edges=False,
+            split_redundant_edges=True,
             turn_threshold_degree=45,
             turn_penalty_amount=30,
         ) -> None:
@@ -112,8 +117,13 @@ class Zonal:
             tolerance=node_snapping_tolerance
         )
 
-        if discard_redundant_edges:
+        if split_redundant_edges:
+            node_gdf , edge_gdf = _split_redundant_edges(node_gdf: GeoDataFrame,edge_gdf: GeoDataFrame)
+        elif discard_redundant_edges:
             edge_gdf = _discard_redundant_edges(edge_gdf)
+
+
+        
 
 
         if tag_edges:
@@ -220,7 +230,7 @@ class Zonal:
         for layer_number, gdf_dict in enumerate(gdf_list):
             local_gdf = gdf_dict["gdf"].copy(deep=True)
             local_gdf["geometry"] = local_gdf["geometry"].to_crs("EPSG:4326")
-            print(f"{(time.time()-start)*1000:6.2f}ms\t {layer_number = }, gdf copied")
+            #print(f"{(time.time()-start)*1000:6.2f}ms\t {layer_number = }, gdf copied")
             start = time.time()
 
             radius_attribute = 1
@@ -247,7 +257,7 @@ class Zonal:
             if ("color_by_attribute" in gdf_dict) or ("color_method" in gdf_dict) or ("color" in gdf_dict):
                 args = {arg: gdf_dict[arg] for arg in ['color_by_attribute', 'color_method', 'color'] if arg in gdf_dict}
                 local_gdf = Zonal.color_gdf(local_gdf, **args)
-                print (local_gdf['color'])
+                #print (local_gdf['color'])
 
             pdk_layer = pdk.Layer(
                 'GeoJsonLayer',
@@ -263,7 +273,7 @@ class Zonal:
                 pickable=True,
             )
             pdk_layers.append(pdk_layer)
-            print(f"{(time.time()-start)*1000:6.2f}ms\t {layer_number = }, layer styled and added.")
+            #print(f"{(time.time()-start)*1000:6.2f}ms\t {layer_number = }, layer styled and added.")
             start = time.time()
 
             if "text" in gdf_dict:
@@ -296,7 +306,7 @@ class Zonal:
                     get_alignment_baseline=String("center"),
                 )
                 pdk_layers.append(layer)
-                print(f"{(time.time()-start)*1000:6.2f}ms\t {layer_number = }, text layer created and added.")
+                #print(f"{(time.time()-start)*1000:6.2f}ms\t {layer_number = }, text layer created and added.")
                 start = time.time()
 
         initial_view_state = pdk.ViewState(
@@ -328,7 +338,7 @@ class Zonal:
                 filename,
                 css_background_color="cornflowerblue"
             )
-        print(f"{(time.time()-start)*1000:6.2f}ms\t {layer_number = }, map rendered.")
+        #print(f"{(time.time()-start)*1000:6.2f}ms\t {layer_number = }, map rendered.")
         start = time.time()
         return r
 
