@@ -118,7 +118,7 @@ class Zonal:
         )
 
         if split_redundant_edges:
-            node_gdf , edge_gdf = _split_redundant_edges(node_gdf: GeoDataFrame,edge_gdf: GeoDataFrame)
+            node_gdf , edge_gdf = _split_redundant_edges(node_gdf ,edge_gdf)
         elif discard_redundant_edges:
             edge_gdf = _discard_redundant_edges(edge_gdf)
 
