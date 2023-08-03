@@ -3,11 +3,18 @@ import time
 import concurrent
 import numpy as np
 import networkx as nx
-from tqdm import tqdm
+import pandas as pd
+
+from datetime import datetime
+from pathlib import Path
+
+import shapely.geometry as geo
+
+from madina.zonal.zonal import Zonal, __version__, __release_date__
 
 from madina.zonal.network import Network
-from madina.zonal.zonal import Zonal
 from madina.una.paths import path_generator
+from madina.una.una_utils import turn_o_scope
 
 def parallel_betweenness(network: Network,
                          search_radius=1000,
@@ -144,8 +151,6 @@ def parallel_betweenness(network: Network,
         return_dict["retained_distances"] = retain_distances
         return_dict["retained_d_idxs"] = retain_d_idxs
     return return_dict
-
-
 
 import warnings 
 def one_betweenness_2(
@@ -402,7 +407,7 @@ def betweenness_exposure(
     edge_gdf = self.network.edges
     node_gdf = self.network.nodes
 
-    batch_betweenness_tracker = {edge_id: 0 for edge_id in list(edge_gdf.index)}
+    batch_betweenness_tracker = {edge_id: 0.0 for edge_id in list(edge_gdf.index)}
 
     if return_path_record:
         path_record = {
@@ -439,15 +444,20 @@ def betweenness_exposure(
 
         # finding all destination reachible from this origin within a search radius, and finding all paths within a derour ration from the shortest path
         try:
-            paths, weights, d_idxs = best_path_generator_so_far(
-                self,
+            paths, weights, d_idxs = path_generator(
+                self.network,
                 origin_idx,
                 search_radius=search_radius,
                 detour_ratio=detour_ratio,
                 turn_penalty=turn_penalty
             )
-        except:
+        except Exception as ex:
             continue
+            #print(str(ex))
+            #print(ex.__doc__)
+            #print (ex.__traceback__)
+            #import traceback
+            #traceback.print_exc()
         
         # this makes sure destinations are sorted based on distance. (sorting the dictionary nased on its values.)
         d_idxs = dict(sorted(d_idxs.items(), key=lambda item: item[1]))
@@ -458,18 +468,17 @@ def betweenness_exposure(
         if len(d_idxs) == 0:
             continue
 
+        origin_weight_attribute = 'weight'
         if elastic_weight:
             origin_weight_attribute = 'knn_weight'
             get_origin_properties(
                 self,
-                search_radius=800,
-                beta=0.001,
-                turn_penalty=False,
-                o_idx=None,
+                search_radius=search_radius,
+                beta=beta,
+                turn_penalty=turn_penalty,
+                o_idx=origin_idx,
                 o_graph=None,
-                d_idxs=None,
-                knn_weights=None, 
-                knn_plateau=400
+                d_idxs=d_idxs,
             )
 
 
@@ -480,17 +489,17 @@ def betweenness_exposure(
         else:
             # probability of choosing a destination using the huff model
             eligible_destinations = d_idxs if destniation_cap is None else dict(list(d_idxs.items())[:destniation_cap])
-            destination_gravities = [node_gdf.at[d_idx, 'weight'] / pow(math.e, (beta * od_shortest_distance)) for d_idx, od_shortest_distance in eligible_destinations.items()]
+            destination_gravities = [float(node_gdf.at[d_idx, 'weight']) / pow(math.e, (beta * od_shortest_distance)) for d_idx, od_shortest_distance in eligible_destinations.items()]
 
+            if sum(destination_gravities) == 0:
+                # This covers a case where all reachible destinations have a weight of 0, if so, no need to generate trips
+                continue
+                #destination_probabilities = np.zeros(len(eligible_destinations))
             destination_probabilities = np.array(destination_gravities) / sum(destination_gravities)
             destination_ids = list(eligible_destinations.keys())
 
-        if sum(destination_gravities) == 0:
-            # This covers a case where all reachible destinations have a weight of 0, this would causea a 0 denominator. assune equal probability instread
-            destination_probabilities = np.ones(len(eligible_destinations)) / len(eligible_destinations)
 
-        
-        for destination_idx, this_destination_probability in zip(node_gdf.loc[destination_ids].index, destination_probabilities):
+        for destination_idx, this_destination_probability in zip(destination_ids, destination_probabilities):
 
             # skip this destination if cannot find paths from origin
             if len(paths[destination_idx]) == 0:
@@ -498,15 +507,15 @@ def betweenness_exposure(
                 continue
 
             # finding path probabilities given different penalty settings.
-            path_detour_penalties = np.zeros(len(weights[destination_idx]))
+            path_detour_penalties = np.ones(len(weights[destination_idx]))
             d_path_weights = np.array(weights[destination_idx])
 
             if path_detour_penalty == "exponent":
-                path_detour_penalties = 1 / pow(np.e, 0.025 * d_path_weights)
+                path_detour_penalties = 1 / pow(np.e, beta * d_path_weights)
             elif path_detour_penalty == "power":
                 path_detour_penalties = 1 / (d_path_weights ** 2)
             elif path_detour_penalty == "equal":
-                path_detour_penalties = np.ones(len(weights[destination_idx]))
+                path_detour_penalties = np.ones(len(d_path_weights))
             else:
                 raise ValueError(
                     f"parameter 'path_detour_penalty' should be one of ['equal', 'power', 'exponent'], '{path_detour_penalty}' was given")
@@ -518,21 +527,21 @@ def betweenness_exposure(
                     zip(paths[destination_idx], weights[destination_idx], path_probabilities)):
                 # trailblazer algorithm sometimes produces paths that exceeds this limin. revisit later, for now, skip those paths exceeding limit
                 if this_path_weight > od_shortest_path_distance * detour_ratio:
-                    pass
+                    continue
 
                 # to solve numeric issues with short paths, for example, if o/d were on the same location
                 if this_path_weight < 1:
-                    this_path_weight = 1
+                    this_path_weight = 0.01
 
 
                 # constructing this path's betweenness contribution. Accounting for closest destination or compitition, origin weight and decay based on path weight
                 
-                path_decay = 1
+                path_decay = 1.0
                 if decay:
                     if decay_method == "exponent":
-                        path_decay = (1 / pow(math.e, (beta * this_path_weight)))
+                        path_decay = (1.0 / pow(math.e, (beta * this_path_weight)))
                     elif decay_method == "power":
-                        path_decay = 1 / (this_path_weight ** 2)
+                        path_decay = 1.0 / (this_path_weight ** 2.0)
                     else:
                         raise ValueError(
                             f"parameter 'decay_method' should be one of ['exponent', 'power'], '{decay_method}' was given")
@@ -541,9 +550,9 @@ def betweenness_exposure(
 
                 # paths are returned as a series of nodes, herem, we extract a list of edges along the path: edge_ids
                 inner_path_edges = list(nx.utils.pairwise(path[1:-1]))
-                inner_edge_ids = [self.G.edges[edge]["id"] for edge in inner_path_edges]
-                edge_ids = [node_gdf.at[path[0], 'nearest_street_id']] + inner_edge_ids + [
-                    node_gdf.at[path[-1], 'nearest_street_id']]
+                inner_edge_ids = [self.network.light_graph.edges[edge]["id"] for edge in inner_path_edges]
+                edge_ids = [node_gdf.at[path[0], 'nearest_edge_id']] + inner_edge_ids + [
+                    node_gdf.at[path[-1], 'nearest_edge_id']]
 
                 path_weight_exposure = 0
                 path_weight_sum = 0
@@ -619,7 +628,7 @@ def paralell_betweenness_exposure(
     return_path_record=False, 
     destniation_cap=None
     ):
-    node_gdf = self.netwoek.nodes
+    node_gdf = self.network.nodes
     edge_gdf = self.network.edges
 
     origins = node_gdf[node_gdf["type"] == "origin"]
@@ -632,7 +641,7 @@ def paralell_betweenness_exposure(
     num_procs = num_cores  # psutil.cpu_count(logical=logical)
 
     #TODO: investigate if this randomazation is causing any issues downsream.
-    origins = origins.sample(frac=1)
+    # origins = origins.sample(frac=1)
     origins.index = origins.index.astype("int")
     splitted_origins = np.array_split(origins, num_procs)
 
@@ -674,9 +683,9 @@ def paralell_betweenness_exposure(
                 print(ex.__doc__)
                 pass
     end = time.time()
-    print("-------------------------------------------")
-    print(f"All cores done in {round(end - start, 2)}")
-    print("-------------------------------------------")
+    #print("-------------------------------------------")
+    #print(f"All cores done in {round(end - start, 2)}")
+    #print("-------------------------------------------")
 
     for idx in edge_gdf.index:
         edge_gdf.at[idx, "betweenness"] = sum([batch[idx] for batch in batch_results])
@@ -725,3 +734,261 @@ def get_origin_properties(
     node_gdf.at[o_idx, "gravity"] = sum(1.0 / pow(math.e, (beta * np.array(list(d_idxs.values())))))
     node_gdf.at[o_idx, "reach"] = int(len(d_idxs))
     return
+
+
+
+
+class Logger():
+    def __init__(self, output_folder):
+        self.output_folder = output_folder
+        self.start_time = datetime.now()
+        self.log_df = pd.DataFrame(
+            {
+                "time": pd.Series(dtype='datetime64[ns]'),
+                "flow_name": pd.Series(dtype="string"),
+                "event": pd.Series(dtype="string")
+            }
+        )
+        self.betweenness_record = None
+        self.log(f"SIMULATION STARTED: VERSION: {__version__}, RELEASE DATEL {__release_date__}")
+
+    def log(self, event: str, pairing: pd.Series = None):
+        time = datetime.now()
+
+        #printing the log header if this is the first log entry
+        if self.log_df.shape[0] == 0:
+            print(f"{'total time':^10s} | {'seconds elapsed':^15s} | {'flow_name':^40s} | event")
+            seconds_elapsed = 0
+            cumulative_seconds = 0
+        else:
+            cumulative_seconds = (time - self.start_time).total_seconds()
+            seconds_elapsed = (cumulative_seconds - self.log_df['seconds_elapsed'].sum())
+
+
+        log_entry = {
+            "time": [time],
+            "seconds_elapsed": [seconds_elapsed],
+            "cumulative_seconds": [cumulative_seconds],
+            'event': [event]
+        }
+        if pairing is not None:
+            log_entry['flow_name'] = [pairing['Flow_Name']]
+
+        self.log_df = pd.concat([self.log_df, pd.DataFrame(log_entry)] ,ignore_index=True)
+
+        print(
+            f"{cumulative_seconds:10.4f} | "
+            f"{seconds_elapsed:15.6f} | "
+            f"{pairing['Flow_Name'] if pairing is not None else '---':^40s} | "
+            f"{event}"
+        )
+
+    def pairing_end(
+            self,
+            shaqra: Zonal,
+            pairing: pd.Series,
+            save_flow_map=True,
+            save_flow_geoJSON=True,
+            save_flow_csv=False,
+            save_origin_geoJSON=True,
+            save_origin_csv=False
+        ):
+        # creating a folder for output
+
+        if self.betweenness_record is None:
+            self.betweenness_record = shaqra.layers['streets'].gdf.copy(deep=True)
+
+        pairing_folder = self.output_folder + f"{pairing['Flow_Name']}_O({pairing['Origin_Name']})_D({pairing['Destination_Name']})\\"
+        Path(pairing_folder).mkdir(parents=True, exist_ok=True)
+
+        street_gdf = shaqra.layers["streets"].gdf
+        node_gdf = shaqra.network.nodes
+        origin_gdf = node_gdf[node_gdf["type"] == "origin"]
+        destination_gdf = node_gdf[node_gdf["type"] == "destination"]
+        edge_gdf = shaqra.network.edges
+
+        self.betweenness_record = self.betweenness_record.join(
+            edge_gdf[['parent_street_id', 'betweenness']].set_index('parent_street_id')).rename(
+            columns={"betweenness": pairing['Flow_Name']})
+
+
+        # creating origins and desrinations connector lines
+        origin_layer = shaqra.layers[pairing['Origin_Name']].gdf
+        origin_joined = origin_layer.join(origin_gdf.set_index('source_id'),lsuffix='_origin')
+        origin_joined['geometry'] = origin_joined.apply(lambda x:geo.LineString([x['geometry'], x["geometry_origin"]]), axis=1)
+
+
+        destination_layer = shaqra.layers[pairing['Destination_Name']].gdf
+        destination_joined = destination_layer.join(destination_gdf.set_index('source_id'),lsuffix='_destination')
+        destination_joined['geometry'] = destination_joined.apply(lambda x:geo.LineString([x['geometry'], x["geometry_destination"]]), axis=1)
+
+        if save_flow_map:
+            # line width is now 0.5 for minimum flow and 5 for maximum flow
+            edge_gdf["width"] = ((edge_gdf["betweenness"] - edge_gdf["betweenness"].min()) / (edge_gdf["betweenness"].max() - edge_gdf["betweenness"].min()) + 0.1) * 5
+
+            shaqra.create_map(
+                layer_list=[
+                    {"gdf": street_gdf, "color": [0, 255, 255], "opacity": 0.1},
+                    {
+                        "gdf": edge_gdf[edge_gdf["betweenness"] > 0],
+                        "color_by_attribute": "betweenness",
+                        "opacity": 0.50,
+                        "color_method": "quantile",
+                        "width": "width", "text": "betweenness"
+                    },
+                    {"gdf": origin_gdf, "color": [100, 0, 255], "opacity": 0.5},
+                    {'gdf': origin_joined[['geometry']], 'color': [100, 0, 255]},
+                    {'gdf': origin_layer, 'color': [100, 0, 255]},
+                    {"gdf": destination_gdf, "color": [255, 0, 100], "opacity": 0.5},
+                    {'gdf': destination_layer, 'color': [255, 0, 100]},
+                    {'gdf': destination_joined[['geometry']], 'color': [255, 0, 100]},
+                ],
+                basemap=False,
+                save_as=pairing_folder + "flow_map.html"
+            )
+
+        if save_flow_geoJSON:
+            self.betweenness_record.to_file(pairing_folder + "betweenness_record_so_far.geoJSON", driver="GeoJSON",  engine='pyogrio')
+        if save_flow_csv:
+            self.betweenness_record.to_csv(pairing_folder + "betweenness_record_so_far.csv")
+
+        if save_origin_geoJSON:
+            save_origin = shaqra.layers[pairing["Origin_Name"]].gdf.join(origin_gdf.set_index("source_id").drop(columns=['geometry']))
+            save_origin.to_file(f'{pairing_folder}origin_record_({pairing["Origin_Name"]}).geoJSON', driver="GeoJSON",  engine='pyogrio')
+
+        if save_origin_csv: 
+            save_origin = shaqra.layers[pairing["Origin_Name"]].gdf.join(origin_gdf.set_index("source_id").drop(columns=['geometry']))
+            save_origin.to_csv(f'{pairing_folder}origin_record_({pairing["Origin_Name"]}).csv')
+
+        self.log_df.to_csv(pairing_folder + "time_log.csv")
+
+        self.log("Output saved", pairing)
+
+    def simulation_end(
+            self,
+        ):
+        self.log_df.to_csv(self.output_folder + "time_log.csv")
+        self.betweenness_record.to_file(self.output_folder + "betweenness_record.geoJSON", driver="GeoJSON",  engine='pyogrio')
+        self.betweenness_record.to_csv(self.output_folder + "betweenness_record.csv")
+
+        self.log("Simulation Output saved: ALL DONE")
+
+def betweenness_flow_simulation(
+        city_name=None,
+        data_folder=None,
+        output_folder=None,
+        pairings_file="Pairings.csv",
+        num_cores=8,
+    ):
+
+    if city_name is None:
+        raise ValueError("parameter 'city_name' needs to be specified")
+
+    if data_folder is None:
+        data_folder = "Cities\\"+city_name+"\\Data\\"
+    if output_folder is None:
+        start_time = datetime.now()
+        output_folder = f"Cities\\{city_name}\\Simulations\\{start_time.year}-{start_time.month:02d}-{start_time.day:02d} {start_time.hour:02d}-{start_time.minute:02d}\\ "
+
+    logger=Logger(output_folder)
+
+    pairings = pd.read_csv(data_folder + pairings_file)
+
+    # Shaqra is a town in Saudi Arabia. this name would be used to reference a generic place that we're running a simulation for
+    shaqra = Zonal()
+
+    shaqra.load_layer(
+        layer_name='streets',
+        file_path=data_folder +  pairings.at[0, "Network_File"]
+    )
+
+    logger.log(f"Network FIle Loaded, Projection: {shaqra.layers['streets'].gdf.crs}")
+
+
+    for pairing_idx, pairing in pairings.iterrows():
+
+        # Setting up a street network if this is the first pairing, or if the network weight changed from previous pairing
+        if (pairing_idx == 0) or (pairings.at[pairing_idx, 'Network_Cost'] != pairings.at[pairing_idx-1, 'Network_Cost']):
+            shaqra.create_street_network(
+                source_layer='streets', 
+                node_snapping_tolerance=0.00001,  #todo: remove parameter once a finalized default is set.
+                weight_attribute=pairings.at[pairing_idx, 'Network_Cost'] if pairings.at[pairing_idx, 'Network_Cost'] != "Geometric" else None
+            )
+            logger.log("Network topology created", pairing)
+            clean_network_nodes = shaqra.network.nodes.copy(deep=True)
+        else:
+            # either generate a new network, or flush nodes.
+            shaqra.network.nodes = clean_network_nodes.copy(deep=True)
+
+
+
+        # Loading layers, if they're not already loaded.
+        if pairing["Origin_Name"] not in shaqra.layers:
+            shaqra.load_layer(
+                layer_name=pairing["Origin_Name"],
+                file_path=data_folder + pairing["Origin_File"]
+            )
+            logger.log(f"{pairing['Origin_Name']} file {pairing['Origin_File']} Loaded, Projection: {shaqra.layers[pairing['Origin_Name']].gdf.crs}", pairing)
+
+        if pairing["Destination_Name"] not in shaqra.layers:
+            shaqra.load_layer(
+                layer_name=pairing["Destination_Name"],
+                file_path=data_folder + pairing["Destination_File"]
+            )
+            logger.log(f"{pairing['Destination_Name']} file {pairing['Destination_File']} Loaded, Projection: {shaqra.layers[pairing['Destination_Name']].gdf.crs}", pairing)
+
+        
+
+        shaqra.insert_node(
+            layer_name=pairing['Origin_Name'], 
+            label='origin', 
+            weight_attribute=pairing['Origin_Weight'] if pairing['Origin_Weight'] != "Count" else None
+        )
+        shaqra.insert_node(
+            layer_name=pairing['Destination_Name'], 
+            label='destination', 
+            weight_attribute=pairing['Destination_Weight'] if pairing['Destination_Weight'] != "Count" else None
+        )
+
+        logger.log("Origins and Destinations Inserted.", pairing)
+
+        shaqra.create_graph()
+
+        logger.log("NetworkX Graphs Created.", pairing)
+
+        #parameter settings for turns and elastic weights
+        shaqra.network.turn_penalty_amount = pairing['Turn_Penalty']
+        shaqra.network.turn_threshold_degree = pairing['Turn_Threshold']
+        shaqra.network.knn_weight = pairing['KNN_Weight']
+        shaqra.network.knn_plateau = pairing['Plateau']
+
+        #setting appropriate number of cores
+        node_gdf = shaqra.network.nodes
+        origin_gdf = node_gdf[node_gdf["type"] == "origin"]
+        num_cores = min(origin_gdf.shape[0], num_cores)
+
+        betweenness_output = paralell_betweenness_exposure(
+            shaqra,
+            search_radius=pairing['Radius'],
+            detour_ratio=pairing['Detour'],
+            decay=False if pairing['Elastic_Weights'] else pairing['Decay'],  # elastic weight already reduces origin weight factoring in decay. if this pairing uses elastic weights, don't decay again,
+            decay_method=pairing['Decay_Mode'],
+            beta=pairing['Beta'],
+            num_cores=num_cores,
+            path_detour_penalty='equal', # "power" | "exponent" | "equal"
+            closest_destination=pairing['Closest_destination'],
+            elastic_weight=pairing['Elastic_Weights'],
+            turn_penalty=pairing['Turns'],
+            path_exposure_attribute=None,
+            return_path_record=False, 
+            destniation_cap=None
+        )
+
+        logger.log("Betweenness estimated.", pairing)
+        logger.pairing_end(shaqra, pairing)
+
+        if pairing_idx == 2:
+            break
+    logger.simulation_end()
+    return 
+

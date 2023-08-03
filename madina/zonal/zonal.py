@@ -1,11 +1,12 @@
+# this silences a warning about depreciating pygeos out of geopandas
+import os
+os.environ['USE_PYGEOS'] = '0'
+
 from madina.zonal.layer import *
 from madina.zonal.network import Network
 from madina.zonal.network_utils import _node_edge_builder,  _discard_redundant_edges, _split_redundant_edges, _tag_edges, _effecient_node_insertion
 from madina.zonal.zonal_utils import _prepare_geometry, DEFAULT_COLORS
 
-# this silences a warning about depreciating pygeos out of geopandas
-import os
-os.environ['USE_PYGEOS'] = '0'
 
 
 import warnings
@@ -22,7 +23,7 @@ import time
 
 
 __version__ = '0.0.1'
-__release_date__ = '2023-07-28'
+__release_date__ = '2023-08-02'
 
 
 class Zonal:
