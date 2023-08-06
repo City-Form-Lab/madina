@@ -1,4 +1,4 @@
-# this silences a warning about depreciating pygeos out of geopandas
+# this lets geopandas exclusively use shapely (not pygeos) silences a warning about depreciating pygeos out of geopandas. This is not needed when geopandas 1.0 is released in the future
 import os
 os.environ['USE_PYGEOS'] = '0'
 
@@ -10,7 +10,6 @@ from madina.zonal.zonal_utils import _prepare_geometry, DEFAULT_COLORS
 
 
 import warnings
-from geopandas import GeoDataFrame, GeoSeries
 import geopandas as gpd
 import pandas as pd
 from typing import Union
@@ -22,8 +21,8 @@ import random
 import time
 
 
-__version__ = '0.0.1'
-__release_date__ = '2023-08-02'
+__version__ = '0.0.2'
+__release_date__ = '2023-08-06'
 
 
 class Zonal:

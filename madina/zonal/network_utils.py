@@ -3,7 +3,7 @@ import numpy as np
 import geopandas as gpd
 import pandas as pd
 import shapely.geometry as geo
-from pygeos.lib import get_x, get_y, get_point
+# from pygeos.lib import get_x, get_y, get_point
 
 def _node_edge_builder(geometry_gdf, weight_attribute=None, tolerance=0.0):
     if tolerance == 0.0:
@@ -16,7 +16,7 @@ def _node_edge_builder(geometry_gdf, weight_attribute=None, tolerance=0.0):
         # TODO: complete the implementation of this case by copyinfg the for-loop thT UTILIz MATCHING RESULTS..
         point_geometries = geometry_gdf["geometry"].boundary.explode(
             index_parts=False).reset_index(drop=True)
-        matching = point_geometries.sindex.query_bulk(
+        matching = point_geometries.sindex.query(
             point_geometries.buffer(tolerance))
 
         # construct node and edge gdfs
@@ -132,13 +132,20 @@ def _vectorized_node_edge_builder(point_xy):
     return node_indexer, node_points, node_dgree, edge_start_node, edge_end_node
 
 def GeoPandaExtractor(poly_line_data):
-
+    '''code that works with pygeos
     points = [f(point) for point in [get_point(poly_line_data, 0),
                                      get_point(poly_line_data, -1)] for f in [get_x, get_y]]
     return np.hstack(
         (
             np.array([points[0], points[1]]),
             np.array([points[2], points[3]])
+        )
+    )
+    '''
+    return np.hstack(
+        (
+            np.array([[line.coords[0][0] for line in poly_line_data], [line.coords[0][1] for line in poly_line_data]]),
+            np.array([[line.coords[-1][0] for line in poly_line_data], [line.coords[-1][1] for line in poly_line_data]])
         )
     )
 
