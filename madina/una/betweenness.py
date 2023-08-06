@@ -1,9 +1,11 @@
 import math
 import time
 import concurrent
+from concurrent import futures
 import numpy as np
 import networkx as nx
 import pandas as pd
+import geopandas as gpd
 
 from datetime import datetime
 from pathlib import Path
@@ -11,10 +13,8 @@ from pathlib import Path
 import shapely.geometry as geo
 
 from madina.zonal.zonal import Zonal, __version__, __release_date__
-
 from madina.zonal.network import Network
-from madina.una.paths import path_generator
-from madina.una.una_utils import turn_o_scope
+from madina.una.paths import path_generator, turn_o_scope
 
 def parallel_betweenness(network: Network,
                          search_radius=1000,
@@ -152,7 +152,6 @@ def parallel_betweenness(network: Network,
         return_dict["retained_d_idxs"] = retain_d_idxs
     return return_dict
 
-import warnings 
 def one_betweenness_2(
         network: Network,
         search_radius=1000,
@@ -193,6 +192,10 @@ def one_betweenness_2(
     #for origin_idx in tqdm(origins.index):
     for origin_idx in origins.index:
         counter += 1
+        if (counter % 100 == 0):
+            print(f"{counter = }]\t{counter / len(origins.index) * 100:6.4f}")
+
+
 
         if origins.at[origin_idx, 'weight'] == 0:
             #print (f"{origin_idx = } has weight of 0, skipping." )
@@ -407,7 +410,9 @@ def betweenness_exposure(
     edge_gdf = self.network.edges
     node_gdf = self.network.nodes
 
+    # TODO: convert this to a numby array to simplify calculations.
     batch_betweenness_tracker = {edge_id: 0.0 for edge_id in list(edge_gdf.index)}
+    
 
     if return_path_record:
         path_record = {
@@ -419,12 +424,14 @@ def betweenness_exposure(
             'path_decay': [],
             'path_probability': [],
             'path_betweenness': [],
+            'geometry': [],
         }
         if path_exposure_attribute is not None:
             path_record['mean_path_exposure'] = []
 
     origin_count = 0
     for origin_idx in origins.index:
+        #start = time.time()
 
         origin_mean_hazzard = 0
         origin_decayed_mean_hazzard = 0
@@ -452,21 +459,28 @@ def betweenness_exposure(
                 turn_penalty=turn_penalty
             )
         except Exception as ex:
+            print (f"{origin_idx = }\tIssue while generating paths....")
+            #continue
+            print(str(ex))
+            print(ex.__doc__)
+            print (ex.__traceback__)
+            import traceback
+            traceback.print_exc()
+
+        #path_generation_time = time.time() - start
+
+        
+        # skip this origin if cannot reach any destination
+        if len(d_idxs) == 0:
             continue
-            #print(str(ex))
-            #print(ex.__doc__)
-            #print (ex.__traceback__)
-            #import traceback
-            #traceback.print_exc()
+        #start = time.time()
         
         # this makes sure destinations are sorted based on distance. (sorting the dictionary nased on its values.)
         d_idxs = dict(sorted(d_idxs.items(), key=lambda item: item[1]))
 
 
 
-        # skip this origin if cannot reach any destination
-        if len(d_idxs) == 0:
-            continue
+
 
         origin_weight_attribute = 'weight'
         if elastic_weight:
@@ -480,6 +494,10 @@ def betweenness_exposure(
                 o_graph=None,
                 d_idxs=d_idxs,
             )
+        
+        origin_weight = origins.at[origin_idx, origin_weight_attribute]
+        starting_edge_id = [origins.at[origin_idx, 'nearest_edge_id']]
+
 
 
         if closest_destination:
@@ -489,14 +507,20 @@ def betweenness_exposure(
         else:
             # probability of choosing a destination using the huff model
             eligible_destinations = d_idxs if destniation_cap is None else dict(list(d_idxs.items())[:destniation_cap])
-            destination_gravities = [float(node_gdf.at[d_idx, 'weight']) / pow(math.e, (beta * od_shortest_distance)) for d_idx, od_shortest_distance in eligible_destinations.items()]
+            destination_ids = list(eligible_destinations.keys())
+            eligible_destinations_weight = np.array([float(node_gdf.at[idx, 'weight']) for idx in destination_ids], dtype=np.float64)
+            #eligible_destinations_shortest_distance = np.array(list(eligible_destinations.values()))
+            eligible_destinations_shortest_distance = np.array([min(weights[d]) for d in eligible_destinations.keys()])
+
+            # look for ways to do this in numpy 
+            destination_gravities = eligible_destinations_weight / pow(np.e, (beta * eligible_destinations_shortest_distance))
+            #destination_gravities = [float(node_gdf.at[d_idx, 'weight']) / pow(math.e, (beta * od_shortest_distance)) for d_idx, od_shortest_distance in eligible_destinations.items()]
 
             if sum(destination_gravities) == 0:
                 # This covers a case where all reachible destinations have a weight of 0, if so, no need to generate trips
                 continue
                 #destination_probabilities = np.zeros(len(eligible_destinations))
             destination_probabilities = np.array(destination_gravities) / sum(destination_gravities)
-            destination_ids = list(eligible_destinations.keys())
 
 
         for destination_idx, this_destination_probability in zip(destination_ids, destination_probabilities):
@@ -510,10 +534,14 @@ def betweenness_exposure(
             path_detour_penalties = np.ones(len(weights[destination_idx]))
             d_path_weights = np.array(weights[destination_idx])
 
+            # This fixes numerical issues  when path length = 0
+            d_path_weights[d_path_weights < 0.01] = 0.01
+
+
             if path_detour_penalty == "exponent":
-                path_detour_penalties = 1 / pow(np.e, beta * d_path_weights)
+                path_detour_penalties = 1.0 / pow(np.e, beta * d_path_weights)
             elif path_detour_penalty == "power":
-                path_detour_penalties = 1 / (d_path_weights ** 2)
+                path_detour_penalties = 1.0 / (d_path_weights ** 2.0)
             elif path_detour_penalty == "equal":
                 path_detour_penalties = np.ones(len(d_path_weights))
             else:
@@ -521,54 +549,78 @@ def betweenness_exposure(
                     f"parameter 'path_detour_penalty' should be one of ['equal', 'power', 'exponent'], '{path_detour_penalty}' was given")
             path_probabilities = path_detour_penalties / sum(path_detour_penalties)
 
-            od_shortest_path_distance = min(weights[destination_idx])
+            #od_shortest_path_distance = min(weights[destination_idx])
 
-            for path_id, (path, this_path_weight, this_path_probability) in enumerate(
-                    zip(paths[destination_idx], weights[destination_idx], path_probabilities)):
+            # FInding path decays.
+            path_decays = np.ones(len(weights[destination_idx]))
+            if decay:
+                if decay_method == "exponent":
+                    path_decays = 1.0 / pow(np.e, beta * d_path_weights)
+                elif decay_method == "power":
+                    ## WAENING: Path weight cannot be zero!! handle properly.
+                    path_decays = 1.0 / (d_path_weights ** 2.0)
+                else:
+                    raise ValueError(
+                        f"parameter 'decay_method' should be one of ['exponent', 'power'], '{decay_method}' was given")
+
+
+            # Betweenness attributes
+            destination_path_probabilies = path_probabilities * this_destination_probability
+            betweennes_contributions = destination_path_probabilies * path_decays * origin_weight
+            
+            if len(d_path_weights[d_path_weights > (d_idxs[destination_idx] * detour_ratio)+ 0.01]) > 0:
+                print(f"SOme paths exceeded allowed tolerance: {d_path_weights[d_path_weights > (d_idxs[destination_idx] * detour_ratio)+ 0.01]}")
+
+
+            
+            
+            #origin_mean_path_length  = (destination_path_probabilies * d_path_weights).sum()
+            #probable_travel_distance = (destination_path_probabilies * path_decays * d_path_weights).sum()
+
+
                 # trailblazer algorithm sometimes produces paths that exceeds this limin. revisit later, for now, skip those paths exceeding limit
-                if this_path_weight > od_shortest_path_distance * detour_ratio:
-                    continue
+                #if this_path_weight > od_shortest_path_distance * detour_ratio:
+                    #continue
 
                 # to solve numeric issues with short paths, for example, if o/d were on the same location
-                if this_path_weight < 1:
-                    this_path_weight = 0.01
+                #if this_path_weight < 0.01:
+                #    this_path_weight = 0.01
 
+            #TODO: do we really need this loop? consider vectorization
+            #for path_id, (path, this_path_weight, destination_path_probability, path_decay, betweennes_contribution) in enumerate(
+            #        zip(paths[destination_idx], weights[destination_idx], destination_path_probabilies, path_decays, betweennes_contributions)):
 
-                # constructing this path's betweenness contribution. Accounting for closest destination or compitition, origin weight and decay based on path weight
-                
-                path_decay = 1.0
-                if decay:
-                    if decay_method == "exponent":
-                        path_decay = (1.0 / pow(math.e, (beta * this_path_weight)))
-                    elif decay_method == "power":
-                        path_decay = 1.0 / (this_path_weight ** 2.0)
-                    else:
-                        raise ValueError(
-                            f"parameter 'decay_method' should be one of ['exponent', 'power'], '{decay_method}' was given")
+            ending_edge_id = [node_gdf.at[destination_idx, 'nearest_edge_id']]
+            
 
-                betweennes_contribution = this_path_probability * this_destination_probability * path_decay * origins.at[origin_idx, origin_weight_attribute]
-
+            for path, betweennes_contribution in zip (paths[destination_idx], betweennes_contributions): 
                 # paths are returned as a series of nodes, herem, we extract a list of edges along the path: edge_ids
-                inner_path_edges = list(nx.utils.pairwise(path[1:-1]))
-                inner_edge_ids = [self.network.light_graph.edges[edge]["id"] for edge in inner_path_edges]
-                edge_ids = [node_gdf.at[path[0], 'nearest_edge_id']] + inner_edge_ids + [
-                    node_gdf.at[path[-1], 'nearest_edge_id']]
 
-                path_weight_exposure = 0
-                path_weight_sum = 0
+                # This code is one reason why we can't do redundant nodes. sequence of nodes given assume unique edge identified by two nodes. multiple should exist 
+                try:
+                    inner_path_edges = list(nx.utils.pairwise(path[1:-1]))
+                    inner_edge_ids = [self.network.light_graph.edges[edge]["id"] for edge in inner_path_edges]
+                except Exception as ex:
+                    print (f"{origin_idx = }\t{destination_idx = }\t{betweennes_contribution = }\tIssue while creating segment list from node list of path...")
+                    print(str(ex))
+                    print(ex.__doc__)
+                    print (ex.__traceback__)
+                    import traceback
+                    traceback.print_exc()
+                    print (f"{inner_path_edges = }\t{path = }\t{path[1:-1]}")
+                #edge_ids = [node_gdf.at[path[0], 'nearest_edge_id']] + inner_edge_ids + [
+                #    node_gdf.at[path[-1], 'nearest_edge_id']]
+                edge_ids = starting_edge_id + inner_edge_ids + ending_edge_id
+
+                #path_weight_exposure = 0
+                #path_weight_sum = 0
                 for edge_id in edge_ids:
                     batch_betweenness_tracker[edge_id] += betweennes_contribution
+        '''
                     if path_exposure_attribute is not None:
                         segment_weight = edge_gdf.at[int(edge_id), 'weight']
                         path_weight_sum += segment_weight
                         path_weight_exposure += segment_weight * edge_gdf.at[int(edge_id), path_exposure_attribute]
-                
-
-                destination_path_probability = this_path_probability * this_destination_probability
-                
-                origin_mean_path_length += destination_path_probability * this_path_weight
-                probable_travel_distance += destination_path_probability * path_decay * this_path_weight
-
 
                 if path_exposure_attribute is not None:
                     path_mean_exposure = path_weight_exposure / path_weight_sum
@@ -585,11 +637,13 @@ def betweenness_exposure(
                     path_record['path_id'].append(path_id)
                     path_record['path_weight'].append(this_path_weight)
                     path_record['path_decay'].append(path_decay)
-                    path_record['path_probability'].append(this_path_probability)
+                    path_record['path_probability'].append(destination_path_probability/this_destination_probability)
                     path_record['path_betweenness'].append(betweennes_contribution)
+                    path_record['geometry'].append(geo.MultiLineString(edge_gdf.loc[edge_ids]['geometry'].values))
                     if path_exposure_attribute is not None:
                         path_record['mean_path_exposure'].append(path_mean_exposure)
 
+                
 
                         
         
@@ -599,11 +653,16 @@ def betweenness_exposure(
             origins.at[origin_idx, 'expected_hazzard_meters'] = expected_hazzard_meters
             origins.at[origin_idx, 'probable_travel_distance_weighted_hazzard'] = probable_travel_distance_weighted_hazzard
         
-        origins.at[origin_idx, 'shortest_path_length'] = list(eligible_destinations.values())[0]
-        origins.at[origin_idx, 'mean_path_length'] = origin_mean_path_length
-        origins.at[origin_idx, 'probable_travel_distance'] = probable_travel_distance
-        origins.at[origin_idx, 'reach'] = len(d_idxs)
-        origins.at[origin_idx, 'eligible_destinations'] = len(eligible_destinations)
+        #origins.at[origin_idx, 'shortest_path_length'] = list(eligible_destinations.values())[0]
+        #origins.at[origin_idx, 'mean_path_length'] = origin_mean_path_length
+        #origins.at[origin_idx, 'probable_travel_distance'] = probable_travel_distance
+        #origins.at[origin_idx, 'reach'] = len(d_idxs)
+        #origins.at[origin_idx, 'eligible_destinations'] = len(eligible_destinations)
+        '''
+
+        #origins.at[origin_idx, 'path_generation_time'] = path_generation_time
+        #origins.at[origin_idx, 'betweenness_processing_time'] = time.time() - start
+
         
     print(f"core {origins.iloc[0].name} done.")
 
@@ -696,7 +755,7 @@ def paralell_betweenness_exposure(
     self.network.edges = edge_gdf
     return_dict = {"edge_gdf": edge_gdf, "origin_gdf": pd.concat(origin_returns)}
     if return_path_record:
-        path_record = pd.concat(list_of_path_dfs)
+        path_record = gpd.GeoDataFrame(pd.concat(list_of_path_dfs), crs=edge_gdf.crs)
         return_dict["path_record"] =  path_record
     return return_dict
 
@@ -707,6 +766,7 @@ def get_origin_properties(
         turn_penalty=False,
         o_idx=None,
         d_idxs=None,
+        o_graph=None
         ):
     node_gdf = self.network.nodes
 
@@ -734,9 +794,6 @@ def get_origin_properties(
     node_gdf.at[o_idx, "gravity"] = sum(1.0 / pow(math.e, (beta * np.array(list(d_idxs.values())))))
     node_gdf.at[o_idx, "reach"] = int(len(d_idxs))
     return
-
-
-
 
 class Logger():
     def __init__(self, output_folder):
