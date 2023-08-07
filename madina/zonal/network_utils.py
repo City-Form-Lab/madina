@@ -9,13 +9,11 @@ def _node_edge_builder(geometry_gdf, weight_attribute=None, tolerance=0.0):
     if tolerance == 0.0:
         # use vectorized implementaytion
         point_xy = GeoPandaExtractor(geometry_gdf.geometry.values.data)
-        node_indexer, node_points, node_dgree, edge_start_node, edge_end_node = _vectorized_node_edge_builder(
-            point_xy)
+        node_indexer, node_points, node_dgree, edge_start_node, edge_end_node = _vectorized_node_edge_builder(point_xy)
         # use spatial index implementation
         # could this gain effeciency by being sorted?
         # TODO: complete the implementation of this case by copyinfg the for-loop thT UTILIz MATCHING RESULTS..
-        point_geometries = geometry_gdf["geometry"].boundary.explode(
-            index_parts=False).reset_index(drop=True)
+        point_geometries = geometry_gdf["geometry"].boundary.explode(index_parts=False).reset_index(drop=True)
         matching = point_geometries.sindex.query(
             point_geometries.buffer(tolerance))
 
@@ -179,7 +177,7 @@ def _tolerance_network_nodes_edges(geometry_gdf, weight_attribute=None, toleranc
         "end": np.zeros(edge_count, dtype="int64") - 1
     }
 
-    matching = point_geometries.sindex.query_bulk(
+    matching = point_geometries.sindex.query(
         point_geometries.buffer(tolerance), predicate="intersects")
     # grouping points..
     unique_points, intersection_count = np.unique(
