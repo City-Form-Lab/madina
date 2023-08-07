@@ -1,3 +1,8 @@
+# this lets geopandas exclusively use shapely (not pygeos) silences a warning about depreciating pygeos out of geopandas. This is not needed when geopandas 1.0 is released in the future
+import os
+os.environ['USE_PYGEOS'] = '0'
+
+
 import math
 import time
 import concurrent
@@ -430,8 +435,8 @@ def betweenness_exposure(
             path_record['mean_path_exposure'] = []
 
     origin_count = 0
+    start = time.time()
     for origin_idx in origins.index:
-        #start = time.time()
 
         origin_mean_hazzard = 0
         origin_decayed_mean_hazzard = 0
@@ -443,7 +448,8 @@ def betweenness_exposure(
 
         origin_count += 1
         if (origin_count % 100 == 0):
-            print(f"core {origins.iloc[0].name}\t {origin_count = }]\t{origin_count / len(origins.index) * 100:6.4f}")
+            print(f"core {origins.iloc[0].name}\t {origin_count = }\t{origin_count / len(origins.index) * 100:6.4f}\ttime:{time.time() - start}")
+
 
 
         if origins.at[origin_idx, "weight"] == 0:
@@ -451,7 +457,7 @@ def betweenness_exposure(
 
         # finding all destination reachible from this origin within a search radius, and finding all paths within a derour ration from the shortest path
         try:
-            paths, weights, d_idxs = path_generator(
+            path_edges, weights, d_idxs = path_generator(
                 self.network,
                 origin_idx,
                 search_radius=search_radius,
@@ -467,20 +473,14 @@ def betweenness_exposure(
             import traceback
             traceback.print_exc()
 
-        #path_generation_time = time.time() - start
 
         
         # skip this origin if cannot reach any destination
         if len(d_idxs) == 0:
             continue
-        #start = time.time()
         
         # this makes sure destinations are sorted based on distance. (sorting the dictionary nased on its values.)
         d_idxs = dict(sorted(d_idxs.items(), key=lambda item: item[1]))
-
-
-
-
 
         origin_weight_attribute = 'weight'
         if elastic_weight:
@@ -496,7 +496,6 @@ def betweenness_exposure(
             )
         
         origin_weight = origins.at[origin_idx, origin_weight_attribute]
-        starting_edge_id = [origins.at[origin_idx, 'nearest_edge_id']]
 
 
 
@@ -509,24 +508,21 @@ def betweenness_exposure(
             eligible_destinations = d_idxs if destniation_cap is None else dict(list(d_idxs.items())[:destniation_cap])
             destination_ids = list(eligible_destinations.keys())
             eligible_destinations_weight = np.array([float(node_gdf.at[idx, 'weight']) for idx in destination_ids], dtype=np.float64)
-            #eligible_destinations_shortest_distance = np.array(list(eligible_destinations.values()))
             eligible_destinations_shortest_distance = np.array([min(weights[d]) for d in eligible_destinations.keys()])
 
             # look for ways to do this in numpy 
             destination_gravities = eligible_destinations_weight / pow(np.e, (beta * eligible_destinations_shortest_distance))
-            #destination_gravities = [float(node_gdf.at[d_idx, 'weight']) / pow(math.e, (beta * od_shortest_distance)) for d_idx, od_shortest_distance in eligible_destinations.items()]
 
             if sum(destination_gravities) == 0:
                 # This covers a case where all reachible destinations have a weight of 0, if so, no need to generate trips
                 continue
-                #destination_probabilities = np.zeros(len(eligible_destinations))
             destination_probabilities = np.array(destination_gravities) / sum(destination_gravities)
 
 
         for destination_idx, this_destination_probability in zip(destination_ids, destination_probabilities):
 
             # skip this destination if cannot find paths from origin
-            if len(paths[destination_idx]) == 0:
+            if len(weights[destination_idx]) == 0:
                 print(f"o:{origin_idx}\td:{destination_idx} have no paths...")
                 continue
 
@@ -549,7 +545,6 @@ def betweenness_exposure(
                     f"parameter 'path_detour_penalty' should be one of ['equal', 'power', 'exponent'], '{path_detour_penalty}' was given")
             path_probabilities = path_detour_penalties / sum(path_detour_penalties)
 
-            #od_shortest_path_distance = min(weights[destination_idx])
 
             # FInding path decays.
             path_decays = np.ones(len(weights[destination_idx]))
@@ -577,44 +572,8 @@ def betweenness_exposure(
             #origin_mean_path_length  = (destination_path_probabilies * d_path_weights).sum()
             #probable_travel_distance = (destination_path_probabilies * path_decays * d_path_weights).sum()
 
-
-                # trailblazer algorithm sometimes produces paths that exceeds this limin. revisit later, for now, skip those paths exceeding limit
-                #if this_path_weight > od_shortest_path_distance * detour_ratio:
-                    #continue
-
-                # to solve numeric issues with short paths, for example, if o/d were on the same location
-                #if this_path_weight < 0.01:
-                #    this_path_weight = 0.01
-
-            #TODO: do we really need this loop? consider vectorization
-            #for path_id, (path, this_path_weight, destination_path_probability, path_decay, betweennes_contribution) in enumerate(
-            #        zip(paths[destination_idx], weights[destination_idx], destination_path_probabilies, path_decays, betweennes_contributions)):
-
-            ending_edge_id = [node_gdf.at[destination_idx, 'nearest_edge_id']]
-            
-
-            for path, betweennes_contribution in zip (paths[destination_idx], betweennes_contributions): 
-                # paths are returned as a series of nodes, herem, we extract a list of edges along the path: edge_ids
-
-                # This code is one reason why we can't do redundant nodes. sequence of nodes given assume unique edge identified by two nodes. multiple should exist 
-                try:
-                    inner_path_edges = list(nx.utils.pairwise(path[1:-1]))
-                    inner_edge_ids = [self.network.light_graph.edges[edge]["id"] for edge in inner_path_edges]
-                except Exception as ex:
-                    print (f"{origin_idx = }\t{destination_idx = }\t{betweennes_contribution = }\tIssue while creating segment list from node list of path...")
-                    print(str(ex))
-                    print(ex.__doc__)
-                    print (ex.__traceback__)
-                    import traceback
-                    traceback.print_exc()
-                    print (f"{inner_path_edges = }\t{path = }\t{path[1:-1]}")
-                #edge_ids = [node_gdf.at[path[0], 'nearest_edge_id']] + inner_edge_ids + [
-                #    node_gdf.at[path[-1], 'nearest_edge_id']]
-                edge_ids = starting_edge_id + inner_edge_ids + ending_edge_id
-
-                #path_weight_exposure = 0
-                #path_weight_sum = 0
-                for edge_id in edge_ids:
+            for this_path_edges, betweennes_contribution in zip (path_edges[destination_idx], betweennes_contributions): 
+                for edge_id in this_path_edges:
                     batch_betweenness_tracker[edge_id] += betweennes_contribution
         '''
                     if path_exposure_attribute is not None:

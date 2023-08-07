@@ -42,7 +42,8 @@ def path_generator(network: Network, o_idx, search_radius=800, detour_ratio=1.15
     for d_idx in d_idxs.keys():
         d_allowed_distances[d_idx] =  d_idxs[d_idx] * detour_ratio
 
-    paths, distances = bfs_paths_many_targets_iterative(
+    #paths, distances = bfs_paths_many_targets_iterative(
+    path_edges, distances = bfs_path_edges_many_targets_iterative(
         network=network,
         o_graph=o_graph,
         o_idx=o_idx,
@@ -54,7 +55,8 @@ def path_generator(network: Network, o_idx, search_radius=800, detour_ratio=1.15
     
     #network.update_light_graph(o_graph, remove_nodes=[o_idx])
     network.remove_node_to_graph(o_graph, o_idx)
-    return paths, distances, d_idxs
+    #return paths, distances, d_idxs
+    return path_edges, distances, d_idxs
 
 
 
@@ -270,6 +272,97 @@ def bfs_paths_many_targets_iterative(
             q.appendleft((visited + [neighbor], neighbor, neighbor_targets_remaining, neighbor_current_weight))
     return paths, distances
 
+
+
+
+
+def bfs_path_edges_many_targets_iterative(
+    network: Network,
+    o_graph,
+    o_idx,
+    d_idxs,
+    distance_matrix=None,
+    turn_penalty=False,
+    od_scope=None
+    ):
+    # TODO: implement this as an iterative function with a queue
+
+    # remove any unnecccisary checks for other algorithms and methods. fucus on network distance.
+
+    # Think if there is value for the queue to be priority (Neighbor with most dests, neighbor
+    # with least neighbors, ...)
+
+    # Rethink the remaining dests list. should it be additive (no copy?) or should
+    # it copy previous and be subtractvd?
+
+    # collect stats about checks so they're ordered effeciently (hard checks first to narrow funnel.)
+
+    # check if using a generic graph is okay instead of needing to implement a
+    # narrow graph in previous step. This cuts many previous preprocessinggs.
+
+    # see if checks could be moved to earlier steps, or brought from previous steps. for less checks.
+
+    # TODO: for turn implementation, make sure to account for turns whenever distance_matrix is updated. Twice in the current version.
+    #  better yet, make sure to include turns as part of spent_weight so it runs through all the termination conditions.
+
+    # TODO: should this also be done in graph generation to limit scope? prob yes but need to keep track of predecessor.
+
+    allowed_path_nodes = set(network.street_node_ids)
+    allowed_path_nodes.add(o_idx)
+    #paths = {}
+    path_edges = {}
+    distances = {}
+    for d_idx in d_idxs:
+        #paths[d_idx] = []
+        path_edges[d_idx] = []
+        distances[d_idx] = []
+
+    # queue initialization
+    q = deque([])
+    # for neighbor in list(graph.neighbors(o_idx)):
+    # q.append(([], o_idx, list(d_idxs.keys()), 0))
+    q.appendleft(([o_idx], set(),  o_idx, list(d_idxs.keys()), 0))
+
+    while q:
+        visited, edges, source, targets_remaining, current_weight = q.pop()
+        scope_neighbors = [neighbor for neighbor in list(o_graph.neighbors(source)) if neighbor in od_scope]
+
+        for neighbor in scope_neighbors:
+            if neighbor in visited:
+                continue
+
+            turn_cost = 0
+            edge_data = o_graph.edges[(source, neighbor)]
+            neighbor_edges = edges.copy()
+            neighbor_edges.add(edge_data["id"])
+            if turn_penalty and len(visited) >= 2:
+                turn_cost = turn_penalty_value(network, visited[-2], source, neighbor)
+
+            spent_weight = edge_data["weight"]
+            neighbor_current_weight =  current_weight + spent_weight + turn_cost
+            neighbor_targets_remaining = []
+
+            #neighbor_targets_remaining = []
+            #for target in targets_remaining:
+            #    if neighbor in distance_matrix[target]:
+            #        # equality with small tolerance to allow numerical error in case there was no detour ratio
+            #        if distance_matrix[target][neighbor] + neighbor_current_weight - d_idxs[target] <=  0.00001:
+            #            neighbor_targets_remaining.append(target)
+            neighbor_targets_remaining = [target for target in targets_remaining if (neighbor in distance_matrix[target]) and (distance_matrix[target][neighbor] + neighbor_current_weight - d_idxs[target] <=  0.00001)]
+            if neighbor in neighbor_targets_remaining:
+                path_edges[neighbor].append(neighbor_edges)
+                distances[neighbor].append(neighbor_current_weight)
+                neighbor_targets_remaining.remove(neighbor)
+
+            if len(neighbor_targets_remaining) == 0:
+                continue
+
+            q.appendleft((visited + [neighbor], neighbor_edges, neighbor, neighbor_targets_remaining, neighbor_current_weight))
+    return path_edges, distances
+
+
+
+
 def turn_o_scope(
     network: Network,
     o_idx,
@@ -324,11 +417,7 @@ def turn_o_scope(
                 
             
             #not seen, check eligibility
-
-            # TODO: use search radius
             if neighbor_weight > max(search_radius, furthest_dest_weight * (0.5+detour_ratio*0.5) ):
-            #if neighbor_weight > search_radius * detour_ratio:
-            #if neighbor_weight > search_radius:
                 continue
 
             if len(list(o_graph.neighbors(neighbor))) == 1:
