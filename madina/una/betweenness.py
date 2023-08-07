@@ -7,6 +7,7 @@ import math
 import time
 import concurrent
 from concurrent import futures
+import multiprocessing as mp
 import numpy as np
 import networkx as nx
 import pandas as pd
@@ -398,7 +399,8 @@ def one_betweenness_2(
 
 def betweenness_exposure(
         self: Zonal,
-        origins=None,
+        core_index=None,
+        origin_queue=None,
         search_radius=1000,
         detour_ratio=1.05,
         decay=True,
@@ -414,6 +416,7 @@ def betweenness_exposure(
 ):
     edge_gdf = self.network.edges
     node_gdf = self.network.nodes
+    origin_gdf=node_gdf[node_gdf['type'] == 'origin']
 
     # TODO: convert this to a numby array to simplify calculations.
     batch_betweenness_tracker = {edge_id: 0.0 for edge_id in list(edge_gdf.index)}
@@ -436,7 +439,13 @@ def betweenness_exposure(
 
     origin_count = 0
     start = time.time()
-    for origin_idx in origins.index:
+    processed_origins = []
+    while True:
+        origin_idx = origin_queue.get()
+        if origin_idx == "done":
+            origin_queue.task_done()
+            break
+        processed_origins.append(origin_idx)
 
         origin_mean_hazzard = 0
         origin_decayed_mean_hazzard = 0
@@ -448,11 +457,11 @@ def betweenness_exposure(
 
         origin_count += 1
         if (origin_count % 100 == 0):
-            print(f"core {origins.iloc[0].name}\t {origin_count = }\t{origin_count / len(origins.index) * 100:6.4f}\ttime:{time.time() - start}")
+            print(f"core {core_index}\t {origin_count = }\ttime:{time.time() - start}")
 
 
 
-        if origins.at[origin_idx, "weight"] == 0:
+        if origin_gdf.at[origin_idx, "weight"] == 0:
             continue
 
         # finding all destination reachible from this origin within a search radius, and finding all paths within a derour ration from the shortest path
@@ -495,7 +504,7 @@ def betweenness_exposure(
                 d_idxs=d_idxs,
             )
         
-        origin_weight = origins.at[origin_idx, origin_weight_attribute]
+        origin_weight = origin_gdf.at[origin_idx, origin_weight_attribute]
 
 
 
@@ -622,10 +631,11 @@ def betweenness_exposure(
         #origins.at[origin_idx, 'path_generation_time'] = path_generation_time
         #origins.at[origin_idx, 'betweenness_processing_time'] = time.time() - start
 
-        
-    print(f"core {origins.iloc[0].name} done.")
+        origin_queue.task_done()
+    print(f"core {core_index} done.")
 
-    return_dict = {"batch_betweenness_tracker": batch_betweenness_tracker, 'origins': origins}
+
+    return_dict = {"batch_betweenness_tracker": batch_betweenness_tracker, 'origins': origin_gdf.loc[processed_origins]}
     if return_path_record:
         return_dict["path_record"] = path_record
     return return_dict
@@ -661,45 +671,65 @@ def paralell_betweenness_exposure(
     #TODO: investigate if this randomazation is causing any issues downsream.
     # origins = origins.sample(frac=1)
     origins.index = origins.index.astype("int")
-    splitted_origins = np.array_split(origins, num_procs)
 
 
 
 
 
-    start = time.time()
+
+
     with concurrent.futures.ProcessPoolExecutor(max_workers=num_procs) as executor:
-        # print("entered parallel execution")
-        execution_results = [
-            executor.submit(
-                betweenness_exposure,
-                self=self,
-                origins=df,
-                search_radius=search_radius,
-                detour_ratio=detour_ratio,
-                decay=decay,
-                beta=beta,
-                decay_method=decay_method,
-                path_detour_penalty=path_detour_penalty,
-                elastic_weight=elastic_weight,
-                closest_destination=closest_destination,
-                turn_penalty=turn_penalty,
-                path_exposure_attribute=path_exposure_attribute,
-                return_path_record=return_path_record, 
-                destniation_cap=destniation_cap
-            ) for df in splitted_origins]
-        for result in concurrent.futures.as_completed(execution_results):
-            try:
-                one_betweennes_output = result.result()
-                batch_results.append(one_betweennes_output["batch_betweenness_tracker"])
-                origin_returns.append(pd.DataFrame(one_betweennes_output["origins"]))
+        with mp.Manager() as manager:
+            #create aNDfill queue
+            origin_queue = manager.Queue()
+            for o_idx in origins.index:
+                origin_queue.put(o_idx)
+            for core_index in range(num_cores):
+                origin_queue.put("done")
 
-                if return_path_record:
-                    list_of_path_dfs.append(pd.DataFrame(one_betweennes_output["path_record"]))
-            except Exception as ex:
-                print(str(ex))
-                print(ex.__doc__)
-                pass
+
+            execution_results = []
+            for core_index in range(num_cores):
+                execution_results.append(executor.submit(
+                    betweenness_exposure,
+                    self=self,
+                    core_index=core_index,
+                    origin_queue=origin_queue,
+                    search_radius=search_radius,
+                    detour_ratio=detour_ratio,
+                    decay=decay,
+                    beta=beta,
+                    decay_method=decay_method,
+                    path_detour_penalty=path_detour_penalty,
+                    elastic_weight=elastic_weight,
+                    closest_destination=closest_destination,
+                    turn_penalty=turn_penalty,
+                    path_exposure_attribute=path_exposure_attribute,
+                    return_path_record=return_path_record, 
+                    destniation_cap=destniation_cap
+                ))
+
+            start = time.time()
+            while not all([future.done() for future in execution_results]):
+                time.sleep(0.5)
+                print (f"Time spent: {round(time.time()-start):,}s\t [{max(origins.shape[0] - origin_queue.qsize(), 0)} of {origins.shape[0]}] origins {max(origins.shape[0] - origin_queue.qsize(), 0)/origins.shape[0] * 100:4.2f}%",  end='\r')
+
+                
+
+            
+
+            for result in concurrent.futures.as_completed(execution_results):
+                try:
+                    one_betweennes_output = result.result()
+                    batch_results.append(one_betweennes_output["batch_betweenness_tracker"])
+                    origin_returns.append(pd.DataFrame(one_betweennes_output["origins"]))
+
+                    if return_path_record:
+                        list_of_path_dfs.append(pd.DataFrame(one_betweennes_output["path_record"]))
+                except Exception as ex:
+                    print(str(ex))
+                    print(ex.__doc__)
+                    pass
     end = time.time()
     #print("-------------------------------------------")
     #print(f"All cores done in {round(end - start, 2)}")
