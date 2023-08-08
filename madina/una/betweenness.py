@@ -437,8 +437,8 @@ def betweenness_exposure(
         if path_exposure_attribute is not None:
             path_record['mean_path_exposure'] = []
 
-    origin_count = 0
-    start = time.time()
+
+
     processed_origins = []
     while True:
         origin_idx = origin_queue.get()
@@ -454,11 +454,6 @@ def betweenness_exposure(
 
         origin_mean_path_length = 0
         probable_travel_distance = 0
-
-        origin_count += 1
-        if (origin_count % 100 == 0):
-            print(f"core {core_index}\t {origin_count = }\ttime:{time.time() - start}")
-
 
 
         if origin_gdf.at[origin_idx, "weight"] == 0:
@@ -669,7 +664,7 @@ def paralell_betweenness_exposure(
     num_procs = num_cores  # psutil.cpu_count(logical=logical)
 
     #TODO: investigate if this randomazation is causing any issues downsream.
-    # origins = origins.sample(frac=1)
+    origins = origins.sample(frac=1)
     origins.index = origins.index.astype("int")
 
 
