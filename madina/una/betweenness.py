@@ -13,8 +13,10 @@ import networkx as nx
 import pandas as pd
 import geopandas as gpd
 import psutil
+import shapely as shp
 
 from datetime import datetime
+import os
 from pathlib import Path
 
 import shapely.geometry as geo
@@ -634,7 +636,7 @@ def betweenness_exposure(
         del path_edges, weights, d_idxs
         del path_detour_penalties, d_path_weights, path_probabilities, path_decays, destination_path_probabilies, betweennes_contributions
         origin_queue.task_done()
-    print(f"core {core_index} done.")
+
 
 
     return_dict = {"batch_betweenness_tracker": batch_betweenness_tracker, 'origins': origin_gdf.loc[processed_origins]}
@@ -799,6 +801,7 @@ class Logger():
         )
         self.betweenness_record = None
         self.log(f"SIMULATION STARTED: VERSION: {__version__}, RELEASE DATEL {__release_date__}")
+        self.log(f"Dependencies: Geopandas:{gpd.__version__}, Shapely:{shp.__version__}, Pandas:{pd.__version__}, Numpy:{np.__version__}, NetworkX:{nx.__version__}")
 
     def log(self, event: str, pairing: pd.Series = None):
         time = datetime.now()
@@ -845,8 +848,8 @@ class Logger():
 
         if self.betweenness_record is None:
             self.betweenness_record = shaqra.layers['streets'].gdf.copy(deep=True)
-
-        pairing_folder = self.output_folder + f"{pairing['Flow_Name']}_O({pairing['Origin_Name']})_D({pairing['Destination_Name']})\\"
+        
+        pairing_folder = os.path.join(self.output_folder, f"{pairing['Flow_Name']}_O({pairing['Origin_Name']})_D({pairing['Destination_Name']})")
         Path(pairing_folder).mkdir(parents=True, exist_ok=True)
 
         street_gdf = shaqra.layers["streets"].gdf
@@ -892,32 +895,33 @@ class Logger():
                     {'gdf': destination_joined[['geometry']], 'color': [255, 0, 100]},
                 ],
                 basemap=False,
-                save_as=pairing_folder + "flow_map.html"
+                save_as=os.path.join(pairing_folder, "flow_map.html")
             )
 
         if save_flow_geoJSON:
-            self.betweenness_record.to_file(pairing_folder + "betweenness_record_so_far.geoJSON", driver="GeoJSON",  engine='pyogrio')
+            self.betweenness_record.to_file(os.path.join(pairing_folder, "betweenness_record_so_far.geoJSON"), driver="GeoJSON",  engine='pyogrio')
+
         if save_flow_csv:
-            self.betweenness_record.to_csv(pairing_folder + "betweenness_record_so_far.csv")
+            self.betweenness_record.to_csv(os.path.join(pairing_folder, "betweenness_record_so_far.csv"))
 
         if save_origin_geoJSON:
             save_origin = shaqra.layers[pairing["Origin_Name"]].gdf.join(origin_gdf.set_index("source_id").drop(columns=['geometry']))
-            save_origin.to_file(f'{pairing_folder}origin_record_({pairing["Origin_Name"]}).geoJSON', driver="GeoJSON",  engine='pyogrio')
+            save_origin.to_file(os.path.join(f'{pairing_folder}', f'origin_record_({pairing["Origin_Name"]}).geoJSON'), driver="GeoJSON",  engine='pyogrio')
 
         if save_origin_csv: 
             save_origin = shaqra.layers[pairing["Origin_Name"]].gdf.join(origin_gdf.set_index("source_id").drop(columns=['geometry']))
-            save_origin.to_csv(f'{pairing_folder}origin_record_({pairing["Origin_Name"]}).csv')
+            save_origin.to_csv(os.path.join(f'{pairing_folder}', f'origin_record_({pairing["Origin_Name"]}).csv'))
 
-        self.log_df.to_csv(pairing_folder + "time_log.csv")
+        self.log_df.to_csv(os.path.join(pairing_folder + "time_log.csv"))
 
         self.log("Output saved", pairing)
 
     def simulation_end(
             self,
         ):
-        self.log_df.to_csv(self.output_folder + "time_log.csv")
-        self.betweenness_record.to_file(self.output_folder + "betweenness_record.geoJSON", driver="GeoJSON",  engine='pyogrio')
-        self.betweenness_record.to_csv(self.output_folder + "betweenness_record.csv")
+        self.log_df.to_csv(os.path.join(self.output_folder, "time_log.csv"))
+        self.betweenness_record.to_file(os.path.join(self.output_folder, "betweenness_record.geoJSON"), driver="GeoJSON",  engine='pyogrio')
+        self.betweenness_record.to_csv(os.path.join(self.output_folder, "betweenness_record.csv"))
 
         self.log("Simulation Output saved: ALL DONE")
 
@@ -933,21 +937,21 @@ def betweenness_flow_simulation(
         raise ValueError("parameter 'city_name' needs to be specified")
 
     if data_folder is None:
-        data_folder = "Cities\\"+city_name+"\\Data\\"
+        data_folder = os.path.join("Cities", city_name, "Data")
     if output_folder is None:
         start_time = datetime.now()
-        output_folder = f"Cities\\{city_name}\\Simulations\\{start_time.year}-{start_time.month:02d}-{start_time.day:02d} {start_time.hour:02d}-{start_time.minute:02d}\\ "
+        output_folder = os.path.join("Cities", f"{city_name}", "Simulations", f"{start_time.year}-{start_time.month:02d}-{start_time.day:02d} {start_time.hour:02d}-{start_time.minute:02d}")
 
     logger=Logger(output_folder)
 
-    pairings = pd.read_csv(data_folder + pairings_file)
+    pairings = pd.read_csv(os.path.join(data_folder, pairings_file))
 
     # Shaqra is a town in Saudi Arabia. this name would be used to reference a generic place that we're running a simulation for
     shaqra = Zonal()
 
     shaqra.load_layer(
         layer_name='streets',
-        file_path=data_folder +  pairings.at[0, "Network_File"]
+        file_path=os.path.join(data_folder,  pairings.at[0, "Network_File"])
     )
 
     logger.log(f"Network FIle Loaded, Projection: {shaqra.layers['streets'].gdf.crs}")
@@ -974,14 +978,14 @@ def betweenness_flow_simulation(
         if pairing["Origin_Name"] not in shaqra.layers:
             shaqra.load_layer(
                 layer_name=pairing["Origin_Name"],
-                file_path=data_folder + pairing["Origin_File"]
+                file_path=os.path.join(data_folder, pairing["Origin_File"])
             )
             logger.log(f"{pairing['Origin_Name']} file {pairing['Origin_File']} Loaded, Projection: {shaqra.layers[pairing['Origin_Name']].gdf.crs}", pairing)
 
         if pairing["Destination_Name"] not in shaqra.layers:
             shaqra.load_layer(
                 layer_name=pairing["Destination_Name"],
-                file_path=data_folder + pairing["Destination_File"]
+                file_path=os.path.join(data_folder, pairing["Destination_File"])
             )
             logger.log(f"{pairing['Destination_Name']} file {pairing['Destination_File']} Loaded, Projection: {shaqra.layers[pairing['Destination_Name']].gdf.crs}", pairing)
 

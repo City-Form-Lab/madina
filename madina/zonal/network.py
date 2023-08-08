@@ -145,6 +145,8 @@ class Network:
             chain_distances = [self.nodes.at[node, "weight_to_end"] for node in neigoboring_nodes]
 
             #a small epselon perturbation is added to each node whenits weight is 0, or subtracted if the weight is segment_weight (this happens when nodes snap to an end of a segment. This epselon error ensure the node is inside the chain.)
+            #chain_distances = [(0.0000001*(weight_sec+1)) if weight == 0 else weight for weight_sec, weight in enumerate(chain_distances)]
+            #chain_distances = [segment_weight - (0.0000001*(weight_sec+1)) if weight == segment_weight else weight for weight_sec, weight in enumerate(chain_distances)]
             chain_distances = [0.0000001 if weight == 0 else weight for weight in chain_distances]
             chain_distances = [segment_weight - 0.0000001 if weight == segment_weight else weight for weight in chain_distances]
 
@@ -183,7 +185,7 @@ class Network:
             return
 
         if len(graph.adj[node_idx]) != 2:
-            print(f"attempting to remove a node {node_idx = } that's not degree 2, adjacent to: {graph.adj[node_idx]}")
+            #print(f"attempting to remove a node {node_idx = } that's not degree 2, adjacent to: {graph.adj[node_idx]}")
             return
 
         neighbors = list(graph.adj[node_idx])
