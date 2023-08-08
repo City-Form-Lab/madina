@@ -321,7 +321,9 @@ def bfs_path_edges_many_targets_iterative(
     q = deque([])
     # for neighbor in list(graph.neighbors(o_idx)):
     # q.append(([], o_idx, list(d_idxs.keys()), 0))
-    q.appendleft(([o_idx], set(),  o_idx, list(d_idxs.keys()), 0))
+    #q.appendleft(([o_idx], set(),  o_idx, list(d_idxs.keys()), 0))
+    q.append(([o_idx], set(),  o_idx, list(d_idxs.keys()), 0))
+
 
     while q:
         visited, edges, source, targets_remaining, current_weight = q.pop()
@@ -357,7 +359,8 @@ def bfs_path_edges_many_targets_iterative(
             if len(neighbor_targets_remaining) == 0:
                 continue
 
-            q.appendleft((visited + [neighbor], neighbor_edges, neighbor, neighbor_targets_remaining, neighbor_current_weight))
+            #q.appendleft((visited + [neighbor], neighbor_edges, neighbor, neighbor_targets_remaining, neighbor_current_weight))
+            q.append((visited + [neighbor], neighbor_edges, neighbor, neighbor_targets_remaining, neighbor_current_weight))
     return path_edges, distances
 
 
