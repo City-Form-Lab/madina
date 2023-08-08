@@ -12,6 +12,7 @@ import numpy as np
 import networkx as nx
 import pandas as pd
 import geopandas as gpd
+import psutil
 
 from datetime import datetime
 from pathlib import Path
@@ -397,6 +398,7 @@ def one_betweenness_2(
         return_dict["retained_d_idxs"] = retain_d_idxs
     return return_dict
 
+
 def betweenness_exposure(
         self: Zonal,
         core_index=None,
@@ -441,6 +443,11 @@ def betweenness_exposure(
 
     processed_origins = []
     while True:
+
+        # force to wait for available memory so processes don't cause memory clogging
+        while psutil.virtual_memory()[2] > 90.0:
+            time.sleep(1)
+        
         origin_idx = origin_queue.get()
         if origin_idx == "done":
             origin_queue.task_done()
@@ -707,7 +714,7 @@ def paralell_betweenness_exposure(
             start = time.time()
             while not all([future.done() for future in execution_results]):
                 time.sleep(0.5)
-                print (f"Time spent: {round(time.time()-start):,}s\t [{max(origins.shape[0] - origin_queue.qsize(), 0)} of {origins.shape[0]}] origins {max(origins.shape[0] - origin_queue.qsize(), 0)/origins.shape[0] * 100:4.2f}%",  end='\r')
+                print (f"Time spent: {round(time.time()-start):,}s [Done {max(origins.shape[0] - origin_queue.qsize(), 0)} of {origins.shape[0]} origins ({max(origins.shape[0] - origin_queue.qsize(), 0)/origins.shape[0] * 100:4.2f}%)]",  end='\r')
 
                 
 

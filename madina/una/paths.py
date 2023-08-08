@@ -322,10 +322,13 @@ def bfs_path_edges_many_targets_iterative(
     # for neighbor in list(graph.neighbors(o_idx)):
     # q.append(([], o_idx, list(d_idxs.keys()), 0))
     #q.appendleft(([o_idx], set(),  o_idx, list(d_idxs.keys()), 0))
+
+    # TODO: switch visited to set
     q.append(([o_idx], set(),  o_idx, list(d_idxs.keys()), 0))
 
 
     while q:
+
         visited, edges, source, targets_remaining, current_weight = q.pop()
         scope_neighbors = [neighbor for neighbor in list(o_graph.neighbors(source)) if neighbor in od_scope]
 
@@ -342,6 +345,7 @@ def bfs_path_edges_many_targets_iterative(
 
             spent_weight = edge_data["weight"]
             neighbor_current_weight =  current_weight + spent_weight + turn_cost
+            # TODO switch to set
             neighbor_targets_remaining = []
 
             #neighbor_targets_remaining = []
