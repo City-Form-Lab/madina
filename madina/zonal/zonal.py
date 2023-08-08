@@ -22,7 +22,7 @@ import time
 
 
 __version__ = '0.0.2'
-__release_date__ = '2023-08-06'
+__release_date__ = '2023-08-08'
 
 
 class Zonal:
