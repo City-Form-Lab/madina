@@ -444,8 +444,8 @@ def betweenness_exposure(
     processed_origins = []
     while True:
 
-        # force to wait for available memory so processes don't cause memory clogging
-        while psutil.virtual_memory()[2] > 90.0:
+        # force to wait for at least 2.4GB of available memory, and %15 of memory is available so processes don't cause memory clogging
+        while (psutil.virtual_memory()[1] /(1024 ** 3) < 2.4) and (psutil.virtual_memory()[2]) < 85.0:
             time.sleep(1)
         
         origin_idx = origin_queue.get()
@@ -507,8 +507,6 @@ def betweenness_exposure(
             )
         
         origin_weight = origin_gdf.at[origin_idx, origin_weight_attribute]
-
-
 
         if closest_destination:
             # just use the closest destination.
@@ -633,6 +631,8 @@ def betweenness_exposure(
         #origins.at[origin_idx, 'path_generation_time'] = path_generation_time
         #origins.at[origin_idx, 'betweenness_processing_time'] = time.time() - start
 
+        del path_edges, weights, d_idxs
+        del path_detour_penalties, d_path_weights, path_probabilities, path_decays, destination_path_probabilies, betweennes_contributions
         origin_queue.task_done()
     print(f"core {core_index} done.")
 
@@ -714,7 +714,7 @@ def paralell_betweenness_exposure(
             start = time.time()
             while not all([future.done() for future in execution_results]):
                 time.sleep(0.5)
-                print (f"Time spent: {round(time.time()-start):,}s [Done {max(origins.shape[0] - origin_queue.qsize(), 0)} of {origins.shape[0]} origins ({max(origins.shape[0] - origin_queue.qsize(), 0)/origins.shape[0] * 100:4.2f}%)]",  end='\r')
+                print (f"Time spent: {round(time.time()-start):,}s [Done {max(origins.shape[0] - origin_queue.qsize(), 0):,} of {origins.shape[0]:,} origins ({max(origins.shape[0] - origin_queue.qsize(), 0)/origins.shape[0] * 100:4.2f}%)]",  end='\r')
 
                 
 
@@ -1034,9 +1034,6 @@ def betweenness_flow_simulation(
 
         logger.log("Betweenness estimated.", pairing)
         logger.pairing_end(shaqra, pairing)
-
-        if pairing_idx == 2:
-            break
     logger.simulation_end()
     return 
 

@@ -324,7 +324,7 @@ def bfs_path_edges_many_targets_iterative(
     #q.appendleft(([o_idx], set(),  o_idx, list(d_idxs.keys()), 0))
 
     # TODO: switch visited to set
-    q.append(([o_idx], set(),  o_idx, list(d_idxs.keys()), 0))
+    q.append(([o_idx], [],  o_idx, list(d_idxs.keys()), 0))
 
 
     while q:
@@ -338,8 +338,7 @@ def bfs_path_edges_many_targets_iterative(
 
             turn_cost = 0
             edge_data = o_graph.edges[(source, neighbor)]
-            neighbor_edges = edges.copy()
-            neighbor_edges.add(edge_data["id"])
+            neighbor_edges = edges + [edge_data["id"]]
             if turn_penalty and len(visited) >= 2:
                 turn_cost = turn_penalty_value(network, visited[-2], source, neighbor)
 
