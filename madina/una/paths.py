@@ -304,12 +304,12 @@ def bfs_path_edges_many_targets_iterative(
 
     # queue initialization
     q = deque([])
-    #q.append(([o_idx], [],  o_idx, 0))
-    q.append(([o_idx], [], [],  o_idx, 0))
+    q.append(([o_idx], [],  o_idx, 0))
+    #q.append(([o_idx], [], [],  o_idx, 0))
 
     while q:
-        #visited, edges, source, current_weight = q.pop()
-        visited, visited_targets, edges, source, current_weight = q.pop()
+        visited, edges, source, current_weight = q.pop()
+        #visited, visited_targets, edges, source, current_weight = q.pop()
 
         scope_neighbors = set(o_graph.neighbors(source)).intersection(od_scope)
 
@@ -327,26 +327,27 @@ def bfs_path_edges_many_targets_iterative(
             neighbor_current_weight =  current_weight + edge_data["weight"] + turn_cost
             ## create a list of edges visited, avoid adding an edge twice (when passing a destination, two segments have the same edg id for instance)
             neighbor_edges = edges.copy() if edge_id in edges else edges + [edge_id]
-            #neighnor_edges = np.array(edges) if edge_id in edges else np.append(edges, edge_id)
+            # neighbor_edges = np.array(edges) if edge_id in edges else np.append(edges, edge_id)
 
-            neighbor_visited_targets = visited_targets.copy()
+            #neighbor_visited_targets = visited_targets.copy()
 
             if (neighbor in d_idxs)  and (neighbor_current_weight - d_idxs[neighbor] <=  0.00001):
                 path_edges[neighbor].append(neighbor_edges)
                 distances[neighbor].append(neighbor_current_weight)
-                neighbor_visited_targets.append(neighbor)
+                #neighbor_visited_targets.append(neighbor)
 
             neighbor_visited = visited + [neighbor]
+            #neighbor_visited = np.append(visited, neighbor)
             #neighbor_targets_remaining = [target for target in distance_matrix[neighbor] if (target not in neighbor_visited) and (distance_matrix[neighbor][target] + neighbor_current_weight - d_idxs[target] <=  0.00001)]
             #neighbor_targets_remaining = [target for target in distance_matrix[neighbor] if (target not in neighbor_visited_targets) and (distance_matrix[neighbor][target] + neighbor_current_weight - d_idxs[target] <=  0.00001)]
 
 
             for target in distance_matrix[neighbor]:
-                #if (target not in neighbor_visited) and (distance_matrix[neighbor][target] + neighbor_current_weight - d_idxs[target] <=  0.00001):
-                if (target not in neighbor_visited_targets) and (distance_matrix[neighbor][target] + neighbor_current_weight - d_idxs[target] <=  0.00001):
+                if (target not in neighbor_visited) and (distance_matrix[neighbor][target] + neighbor_current_weight - d_idxs[target] <=  0.00001):
+                #if (target not in neighbor_visited_targets) and (distance_matrix[neighbor][target] + neighbor_current_weight - d_idxs[target] <=  0.00001):
                     # there is at least one more reachible unvisited target: keep going
-                    #q.append((neighbor_visited, neighbor_edges, neighbor, neighbor_current_weight))
-                    q.append((neighbor_visited, neighbor_visited_targets, neighbor_edges, neighbor, neighbor_current_weight))
+                    q.append((neighbor_visited, neighbor_edges, neighbor, neighbor_current_weight))
+                    #q.append((neighbor_visited, neighbor_visited_targets, neighbor_edges, neighbor, neighbor_current_weight))
 
                     break
             #otherwise, continue

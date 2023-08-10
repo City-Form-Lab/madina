@@ -8,6 +8,7 @@ import time
 import concurrent
 from concurrent import futures
 import multiprocessing as mp
+import sys
 from sys import getsizeof
 import numpy as np
 import networkx as nx
@@ -451,7 +452,7 @@ def betweenness_exposure(
             available_gb_memory = psutil.virtual_memory()[1] /(1024 ** 3)
             available_memory_pct = 100-psutil.virtual_memory()[2]
             while (available_gb_memory < 2.4) or (available_memory_pct < 15.0):
-                time.sleep(5)
+                time.sleep(20)
                 available_gb_memory = psutil.virtual_memory()[1] /(1024 ** 3)
                 available_memory_pct = 100-psutil.virtual_memory()[2]
         except Exception as ex:
@@ -466,8 +467,8 @@ def betweenness_exposure(
                 break
             processed_origins.append(origin_idx)
 
-            if len(processed_origins)%100 == 0:
-                print (f'DOne {len(processed_origins)}')
+            #if len(processed_origins)%100 == 0:
+                #print (f'DOne {len(processed_origins)}')
                 
             if origin_gdf.at[origin_idx, "weight"] == 0:
                 continue
@@ -853,8 +854,10 @@ class Logger():
                 "event": pd.Series(dtype="string")
             }
         )
+
         self.betweenness_record = None
         self.log(f"SIMULATION STARTED: VERSION: {__version__}, RELEASE DATEL {__release_date__}")
+        self.log(f"{sys.version}")
         self.log(f"Dependencies: Geopandas:{gpd.__version__}, Shapely:{shp.__version__}, Pandas:{pd.__version__}, Numpy:{np.__version__}, NetworkX:{nx.__version__}")
 
     def log(self, event: str, pairing: pd.Series = None):
@@ -966,7 +969,7 @@ class Logger():
             save_origin = shaqra.layers[pairing["Origin_Name"]].gdf.join(origin_gdf.set_index("source_id").drop(columns=['geometry']))
             save_origin.to_csv(os.path.join(f'{pairing_folder}', f'origin_record_({pairing["Origin_Name"]}).csv'))
 
-        self.log_df.to_csv(os.path.join(pairing_folder + "time_log.csv"))
+        self.log_df.to_csv(os.path.join(pairing_folder, "time_log.csv"))
 
         self.log("Output saved", pairing)
 
