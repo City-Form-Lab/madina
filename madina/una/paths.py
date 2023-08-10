@@ -2,7 +2,7 @@ import math
 from collections import deque
 from heapq import heappush, heappop
 from madina.zonal.network import Network
-    
+import numpy as np
 
 
 
@@ -98,6 +98,7 @@ def bfs_subgraph_generation(
     if (len(d_idxs) == 0):
         return od_scope, distance_matrix, d_idxs
 
+    distance_matrix = {node_idx:{} for node_idx in o_scope.keys()}
 
 
     impossible_high_cost = max(d_idxs.values()) + 1
@@ -106,10 +107,12 @@ def bfs_subgraph_generation(
         # nonlocal node_is_new_trailhead, trailblazer_early_termination
         # node_is_new_trailhead += 1
         for trailblazer_node in o_scope_paths[source][-2::-1]:
-            if trailblazer_node in distance_matrix[d_idx]:
+            #if trailblazer_node in distance_matrix[d_idx]:
+            if d_idx in distance_matrix[trailblazer_node]:
                 # trailblazer_early_termination += 1
                 break
-            distance_matrix[d_idx][trailblazer_node] = impossible_high_cost
+            #distance_matrix[d_idx][trailblazer_node] = impossible_high_cost
+            distance_matrix[trailblazer_node][d_idx] = impossible_high_cost
 
     best_weight_node_queue = []
     # TODO: using a hashable priority queue might be something to try... as it offer a fast way to update a
@@ -132,27 +135,31 @@ def bfs_subgraph_generation(
             # else:
             #    scope_neighbors = [neighbor for neighbor in list(graph.neighbors(node)) if neighbor in od_scope]
             for neighbor in list(o_graph.neighbors(node)):
+                if neighbor not in o_scope:
+                    # print(f"{node = }\tOut of O Scope termination")
+                    # new_node_out_of_scope += 1
+                    continue
                 # queue_neighbor_counter += 1
                 # TODO: consolidate the addinion of 'weight'
                 spent_weight =  o_graph.edges[(node, neighbor)]["weight"] + weight
-                if neighbor in distance_matrix[d_idx]:  # equivalent to if in seen
-                    if spent_weight >= distance_matrix[d_idx][neighbor]:
+                #if neighbor in distance_matrix[d_idx]:  # equivalent to if in seen
+                if d_idx in distance_matrix[neighbor]:
+                    #if spent_weight >= distance_matrix[d_idx][neighbor]:
+                    if spent_weight >= distance_matrix[neighbor][d_idx]:
                         # current_is_better += 1
                         # print(f"{node = }\t{d_scope = }\tAlready found shorter distance termination")
                         continue
                     else:
                         # better_update_difference_total += distance_matrix[d_idx][neighbor] - (spent_weight + weight)
-                        distance_matrix[d_idx][neighbor] = spent_weight 
+                        #distance_matrix[d_idx][neighbor] = spent_weight
+                        distance_matrix[neighbor][d_idx] = spent_weight 
                         # found_better_updates += 1
                         # TODO: Here, we also don't need to recheck. just insert to the heap again..
                         heappush(best_weight_node_queue, (spent_weight, neighbor))
                         continue
                 # found_new_node += 1
 
-                if neighbor not in o_scope:
-                    # print(f"{node = }\tOut of O Scope termination")
-                    # new_node_out_of_scope += 1
-                    continue
+
 
                 if (spent_weight + o_scope[neighbor]) > (o_scope[d_idx] * detour_ratio):
                     # new_node_cant_reach_o += 1
@@ -167,7 +174,8 @@ def bfs_subgraph_generation(
                     continue
                 # new_node_passed_filters += 1
                 # TODO: Mark as trailhead, and also insert o_shortest route elements into distance_matrix[d_idx]
-                distance_matrix[d_idx][neighbor] = spent_weight
+                #distance_matrix[d_idx][neighbor] = spent_weight
+                distance_matrix[neighbor][d_idx] = spent_weight
 
                 if neighbor == o_idx:
                     # new_node_is_o_idx += 1
@@ -177,9 +185,11 @@ def bfs_subgraph_generation(
                 trailblazer(d_idx, neighbor)
                 heappush(best_weight_node_queue, (spent_weight, neighbor))
 
-    for d_idx in distance_matrix.keys():
-        od_scope = od_scope.union(set(distance_matrix[d_idx].keys()))
+    #for d_idx in distance_matrix.keys():
+    #    od_scope = od_scope.union(set(distance_matrix[d_idx].keys()))
+    
 
+    od_scope = {node_idx for node_idx in distance_matrix.keys() if  len(distance_matrix[node_idx]) > 0}
 
     return od_scope, distance_matrix, d_idxs
 
@@ -285,89 +295,71 @@ def bfs_path_edges_many_targets_iterative(
     turn_penalty=False,
     od_scope=None
     ):
-    # TODO: implement this as an iterative function with a queue
 
-    # remove any unnecccisary checks for other algorithms and methods. fucus on network distance.
-
-    # Think if there is value for the queue to be priority (Neighbor with most dests, neighbor
-    # with least neighbors, ...)
-
-    # Rethink the remaining dests list. should it be additive (no copy?) or should
-    # it copy previous and be subtractvd?
-
-    # collect stats about checks so they're ordered effeciently (hard checks first to narrow funnel.)
-
-    # check if using a generic graph is okay instead of needing to implement a
-    # narrow graph in previous step. This cuts many previous preprocessinggs.
-
-    # see if checks could be moved to earlier steps, or brought from previous steps. for less checks.
-
-    # TODO: for turn implementation, make sure to account for turns whenever distance_matrix is updated. Twice in the current version.
-    #  better yet, make sure to include turns as part of spent_weight so it runs through all the termination conditions.
-
-    # TODO: should this also be done in graph generation to limit scope? prob yes but need to keep track of predecessor.
-
-    allowed_path_nodes = set(network.street_node_ids)
-    allowed_path_nodes.add(o_idx)
-    #paths = {}
     path_edges = {}
     distances = {}
     for d_idx in d_idxs:
-        #paths[d_idx] = []
-        path_edges[d_idx] = []
-        distances[d_idx] = []
+        path_edges[d_idx] = deque([])#[]
+        distances[d_idx] = deque([])#[]
 
     # queue initialization
     q = deque([])
-    # for neighbor in list(graph.neighbors(o_idx)):
-    # q.append(([], o_idx, list(d_idxs.keys()), 0))
-    #q.appendleft(([o_idx], set(),  o_idx, list(d_idxs.keys()), 0))
-
-    # TODO: switch visited to set
-    q.append(([o_idx], [],  o_idx, list(d_idxs.keys()), 0))
-
+    #q.append(([o_idx], [],  o_idx, 0))
+    q.append(([o_idx], [], [],  o_idx, 0))
 
     while q:
+        #visited, edges, source, current_weight = q.pop()
+        visited, visited_targets, edges, source, current_weight = q.pop()
 
-        visited, edges, source, targets_remaining, current_weight = q.pop()
-        scope_neighbors = [neighbor for neighbor in list(o_graph.neighbors(source)) if neighbor in od_scope]
+        scope_neighbors = set(o_graph.neighbors(source)).intersection(od_scope)
 
         for neighbor in scope_neighbors:
             if neighbor in visited:
                 continue
 
             turn_cost = 0
-            edge_data = o_graph.edges[(source, neighbor)]
-            neighbor_edges = edges + [edge_data["id"]]
             if turn_penalty and len(visited) >= 2:
                 turn_cost = turn_penalty_value(network, visited[-2], source, neighbor)
 
-            spent_weight = edge_data["weight"]
-            neighbor_current_weight =  current_weight + spent_weight + turn_cost
-            # TODO switch to set
-            neighbor_targets_remaining = []
+            edge_data = o_graph.edges[(source, neighbor)]
+            edge_id = edge_data["id"] 
 
-            #neighbor_targets_remaining = []
-            #for target in targets_remaining:
-            #    if neighbor in distance_matrix[target]:
-            #        # equality with small tolerance to allow numerical error in case there was no detour ratio
-            #        if distance_matrix[target][neighbor] + neighbor_current_weight - d_idxs[target] <=  0.00001:
-            #            neighbor_targets_remaining.append(target)
-            neighbor_targets_remaining = [target for target in targets_remaining if (neighbor in distance_matrix[target]) and (distance_matrix[target][neighbor] + neighbor_current_weight - d_idxs[target] <=  0.00001)]
-            if neighbor in neighbor_targets_remaining:
+            neighbor_current_weight =  current_weight + edge_data["weight"] + turn_cost
+            ## create a list of edges visited, avoid adding an edge twice (when passing a destination, two segments have the same edg id for instance)
+            neighbor_edges = edges.copy() if edge_id in edges else edges + [edge_id]
+            #neighnor_edges = np.array(edges) if edge_id in edges else np.append(edges, edge_id)
+
+            neighbor_visited_targets = visited_targets.copy()
+
+            if (neighbor in d_idxs)  and (neighbor_current_weight - d_idxs[neighbor] <=  0.00001):
                 path_edges[neighbor].append(neighbor_edges)
                 distances[neighbor].append(neighbor_current_weight)
-                neighbor_targets_remaining.remove(neighbor)
+                neighbor_visited_targets.append(neighbor)
 
-            if len(neighbor_targets_remaining) == 0:
-                continue
+            neighbor_visited = visited + [neighbor]
+            #neighbor_targets_remaining = [target for target in distance_matrix[neighbor] if (target not in neighbor_visited) and (distance_matrix[neighbor][target] + neighbor_current_weight - d_idxs[target] <=  0.00001)]
+            #neighbor_targets_remaining = [target for target in distance_matrix[neighbor] if (target not in neighbor_visited_targets) and (distance_matrix[neighbor][target] + neighbor_current_weight - d_idxs[target] <=  0.00001)]
 
-            #q.appendleft((visited + [neighbor], neighbor_edges, neighbor, neighbor_targets_remaining, neighbor_current_weight))
-            q.append((visited + [neighbor], neighbor_edges, neighbor, neighbor_targets_remaining, neighbor_current_weight))
+
+            for target in distance_matrix[neighbor]:
+                #if (target not in neighbor_visited) and (distance_matrix[neighbor][target] + neighbor_current_weight - d_idxs[target] <=  0.00001):
+                if (target not in neighbor_visited_targets) and (distance_matrix[neighbor][target] + neighbor_current_weight - d_idxs[target] <=  0.00001):
+                    # there is at least one more reachible unvisited target: keep going
+                    #q.append((neighbor_visited, neighbor_edges, neighbor, neighbor_current_weight))
+                    q.append((neighbor_visited, neighbor_visited_targets, neighbor_edges, neighbor, neighbor_current_weight))
+
+                    break
+            #otherwise, continue
+
+
+
+            #if len(neighbor_targets_remaining) == 0:
+            #    continue
+
+
+
+
     return path_edges, distances
-
-
-
 
 def turn_o_scope(
     network: Network,
