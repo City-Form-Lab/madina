@@ -452,7 +452,7 @@ def betweenness_exposure(
             available_gb_memory = psutil.virtual_memory()[1] /(1024 ** 3)
             available_memory_pct = 100-psutil.virtual_memory()[2]
             while (available_gb_memory < 2.4) or (available_memory_pct < 15.0):
-                time.sleep(20)
+                time.sleep(30)
                 available_gb_memory = psutil.virtual_memory()[1] /(1024 ** 3)
                 available_memory_pct = 100-psutil.virtual_memory()[2]
         except Exception as ex:
@@ -473,6 +473,7 @@ def betweenness_exposure(
             if origin_gdf.at[origin_idx, "weight"] == 0:
                 continue
 
+            origin_edge = node_gdf.at[origin_idx, "nearest_edge_id"]
         except Exception as ex:
             print (f"CORE: {core_index}: [betweenness_exposure]: error aquiring new origin, returning what was processed so far {len(processed_origins) = }")
             return {"batch_betweenness_tracker": batch_betweenness_tracker, 'origins': origin_gdf.loc[processed_origins]}
@@ -563,6 +564,8 @@ def betweenness_exposure(
         for destination_idx, this_destination_probability in zip(destination_ids, destination_probabilities):
 
             try: 
+                od_edges = set([node_gdf.at[destination_idx, "nearest_edge_id"], origin_edge])
+
                 # skip this destination if cannot find paths from origin
                 if len(weights[destination_idx]) == 0:
                     #print(f"o:{origin_idx}\td:{destination_idx} have no paths...")
@@ -618,7 +621,8 @@ def betweenness_exposure(
 
             try:
                 for this_path_edges, betweennes_contribution in zip (path_edges[destination_idx], betweennes_contributions): 
-                    for edge_id in this_path_edges:
+                    #for edge_id in this_path_edges:
+                    for edge_id in set(this_path_edges).union(od_edges):
                         batch_betweenness_tracker[edge_id] += betweennes_contribution
             except:
                 print (f"CORE: {core_index}: [betweenness_exposure]: error assigning path probabilities to segment {origin_idx = } destination {destination_idx = }, {len(processed_origins) = }, skipping destination")

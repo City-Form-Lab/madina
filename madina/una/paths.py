@@ -321,20 +321,25 @@ def bfs_path_edges_many_targets_iterative(
             if turn_penalty and len(visited) >= 2:
                 turn_cost = turn_penalty_value(network, visited[-2], source, neighbor)
 
-            edge_data = o_graph.edges[(source, neighbor)]
-            edge_id = edge_data["id"] 
 
+
+            edge_data = o_graph.edges[(source, neighbor)]
             neighbor_current_weight =  current_weight + edge_data["weight"] + turn_cost
             ## create a list of edges visited, avoid adding an edge twice (when passing a destination, two segments have the same edg id for instance)
-            neighbor_edges = edges.copy() if edge_id in edges else edges + [edge_id]
+            
+
+
             # neighbor_edges = np.array(edges) if edge_id in edges else np.append(edges, edge_id)
 
             #neighbor_visited_targets = visited_targets.copy()
 
             if (neighbor in d_idxs)  and (neighbor_current_weight - d_idxs[neighbor] <=  0.00001):
-                path_edges[neighbor].append(neighbor_edges)
+                #path_edges[neighbor].append(neighbor_edges)
+                path_edges[neighbor].append(edges)
                 distances[neighbor].append(neighbor_current_weight)
                 #neighbor_visited_targets.append(neighbor)
+
+
 
             neighbor_visited = visited + [neighbor]
             #neighbor_visited = np.append(visited, neighbor)
@@ -346,6 +351,15 @@ def bfs_path_edges_many_targets_iterative(
                 if (target not in neighbor_visited) and (distance_matrix[neighbor][target] + neighbor_current_weight - d_idxs[target] <=  0.00001):
                 #if (target not in neighbor_visited_targets) and (distance_matrix[neighbor][target] + neighbor_current_weight - d_idxs[target] <=  0.00001):
                     # there is at least one more reachible unvisited target: keep going
+
+                    ## handling edghe ids after appending resuls makes us ignore storing destination segment, reducing memory footpring.
+                    if len(visited) == 1:
+                        neighbor_edges = []
+                    #igniring the first segment, storing it is memory overhead
+                    else:
+                        edge_id = edge_data["id"] 
+                        neighbor_edges = edges.copy() if edge_id in edges else edges + [edge_id]
+                    
                     q.append((neighbor_visited, neighbor_edges, neighbor, neighbor_current_weight))
                     #q.append((neighbor_visited, neighbor_visited_targets, neighbor_edges, neighbor, neighbor_current_weight))
 
