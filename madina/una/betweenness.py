@@ -25,7 +25,7 @@ import shapely.geometry as geo
 
 from madina.zonal.zonal import Zonal, __version__, __release_date__
 from madina.zonal.network import Network
-from madina.una.paths import path_generator, turn_o_scope
+from madina.una.paths import path_generator, turn_o_scope, bfs_path_edges_many_targets_iterative, bfs_subgraph_generation, wandering_messenger
 
 def parallel_betweenness(network: Network,
                          search_radius=1000,
@@ -446,34 +446,21 @@ def betweenness_exposure(
 
     processed_origins = []
     while True:
-
-        try:
-            # force to wait for at least 2.4GB of available memory, and %15 of memory is available so processes don't cause memory clogging
-            available_gb_memory = psutil.virtual_memory()[1] /(1024 ** 3)
-            available_memory_pct = 100-psutil.virtual_memory()[2]
-            while (available_gb_memory < 2.4) or (available_memory_pct < 15.0):
-                time.sleep(30)
-                available_gb_memory = psutil.virtual_memory()[1] /(1024 ** 3)
-                available_memory_pct = 100-psutil.virtual_memory()[2]
-        except Exception as ex:
-            print (f"CORE: {core_index}: [betweenness_exposure]: error with memory management mechanisim, skipping memory management and getting a new task")
-
-
         try: 
             origin_idx = origin_queue.get()
-            start = time.time()
+            #start = time.time()
             if origin_idx == "done":
                 origin_queue.task_done()
                 break
             processed_origins.append(origin_idx)
 
-            #if len(processed_origins)%100 == 0:
-                #print (f'DOne {len(processed_origins)}')
+            if len(processed_origins)%100 == 0:
+                print (f'DOne {len(processed_origins)}')
                 
             if origin_gdf.at[origin_idx, "weight"] == 0:
                 continue
 
-            origin_edge = node_gdf.at[origin_idx, "nearest_edge_id"]
+            #origin_edge = node_gdf.at[origin_idx, "nearest_edge_id"]
         except Exception as ex:
             print (f"CORE: {core_index}: [betweenness_exposure]: error aquiring new origin, returning what was processed so far {len(processed_origins) = }")
             return {"batch_betweenness_tracker": batch_betweenness_tracker, 'origins': origin_gdf.loc[processed_origins]}
@@ -485,15 +472,27 @@ def betweenness_exposure(
 
         # finding all destination reachible from this origin within a search radius, and finding all paths within a derour ration from the shortest path
         try:
-            path_edges, weights, d_idxs = path_generator(
-                self.network,
-                origin_idx,
+            #path_edges, weights, d_idxs = path_generator(
+            #    self.network,
+            #    origin_idx,
+            #    search_radius=search_radius,
+            #    detour_ratio=detour_ratio,
+            #    turn_penalty=turn_penalty
+            #)
+            o_graph = self.network.d_graph
+            self.network.add_node_to_graph(o_graph, origin_idx)
+
+            d_idxs, o_scope, o_scope_paths = turn_o_scope(
+                network=self.network,
+                o_idx=origin_idx,
                 search_radius=search_radius,
                 detour_ratio=detour_ratio,
-                turn_penalty=turn_penalty
+                turn_penalty=turn_penalty,
+                o_graph=o_graph,
+                return_paths=True
             )
-            path_generation_time = time.time() - start
-            start = time.time()
+            #path_generation_time = time.time() - start
+            #start = time.time()
         except Exception as ex:
             print (f"CORE: {core_index}: [betweenness_exposure]: error generating path for origin {origin_idx = }, {len(processed_origins) = }")
             print(str(ex))
@@ -533,7 +532,6 @@ def betweenness_exposure(
             continue
 
         try:
-
             if closest_destination:
                 # just use the closest destination.
                 destination_probabilities = [1]
@@ -561,73 +559,132 @@ def betweenness_exposure(
 
 
 
-        for destination_idx, this_destination_probability in zip(destination_ids, destination_probabilities):
-
-            try: 
-                od_edges = set([node_gdf.at[destination_idx, "nearest_edge_id"], origin_edge])
-
-                # skip this destination if cannot find paths from origin
-                if len(weights[destination_idx]) == 0:
-                    #print(f"o:{origin_idx}\td:{destination_idx} have no paths...")
-                    continue
-
-                # finding path probabilities given different penalty settings.
-                path_detour_penalties = np.ones(len(weights[destination_idx]))
-                d_path_weights = np.array(weights[destination_idx])
-
-                # This fixes numerical issues  when path length = 0
-                d_path_weights[d_path_weights < 0.01] = 0.01
+        ## hERE IS A GOOD PLACE TO CHUNK PATHS. 
+        max_chunck_size = 250
+        if len(d_idxs) > max_chunck_size:
+            d_chuncks = np.array_split(list(d_idxs), np.ceil(len(d_idxs)/max_chunck_size))
+            d_idx_chuncks = [{destination:d_idxs[destination] for destination in destination_chunck} for destination_chunck in d_chuncks]
+            destination_probabilities_ckuncks = np.array_split(destination_probabilities, np.ceil(len(destination_probabilities)/max_chunck_size))
+        else:
+            d_idx_chuncks =  [d_idxs]
+            destination_probabilities_ckuncks = [destination_probabilities]
 
 
-                if path_detour_penalty == "exponent":
-                    path_detour_penalties = 1.0 / pow(np.e, beta * d_path_weights)
-                elif path_detour_penalty == "power":
-                    path_detour_penalties = 1.0 / (d_path_weights ** 2.0)
-                elif path_detour_penalty == "equal":
-                    path_detour_penalties = np.ones(len(d_path_weights))
-                else:
-                    raise ValueError(
-                        f"parameter 'path_detour_penalty' should be one of ['equal', 'power', 'exponent'], '{path_detour_penalty}' was given")
-                path_probabilities = path_detour_penalties / sum(path_detour_penalties)
-
-
-                # FInding path decays.
-                path_decays = np.ones(len(weights[destination_idx]))
-                if decay:
-                    if decay_method == "exponent":
-                        path_decays = 1.0 / pow(np.e, beta * d_path_weights)
-                    elif decay_method == "power":
-                        ## WAENING: Path weight cannot be zero!! handle properly.
-                        path_decays = 1.0 / (d_path_weights ** 2.0)
-                    else:
-                        raise ValueError(
-                            f"parameter 'decay_method' should be one of ['exponent', 'power'], '{decay_method}' was given")
-
-
-                # Betweenness attributes
-                destination_path_probabilies = path_probabilities * this_destination_probability
-                betweennes_contributions = destination_path_probabilies * path_decays * origin_weight
-            
-                if len(d_path_weights[d_path_weights > (d_idxs[destination_idx] * detour_ratio)+ 0.01]) > 0:
-                    print(f"SOme paths exceeded allowed tolerance: {d_path_weights[d_path_weights > (d_idxs[destination_idx] * detour_ratio)+ 0.01]}")
-
+        for chunck_num, (d_idx_chunck, destination_probabilities_ckunck) in enumerate(zip(d_idx_chuncks, destination_probabilities_ckuncks)): 
+            try:
+                # force to wait for at least 2.4GB of available memory, and %15 of memory is available so processes don't cause memory clogging
+                available_gb_memory = psutil.virtual_memory()[1] /(1024 ** 3)
+                available_memory_pct = 100-psutil.virtual_memory()[2]
+                while (available_gb_memory < 2.4) or (available_memory_pct < 15.0):
+                    time.sleep(30)
+                    available_gb_memory = psutil.virtual_memory()[1] /(1024 ** 3)
+                    available_memory_pct = 100-psutil.virtual_memory()[2]
             except Exception as ex:
-                print (f"CORE: {core_index}: [betweenness_exposure]: error generating path probabilities, decay,  betweenness for origin {origin_idx = } destination {destination_idx = }, {len(processed_origins) = }, skipping destination")
-                continue
-                
-            
-            #origin_mean_path_length  = (destination_path_probabilies * d_path_weights).sum()
-            #probable_travel_distance = (destination_path_probabilies * path_decays * d_path_weights).sum()
+                print (f"CORE: {core_index}: [betweenness_exposure]: error with memory management mechanisim, skipping memory management and getting a new task")
 
             try:
-                for this_path_edges, betweennes_contribution in zip (path_edges[destination_idx], betweennes_contributions): 
-                    #for edge_id in this_path_edges:
-                    for edge_id in set(this_path_edges).union(od_edges):
-                        batch_betweenness_tracker[edge_id] += betweennes_contribution
-            except:
-                print (f"CORE: {core_index}: [betweenness_exposure]: error assigning path probabilities to segment {origin_idx = } destination {destination_idx = }, {len(processed_origins) = }, skipping destination")
+                ## get subgraph and and path..
+                d_idxs, o_scope, o_scope_paths
+                d_idx_chunck
+                scope_nodes, distance_matrix, _ = bfs_subgraph_generation(
+                    o_idx=origin_idx,
+                    detour_ratio=detour_ratio,
+                    o_graph=o_graph,
+                    d_idxs=d_idx_chunck,
+                    o_scope=o_scope,
+                    o_scope_paths=o_scope_paths,
+                )
+
+                d_allowed_distances = {}
+                for d_idx in d_idx_chunck.keys():
+                    d_allowed_distances[d_idx] =  d_idx_chunck[d_idx] * detour_ratio
+
+                path_edges, weights = wandering_messenger(
+                #path_edges, weights = bfs_path_edges_many_targets_iterative(
+                    network=self.network,
+                    o_graph=o_graph,
+                    o_idx=origin_idx,
+                    d_idxs=d_allowed_distances,
+                    distance_matrix=distance_matrix,
+                    turn_penalty=turn_penalty,
+                    od_scope=scope_nodes
+                )
+            except Exception as ex:
+                print (f"CORE: {core_index}: [betweenness_exposure]: error generating paths for origin {origin_idx = } destination chunck {chunck_num = }, {len(processed_origins) = }, skipping destination")
+                import traceback
+                traceback.print_exc()
+
                 continue
+
+            for destination_idx, this_destination_probability in zip(d_idx_chunck.keys(), destination_probabilities_ckunck):
+            #origin_mean_path_length  = (destination_path_probabilies * d_path_weights).sum()
+            #probable_travel_distance = (destination_path_probabilies * path_decays * d_path_weights).sum()
+                try: 
+                    #od_edges = set([node_gdf.at[destination_idx, "nearest_edge_id"], origin_edge])
+
+                    # skip this destination if cannot find paths from origin
+                    if len(weights[destination_idx]) == 0:
+                        #print(f"o:{origin_idx}\td:{destination_idx} have no paths...")
+                        continue
+
+                    # finding path probabilities given different penalty settings.
+                    path_detour_penalties = np.ones(len(weights[destination_idx]))
+                    d_path_weights = np.array(weights[destination_idx])
+
+                    # This fixes numerical issues  when path length = 0
+                    d_path_weights[d_path_weights < 0.01] = 0.01
+
+
+                    if path_detour_penalty == "exponent":
+                        path_detour_penalties = 1.0 / pow(np.e, beta * d_path_weights)
+                    elif path_detour_penalty == "power":
+                        path_detour_penalties = 1.0 / (d_path_weights ** 2.0)
+                    elif path_detour_penalty == "equal":
+                        path_detour_penalties = np.ones(len(d_path_weights))
+                    else:
+                        raise ValueError(
+                            f"parameter 'path_detour_penalty' should be one of ['equal', 'power', 'exponent'], '{path_detour_penalty}' was given")
+                    path_probabilities = path_detour_penalties / sum(path_detour_penalties)
+
+
+                    # FInding path decays.
+                    path_decays = np.ones(len(weights[destination_idx]))
+                    if decay:
+                        if decay_method == "exponent":
+                            path_decays = 1.0 / pow(np.e, beta * d_path_weights)
+                        elif decay_method == "power":
+                            ## WAENING: Path weight cannot be zero!! handle properly.
+                            path_decays = 1.0 / (d_path_weights ** 2.0)
+                        else:
+                            raise ValueError(
+                                f"parameter 'decay_method' should be one of ['exponent', 'power'], '{decay_method}' was given")
+
+
+                    # Betweenness attributes
+                    destination_path_probabilies = path_probabilities * this_destination_probability
+                    betweennes_contributions = destination_path_probabilies * path_decays * origin_weight
                 
+                    if len(d_path_weights[d_path_weights > (d_idxs[destination_idx] * detour_ratio)+ 0.01]) > 0:
+                        print(f"SOme paths exceeded allowed tolerance: {d_path_weights[d_path_weights > (d_idxs[destination_idx] * detour_ratio)+ 0.01]}")
+
+                except Exception as ex:
+                    print (f"CORE: {core_index}: [betweenness_exposure]: error generating path probabilities, decay,  betweenness for origin {origin_idx = } destination {destination_idx = }, {len(processed_origins) = }, skipping destination")
+                    continue
+
+
+                try:
+                    for this_path_edges, betweennes_contribution in zip (path_edges[destination_idx], betweennes_contributions): 
+                        for edge_id in this_path_edges:
+                        #for edge_id in set(this_path_edges).union(od_edges):
+                            batch_betweenness_tracker[edge_id] += betweennes_contribution
+                except:
+                    print (f"CORE: {core_index}: [betweenness_exposure]: error assigning path betweenness to segment {origin_idx = } destination {destination_idx = }, {len(processed_origins) = }, skipping destination")
+                    continue
+            
+            #done chunck, since there is chance to pause for memory, delete this ieration's variables
+            del path_edges, weights
+            del path_detour_penalties, d_path_weights, path_probabilities, path_decays, destination_path_probabilies, betweennes_contributions
+
         '''
                     if path_exposure_attribute is not None:
                         segment_weight = edge_gdf.at[int(edge_id), 'weight']
@@ -690,11 +747,10 @@ def betweenness_exposure(
             continue
 
         try:
-            del path_edges, weights, d_idxs
-            del path_detour_penalties, d_path_weights, path_probabilities, path_decays, destination_path_probabilies, betweennes_contributions
+            self.network.remove_node_to_graph(o_graph, origin_idx)
             origin_queue.task_done()
         except:
-            print (f"CORE: {core_index}: [betweenness_exposure]: error marking task done and deleting large variables {origin_idx = } , {len(processed_origins) = }, proceeding to next task")
+            print (f"CORE: {core_index}: [betweenness_exposure]: error marking task done {origin_idx = } , {len(processed_origins) = }, proceeding to next task")
             continue
 
 

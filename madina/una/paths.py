@@ -283,6 +283,69 @@ def bfs_paths_many_targets_iterative(
     return paths, distances
 
 
+def wandering_messenger(
+    network: Network,
+    o_graph,
+    o_idx,
+    d_idxs,
+    distance_matrix=None,
+    turn_penalty=False,
+    od_scope=None
+):
+    path_edges = {d_idx: deque([]) for d_idx in d_idxs}
+    distances = {d_idx: deque([]) for d_idx in d_idxs}
+
+    path_diary =  [(o_idx, [], [], [], 0)] # (source, source_visited, source_visited_targets, source_visited_edges, source_weight)
+    path_tree = deque([(o_neighbor, 0) for o_neighbor in set(o_graph.neighbors(o_idx)).intersection(od_scope)])
+
+    while path_tree:
+        node, source_diary_page = path_tree.pop()
+        (source, source_visited, source_visited_targets, source_visited_edges, source_weight) = path_diary[source_diary_page]
+
+        turn_cost = turn_penalty_value(network, source_visited[-1], source, node) if (turn_penalty and len(source_visited) > 0) else 0
+
+        edge_data = o_graph.edges[(source, node)]
+        node_weight =  source_weight + edge_data["weight"] + turn_cost
+        node_edge_id = edge_data["id"] 
+
+        node_visited_edges = source_visited_edges if node_edge_id in source_visited_edges else source_visited_edges+[node_edge_id]
+
+        if (node in d_idxs)  and (node_weight - d_idxs[node] <=  0.00001):
+            path_edges[node].append(node_visited_edges) #### ADD PATH (of step ids...) TO TREE if compression is needed.
+            distances[node].append(node_weight) ##### For step ID node, NEIGHBOR AS NODE ATTRIBUTE FOR neighbor. ALSO, Neighbor ID Aattribute
+            node_visited_targets = source_visited_targets + [node]
+        else:
+            node_visited_targets = source_visited_targets
+
+
+
+        for target in distance_matrix[node]:
+            if (target not in node_visited_targets) and (distance_matrix[node][target] + node_weight - d_idxs[target] <=  0.00001):
+                # there is at least one more reachible unvisited target: keep going
+                # update diary here
+                
+                node_visited = source_visited + [source]
+                # (source, source_visited, source_visited_targets, source_visited_edges, source_weight)
+                path_diary  =  path_diary[:source_diary_page + 1] + [(node, node_visited, node_visited_targets, node_visited_edges, node_weight)]
+
+                    
+                ## This intersection could have been eliminated if the o_graph was as tight as the o_scope
+                for neighbor in set(o_graph.neighbors(node)).intersection(od_scope):
+                    if neighbor not in node_visited:
+                        path_tree.append((neighbor, source_diary_page + 1))
+                
+
+                
+                break # break after finding one remaining target and doing neibor queuing
+
+
+
+
+
+    return path_edges, distances
+
+
+
 
 
 
