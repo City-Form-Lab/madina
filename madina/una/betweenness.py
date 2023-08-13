@@ -402,6 +402,32 @@ def one_betweenness_2(
         return_dict["retained_d_idxs"] = retain_d_idxs
     return return_dict
 
+
+import math
+import numpy as np
+def clockwiseangle_and_distance(origin, point):
+    refvec = [0, 1]
+    # Vector between point and the origin: v = p - o
+    vector = [point[0]-origin[0], point[1]-origin[1]]
+    # Length of vector: ||v||
+    lenvector = math.hypot(vector[0], vector[1])
+    # If length is zero there is no angle
+    if lenvector == 0:
+        return 0
+    # Normalize vector: v/||v||
+    normalized = [vector[0]/lenvector, vector[1]/lenvector]
+    dotprod  = normalized[0]*refvec[0] + normalized[1]*refvec[1]     # x1*x2 + y1*y2
+    diffprod = refvec[1]*normalized[0] - refvec[0]*normalized[1]     # x1*y2 - y1*x2
+    angle = math.atan2(diffprod, dotprod)
+    # Negative angles represent counter-clockwise angles so we need to subtract them 
+    # from 2*pi (360 degrees)
+    if angle < 0:
+        return 2*math.pi+angle
+    # I return first the angle because that's the primary sorting criterium
+    # but if two vectors have the same angle then the shorter distance should come first.
+    return angle
+
+import random
 def betweenness_exposure(
         self: Zonal,
         core_index=None,
@@ -441,7 +467,6 @@ def betweenness_exposure(
         }
         if path_exposure_attribute is not None:
             path_record['mean_path_exposure'] = []
-
 
 
     processed_origins = []
@@ -536,40 +561,55 @@ def betweenness_exposure(
                 # just use the closest destination.
                 destination_probabilities = [1]
                 destination_ids = [min(d_idxs, key=d_idxs.get)]
+                eligible_destinations = {destination_ids[0]:d_idxs[destination_ids[0]]}
             else:
                 # probability of choosing a destination using the huff model
                 eligible_destinations = d_idxs if destniation_cap is None else dict(list(d_idxs.items())[:destniation_cap])
                 destination_ids = list(eligible_destinations.keys())
-                eligible_destinations_weight = np.array([float(node_gdf.at[idx, 'weight']) for idx in destination_ids], dtype=np.float64)
-                #eligible_destinations_shortest_distance = np.array([min(weights[d]) for d in eligible_destinations.keys()])
-                eligible_destinations_shortest_distance = np.array(list(eligible_destinations.values()))
+                #max_chunck_size = 100
+                chunking_method = 'cocentric-chunks' # self.network.chunking_method
+                max_chunck_size =  100 # self.network.max_chunck_size
+                if len(destination_ids) > max_chunck_size:
+                    if chunking_method == 'no_chunking':
+                        pass # do nothing
+                    elif chunking_method == 'cocentric-chunks':
+                        pass # do nothing
+                    elif chunking_method == 'random_chunks':
+                        random.shuffle(destination_ids)  # shuffled in place..
+                        eligible_destinations = {destination:eligible_destinations[destination] for destination in destination_ids}
+                        pass
+                    elif chunking_method == 'pizza_chunks':
+                        destinations = node_gdf.loc[destination_ids]
+                        origin_geom = node_gdf.at[origin_idx,'geometry'].coords
+                        destinations['angle'] = destinations['geometry'].apply(lambda x: clockwiseangle_and_distance([origin_geom[0][0], origin_geom[0][1]], [x.coords[0][0], x.coords[0][1]]))
 
-                # look for ways to do this in numpy 
+                        destination_ids = list(destinations.sort_values('angle').index)
+                        eligible_destinations = {destination:eligible_destinations[destination] for destination in destination_ids}
+
+                eligible_destinations_weight = np.array([float(node_gdf.at[idx, 'weight']) for idx in destination_ids], dtype=np.float64)
+                eligible_destinations_shortest_distance = np.array(list(eligible_destinations.values()))
                 destination_gravities = eligible_destinations_weight / pow(np.e, (beta * eligible_destinations_shortest_distance))
 
                 if sum(destination_gravities) == 0:
-                    # This covers a case where all reachible destinations have a weight of 0, if so, no need to generate trips
-                    continue
+                    continue # This covers a case where all reachible destinations have a weight of 0, if so, no need to generate trips
+
                 destination_probabilities = np.array(destination_gravities) / sum(destination_gravities)
         except Exception as ex:
             print (f"CORE: {core_index}: [betweenness_exposure]: error generating destination probabilities for origin {origin_idx = }, {len(processed_origins) = }, {eligible_destinations_weight = }, {eligible_destinations_shortest_distance = },  {destination_gravities = }, skipping origin")
             import traceback
             traceback.print_exc()
             continue
-
-
-
-        ## hERE IS A GOOD PLACE TO CHUNK PATHS. 
-        max_chunck_size = 250
-        if len(d_idxs) > max_chunck_size:
-            d_chuncks = np.array_split(list(d_idxs), np.ceil(len(d_idxs)/max_chunck_size))
-            d_idx_chuncks = [{destination:d_idxs[destination] for destination in destination_chunck} for destination_chunck in d_chuncks]
-            destination_probabilities_ckuncks = np.array_split(destination_probabilities, np.ceil(len(destination_probabilities)/max_chunck_size))
+        
+        if len(destination_ids) > max_chunck_size and chunking_method in ['cocentric-chunks', 'random_chunks', 'pizza_chunks']:
+            num_chunks = np.ceil(len(destination_ids)/max_chunck_size)
+            d_chuncks = np.array_split(destination_ids, num_chunks)
+            d_idx_chuncks = [{destination:eligible_destinations[destination] for destination in destination_chunck} for destination_chunck in d_chuncks]
+            destination_probabilities_ckuncks = np.array_split(destination_probabilities, num_chunks)
         else:
-            d_idx_chuncks =  [d_idxs]
+            d_idx_chuncks =  [eligible_destinations]
             destination_probabilities_ckuncks = [destination_probabilities]
 
-
+        #print (f"after chuncks {d_idx_chuncks = }\t{destination_probabilities_ckuncks  =}")
         for chunck_num, (d_idx_chunck, destination_probabilities_ckunck) in enumerate(zip(d_idx_chuncks, destination_probabilities_ckuncks)): 
             try:
                 # force to wait for at least 2.4GB of available memory, and %15 of memory is available so processes don't cause memory clogging
@@ -586,13 +626,12 @@ def betweenness_exposure(
 
             try:
                 ## get subgraph and and path..
-                d_idxs, o_scope, o_scope_paths
-                d_idx_chunck
                 scope_nodes, distance_matrix, _ = bfs_subgraph_generation(
                     o_idx=origin_idx,
                     detour_ratio=detour_ratio,
                     o_graph=o_graph,
-                    d_idxs=d_idx_chunck,
+                    d_idxs=dict(sorted(d_idx_chunck.items(), key=lambda item: item[1])),  ## Seems like this expects destinations to be sorted by distance?
+                    #d_idxs=d_idx_chunck,
                     o_scope=o_scope,
                     o_scope_paths=o_scope_paths,
                 )
@@ -666,8 +705,8 @@ def betweenness_exposure(
                     destination_path_probabilies = path_probabilities * this_destination_probability
                     betweennes_contributions = destination_path_probabilies * path_decays * origin_weight
                 
-                    if len(d_path_weights[d_path_weights > (d_idxs[destination_idx] * detour_ratio)+ 0.01]) > 0:
-                        print(f"SOme paths exceeded allowed tolerance: {d_path_weights[d_path_weights > (d_idxs[destination_idx] * detour_ratio)+ 0.01]}")
+                    if len(d_path_weights[d_path_weights > (d_idx_chunck[destination_idx] * detour_ratio)+ 0.01]) > 0:
+                        print(f"SOme paths exceeded allowed tolerance: {d_path_weights[d_path_weights > (d_idx_chunck[destination_idx] * detour_ratio)+ 0.01]}")
 
                 except Exception as ex:
                     print (f"CORE: {core_index}: [betweenness_exposure]: error generating path probabilities, decay,  betweenness for origin {origin_idx = } destination {destination_idx = }, {len(processed_origins) = }, skipping destination")
@@ -790,8 +829,10 @@ def paralell_betweenness_exposure(
     num_procs = num_cores  # psutil.cpu_count(logical=logical)
 
     #TODO: investigate if this randomazation is causing any issues downsream.
+    #print (f"before 'sample' {origins.index = }")
     origins = origins.sample(frac=1)
     origins.index = origins.index.astype("int")
+    #print (f"after 'sample' {origins.index = }")
 
 
 
@@ -803,10 +844,15 @@ def paralell_betweenness_exposure(
         with mp.Manager() as manager:
             #create aNDfill queue
             origin_queue = manager.Queue()
-            for o_idx in origins.index:
+            origin_list = list(origins.index)
+            #random.shuffle(origin_list)     #randomize origins in queue so queue won't face bursts of easy origins and bursts of hard ones based on 
+            #print (f"after 'shuffle' {origin_list = }")
+
+            for o_idx in origin_list:
                 origin_queue.put(o_idx)
             for core_index in range(num_cores):
                 origin_queue.put("done")
+
 
 
             execution_results = []
@@ -834,6 +880,8 @@ def paralell_betweenness_exposure(
             while not all([future.done() for future in execution_results]):
                 time.sleep(0.5)
                 print (f"Time spent: {round(time.time()-start):,}s [Done {max(origins.shape[0] - origin_queue.qsize(), 0):,} of {origins.shape[0]:,} origins ({max(origins.shape[0] - origin_queue.qsize(), 0)/origins.shape[0] * 100:4.2f}%)]",  end='\r')
+                for future in [f for f in execution_results if f.done() and (f.exception() is not None)]: # if a process is done and have an exception, raise it
+                    raise (future.exception())
 
                 
 
