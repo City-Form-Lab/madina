@@ -282,7 +282,7 @@ def bfs_paths_many_targets_iterative(
             q.appendleft((visited + [neighbor], neighbor, neighbor_targets_remaining, neighbor_current_weight))
     return paths, distances
 
-
+import networkx as nx
 def wandering_messenger(
     network: Network,
     o_graph,
@@ -292,11 +292,15 @@ def wandering_messenger(
     turn_penalty=False,
     od_scope=None
 ):
+    graph_dict = nx.to_dict_of_dicts(o_graph, nodelist=od_scope)
+
     path_edges = {d_idx: deque([]) for d_idx in d_idxs}
     distances = {d_idx: deque([]) for d_idx in d_idxs}
 
     path_diary =  [(o_idx, [], [], [], 0)] # (source, source_visited, source_visited_targets, source_visited_edges, source_weight)
-    path_tree = deque([(o_neighbor, 0) for o_neighbor in set(o_graph.neighbors(o_idx)).intersection(od_scope)])
+    #path_tree = deque([(o_neighbor, 0) for o_neighbor in set(o_graph.neighbors(o_idx)).intersection(od_scope)])
+    path_tree = deque([(o_neighbor, 0) for o_neighbor in graph_dict[o_idx]])
+
 
     while path_tree:
         node, source_diary_page = path_tree.pop()
@@ -304,9 +308,12 @@ def wandering_messenger(
 
         turn_cost = turn_penalty_value(network, source_visited[-1], source, node) if (turn_penalty and len(source_visited) > 0) else 0
 
-        edge_data = o_graph.edges[(source, node)]
-        node_weight =  source_weight + edge_data["weight"] + turn_cost
-        node_edge_id = edge_data["id"] 
+        #edge_data = o_graph.edges[(source, node)]
+        #node_weight =  source_weight + edge_data["weight"] + turn_cost
+        #node_edge_id = edge_data["id"] 
+        node_weight =  source_weight + graph_dict[source][node]["weight"] + turn_cost
+        node_edge_id = graph_dict[source][node]["id"] 
+
 
         node_visited_edges = source_visited_edges if node_edge_id in source_visited_edges else source_visited_edges+[node_edge_id]
 
@@ -330,7 +337,8 @@ def wandering_messenger(
 
                     
                 ## This intersection could have been eliminated if the o_graph was as tight as the o_scope
-                for neighbor in set(o_graph.neighbors(node)).intersection(od_scope):
+                #for neighbor in set(o_graph.neighbors(node)).intersection(od_scope):
+                for neighbor in graph_dict[node]:
                     if neighbor not in node_visited:
                         path_tree.append((neighbor, source_diary_page + 1))
                 

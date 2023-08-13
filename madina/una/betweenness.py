@@ -454,8 +454,8 @@ def betweenness_exposure(
                 break
             processed_origins.append(origin_idx)
 
-            if len(processed_origins)%100 == 0:
-                print (f'DOne {len(processed_origins)}')
+            #if len(processed_origins)%100 == 0:
+                #print (f'DOne {len(processed_origins)}')
                 
             if origin_gdf.at[origin_idx, "weight"] == 0:
                 continue
@@ -573,12 +573,14 @@ def betweenness_exposure(
         for chunck_num, (d_idx_chunck, destination_probabilities_ckunck) in enumerate(zip(d_idx_chuncks, destination_probabilities_ckuncks)): 
             try:
                 # force to wait for at least 2.4GB of available memory, and %15 of memory is available so processes don't cause memory clogging
-                available_gb_memory = psutil.virtual_memory()[1] /(1024 ** 3)
-                available_memory_pct = 100-psutil.virtual_memory()[2]
+                memory_data = psutil.virtual_memory()
+                available_gb_memory = memory_data[1] /(1024 ** 3)
+                available_memory_pct = 100-memory_data[2]
                 while (available_gb_memory < 2.4) or (available_memory_pct < 15.0):
                     time.sleep(30)
-                    available_gb_memory = psutil.virtual_memory()[1] /(1024 ** 3)
-                    available_memory_pct = 100-psutil.virtual_memory()[2]
+                    memory_data = psutil.virtual_memory()
+                    available_gb_memory = memory_data[1] /(1024 ** 3)
+                    available_memory_pct = 100-memory_data[2]
             except Exception as ex:
                 print (f"CORE: {core_index}: [betweenness_exposure]: error with memory management mechanisim, skipping memory management and getting a new task")
 
