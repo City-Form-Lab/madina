@@ -298,7 +298,6 @@ def wandering_messenger(
     distances = {d_idx: deque([]) for d_idx in d_idxs}
 
     path_diary =  [(o_idx, [], [], [], 0)] # (source, source_visited, source_visited_targets, source_visited_edges, source_weight)
-    #path_tree = deque([(o_neighbor, 0) for o_neighbor in set(o_graph.neighbors(o_idx)).intersection(od_scope)])
     path_tree = deque([(o_neighbor, 0) for o_neighbor in graph_dict[o_idx]])
 
 
@@ -308,12 +307,8 @@ def wandering_messenger(
 
         turn_cost = turn_penalty_value(network, source_visited[-1], source, node) if (turn_penalty and len(source_visited) > 0) else 0
 
-        #edge_data = o_graph.edges[(source, node)]
-        #node_weight =  source_weight + edge_data["weight"] + turn_cost
-        #node_edge_id = edge_data["id"] 
         node_weight =  source_weight + graph_dict[source][node]["weight"] + turn_cost
         node_edge_id = graph_dict[source][node]["id"] 
-
 
         node_visited_edges = source_visited_edges if node_edge_id in source_visited_edges else source_visited_edges+[node_edge_id]
 
@@ -324,8 +319,6 @@ def wandering_messenger(
         else:
             node_visited_targets = source_visited_targets
 
-
-
         for target in distance_matrix[node]:
             if (target not in node_visited_targets) and (distance_matrix[node][target] + node_weight - d_idxs[target] <=  0.00001):
                 # there is at least one more reachible unvisited target: keep going
@@ -334,15 +327,12 @@ def wandering_messenger(
                 node_visited = source_visited + [source]
                 # (source, source_visited, source_visited_targets, source_visited_edges, source_weight)
                 path_diary  =  path_diary[:source_diary_page + 1] + [(node, node_visited, node_visited_targets, node_visited_edges, node_weight)]
-
                     
                 ## This intersection could have been eliminated if the o_graph was as tight as the o_scope
                 #for neighbor in set(o_graph.neighbors(node)).intersection(od_scope):
                 for neighbor in graph_dict[node]:
                     if neighbor not in node_visited:
                         path_tree.append((neighbor, source_diary_page + 1))
-                
-
                 
                 break # break after finding one remaining target and doing neibor queuing
 

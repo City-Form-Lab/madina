@@ -31,7 +31,7 @@ def _prepare_geometry(geometry_gdf: GeoDataFrame):
     polygon_idxs = geometry_gdf[geometry_gdf["geometry"].geom_type ==
                                 "Polygon"].index
     geometry_gdf.loc[polygon_idxs,
-                     "geometry"] = geometry_gdf.loc[polygon_idxs, "geometry"].exterior
+                     "geometry"] = geometry_gdf.loc[polygon_idxs, "geometry"].boundary
 
     # if geometry is multilineString, convert to lineString
     if (geometry_gdf["geometry"].geom_type ==  'MultiLineString').all()\

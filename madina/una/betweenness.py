@@ -448,6 +448,7 @@ def betweenness_exposure(
     edge_gdf = self.network.edges
     node_gdf = self.network.nodes
     origin_gdf=node_gdf[node_gdf['type'] == 'origin']
+    node_gdf['chunck_time'] = pd.Series(dtype=object)
 
     # TODO: convert this to a numby array to simplify calculations.
     batch_betweenness_tracker = {edge_id: 0.0 for edge_id in list(edge_gdf.index)}
@@ -473,7 +474,7 @@ def betweenness_exposure(
     while True:
         try: 
             origin_idx = origin_queue.get()
-            #start = time.time()
+            start = time.time()
             if origin_idx == "done":
                 origin_queue.task_done()
                 break
@@ -516,8 +517,8 @@ def betweenness_exposure(
                 o_graph=o_graph,
                 return_paths=True
             )
-            #path_generation_time = time.time() - start
-            #start = time.time()
+            destination_discovery_time = time.time() - start
+            start = time.time()
         except Exception as ex:
             print (f"CORE: {core_index}: [betweenness_exposure]: error generating path for origin {origin_idx = }, {len(processed_origins) = }")
             print(str(ex))
@@ -567,8 +568,10 @@ def betweenness_exposure(
                 eligible_destinations = d_idxs if destniation_cap is None else dict(list(d_idxs.items())[:destniation_cap])
                 destination_ids = list(eligible_destinations.keys())
                 #max_chunck_size = 100
-                chunking_method = 'cocentric-chunks' # self.network.chunking_method
-                max_chunck_size =  100 # self.network.max_chunck_size
+                #chunking_method = 'cocentric-chunks'
+                chunking_method = self.network.chunking_method
+                # max_chunck_size = 100 
+                max_chunck_size = self.network.max_chunck_size
                 if len(destination_ids) > max_chunck_size:
                     if chunking_method == 'no_chunking':
                         pass # do nothing
@@ -600,7 +603,7 @@ def betweenness_exposure(
             traceback.print_exc()
             continue
         
-        if len(destination_ids) > max_chunck_size and chunking_method in ['cocentric-chunks', 'random_chunks', 'pizza_chunks']:
+        if (len(destination_ids) > max_chunck_size) and (chunking_method in ['cocentric-chunks', 'random_chunks', 'pizza_chunks']):
             num_chunks = np.ceil(len(destination_ids)/max_chunck_size)
             d_chuncks = np.array_split(destination_ids, num_chunks)
             d_idx_chuncks = [{destination:eligible_destinations[destination] for destination in destination_chunck} for destination_chunck in d_chuncks]
@@ -610,13 +613,19 @@ def betweenness_exposure(
             destination_probabilities_ckuncks = [destination_probabilities]
 
         #print (f"after chuncks {d_idx_chuncks = }\t{destination_probabilities_ckuncks  =}")
+        destination_prep_time = time.time() - start
+        memory_stalls = 0
+        chunck_time = []
         for chunck_num, (d_idx_chunck, destination_probabilities_ckunck) in enumerate(zip(d_idx_chuncks, destination_probabilities_ckuncks)): 
             try:
+                start = time.time()
                 # force to wait for at least 2.4GB of available memory, and %15 of memory is available so processes don't cause memory clogging
                 memory_data = psutil.virtual_memory()
                 available_gb_memory = memory_data[1] /(1024 ** 3)
                 available_memory_pct = 100-memory_data[2]
+
                 while (available_gb_memory < 2.4) or (available_memory_pct < 15.0):
+                    memory_stalls +=1
                     time.sleep(30)
                     memory_data = psutil.virtual_memory()
                     available_gb_memory = memory_data[1] /(1024 ** 3)
@@ -721,7 +730,7 @@ def betweenness_exposure(
                 except:
                     print (f"CORE: {core_index}: [betweenness_exposure]: error assigning path betweenness to segment {origin_idx = } destination {destination_idx = }, {len(processed_origins) = }, skipping destination")
                     continue
-            
+            chunck_time.append(time.time()-start)
             #done chunck, since there is chance to pause for memory, delete this ieration's variables
             del path_edges, weights
             del path_detour_penalties, d_path_weights, path_probabilities, path_decays, destination_path_probabilies, betweennes_contributions
@@ -776,15 +785,23 @@ def betweenness_exposure(
         probable_travel_distance = 0
         '''
         try:
-            pass
-            #node_gdf.at[origin_idx, 'reach'] = len(d_idxs)
+            #pass
+            node_gdf.at[origin_idx, 'reach'] = len(d_idxs)
             #node_gdf.at[origin_idx, 'path_count'] = sum([len(dest_paths) for dest_paths in path_edges.values()])
             #node_gdf.at[origin_idx, 'path_segment_count'] = sum([sum([len(path_edges) for path_edges in dest_paths]) for dest_paths in path_edges.values()])
             #node_gdf.at[origin_idx, 'path_segment_memory'] = sum([sum([getsizeof(path_edges) for path_edges in dest_paths]) for dest_paths in path_edges.values()])
-            #node_gdf.at[origin_idx, 'path_generation_time'] = path_generation_time
-            #node_gdf.at[origin_idx, 'betweenness_processing_time'] = time.time() - start
+            node_gdf.at[origin_idx, 'destination_discovery_time'] = destination_discovery_time
+            node_gdf.at[origin_idx, 'destination_prep_time'] = destination_prep_time
+            node_gdf.at[origin_idx, 'path_generation_time'] = sum(chunck_time)
+            node_gdf.at[origin_idx, 'chunck_count'] = len(chunck_time)
+            node_gdf.at[origin_idx, 'chunck_time'] = chunck_time
+            node_gdf.at[origin_idx, 'memory_stalls'] = memory_stalls
+
+            
         except:
             print (f"CORE: {core_index}: [betweenness_exposure]: error collecting origin statistics {origin_idx = } , {len(processed_origins) = }, proceeding to next task")
+            import traceback
+            traceback.print_exc()
             continue
 
         try:
@@ -853,8 +870,6 @@ def paralell_betweenness_exposure(
             for core_index in range(num_cores):
                 origin_queue.put("done")
 
-
-
             execution_results = []
             for core_index in range(num_cores):
                 execution_results.append(executor.submit(
@@ -882,10 +897,8 @@ def paralell_betweenness_exposure(
                 print (f"Time spent: {round(time.time()-start):,}s [Done {max(origins.shape[0] - origin_queue.qsize(), 0):,} of {origins.shape[0]:,} origins ({max(origins.shape[0] - origin_queue.qsize(), 0)/origins.shape[0] * 100:4.2f}%)]",  end='\r')
                 for future in [f for f in execution_results if f.done() and (f.exception() is not None)]: # if a process is done and have an exception, raise it
                     raise (future.exception())
-
-                
-
-            
+           
+   
 
             for result in concurrent.futures.as_completed(execution_results):
                 try:

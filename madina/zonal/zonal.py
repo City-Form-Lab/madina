@@ -21,8 +21,8 @@ import random
 import time
 
 
-__version__ = '0.0.3'
-__release_date__ = '2023-08-10'
+__version__ = '0.0.4'
+__release_date__ = '2023-08-13'
 
 
 class Zonal:
@@ -55,6 +55,7 @@ class Zonal:
         gdf['id'] = range(gdf.shape[0])
         gdf.set_index('id')
         original_crs = gdf.crs
+        gdf = self.color_gdf(gdf)
 
         # perform a standard data cleaning process to ensure compatibility with later processes
         gdf = _prepare_geometry(gdf)
@@ -360,6 +361,7 @@ class Zonal:
         )
         return
     
+    @staticmethod
     def color_gdf(gdf, color_by_attribute=None, color_method=None, color=None):
         """
         A  method to set geometry color
