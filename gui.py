@@ -1,12 +1,9 @@
-from dash import Dash, Input, Output, State, ALL, dcc, html, callback_context, no_update
-from madina.zonal.layer import Layer, Layers
-from madina.zonal.zonal import Zonal
+from dash import Dash, Input, Output, State, ALL, dcc, html, callback_context
+from madina.zonal import Zonal
 import dash_bootstrap_components as dbc
 import dash_deck
 import os
 import json
-
-
 
 INITIAL_CITY = 'Somerville'
 CURRENT_CITY = INITIAL_CITY

@@ -2,7 +2,6 @@ from geopandas import GeoDataFrame
 import numpy as np
 import random
 
-
 DEFAULT_COLORS = {
     "streets": [150, 150, 150],
     "blocks": [100, 100, 100],
@@ -23,18 +22,18 @@ DEFAULT_COLORS = {
     }
 }
 
-def _prepare_geometry(geometry_gdf: GeoDataFrame):
 
+def prepare_geometry(geometry_gdf: GeoDataFrame):
     geometry_gdf = geometry_gdf.copy(deep=True)
 
     # making sure if geometry contains polygons, they are corrected by using the polygon exterior as a line.
     polygon_idxs = geometry_gdf[geometry_gdf["geometry"].geom_type ==
                                 "Polygon"].index
     geometry_gdf.loc[polygon_idxs,
-                     "geometry"] = geometry_gdf.loc[polygon_idxs, "geometry"].boundary
+    "geometry"] = geometry_gdf.loc[polygon_idxs, "geometry"].boundary
 
     # if geometry is multilineString, convert to lineString
-    if (geometry_gdf["geometry"].geom_type ==  'MultiLineString').all()\
+    if (geometry_gdf["geometry"].geom_type == 'MultiLineString').all() \
             and (np.array(list(map(len, geometry_gdf["geometry"].values))) == 1).all():
         geometry_gdf["geometry"] = geometry_gdf["geometry"].apply(lambda x: list(x)[0])
 
@@ -43,10 +42,12 @@ def _prepare_geometry(geometry_gdf: GeoDataFrame):
 
     def _to_2d(x, y, z):
         return tuple(filter(None, [x, y]))
+
     if geometry_gdf.has_z.any():
         geometry_gdf["geometry"] = geometry_gdf["geometry"].apply(
             lambda s: transform(_to_2d, s))
     return geometry_gdf
+
 
 def color_gdf(gdf, by_attribute, method, color_scheme):
     """

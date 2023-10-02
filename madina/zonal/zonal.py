@@ -1,13 +1,12 @@
 # this lets geopandas exclusively use shapely (not pygeos) silences a warning about depreciating pygeos out of geopandas. This is not needed when geopandas 1.0 is released in the future
 import os
+
 os.environ['USE_PYGEOS'] = '0'
 
-from madina.zonal.layer import *
-from madina.zonal.network import Network
-from madina.zonal.network_utils import _node_edge_builder,  _discard_redundant_edges, _split_redundant_edges, _tag_edges, _effecient_node_insertion
-from madina.zonal.zonal_utils import _prepare_geometry, DEFAULT_COLORS
-
-
+from madina.zonal import Network
+from network_utils import _node_edge_builder, _discard_redundant_edges, _split_redundant_edges, _tag_edges, \
+    _effecient_node_insertion
+from madina.zonal import prepare_geometry, DEFAULT_COLORS, Layer, Layers
 
 import warnings
 import geopandas as gpd
@@ -20,9 +19,8 @@ import numpy as np
 import random
 import time
 
-
-__version__ = '0.0.4'
-__release_date__ = '2023-08-13'
+VERSION = '0.0.4'
+RELEASE_DATE = '2023-08-13'
 
 
 class Zonal:
@@ -30,8 +28,8 @@ class Zonal:
     Represents a zonal map with scope 'scope' and projection 'projected_crs'.
     Composed of zonal_layers, which...
     """
-    DEFAULT_PROJECTED_CRS ="EPSG:3857"
-    DEFAULT_GEOGRAPHIC_CRS ="EPSG:4326"
+    DEFAULT_PROJECTED_CRS = "EPSG:3857"
+    DEFAULT_GEOGRAPHIC_CRS = "EPSG:4326"
     DEFAULT_COLORS = DEFAULT_COLORS
 
     def __init__(self, layers: list = None):
@@ -50,19 +48,19 @@ class Zonal:
         gdf = gpd.read_file(
             file_path,
             engine='pyogrio'
-            )
-        
+        )
+
         gdf['id'] = range(gdf.shape[0])
         gdf.set_index('id')
         original_crs = gdf.crs
         gdf = self.color_gdf(gdf)
 
         # perform a standard data cleaning process to ensure compatibility with later processes
-        gdf = _prepare_geometry(gdf)
+        gdf = prepare_geometry(gdf)
 
         layer = Layer(
             layer_name,
-            gdf, 
+            gdf,
             True,
             original_crs,
             file_path
@@ -86,7 +84,7 @@ class Zonal:
 
     def create_street_network(
             self,
-            source_layer: str ="streets",
+            source_layer: str = "streets",
             weight_attribute=None,
             node_snapping_tolerance: Union[int, float] = 0.0,
             prepare_geometry=False,
@@ -95,7 +93,7 @@ class Zonal:
             split_redundant_edges=True,
             turn_threshold_degree=45,
             turn_penalty_amount=30,
-        ) -> None:
+    ) -> None:
         """
         Creates a street network layer from the `source_layer` with the given arguments.
 
@@ -104,13 +102,14 @@ class Zonal:
         """
 
         if source_layer not in self.layers:
-            raise ValueError(f"Source layer {source_layer} not in zonal zonal_layers, available layers are: {self.layers.layers}")
+            raise ValueError(
+                f"Source layer {source_layer} not in zonal zonal_layers, available layers are: {self.layers.layers}")
 
         geometry_gdf = self.layers[source_layer].gdf
 
-        #TODO: consider removing this, as preparing geometry is now a standard precedure when loading a new layer
+        # TODO: consider removing this, as preparing geometry is now a standard precedure when loading a new layer
         if prepare_geometry:
-            geometry_gdf = _prepare_geometry(geometry_gdf)
+            geometry_gdf = prepare_geometry(geometry_gdf)
 
         node_gdf, edge_gdf = _node_edge_builder(
             geometry_gdf,
@@ -119,22 +118,17 @@ class Zonal:
         )
 
         if split_redundant_edges:
-            node_gdf , edge_gdf = _split_redundant_edges(node_gdf ,edge_gdf)
+            node_gdf, edge_gdf = _split_redundant_edges(node_gdf, edge_gdf)
         elif discard_redundant_edges:
             edge_gdf = _discard_redundant_edges(edge_gdf)
-
-
-        
-
 
         if tag_edges:
             edge_gdf = _tag_edges(edge_gdf, tolerance=node_snapping_tolerance)
 
-
         self.network = Network(node_gdf, edge_gdf, turn_threshold_degree, turn_penalty_amount, weight_attribute)
         return
 
-    def insert_node(self, layer_name: str, label: str ="origin", weight_attribute: str = None):
+    def insert_node(self, layer_name: str, label: str = "origin", weight_attribute: str = None):
         """
         Inserts a node into a layer within the `Zonal`.
 
@@ -144,9 +138,10 @@ class Zonal:
         n_node_gdf = self.network.nodes
         n_edge_gdf = self.network.edges
         source_gdf = self.layers[layer_name].gdf
-        inserted_node_gdf = _effecient_node_insertion(n_node_gdf, n_edge_gdf, source_gdf, layer_name=layer_name, label=label, weight_attribute=weight_attribute)
+        inserted_node_gdf = _effecient_node_insertion(n_node_gdf, n_edge_gdf, source_gdf, layer_name=layer_name,
+                                                      label=label, weight_attribute=weight_attribute)
         self.network.nodes = pd.concat([n_node_gdf, inserted_node_gdf])
-        return 
+        return
 
     def create_graph(self, light_graph=True, d_graph=True, od_graph=False):
         """
@@ -231,7 +226,7 @@ class Zonal:
         for layer_number, gdf_dict in enumerate(gdf_list):
             local_gdf = gdf_dict["gdf"].copy(deep=True)
             local_gdf["geometry"] = local_gdf["geometry"].to_crs("EPSG:4326")
-            #print(f"{(time.time()-start)*1000:6.2f}ms\t {layer_number = }, gdf copied")
+            # print(f"{(time.time()-start)*1000:6.2f}ms\t {layer_number = }, gdf copied")
             start = time.time()
 
             radius_attribute = 1
@@ -239,7 +234,7 @@ class Zonal:
                 radius_attribute = gdf_dict["radius"]
                 r_series = local_gdf[radius_attribute]
                 r_series = (r_series - r_series.mean()) / r_series.std()
-                r_series = r_series.apply(lambda x: max(1,x) + 3 if not np.isnan(x) else 0.5)
+                r_series = r_series.apply(lambda x: max(1, x) + 3 if not np.isnan(x) else 0.5)
                 local_gdf[radius_attribute] = r_series
 
             width_attribute = 1
@@ -256,9 +251,10 @@ class Zonal:
                 opacity = 1
 
             if ("color_by_attribute" in gdf_dict) or ("color_method" in gdf_dict) or ("color" in gdf_dict):
-                args = {arg: gdf_dict[arg] for arg in ['color_by_attribute', 'color_method', 'color'] if arg in gdf_dict}
+                args = {arg: gdf_dict[arg] for arg in ['color_by_attribute', 'color_method', 'color'] if
+                        arg in gdf_dict}
                 local_gdf = Zonal.color_gdf(local_gdf, **args)
-                #print (local_gdf['color'])
+                # print (local_gdf['color'])
 
             pdk_layer = pdk.Layer(
                 'GeoJsonLayer',
@@ -274,7 +270,7 @@ class Zonal:
                 pickable=True,
             )
             pdk_layers.append(pdk_layer)
-            #print(f"{(time.time()-start)*1000:6.2f}ms\t {layer_number = }, layer styled and added.")
+            # print(f"{(time.time()-start)*1000:6.2f}ms\t {layer_number = }, layer styled and added.")
             start = time.time()
 
             if "text" in gdf_dict:
@@ -307,7 +303,7 @@ class Zonal:
                     get_alignment_baseline=String("center"),
                 )
                 pdk_layers.append(layer)
-                #print(f"{(time.time()-start)*1000:6.2f}ms\t {layer_number = }, text layer created and added.")
+                # print(f"{(time.time()-start)*1000:6.2f}ms\t {layer_number = }, text layer created and added.")
                 start = time.time()
 
         initial_view_state = pdk.ViewState(
@@ -339,7 +335,7 @@ class Zonal:
                 filename,
                 css_background_color="cornflowerblue"
             )
-        #print(f"{(time.time()-start)*1000:6.2f}ms\t {layer_number = }, map rendered.")
+        # print(f"{(time.time()-start)*1000:6.2f}ms\t {layer_number = }, map rendered.")
         start = time.time()
         return r
 
@@ -360,7 +356,7 @@ class Zonal:
             color=color
         )
         return
-    
+
     @staticmethod
     def color_gdf(gdf, color_by_attribute=None, color_method=None, color=None):
         """
@@ -390,7 +386,6 @@ class Zonal:
             color_method = "single_color"
         elif color is None:
 
-
             # color by attribute ia given, but no color is given..
             if color_method == "single_color":
                 # if color by attribute is given, and color method is single color, this is redundant but just in case:
@@ -404,7 +399,7 @@ class Zonal:
         if color_method == "single_color":
             color_column = [color] * len(gdf)
         elif color_method == "categorical":
-            #color = {"__other__": [255, 255, 255]}
+            # color = {"__other__": [255, 255, 255]}
             color_column = []
             for value in gdf[color_by_attribute]:
                 if value in color.keys():
@@ -414,7 +409,8 @@ class Zonal:
         elif color_method == "gradient":
             cbc = gdf[color_by_attribute]  # color by column
             nc = 255 * (cbc - cbc.min()) / (cbc.max() - cbc.min())  # normalized column
-            color_column = [[255 - v, 0 + v, 0] if not np.isnan(v) else [255, 255, 255] for v in list(nc)]  # convert normalized values to color spectrom.
+            color_column = [[255 - v, 0 + v, 0] if not np.isnan(v) else [255, 255, 255] for v in
+                            list(nc)]  # convert normalized values to color spectrom.
             # TODO: insert color map options here..
         elif color_method == 'quantile':
             scaled_percentile_rank = 255 * gdf[color_by_attribute].rank(pct=True)

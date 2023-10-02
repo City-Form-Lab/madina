@@ -1,8 +1,7 @@
 import numpy as np
 import networkx as nx
 from geopandas import GeoDataFrame
-from madina.zonal.layer import *
-
+from madina.zonal import Layer
 
 
 class Network:
