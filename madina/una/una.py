@@ -1,4 +1,4 @@
-from madina.zonal.zonal import Zonal
+from madina.zonal import Zonal
 
 
 class UNA:
@@ -58,6 +58,3 @@ class UNA:
             a tuple of destinations accessible from the origins, edges traversed, and a pandas GeoDataFrame of their scope
         """
         raise NotImplementedError
-
-
-

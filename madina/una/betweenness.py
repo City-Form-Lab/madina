@@ -2,15 +2,11 @@
 import os
 os.environ['USE_PYGEOS'] = '0'
 
-
-import math
 import time
 import concurrent
 from concurrent import futures
 import multiprocessing as mp
 import sys
-from sys import getsizeof
-import numpy as np
 import networkx as nx
 import pandas as pd
 import geopandas as gpd
@@ -23,9 +19,9 @@ from pathlib import Path
 
 import shapely.geometry as geo
 
-from madina.zonal.zonal import Zonal, __version__, __release_date__
-from madina.zonal.network import Network
-from madina.una.paths import path_generator, turn_o_scope, bfs_path_edges_many_targets_iterative, bfs_subgraph_generation, wandering_messenger
+from madina.zonal import Zonal, VERSION, RELEASE_DATE
+from madina.zonal import Network
+from madina.una.paths import path_generator, turn_o_scope, bfs_subgraph_generation, wandering_messenger
 
 def parallel_betweenness(network: Network,
                          search_radius=1000,
@@ -979,7 +975,7 @@ class Logger():
         )
 
         self.betweenness_record = None
-        self.log(f"SIMULATION STARTED: VERSION: {__version__}, RELEASE DATEL {__release_date__}")
+        self.log(f"SIMULATION STARTED: VERSION: {VERSION}, RELEASE DATEL {RELEASE_DATE}")
         self.log(f"{sys.version}")
         self.log(f"Dependencies: Geopandas:{gpd.__version__}, Shapely:{shp.__version__}, Pandas:{pd.__version__}, Numpy:{np.__version__}, NetworkX:{nx.__version__}")
 

@@ -2,10 +2,26 @@
 requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
+[tool.setuptools]
+py-modules = []
+
 [project]
 name = "madina"
 version = "0.0.1"
-requires-python = "=3.9"
+authors = [
+    {name="Abdulaziz Alhassan", email="alhassan@mit.edu"},
+    {name="Kwesi Afrifa", email="kwesi@mit.edu"},
+    {name="Orion Li", email="haoxuanl@mit.edu"}
+]
+description = "A library to simplify creating workflows for urban planning research. Tools to work with geometry, networks and geoprocessing"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {file = "LICENSE.txt"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
 dependencies = [
     "Shapely~=1.7.1",
     "geopandas~=0.10.2",
