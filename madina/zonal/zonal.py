@@ -78,7 +78,8 @@ class Zonal:
                 # This is to ignore a warning issued for dpoing calculations in a geographic coordinate system, but that's the needed output:
                 # a point in a geographic coordinate system to center the visualization
                 warnings.simplefilter("ignore", category=UserWarning)
-                centroid_point = gdf.iloc[[0]].to_crs(self.DEFAULT_GEOGRAPHIC_CRS).centroid.iloc[0]
+                #centroid_point = gdf.iloc[[0]].to_crs(self.DEFAULT_GEOGRAPHIC_CRS).centroid.iloc[0]
+                centroid_point = gdf['geometry'].to_crs("EPSG:4326").unary_union.centroid
             self.geo_center = centroid_point.coords[0]
         return
 
@@ -162,35 +163,21 @@ class Zonal:
         Returns:
             a string representation of the `Zonal`
         """
-        if len(self.layers) == 0:
+        if len(self.layers.layers) == 0:
             print("No zonal_layers yet, load a layer using 'load_layer(layer_name, file_path)'")
         else:
-
+            print (f"{'Layer name':20} | {'Visible':7} | {'projection':10} | {'rows':5} | {'File path':20}")
             for key in self.layers:
-                print(f"Layer name: {key}")
-                print(f"\tVisible?: {self.layers[key].show}")
-                print(f"\tFile path: {self.layers[key].file_path}")
-                print(f"\tOriginal projection: {self.layers[key].crs}")
-                print(f"\tCurrent projection: {self.layers[key].gdf.crs}")
-                print(f"\tColumn names: {list(self.layers[key].gdf.columns)}")
-                print(f"\tNumber of rows: {self.layers[key].gdf.shape[0]}")
+                print (f"{key:20} | {self.layers[key].show:7} | {str(self.layers[key].gdf.crs):10} | {self.layers[key].gdf.shape[0]:5} | {self.layers[key].file_path:20}")
+                #print(f"\tColumn names: {list(self.layers[key].gdf.columns)}")
 
         geo_center_x, geo_center_y = self.geo_center
-        proj_center_x, proj_center_y = self.projected_center
-        if self.scope is None:
-            print(
-                "No scope yet. If needed (When your zonal_layers contain data that is outside of your analysis scope, setting a scope speeds up the analysis), set a scope using 'set_scope(scope)'")
 
-            if self.geo_center is None:
-                print(f"No center yet, add a layer or set a scope to define a center")
-            else:
-
-                print(f"Projected center: projected center: ({proj_center_x}, {proj_center_y}), "
-                      f"Geographic center: ({geo_center_x}, {geo_center_y})")
+        if self.geo_center is None:
+            print(f"No center yet, add a layer or set a scope to define a center")
         else:
-            print(f"Scope area: {self.scope.area}m2, "
-                  f"Scope projected center: ({proj_center_x}, {proj_center_y}), "
-                  f"Scope geographic center: ({geo_center_x}, {geo_center_y})")
+            print(f"Geographic center: ({geo_center_x}, {geo_center_y})")
+
         if self.network is None:
             print(
                 f"No network graph yet. First, insert a layer that contains network segments (streets, sidewalks, ..) and call create_street_network(layer_name,  weight_attribute=None)")
@@ -219,6 +206,12 @@ class Zonal:
         )
         return map
 
+    def clear_nodes(self):
+        node_gdf = self.network.nodes
+        node_gdf = node_gdf[node_gdf["type"] == "street_node"]
+        self.network.nodes = node_gdf
+        return
+
     @staticmethod
     def create_deckGL_map(gdf_list=[], centerX=46.6725, centerY=24.7425, basemap=False, zoom=17, filename=None):
         start = time.time()
@@ -232,6 +225,7 @@ class Zonal:
             radius_attribute = 1
             if "radius" in gdf_dict:
                 radius_attribute = gdf_dict["radius"]
+                local_gdf = local_gdf[~local_gdf[radius_attribute].isna()]
                 r_series = local_gdf[radius_attribute]
                 r_series = (r_series - r_series.mean()) / r_series.std()
                 r_series = r_series.apply(lambda x: max(1, x) + 3 if not np.isnan(x) else 0.5)
@@ -264,13 +258,13 @@ class Zonal:
                 filled=True,
                 wireframe=True,
                 get_line_width=width_attribute,
-                get_radius=radius_attribute,
+                get_radius='__radius__',
                 get_line_color='color',
                 get_fill_color="color",
                 pickable=True,
             )
             pdk_layers.append(pdk_layer)
-            # print(f"{(time.time()-start)*1000:6.2f}ms\t {layer_number = }, layer styled and added.")
+            #print(f"{(time.time()-start)*1000:6.2f}ms\t {layer_number = }, pdk.Layer created.")
             start = time.time()
 
             if "text" in gdf_dict:

@@ -131,10 +131,18 @@ def create_add_layer_form(picked_city_name):
     )
     return add_layer_form
 
+import time 
 def create_network_map():
     print (f"create_network_map is called, CURRENT LAYERS {city.layers.layers = }")
+    start = time.time()
+    deck_map = city.create_map()
+    print(f"{(time.time()-start)*1000:6.2f}ms\t create_map() done")
+    start = time.time()
+    deck_map_json = deck_map.to_json()
+    print(f"{(time.time()-start)*1000:6.2f}ms\t deck_map_json() done")
+    start = time.time()
     deck_component = dash_deck.DeckGL(
-        city.create_map().to_json(),
+        deck_map_json,
         enableEvents=False,
         tooltip=False,
         style={
@@ -144,6 +152,8 @@ def create_network_map():
         },
         id="network_map",
     )
+    print(f"{(time.time()-start)*1000:6.2f}ms\t dash_deck.DeckGL done")
+
     return deck_component
     
 def create_network_form():
@@ -455,7 +465,9 @@ def create_layer(file_name, layer_name, create_layer_n_clicks, city_menu_item_n_
         CURRENT_CITY = json.loads(button_id)['index']
 
 
-    return create_layer_table(), create_city_drop_down(CURRENT_CITY), create_add_layer_form(CURRENT_CITY), create_network_map() if len (city.layers.layers) > 0 else dbc.Alert("Add a layer to see a Map", color='primary'), create_network_form(), create_origin_form(), create_destination_form()
+    network_map = create_network_map() if len (city.layers.layers) > 0 else dbc.Alert("Add a layer to see a Map", color='primary')
+
+    return create_layer_table(), create_city_drop_down(CURRENT_CITY),  create_add_layer_form(CURRENT_CITY), network_map, create_network_form(), create_origin_form(), create_destination_form()
 
 dash_app.layout = html.Div(
     [

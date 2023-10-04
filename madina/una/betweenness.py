@@ -561,13 +561,13 @@ def betweenness_exposure(
                 eligible_destinations = {destination_ids[0]:d_idxs[destination_ids[0]]}
             else:
                 # probability of choosing a destination using the huff model
-                eligible_destinations = d_idxs if destniation_cap is None else dict(list(d_idxs.items())[:destniation_cap])
+                eligible_destinations = d_idxs if destniation_cap   is None else dict(list(d_idxs.items())[:destniation_cap])
                 destination_ids = list(eligible_destinations.keys())
                 #max_chunck_size = 100
-                #chunking_method = 'cocentric-chunks'
-                chunking_method = self.network.chunking_method
-                # max_chunck_size = 100 
-                max_chunck_size = self.network.max_chunck_size
+                chunking_method = 'cocentric-chunks'
+                #chunking_method = self.network.chunking_method
+                max_chunck_size = 100 
+                #max_chunck_size = self.network.max_chunck_size
                 if len(destination_ids) > max_chunck_size:
                     if chunking_method == 'no_chunking':
                         pass # do nothing
