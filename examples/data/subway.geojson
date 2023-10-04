@@ -1,0 +1,37 @@
+{
+  "type": "FeatureCollection",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "EPSG:3857"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "172532b6-bb9b-493b-9a23-43816162b3ba"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -1503.6332079775048,
+          263.11680761011394
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "1d26484f-051f-4ec6-a180-8c4556c33ea2"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -1635.4363293296108,
+          137.20538850737154
+        ]
+      }
+    }
+  ]
+}

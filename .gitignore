@@ -28,6 +28,7 @@ share/python-wheels/
 MANIFEST
 
 # UNA Test Data
+unit_testing/
 tests/unit_testing/
 Cities/
 sumulation_script.py
