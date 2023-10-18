@@ -1,7 +1,8 @@
 import math
 from collections import deque
 from heapq import heappush, heappop
-from madina.zonal import Network
+#from madina.zonal import Network
+from madina.zonal.network import Network
 
 
 def path_generator(network: Network, o_idx, search_radius=800, detour_ratio=1.15, turn_penalty=False):

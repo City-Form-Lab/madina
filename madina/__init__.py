@@ -1,2 +1,2 @@
-from zonal import Zonal
-from una import UNA
+#from madina.zonal import Zonal
+#from una import UNA
