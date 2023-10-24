@@ -42,10 +42,10 @@ class Zonal:
     DEFAULT_GEOGRAPHIC_CRS ="EPSG:4326"
     DEFAULT_COLORS = DEFAULT_COLORS
 
-    def __init__(self):
+    def __init__(self, layers=None):
         self.network = None
         self.geo_center = (None, None)
-        self.layers = Layers(layers=None)
+        self.layers = Layers(layers)
 
     def load_layer(self, layer_name: str, file_path: str, pos=None, first=False, before=None, after=None):
         """
