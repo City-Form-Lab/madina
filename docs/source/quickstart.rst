@@ -60,3 +60,105 @@ You can also assign an RGB color to a layer:
     >>> cambridge.color_layer('sidewalks', color=[128, 128, 128])
 
 
+Creating a street network
+--------------
+A network, comprising nodes and edges, is essential for analysis.
+While the loaded sidewalk data may visually resemble a network, it must be converted into a topologically
+connected set of nodes and edges to be functional. This conversion is achieved through the
+``create_street_network``` method of the Zonal class.
+
+    >>> cambridge.create_street_network('sidewalks')
+
+We can visualize the network using the ``create_map`` function.
+
+    >>> cambridge.create_map()
+
+Constructing a graph
+--------------
+Before performing an analysis, finalize the graph by calling the ``create_graph()`` function after setting up your
+network, origins, and destinations.
+
+    >>> cambridge.create_graph()
+
+
+Urban Network Analysis
+==================================
+
+Setting Origins and Destinations
+--------------
+Origins represent the starting points where trips are generated, while destinations are the endpoints where trips
+are distributed to. The library's UNA (urban network analysis) use these to calculate
+metrics like pedestrian accessibility, gravity, and betweenness.
+
+To illustrate this, add a few more layers to the Zonal.
+
+.. code::
+
+     cambridge.load_layer(
+        layer_name="building_entrances",
+        file_path="./path/to/building_entrances.geojson"
+    )
+
+    cambridge.load_layer(
+        layer_name="sidewalks",
+        file_path="./path/to/sidewalks.geojson"
+    )
+
+
+To set a previously-inserted layer as a node to the Zonal graph, one
+can do the following:
+
+.. code::
+
+    # inserting origins:
+    cambridge.insert_node(
+        label='origin',
+        layer_name="subway",
+    )
+
+    # inserting destinations
+    cambridge.insert_node(
+        label='destination',
+        layer_name="building_entrances",
+    )
+
+
+
+Before conducting an analysis, finalize the graph by calling the
+``create_graph`` function after setting up your network,
+origins, and destinations.
+    >>> cambridge.create_graph()
+
+
+Accessibility analysis
+--------------
+Reach Index
+
+We can calculate a "reach index" from the nodes of the graph. In this
+case, we are concerned with how many building entrances can be reached
+from subway stations in a ~ 5 minute (300m) walk-shed.
+
+To do this, we must import the first import the ``una`` module, which contains
+tools for UNA.
+
+    >>> from madina import una
+
+There's an ``accessibility`` function, which adds a column...
+
+.. code::
+
+    una.accessibility(
+        cambridge,
+        reach=True,
+        search_radius=300
+    )
+
+
+    cambridge.create_map(
+        layer_list=[
+            {"gdf": cambridge.network.edges, 'color': [125, 125, 125]},
+            {"gdf": cambridge.network.nodes, "radius": "una_reach", 'text':'una_reach', 'color': [255, 0, 0]},
+        ]
+    )
+
+
