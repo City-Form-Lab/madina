@@ -32,3 +32,6 @@ unit_testing/
 tests/unit_testing/
 Cities/
 sumulation_script.py
+
+map_sample
+workflows/new_york_ccase_analysis.ipynb

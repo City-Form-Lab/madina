@@ -24,12 +24,11 @@ def _node_edge_builder(geometry_gdf, weight_attribute=None, tolerance=0.0):
         index = pd.Index(np.arange(edge_count), name="id")
         length = pd.Series(
             geometry_gdf["geometry"].length.values, fastpath=True, index=index)
-
         edge_gdf = gpd.GeoDataFrame(
             {
                 "length": length,
                 "weight": length if weight_attribute is None else geometry_gdf.apply(
-                    lambda x: max(x[weight_attribute], 1) if x[weight_attribute] >= 0 else x["geometry"].length,
+                    lambda x: max(x[weight_attribute], 0.01) if x[weight_attribute] != 0 else x["geometry"].length,
                     axis=1),
                 "type": pd.Series(np.repeat(np.array(["street"], dtype=object), repeats=edge_count), fastpath=True,
                                   index=index, dtype="category"),

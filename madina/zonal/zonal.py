@@ -378,7 +378,7 @@ class Zonal:
                 width_attribute = gdf_dict["width"]
                 if "width_scale" in gdf_dict:
                     width_scale = gdf_dict["width_scale"]
-                local_gdf[width_attribute] = local_gdf[width_attribute] * width_scale
+                local_gdf['__width__'] = local_gdf[width_attribute] * width_scale
 
             if "opacity" in gdf_dict:
                 opacity = gdf_dict["opacity"]
@@ -397,7 +397,7 @@ class Zonal:
                 stroked=True,
                 filled=True,
                 wireframe=True,
-                get_line_width=width_attribute,
+                get_line_width='__width__',
                 get_radius='__radius__',
                 get_line_color='color',
                 get_fill_color="color",
