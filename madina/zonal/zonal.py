@@ -47,6 +47,9 @@ class Zonal:
         self.geo_center = (None, None)
         self.layers = Layers(layers)
 
+    def __getitem__(self, item):
+        return self.layers[item]
+
     def load_layer(self, layer_name: str, file_path: str, pos=None, first=False, before=None, after=None):
         """
         Load a new layer from the given file path with the specified layer name.
@@ -167,7 +170,6 @@ class Zonal:
             # Create a street network using 'streets' layer and allowing geometries to be atr most 0.001 CRS units apart to form a node.
         """
 
-
         if source_layer not in self.layers:
             raise ValueError(f"Source layer {source_layer} not in zonal zonal_layers, available layers are: {self.layers.layers}")
 
@@ -188,13 +190,8 @@ class Zonal:
         elif discard_redundant_edges:
             edge_gdf = _discard_redundant_edges(edge_gdf)
 
-
-        
-
-
         if tag_edges:
             edge_gdf = _tag_edges(edge_gdf, tolerance=node_snapping_tolerance)
-
 
         self.network = Network(node_gdf, edge_gdf, turn_threshold_degree, turn_penalty_amount, weight_attribute)
         return
@@ -474,10 +471,10 @@ class Zonal:
         return r
 
     def color_layer(self, layer_name, color_by_attribute=None, color_method="single_color", color=None):
-        if layer_name in self.default_colors.keys() and color_by_attribute is None and color is None:
+        if layer_name in self.DEFAULT_COLORS.keys() and color_by_attribute is None and color is None:
             # set default colors first. all default layers call without specifying "color_by_attribute"
             # default layer creation always calls self.color_layer(layer_name) without any other parameters
-            color = self.default_colors[layer_name].copy()
+            color = self.DEFAULT_COLORS[layer_name].copy()
             color_method = "single_color"
             if type(color) is dict:
                 # the default color is categorical..
@@ -519,8 +516,6 @@ class Zonal:
             color = [random.random() * 255, random.random() * 255, random.random() * 255]
             color_method = "single_color"
         elif color is None:
-
-
             # color by attribute ia given, but no color is given..
             if color_method == "single_color":
                 # if color by attribute is given, and color method is single color, this is redundant but just in case:

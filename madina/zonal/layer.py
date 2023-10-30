@@ -1,3 +1,7 @@
+from madina import Zonal
+
+DEFALT_COLORS = {}
+
 class Layers:
     """
     Represents a collection of Zonal layers.
@@ -156,16 +160,52 @@ class Layer:
     Represents a `Zonal` layer with name `label`, source `file_path` and crs `original_crs`.
     """
 
-    def __init__(self, label: str, gdf, show: bool, original_crs: str, file_path: str, **kwargs):
+    def __init__(self, label: str, gdf, show: bool, original_crs: str, file_path: str, default_colors = None, **kwargs):
         self.gdf = gdf
         self.label = label
         self.show = show
         self.crs = original_crs
         self.file_path = file_path
+        self.default_colors = default_colors
 
         self.other_fields = {} | kwargs
 
         return
+
+    def set_style(self, params):
+        color, color_by_attribute, color_method = None, None, "single_color"
+        if 'color' in params:
+            color = params['color']
+
+        if 'color_by_attribute' in params:
+            color_by_attribute = params['color_by_attribute']
+
+        if 'color_method' in params:
+            color_method = params['color_method']
+
+        self.color_layer(self.label, color_by_attribute, color_method, color)
+        return
+
+    def color_layer(self, layer_name, color_by_attribute=None, color_method="single_color", color=None):
+        if layer_name in self.default_colors.keys() and color_by_attribute is None and color is None:
+            # set default colors first. all default layers call without specifying "color_by_attribute"
+            # default layer creation always calls self.color_layer(layer_name) without any other parameters
+            color = self.default_colors[layer_name].copy()
+            color_method = "single_color"
+            if type(color) is dict:
+                # the default color is categorical..
+                color_by_attribute = color["__attribute_name__"]
+                color_method = "categorical"
+        Zonal.color_gdf(
+            self.gdf,
+            color_by_attribute=color_by_attribute,
+            color_method=color_method,
+            color=color
+        )
+        return
+
+
+
 
 
 
