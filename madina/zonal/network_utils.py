@@ -7,11 +7,11 @@ import shapely.geometry as geo
 
 # from pygeos.lib import get_x, get_y, get_point
 
-def _node_edge_builder(geometry_gdf, weight_attribute=None, tolerance=0.0):
+def node_edge_builder(geometry_gdf, weight_attribute=None, tolerance=0.0):
     if tolerance == 0.0:
         # use vectorized implementaytion
         point_xy = GeoPandaExtractor(geometry_gdf.geometry.values.data)
-        node_indexer, node_points, node_dgree, edge_start_node, edge_end_node = _vectorized_node_edge_builder(point_xy)
+        node_indexer, node_points, node_dgree, edge_start_node, edge_end_node = vectorized_node_edge_builder(point_xy)
         # use spatial index implementation
         # could this gain effeciency by being sorted?
         # TODO: complete the implementation of this case by copyinfg the for-loop thT UTILIz MATCHING RESULTS..
@@ -65,7 +65,7 @@ def _node_edge_builder(geometry_gdf, weight_attribute=None, tolerance=0.0):
 
     elif tolerance > 0:
         # node_gdf, edge_gdf = _effecient_tolerance_network_nodes_edges(
-        node_gdf, edge_gdf = _tolerance_network_nodes_edges(
+        node_gdf, edge_gdf = tolerance_network_nodes_edges(
             geometry_gdf=geometry_gdf,
             weight_attribute=weight_attribute,
             tolerance=tolerance
@@ -76,7 +76,7 @@ def _node_edge_builder(geometry_gdf, weight_attribute=None, tolerance=0.0):
     return node_gdf, edge_gdf  # Return Adjacency List here...
 
 
-def _vectorized_node_edge_builder(point_xy):
+def vectorized_node_edge_builder(point_xy):
     # the point_xy input is a 2 by n matrix. where the start point and end point of an edge are in alternating order..
     # unique parameter is expected to come from a spatial index, on points that are sorted.
 
@@ -158,7 +158,7 @@ def GeoPandaExtractor(poly_line_data):
     )
 
 
-def _tolerance_network_nodes_edges(geometry_gdf, weight_attribute=None, tolerance=1.0):
+def tolerance_network_nodes_edges(geometry_gdf, weight_attribute=None, tolerance=1.0):
     # geometry_gdf["weight"] = geometry_gdf["geometry"].length if weight_attribute is None else geometry_gdf[weight_attribute].apply(
     #    lambda x: max(1, x))
 
@@ -278,7 +278,7 @@ def _tolerance_network_nodes_edges(geometry_gdf, weight_attribute=None, toleranc
     return node_gdf, edge_gdf
 
 
-def _discard_redundant_edges(edge_gdf: GeoDataFrame):
+def discard_redundant_edges(edge_gdf: GeoDataFrame):
     ## finding edges that share the same start and end, including those who start and end at the same node
     edge_stack = pd.DataFrame({
         'edge_id': np.concatenate([edge_gdf.index.values, edge_gdf.index.values]),
@@ -315,7 +315,7 @@ def _discard_redundant_edges(edge_gdf: GeoDataFrame):
 from shapely.ops import split, snap
 
 
-def _split_redundant_edges(node_gdf: GeoDataFrame, edge_gdf: GeoDataFrame):
+def split_redundant_edges(node_gdf: GeoDataFrame, edge_gdf: GeoDataFrame):
     ## finding edges that share the same start and end, including those who start and end at the same node
     edge_stack = pd.DataFrame(
         {
@@ -443,7 +443,7 @@ def _split_redundant_edges(node_gdf: GeoDataFrame, edge_gdf: GeoDataFrame):
     return pd.concat([node_gdf, new_node_gdf]), pd.concat([edge_gdf.drop(index=remove_edges), new_edge_gdf])
 
 
-def _tag_edges(edge_gdf, tolerance=1.0):
+def tag_edges(edge_gdf, tolerance=1.0):
     edge_gdf["tag"] = ""
     edge_gdf['tag'] = np.select(
         condlist=[
@@ -467,8 +467,8 @@ def _tag_edges(edge_gdf, tolerance=1.0):
     return edge_gdf
 
 
-def _effecient_node_insertion(n_node_gdf: GeoDataFrame, n_edge_gdf: GeoDataFrame, source_gdf: GeoDataFrame,
-                              layer_name: str, label: str = "origin", weight_attribute: str = None):
+def efficient_node_insertion(n_node_gdf: GeoDataFrame, n_edge_gdf: GeoDataFrame, source_gdf: GeoDataFrame,
+                             layer_name: str, label: str = "origin", weight_attribute: str = None):
     # Assigning nodes to edges using a spatial index
     # TODO: CHECK IF THESE AR EPOINTS, IF POLYGONS, USE THEIR CENTRPIOD
     match = n_edge_gdf["geometry"].sindex.nearest(source_gdf["geometry"], return_all=False)

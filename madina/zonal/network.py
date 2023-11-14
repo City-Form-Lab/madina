@@ -1,8 +1,7 @@
 import numpy as np
 import networkx as nx
 from geopandas import GeoDataFrame
-#from madina.zonal import Layer
-from madina.zonal.layer import Layer
+from .layer import Layer
 
 
 class Network:
@@ -38,7 +37,7 @@ class Network:
 
     def create_graph(self, light_graph=False, d_graph=True, od_graph=False):
         """
-        Creates the corresponding graphs in the Network object based on the current nodes and edges
+        Creates the corresponding graphs in the network object based on the current nodes and edges
         `light_graph` - contains only network nodes and edges
         `d_graph` - contains all destination nodes
         `od_graph` - contains all origin and destination nodes

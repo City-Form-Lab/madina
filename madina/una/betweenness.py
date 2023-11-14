@@ -21,7 +21,7 @@ import shapely.geometry as geo
 
 from madina.zonal import Zonal, VERSION, RELEASE_DATE
 from madina.zonal import Network
-from madina.una.paths import path_generator, turn_o_scope, bfs_subgraph_generation, wandering_messenger
+from paths import path_generator, turn_o_scope, bfs_subgraph_generation, wandering_messenger
 
 def parallel_betweenness(network: Network,
                          search_radius=1000,
@@ -1130,7 +1130,7 @@ def betweenness_flow_simulation(
         file_path=os.path.join(data_folder,  pairings.at[0, "Network_File"])
     )
 
-    logger.log(f"Network FIle Loaded, Projection: {shaqra.layers['streets'].gdf.crs}")
+    logger.log(f"network FIle Loaded, Projection: {shaqra.layers['streets'].gdf.crs}")
 
 
     for pairing_idx, pairing in pairings.iterrows():
@@ -1142,7 +1142,7 @@ def betweenness_flow_simulation(
                 node_snapping_tolerance=0.00001,  #todo: remove parameter once a finalized default is set.
                 weight_attribute=pairings.at[pairing_idx, 'Network_Cost'] if pairings.at[pairing_idx, 'Network_Cost'] != "Geometric" else None
             )
-            logger.log("Network topology created", pairing)
+            logger.log("network topology created", pairing)
             clean_network_nodes = shaqra.network.nodes.copy(deep=True)
         else:
             # either generate a new network, or flush nodes.

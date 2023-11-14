@@ -1,5 +1,5 @@
-from madina.zonal.zonal import Zonal
-from madina.una.paths import turn_o_scope, wandering_messenger
+from ..zonal import Zonal
+from paths import turn_o_scope, wandering_messenger
 import math
 import numpy as np
 import geopandas as gpd

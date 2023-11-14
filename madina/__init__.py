@@ -1,2 +1,2 @@
-from madina.zonal import Zonal
-from madina.una import *
+from zonal import *
+from una import *

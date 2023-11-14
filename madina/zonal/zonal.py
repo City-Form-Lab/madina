@@ -1,26 +1,23 @@
 # this lets geopandas exclusively use shapely (not pygeos) silences a warning about depreciating pygeos out of geopandas. This is not needed when geopandas 1.0 is released in the future
 import os
-os.environ['USE_PYGEOS'] = '0'
-
-#from madina.zonal import Network
-from madina.zonal.network import Network
-#from madina.zonal.network_utils import _node_edge_builder, _discard_redundant_edges, _split_redundant_edges, _tag_edges,  _effecient_node_insertion
-from madina.zonal.network_utils import _node_edge_builder, _discard_redundant_edges, _split_redundant_edges, _tag_edges,  _effecient_node_insertion
-#from madina.zonal import prepare_geometry, DEFAULT_COLORS, Layer, Layers
-from madina.zonal.zonal_utils import prepare_geometry, DEFAULT_COLORS
-from madina.zonal.layer import  Layer, Layers
-
-
-import warnings
-import geopandas as gpd
-import pandas as pd
-from typing import Union
-
-import pydeck as pdk
-from pydeck.types import String
 import numpy as np
 import random
 import time
+import warnings
+import geopandas as gpd
+import pandas as pd
+import pydeck as pdk
+
+from typing import Union
+from pydeck.types import String
+
+from .network import Network
+from .network_utils import node_edge_builder, discard_redundant_edges, split_redundant_edges, \
+    tag_edges, efficient_node_insertion
+from .utils import prepare_geometry, DEFAULT_COLORS
+from .layer import Layer, Layers
+
+os.environ['USE_PYGEOS'] = '0'
 
 VERSION = '0.0.4'
 RELEASE_DATE = '2023-08-13'
@@ -38,8 +35,8 @@ class Zonal:
         >>> shaqra.color_layer(layer_name='streets', color=[125, 125, 125])
         >>> shaqra.create_map(save_as='street_map.html', basemap=False)
     """
-    DEFAULT_PROJECTED_CRS ="EPSG:3857"
-    DEFAULT_GEOGRAPHIC_CRS ="EPSG:4326"
+    DEFAULT_PROJECTED_CRS = "EPSG:3857"
+    DEFAULT_GEOGRAPHIC_CRS = "EPSG:4326"
     DEFAULT_COLORS = DEFAULT_COLORS
 
     def __init__(self, layers=None):
@@ -82,12 +79,12 @@ class Zonal:
             # Load a new layer at the beginning of the layers list.
 
         """
-        
+
         gdf = gpd.read_file(
             file_path,
             engine='pyogrio'
-            )
-        
+        )
+
         gdf['id'] = range(gdf.shape[0])
         gdf.set_index('id')
         original_crs = gdf.crs
@@ -98,7 +95,7 @@ class Zonal:
 
         layer = Layer(
             layer_name,
-            gdf, 
+            gdf,
             True,
             original_crs,
             file_path
@@ -116,14 +113,14 @@ class Zonal:
                 # This is to ignore a warning issued for dpoing calculations in a geographic coordinate system, but that's the needed output:
                 # a point in a geographic coordinate system to center the visualization
                 warnings.simplefilter("ignore", category=UserWarning)
-                #centroid_point = gdf.iloc[[0]].to_crs(self.DEFAULT_GEOGRAPHIC_CRS).centroid.iloc[0]
+                # centroid_point = gdf.iloc[[0]].to_crs(self.DEFAULT_GEOGRAPHIC_CRS).centroid.iloc[0]
                 centroid_point = gdf['geometry'].to_crs("EPSG:4326").unary_union.centroid
             self.geo_center = centroid_point.coords[0]
         return
 
     def create_street_network(
             self,
-            source_layer: str ="streets",
+            source_layer: str = "streets",
             weight_attribute=None,
             node_snapping_tolerance: Union[int, float] = 0.0,
             prepare_geometry=False,
@@ -132,7 +129,7 @@ class Zonal:
             split_redundant_edges=True,
             turn_threshold_degree=45,
             turn_penalty_amount=30,
-        ) -> None:
+    ) -> None:
 
         """
         Create a topologically connected street network from a specified layer in the Zonal object.
@@ -171,32 +168,33 @@ class Zonal:
         """
 
         if source_layer not in self.layers:
-            raise ValueError(f"Source layer {source_layer} not in zonal zonal_layers, available layers are: {self.layers.layers}")
+            raise ValueError(
+                f"Source layer {source_layer} not in zonal zonal_layers, available layers are: {self.layers.layers}")
 
         geometry_gdf = self.layers[source_layer].gdf
 
-        #TODO: consider removing this, as preparing geometry is now a standard precedure when loading a new layer
+        # TODO: consider removing this, as preparing geometry is now a standard precedure when loading a new layer
         if prepare_geometry:
             geometry_gdf = prepare_geometry(geometry_gdf)
 
-        node_gdf, edge_gdf = _node_edge_builder(
+        node_gdf, edge_gdf = node_edge_builder(
             geometry_gdf,
             weight_attribute=weight_attribute,
             tolerance=node_snapping_tolerance
         )
 
         if split_redundant_edges:
-            node_gdf , edge_gdf = _split_redundant_edges(node_gdf ,edge_gdf)
+            node_gdf, edge_gdf = split_redundant_edges(node_gdf, edge_gdf)
         elif discard_redundant_edges:
-            edge_gdf = _discard_redundant_edges(edge_gdf)
+            edge_gdf = discard_redundant_edges(edge_gdf)
 
         if tag_edges:
-            edge_gdf = _tag_edges(edge_gdf, tolerance=node_snapping_tolerance)
+            edge_gdf = tag_edges(edge_gdf, tolerance=node_snapping_tolerance)
 
         self.network = Network(node_gdf, edge_gdf, turn_threshold_degree, turn_penalty_amount, weight_attribute)
         return
 
-    def insert_node(self, layer_name: str, label: str ="origin", weight_attribute: str = None):
+    def insert_node(self, layer_name: str, label: str = "origin", weight_attribute: str = None):
         """
         Insert "origin" and "destination" nodes into the network. This function must be called aftet the 'create_street_network' function is called, and the corresponding layer have already been loaded by calling 'load_layer'
 
@@ -227,9 +225,10 @@ class Zonal:
         n_node_gdf = self.network.nodes
         n_edge_gdf = self.network.edges
         source_gdf = self.layers[layer_name].gdf
-        inserted_node_gdf = _effecient_node_insertion(n_node_gdf, n_edge_gdf, source_gdf, layer_name=layer_name, label=label, weight_attribute=weight_attribute)
+        inserted_node_gdf = efficient_node_insertion(n_node_gdf, n_edge_gdf, source_gdf, layer_name=layer_name,
+                                                      label=label, weight_attribute=weight_attribute)
         self.network.nodes = pd.concat([n_node_gdf, inserted_node_gdf])
-        return 
+        return
 
     def create_graph(self, light_graph=True, d_graph=True, od_graph=False):
         """
@@ -273,10 +272,11 @@ class Zonal:
         if len(self.layers.layers) == 0:
             print("No zonal_layers yet, load a layer using 'load_layer(layer_name, file_path)'")
         else:
-            print (f"{'Layer name':20} | {'Visible':7} | {'projection':10} | {'rows':5} | {'File path':20}")
+            print(f"{'Layer name':20} | {'Visible':7} | {'projection':10} | {'rows':5} | {'File path':20}")
             for key in self.layers:
-                print (f"{key:20} | {self.layers[key].show:7} | {str(self.layers[key].gdf.crs):10} | {self.layers[key].gdf.shape[0]:5} | {self.layers[key].file_path:20}")
-                #print(f"\tColumn names: {list(self.layers[key].gdf.columns)}")
+                print(
+                    f"{key:20} | {self.layers[key].show:7} | {str(self.layers[key].gdf.crs):10} | {self.layers[key].gdf.shape[0]:5} | {self.layers[key].file_path:20}")
+                # print(f"\tColumn names: {list(self.layers[key].gdf.columns)}")
 
         geo_center_x, geo_center_y = self.geo_center
 
@@ -355,7 +355,7 @@ class Zonal:
         for layer_number, gdf_dict in enumerate(gdf_list):
             local_gdf = gdf_dict["gdf"].copy(deep=True)
             local_gdf["geometry"] = local_gdf["geometry"].to_crs("EPSG:4326")
-            #print(f"{(time.time()-start)*1000:6.2f}ms\t {layer_number = }, gdf copied")
+            # print(f"{(time.time()-start)*1000:6.2f}ms\t {layer_number = }, gdf copied")
             start = time.time()
 
             radius_attribute = 1
@@ -364,9 +364,9 @@ class Zonal:
                 local_gdf = local_gdf[~local_gdf[radius_attribute].isna()]
                 r_series = local_gdf[radius_attribute]
                 r_series = (r_series - r_series.mean()) / r_series.std() * 3
-                #r_series = r_series.apply(lambda x: (x - r_series.mean()) / r_series.std() if not np.isnan(x) else np.nan)
+                # r_series = r_series.apply(lambda x: (x - r_series.mean()) / r_series.std() if not np.isnan(x) else np.nan)
 
-                #r_series = r_series.apply(lambda x: max(1,x) + 3 if not np.isnan(x) else np.nan)
+                # r_series = r_series.apply(lambda x: max(1,x) + 3 if not np.isnan(x) else np.nan)
                 local_gdf['__radius__'] = r_series
 
             width_attribute = 1
@@ -383,9 +383,10 @@ class Zonal:
                 opacity = 1
 
             if ("color_by_attribute" in gdf_dict) or ("color_method" in gdf_dict) or ("color" in gdf_dict):
-                args = {arg: gdf_dict[arg] for arg in ['color_by_attribute', 'color_method', 'color'] if arg in gdf_dict}
+                args = {arg: gdf_dict[arg] for arg in ['color_by_attribute', 'color_method', 'color'] if
+                        arg in gdf_dict}
                 local_gdf = Zonal.color_gdf(local_gdf, **args)
-                #print (local_gdf['color'])
+                # print (local_gdf['color'])
 
             pdk_layer = pdk.Layer(
                 'GeoJsonLayer',
@@ -401,7 +402,7 @@ class Zonal:
                 pickable=True,
             )
             pdk_layers.append(pdk_layer)
-            #print(f"{(time.time()-start)*1000:6.2f}ms\t {layer_number = }, pdk.Layer created.")
+            # print(f"{(time.time()-start)*1000:6.2f}ms\t {layer_number = }, pdk.Layer created.")
             start = time.time()
 
             if "text" in gdf_dict:
@@ -434,7 +435,7 @@ class Zonal:
                     get_alignment_baseline=String("center"),
                 )
                 pdk_layers.append(layer)
-                #print(f"{(time.time()-start)*1000:6.2f}ms\t {layer_number = }, text layer created and added.")
+                # print(f"{(time.time()-start)*1000:6.2f}ms\t {layer_number = }, text layer created and added.")
                 start = time.time()
 
         initial_view_state = pdk.ViewState(
@@ -466,7 +467,7 @@ class Zonal:
                 filename,
                 css_background_color="cornflowerblue"
             )
-        #print(f"{(time.time()-start)*1000:6.2f}ms\t {layer_number = }, map rendered.")
+        # print(f"{(time.time()-start)*1000:6.2f}ms\t {layer_number = }, map rendered.")
         start = time.time()
         return r
 
@@ -487,7 +488,7 @@ class Zonal:
             color=color
         )
         return
-    
+
     @staticmethod
     def color_gdf(gdf, color_by_attribute=None, color_method=None, color=None):
         """
@@ -529,7 +530,7 @@ class Zonal:
         if color_method == "single_color":
             color_column = [color] * len(gdf)
         elif color_method == "categorical":
-            #color = {"__other__": [255, 255, 255]}
+            # color = {"__other__": [255, 255, 255]}
             color_column = []
             for value in gdf[color_by_attribute]:
                 if value in color.keys():
@@ -539,7 +540,8 @@ class Zonal:
         elif color_method == "gradient":
             cbc = gdf[color_by_attribute]  # color by column
             nc = 255 * (cbc - cbc.min()) / (cbc.max() - cbc.min())  # normalized column
-            color_column = [[255 - v, 0 + v, 0] if not np.isnan(v) else [255, 255, 255] for v in list(nc)]  # convert normalized values to color spectrom.
+            color_column = [[255 - v, 0 + v, 0] if not np.isnan(v) else [255, 255, 255] for v in
+                            list(nc)]  # convert normalized values to color spectrom.
             # TODO: insert color map options here..
         elif color_method == 'quantile':
             scaled_percentile_rank = 255 * gdf[color_by_attribute].rank(pct=True)

@@ -1,6 +1,5 @@
-from madina import Zonal
+from zonal import Zonal
 
-DEFALT_COLORS = {}
 
 class Layers:
     """
