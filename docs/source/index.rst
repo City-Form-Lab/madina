@@ -19,10 +19,10 @@ User's Guide
    :caption: Contents:
 
    user/quickstart
-   user/reference_index
+   user/reference
 
 
 
 Indices and tables
 ==================
-* :ref:`reference_index`
+* :ref:`reference`
