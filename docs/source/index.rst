@@ -17,12 +17,10 @@ User's Guide
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
-
-   user/quickstart
-   user/reference
-
+   quickstart
+   reference
 
 
 Indices and tables
 ==================
-* :ref:`reference`
+* :doc:`reference`
