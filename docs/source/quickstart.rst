@@ -6,8 +6,8 @@ run analysis on it using madina's Urban Network Analysis toolkit.
 
 First, make sure that:
 
-- madina is :ref:`installed <install>`
-- madina is :ref:`up-to-date <updates>`
+- madina is installed
+- madina is up-to-date
 
 Let's start by exploring some simple examples.
 

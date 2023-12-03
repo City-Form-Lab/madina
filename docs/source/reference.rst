@@ -1,5 +1,5 @@
 Reference
 ==================================
 
-.. automodule:: modulename
+.. automodule:: madina
      :members:

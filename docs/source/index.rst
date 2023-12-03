@@ -9,3 +9,8 @@ madina
 It contains tools to work with geometry, networks and geo-processing.
 
 Get started with :doc:`quickstart`, or view our complete API :doc:`reference`.
+
+
+Indices and tables
+==================
+* :doc:`reference`
