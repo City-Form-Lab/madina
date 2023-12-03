@@ -1,0 +1,31 @@
+package:
+  name: "madina"
+  version: "0.0.1"
+
+source:
+  git_rev: v1.3.1
+  git_url: https://github.com/wino6687/SWEpy
+
+requirements:
+  host:
+    - python
+    - setuptools
+  build:
+    python
+  run:
+    - python
+    - geopandas
+    - networkx
+    - numpy
+    - pandas
+    - psutil
+    - pydeck
+    - Shapely
+  about:
+    home: https://github.com/wino6687/SWEpy
+    license: MIT
+    license_family: MIT
+    license_file: LICENSE
+    summary: "A library to simplify creating workflows for urban planning research. Tools to work with geometry, networks and geo-processing"
+
+

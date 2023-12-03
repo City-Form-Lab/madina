@@ -1,0 +1,37 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.zip
+*.egg
+MANIFEST
+
+# UNA Test Data
+unit_testing/
+tests/unit_testing/
+Cities/
+sumulation_script.py
+
+map_sample
+workflows/new_york_ccase_analysis.ipynb
