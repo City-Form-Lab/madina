@@ -8,19 +8,4 @@ madina
 ``madina`` is a library to simplify creating workflows for urban planning research.
 It contains tools to work with geometry, networks and geo-processing.
 
-Get started with :doc:`quickstart`.
-
-
-User's Guide
-==================================
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
-   quickstart
-   reference
-
-
-Indices and tables
-==================
-* :doc:`reference`
+Get started with :doc:`quickstart`, or view our complete API :doc:`reference`.
