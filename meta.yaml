@@ -1,10 +1,10 @@
 package:
   name: "madina"
-  version: "0.0.1"
+  version: "0.0.5"
 
 source:
   git_rev: v1.3.1
-  git_url: https://github.com/wino6687/SWEpy
+  git_url: https://github.com/City-Form-Lab/madina
 
 requirements:
   host:
@@ -15,14 +15,11 @@ requirements:
   run:
     - python
     - geopandas
-    - networkx
-    - numpy
-    - pandas
-    - psutil
     - pydeck
-    - Shapely
+    - pyogrio
+    - Rtree
   about:
-    home: https://github.com/wino6687/SWEpy
+    home: https://github.com/City-Form-Lab/madina
     license: MIT
     license_family: MIT
     license_file: LICENSE

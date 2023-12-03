@@ -1,7 +1,4 @@
-geopandas>=0.12.2
-networkx>=2.6.3
-numpy>=1.24.3
-pandas>=1.3.5
-psutil>=5.9.4
-pydeck>=0.7.1
-Shapely>=2.0.2
+geopandas>=0.13.2
+pydeck>=0.8.0b4
+pyogrio>=0.6.0
+Rtree>=1.0.1

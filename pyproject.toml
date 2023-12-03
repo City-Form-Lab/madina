@@ -7,11 +7,9 @@ py-modules = []
 
 [project]
 name = "madina"
-version = "0.0.1"
+version = "0.0.5"
 authors = [
-    {name="Abdulaziz Alhassan", email="alhassan@mit.edu"},
-    {name="Kwesi Afrifa", email="kwesi@mit.edu"},
-    {name="Orion Li", email="haoxuanl@mit.edu"}
+    {name="City Form Lab", email="madina@mit.edu"},
 ]
 description = "A library to simplify creating workflows for urban planning research. Tools to work with geometry, networks and geoprocessing"
 readme = "README.md"
@@ -23,14 +21,9 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
-    "Shapely~=1.7.1",
-    "geopandas~=0.10.2",
-    "pandas~=1.3.3",
-    "pydeck~=0.7.1",
-    "numpy~=1.21.2",
-    "networkx~=2.6.3",
-    "momepy~=0.5.1",
-    "plotly~=5.3.1",
-    "dash~=2.0.0",
-    "Flask~=2.0.2"
+    "geopandas>=0.13.2",
+    "pydeck>=0.8.0b4",
+    "pyogrio>=0.6.0",
+    "Rtree>=1.0.1"
 ]
+
