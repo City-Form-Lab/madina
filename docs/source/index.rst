@@ -16,7 +16,7 @@ User's Guide
    :maxdepth: 2
    :caption: Contents:
 
-   notebooks/quickstart
+   installation_guide
 
 Indices and tables
 ==================
