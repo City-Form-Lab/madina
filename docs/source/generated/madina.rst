@@ -1,0 +1,23 @@
+﻿madina
+======
+
+.. automodule:: madina
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

@@ -18,17 +18,7 @@ User's Guide
    :maxdepth: 2
    :caption: Contents:
 
-   user/quickstart
-   user/reference
 
-
-
-
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   installation_guide
+   notebooks/quickstart
+   api

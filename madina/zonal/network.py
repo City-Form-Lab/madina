@@ -5,6 +5,7 @@ from geopandas import GeoDataFrame
 from madina.zonal.layer import Layer
 
 
+
 class Network:
     """
     A road network with nodes `nodes` and edges `edges` weighted with factor `weight_attribute`,

@@ -26,12 +26,13 @@ share/python-wheels/
 *.zip
 *.egg
 MANIFEST
-
+personal_notes.ipynb
 # UNA Test Data
 unit_testing/
 tests/unit_testing/
 Cities/
 sumulation_script.py
+docs/build
 
 map_sample
 workflows/new_york_ccase_analysis.ipynb

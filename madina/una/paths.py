@@ -2,6 +2,12 @@ import math
 from collections import deque
 from heapq import heappush, heappop
 #from madina.zonal import Network
+
+import os
+import sys
+sys.path.insert(0, os.path.abspath('../../'))
+
+
 from madina.zonal.network import Network
 
 

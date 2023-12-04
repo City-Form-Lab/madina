@@ -1,3 +1,8 @@
+import os
+import sys
+sys.path.insert(0, os.path.abspath('../../'))
+
+
 from madina.zonal.zonal import Zonal
 from madina.una.paths import turn_o_scope, wandering_messenger
 import math
