@@ -17,6 +17,7 @@ User's Guide
    :caption: Contents:
 
    installation_guide
+   notebooks/quickstart
 
 Indices and tables
 ==================
