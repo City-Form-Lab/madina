@@ -3,11 +3,10 @@ import os
 os.environ['USE_PYGEOS'] = '0'
 
 
-from madina.zonal.network import Network
-from madina.zonal.network_utils import _node_edge_builder, _discard_redundant_edges, _split_redundant_edges, _tag_edges,  _effecient_node_insertion
-from madina.zonal.zonal_utils import prepare_geometry, DEFAULT_COLORS
-from madina.zonal.layer import  Layer, Layers
-
+from .network import Network
+from .network_utils import _node_edge_builder, _discard_redundant_edges, _split_redundant_edges, _tag_edges, _effecient_node_insertion
+from .utils import prepare_geometry, DEFAULT_COLORS
+from .layer import Layer, Layers
 
 
 import warnings

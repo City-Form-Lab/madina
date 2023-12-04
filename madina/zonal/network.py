@@ -2,7 +2,7 @@ import numpy as np
 import networkx as nx
 from geopandas import GeoDataFrame
 #from madina.zonal import Layer
-from madina.zonal.layer import Layer
+from .layer import Layer
 
 
 

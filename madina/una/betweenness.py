@@ -24,14 +24,10 @@ from pathlib import Path
 import shapely.geometry as geo
 
 
-#import os
-#import sys
-#sys.path.insert(0, os.path.abspath('../../'))
 
-
-from madina.zonal.zonal import Zonal, VERSION, RELEASE_DATE
-from madina.zonal.network import Network
-from madina.una.paths import path_generator, turn_o_scope, bfs_subgraph_generation, wandering_messenger
+from ..zonal import Zonal, VERSION, RELEASE_DATE
+from ..zonal import Network
+from .paths import path_generator, turn_o_scope, bfs_subgraph_generation, wandering_messenger
 
 def parallel_betweenness(network: Network,
                          search_radius=1000,
