@@ -66,24 +66,6 @@ def bfs_subgraph_generation(
     o_scope=None,
     o_scope_paths=None,
     ):
-
-    '''
-    Suggested Pseudocode:
-    @ run O dijkstra fo find all dests and paths just like before
-    @ for all dests, and all neighbors to dijkstra queue (dist, d_idx, current_node)
-        @ pop node from queue
-        @ if node is not in dist_matrix[d_idx]:
-            DO all network termination checks, single neighbor term, ...
-            @ add it, and add all nodes in shortest path from the origin backwards to maintain
-            weight dist_matrix[d_idx][node] = current weight+accumilated backwards weight
-            @ to avoid traversing backwards multiple time, just mark the "trailhead" by each destinations that
-             gets to it, and add each destination as key in the dist_matrix[d_idx][node]
-            @ keep a list of trailheads for later update..
-        @ if node is already in and current weight is better:
-            @ for all nodes on o_shortest_path, update dist_matrix[node][d_idx] = current weight+accumilated
-            backwards weight
-        # if already in and weight is worse, continue.
-    '''
     # TODO: should we only run destination search to half radius and use origin's shortest paths to complete the rest?
     # TODO: should we use origin shortest paths to quickly terminate search from dest?traverse path to update
     #  distance from destination to the dist_matrix
