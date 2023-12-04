@@ -19,31 +19,36 @@ from pathlib import Path
 
 import shapely.geometry as geo
 
+import pydeck as pdk
+from pydeck.types import String
+import warnings
+
 from ..zonal import Zonal, VERSION, RELEASE_DATE
 from ..zonal import Network
 from .paths import path_generator, turn_o_scope, bfs_subgraph_generation, wandering_messenger
 
-def parallel_betweenness(network: Network,
-                         search_radius=1000,
-                         detour_ratio=1.05,
-                         decay=True,
-                         decay_method="exponent",
-                         beta=0.003,
-                         num_cores=4,
-                         path_detour_penalty="equal",
-                         origin_weights=False,
-                         origin_weight_attribute = None,
-                         closest_destination=True,
-                         destination_weights=False,
-                         destination_weight_attribute = None,
-                         perceived_distance=False,
-                         light_graph=True,
-                         turn_penalty=False,
-                         retained_d_idxs=None,
-                         retained_paths=None,
-                         retained_distances=None,
-                         rertain_expensive_data=False
-                         ):
+def parallel_betweenness(
+    network: Network,
+    search_radius=1000,
+    detour_ratio=1.05,
+    decay=True,
+    decay_method="exponent",
+    beta=0.003,
+    num_cores=4,
+    path_detour_penalty="equal",
+    origin_weights=False,
+    origin_weight_attribute = None,
+    closest_destination=True,
+    destination_weights=False,
+    destination_weight_attribute = None,
+    perceived_distance=False,
+    light_graph=True,
+    turn_penalty=False,
+    retained_d_idxs=None,
+    retained_paths=None,
+    retained_distances=None,
+    rertain_expensive_data=False
+    ):
     """
     To be filled in
     """
@@ -1018,7 +1023,8 @@ class Logger():
             save_flow_geoJSON=True,
             save_flow_csv=False,
             save_origin_geoJSON=True,
-            save_origin_csv=False
+            save_origin_csv=False,
+            save_diagnostics_map=False,
         ):
         # creating a folder for output
 
@@ -1050,7 +1056,21 @@ class Logger():
         destination_joined['geometry'] = destination_joined.apply(lambda x:geo.LineString([x['geometry'], x["geometry_destination"]]), axis=1)
 
         if save_flow_map:
-            # line width is now 0.5 for minimum flow and 5 for maximum flow
+            self.flow_map_template_1(
+                flow_gdf=edge_gdf,
+                flow_parameter='betweenness',
+                max_flow=None, 
+                dark_mode=True,
+                file_name=os.path.join(pairing_folder, "flow_map_dark.html")
+            )
+            self.flow_map_template_1(
+                flow_gdf=edge_gdf,
+                flow_parameter='betweenness',
+                max_flow=None, 
+                dark_mode=False,
+                file_name=os.path.join(pairing_folder, "flow_map_light.html")
+            )
+        if save_diagnostics_map:
             edge_gdf["width"] = ((edge_gdf["betweenness"] - edge_gdf["betweenness"].min()) / (edge_gdf["betweenness"].max() - edge_gdf["betweenness"].min()) + 0.1) * 5
 
             shaqra.create_map(
@@ -1100,6 +1120,98 @@ class Logger():
         self.betweenness_record.to_csv(os.path.join(self.output_folder, "betweenness_record.csv"))
 
         self.log("Simulation Output saved: ALL DONE")
+    
+    def flow_map_template_1(
+        self, 
+        flow_gdf,
+        flow_parameter,
+        max_flow=None, 
+        dark_mode=True,
+        file_name=None
+        ):
+        predicted_flow_gdf = flow_gdf.copy(deep=True)
+        pdk_layers = []
+
+
+        # preprocessing, probably should be done prior to function calling
+        predicted_flow_gdf = predicted_flow_gdf[~predicted_flow_gdf[flow_parameter].isna()]
+
+        if predicted_flow_gdf['geometry'].crs != 'EPSG:4326':
+            predicted_flow_gdf['geometry'] = predicted_flow_gdf['geometry'].to_crs('EPSG:4326')
+
+
+        h_s = predicted_flow_gdf[flow_parameter]
+        if max_flow is None:
+            max_flow = h_s.max()
+        predicted_flow_gdf['__width__'] = (h_s - 0)/ (max_flow-0) * 40 + 0.5
+
+        rbg_color = [249, 245, 10] if dark_mode else [255, 105, 180]
+        predicted_flow_gdf['__color__'] = [rbg_color] * predicted_flow_gdf.shape[0] 
+
+        predicted_flow_gdf['__text__'] = predicted_flow_gdf[flow_parameter].apply(lambda x: f"{int(x):,}")
+
+        pdk_layers.append(pdk.Layer(
+            'GeoJsonLayer',
+            predicted_flow_gdf,
+            opacity=0.99,
+            stroked=True,
+            filled=True,
+            wireframe=True,
+            get_line_width='__width__',         ## line width attribute
+            get_line_color='__color__',             ## line color for line data, or stroke color for points and poygons
+            get_fill_color="__color__",             ## fill color for points and polygons
+            pickable=True,
+        )
+        )
+
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", category=UserWarning)
+            predicted_flow_gdf['geometry']  = predicted_flow_gdf['geometry'].centroid
+
+        pdk_layers.append(pdk.Layer(
+            "TextLayer",
+            predicted_flow_gdf,
+            pickable=False,
+            get_position="geometry.coordinates",
+            get_text="__text__",
+            get_size=3,            ## text font size
+            size_units=String('meters'),
+            sizeMaxPixels=18,         #  prevent the icon from getting too big when zoomed in.
+            opacity=1,
+            get_color='__color__',
+            get_angle=0,
+            background=True,
+            get_background_color=[0, 0, 0]if dark_mode else [255, 255, 255],  ## gives a black background box for text with transperancy 0.25
+            get_text_anchor=String("middle"),
+            get_alignment_baseline=String("center"),
+        ))
+
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", category=UserWarning)
+            initial_view_state = pdk.data_utils.compute_view(
+                points=[[p.coords[0][0], p.coords[0][1]] for p in predicted_flow_gdf['geometry'].centroid],
+                view_proportion=1
+            )
+            initial_view_state.zoom = initial_view_state.zoom + 2
+
+        tooltip = {
+            "html": F"<b>{flow_parameter}:</b> {{{'__text__'}}}",
+            "style": {
+                    "backgroundColor": "steelblue",
+                    "color": "white"
+            }
+        }
+
+
+        r = pdk.Deck(
+            layers=pdk_layers,
+            initial_view_state=initial_view_state,
+            map_style='dark_no_labels' if dark_mode else 'light_no_labels',                                # options are  ‘light’, ‘dark’, ‘road’, ‘satellite’, ‘dark_no_labels’, and ‘light_no_labels’, a URI for a basemap style, which varies by provider, or a dict that follows the Mapbox style specification <https://docs.mapbox.com/mapbox-gl-js/style-spec/
+            tooltip=tooltip
+        )
+
+        r.to_html(file_name)
+        return r
 
 def betweenness_flow_simulation(
         city_name=None,

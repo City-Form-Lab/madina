@@ -1,16 +1,6 @@
 
 if __name__ == '__main__':
-    import os
-    os.environ['USE_PYGEOS'] = '0'
-    import sys
-    #sys.path.append('../../')
-    import os
-    print(os.getcwd())
-    sys.path.append(os.getcwd())
-    #print (sys.path)
     from madina.zonal.zonal import Zonal
-    #from madina import Zonal
-    #import madina
     from madina.una.betweenness import parallel_betweenness, paralell_betweenness_exposure, betweenness_exposure
 
 
