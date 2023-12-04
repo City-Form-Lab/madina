@@ -2,3 +2,8 @@ sphinx>=1.4
 ipykernel
 nbsphinx
 sphinx_rtd_theme
+geopandas>=0.13.2
+pydeck>=0.8.0b4
+pyogrio>=0.6.0
+Rtree>=1.0.1
+psutil>=5.9.6
