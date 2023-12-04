@@ -19,9 +19,9 @@ from pathlib import Path
 
 import shapely.geometry as geo
 
-from madina.zonal import Zonal, VERSION, RELEASE_DATE
-from madina.zonal import Network
-from paths import path_generator, turn_o_scope, bfs_subgraph_generation, wandering_messenger
+from ..zonal import Zonal, VERSION, RELEASE_DATE
+from ..zonal import Network
+from .paths import path_generator, turn_o_scope, bfs_subgraph_generation, wandering_messenger
 
 def parallel_betweenness(network: Network,
                          search_radius=1000,
@@ -45,7 +45,7 @@ def parallel_betweenness(network: Network,
                          rertain_expensive_data=False
                          ):
     """
-    TODO: fill out the specE
+    To be filled in
     """
     node_gdf = network.nodes
     edge_gdf = network.edges

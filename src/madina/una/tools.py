@@ -1,10 +1,10 @@
-from ..zonal import Zonal
+from src.madina.zonal import Zonal
 from paths import turn_o_scope, wandering_messenger
 import math
 import numpy as np
 import geopandas as gpd
 import networkx as nx
-from shapely.geometry import Polygon
+
 
 def accessibility(
     zonal: Zonal,
@@ -16,6 +16,16 @@ def accessibility(
     alpha:float=1,
     beta:float=None
 ):
+    """
+    Modifies the input zonal with accessibility metrics such as `reach`, `gravity`, and `closest_facility` analysis.
+        Equivalent of 'una_accessibility' function in madina.py
+
+        Returns:
+            A modified Zonal object
+
+        Raises:
+            ValueError if `gravity` is True but beta is None/unspecified.
+    """
     if gravity and (beta is None):
         raise ValueError("Please specify parameter 'beta' when 'gravity' is True")
 
@@ -78,11 +88,18 @@ def accessibility(
                 node_gdf.at[o_idx, "una_gravity"] = sum([gravities[o_idx][d_idx] for d_idx in o_closest_destinations])
     return
 
+
 def service_area(
     zonal: Zonal,
     origin_ids: list=None,
     search_radius: float=None
 ):
+    """
+     Calculates the service area of the origins in `origin_ids`.
+
+        Returns:
+            a tuple of destinations accessible from the origins, edges traversed, and a pandas GeoDataFrame of their scope
+    """
     node_gdf = zonal.network.nodes
     edge_gdf = zonal.network.edges
     origins = node_gdf[node_gdf["type"] == "origin"]

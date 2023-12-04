@@ -2,12 +2,13 @@
 requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
-[tool.setuptools]
-py-modules = []
+[tool.setuptools.packages.find]
+where = ["src"]  # list of folders that contain the packages (["."] by default)
+include = ["*"]  # package names should match these glob patterns (["*"] by default)
 
 [project]
 name = "madina"
-version = "0.0.5"
+version = "0.0.7"
 authors = [
     {name="City Form Lab", email="madina@mit.edu"},
 ]
@@ -24,6 +25,7 @@ dependencies = [
     "geopandas>=0.13.2",
     "pydeck>=0.8.0b4",
     "pyogrio>=0.6.0",
-    "Rtree>=1.0.1"
+    "Rtree>=1.0.1",
+    "psutil>=5.9.6"
 ]
 

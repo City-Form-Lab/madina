@@ -1,5 +1,3 @@
-from zonal import Zonal
-
 
 class Layers:
     """
@@ -195,12 +193,12 @@ class Layer:
                 # the default color is categorical..
                 color_by_attribute = color["__attribute_name__"]
                 color_method = "categorical"
-        Zonal.color_gdf(
-            self.gdf,
-            color_by_attribute=color_by_attribute,
-            color_method=color_method,
-            color=color
-        )
+        # Zonal.color_gdf(
+        #     self.gdf,
+        #     color_by_attribute=color_by_attribute,
+        #     color_method=color_method,
+        #     color=color
+        # )
         return
 
 

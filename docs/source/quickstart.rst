@@ -144,6 +144,64 @@ from subway stations in a ~ 5 minute (300m) walk-shed.
 To do this, we must import the first import the ``una`` module, which contains
 tools for UNA.
 
+    >>> from madina import unafrom src.madina import una
+
+There's an
+tools for UNA.
+
+    >>> from madina import unafrom src.madina import una
+
+There's an
+tools for UNA.
+
+    >>> from madina import una
+from src.madina import una
+
+There's an
+tools for UNA.
+
+    >>> from madina import una
+from src.madina import una
+
+There's an
+tools for UNA.
+
+    >>>
+from src.madina import una
+
+There's an
+tools for UNA.
+
+    >>>
+from src.madina import una
+
+There's an
+tools for UNA.
+
+    >>>
+from src.madina import una
+
+There's an
+tools for UNA.
+
+    >>>
+from src.madina import una
+
+There's an
+tools for UNA.
+
+
+from src.madina import una
+
+There's an
+tools for UNA.
+
+
+from src.madina import una
+
+There's an
+tools for UNA.
+
     >>> from madina import una
 
 There's an ``accessibility`` function, which adds a column...

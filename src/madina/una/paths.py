@@ -6,8 +6,8 @@ from ..zonal import Network
 
 def path_generator(network: Network, o_idx, search_radius=800, detour_ratio=1.15, turn_penalty=False):
     """
-    TODO: fill out the spec
-    """
+    to be filled in.
+"""
     o_graph = network.d_graph
     network.add_node_to_graph(o_graph, o_idx)
     #network.update_light_graph(o_graph, add_nodes=[o_idx])
