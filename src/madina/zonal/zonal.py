@@ -1,5 +1,6 @@
 # this lets geopandas exclusively use shapely (not pygeos) silences a warning about depreciating pygeos out of geopandas. This is not needed when geopandas 1.0 is released in the future
 import os
+os.environ['USE_PYGEOS'] = '0'      ## This needs to be done before importing geopandas to prevent warnings
 import numpy as np
 import random
 import time
@@ -12,12 +13,11 @@ from typing import Union
 from pydeck.types import String
 
 from .network import Network
-from .network_utils import node_edge_builder, discard_redundant_edges, split_redundant_edges, \
-    tag_edges, efficient_node_insertion
+from .network_utils import node_edge_builder, _discard_redundant_edges, _split_redundant_edges, \
+    _tag_edges, efficient_node_insertion
 from .utils import prepare_geometry, DEFAULT_COLORS
 from .layer import Layer, Layers
 
-os.environ['USE_PYGEOS'] = '0'
 
 VERSION = '0.0.4'
 RELEASE_DATE = '2023-08-13'
@@ -181,12 +181,12 @@ class Zonal:
         )
 
         if split_redundant_edges:
-            node_gdf, edge_gdf = split_redundant_edges(node_gdf, edge_gdf)
+            node_gdf, edge_gdf = _split_redundant_edges(node_gdf, edge_gdf)
         elif discard_redundant_edges:
-            edge_gdf = discard_redundant_edges(edge_gdf)
+            edge_gdf = _discard_redundant_edges(edge_gdf)
 
         if tag_edges:
-            edge_gdf = tag_edges(edge_gdf, tolerance=node_snapping_tolerance)
+            edge_gdf = _tag_edges(edge_gdf, tolerance=node_snapping_tolerance)
 
         self.network = Network(node_gdf, edge_gdf, turn_threshold_degree, turn_penalty_amount, weight_attribute)
         return

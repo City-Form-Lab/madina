@@ -3,7 +3,7 @@ import numpy as np
 import geopandas as gpd
 import pandas as pd
 import shapely.geometry as geo
-
+from shapely.ops import split, snap
 
 # from pygeos.lib import get_x, get_y, get_point
 
@@ -278,7 +278,7 @@ def tolerance_network_nodes_edges(geometry_gdf, weight_attribute=None, tolerance
     return node_gdf, edge_gdf
 
 
-def discard_redundant_edges(edge_gdf: GeoDataFrame):
+def _discard_redundant_edges(edge_gdf: GeoDataFrame):
     ## finding edges that share the same start and end, including those who start and end at the same node
     edge_stack = pd.DataFrame({
         'edge_id': np.concatenate([edge_gdf.index.values, edge_gdf.index.values]),
@@ -312,10 +312,7 @@ def discard_redundant_edges(edge_gdf: GeoDataFrame):
     return edge_gdf.loc[unique_edges]
 
 
-from shapely.ops import split, snap
-
-
-def split_redundant_edges(node_gdf: GeoDataFrame, edge_gdf: GeoDataFrame):
+def _split_redundant_edges(node_gdf: GeoDataFrame, edge_gdf: GeoDataFrame):
     ## finding edges that share the same start and end, including those who start and end at the same node
     edge_stack = pd.DataFrame(
         {
@@ -443,7 +440,7 @@ def split_redundant_edges(node_gdf: GeoDataFrame, edge_gdf: GeoDataFrame):
     return pd.concat([node_gdf, new_node_gdf]), pd.concat([edge_gdf.drop(index=remove_edges), new_edge_gdf])
 
 
-def tag_edges(edge_gdf, tolerance=1.0):
+def _tag_edges(edge_gdf, tolerance=1.0):
     edge_gdf["tag"] = ""
     edge_gdf['tag'] = np.select(
         condlist=[
