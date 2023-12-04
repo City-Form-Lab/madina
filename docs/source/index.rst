@@ -10,6 +10,13 @@ It contains tools to work with geometry, networks and geo-processing.
 
 Get started with :doc:`quickstart`, or view our complete API :doc:`reference`.
 
+User's Guide
+==================
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+   notebooks/quickstart
 
 Indices and tables
 ==================
