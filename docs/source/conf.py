@@ -22,7 +22,7 @@ extensions = [
     'sphinx.ext.autosummary',
     "nbsphinx",
 ]
-autosummary_generate = False
+autosummary_generate = True
 
 templates_path = ['_templates']
 
