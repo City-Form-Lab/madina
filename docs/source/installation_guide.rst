@@ -14,12 +14,11 @@ Conda makes it easy to create and manage environments, and if you're using pytho
 -----------------------
 Windows, MacOS, Linux
 ^^^^^^^^^^^^^^^^^^^^^^^
-Madina depends on a python package called  `geopandas <geopandas.org/en/stable/>`_, which recommends using conda as the simplest and most reliable way to install that package.
-Once you have installed conda, run these commandsm in your terminal (command prompt or powershell in Windows for example) as an administrator. run the following command to create a new python environment called "madina_env"
+Madina depends on a python package called  `geopandas <geopandas.org/en/stable/>`_, the following command creates an environment called "madina_env" and install some packages that madina depends on including geopandas
 
 .. code-block:: console
 
-   conda create --name=madina_env python
+   conda create -n madina_env -c conda-forge --strict-channel-priority geopandas pyogrio psutil
 
 Avctivate the newly created environment by running this command:
 
@@ -27,29 +26,12 @@ Avctivate the newly created environment by running this command:
 
     conda activate madina_env
 
-The next three commands are to `install geopandas according to their official guide <https://geopandas.org/en/stable/getting_started/install.html>`_ . The next command adds the channel "conda-forge" as a source to install packages in the activated environment "madina_env":
+
+The next command installs madina from a test repository. Keep in mind that madina is work-in-progress and we will be launching an offical release soon.
 
 .. code-block:: console
 
-    conda config --env --add channels conda-forge
-
-The next command ensures the channel priority
-
-.. code-block:: console
-
-    conda config --env --set channel_priority strict
-
-The next command installs geopandas
-
-.. code-block:: console
-
-    conda install python=3 geopandas pyogrio
-
-The next command installs madina
-
-.. code-block:: console
-
-    pip install -i https://test.pypi.org/simple/ madina==0.0.7
+    pip install -i https://test.pypi.org/simple/ madina
 
 3) Run an example
 -----------------------
