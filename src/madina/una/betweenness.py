@@ -1041,8 +1041,10 @@ class Logger():
         edge_gdf = shaqra.network.edges
 
         self.betweenness_record = self.betweenness_record.join(
-            edge_gdf[['parent_street_id', 'betweenness']].set_index('parent_street_id')).rename(
+            edge_gdf[['parent_street_id', 'betweenness']].drop_duplicates(subset='parent_street_id').set_index('parent_street_id')).rename(
             columns={"betweenness": pairing['Flow_Name']})
+        
+        # .drop_duplicates(subset='parent_street_id') is needed to handle split parallel edges. this won't be needed if parallel edges were allowed and not needed to be split
 
 
         # creating origins and desrinations connector lines

@@ -30,3 +30,6 @@ MANIFEST
 # UNA Test Data
 archive
 tests/unit_testing/Test Cases
+examples/Cities/Milan
+examples/Cities/bronx
+examples/Cities/Somerville/Fifteen_min_city

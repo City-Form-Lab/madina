@@ -179,21 +179,32 @@ class Network:
     def remove_node_to_graph(self, graph: nx.Graph, node_idx):
         #print ("Deleting...")
         node_idx = int(node_idx)
+        original_edge_id = self.nodes.at[node_idx, "nearest_edge_id"]
+
+
         if node_idx not in graph.nodes:
             print(f"attempting to remove node {node_idx} that's not in graph {str(graph)}")
             return
 
-        if len(graph.adj[node_idx]) != 2:
-            #print(f"attempting to remove a node {node_idx = } that's not degree 2, adjacent to: {graph.adj[node_idx]}")
-            return
-
         neighbors = list(graph.adj[node_idx])
+        
+        if len(neighbors) != 2:
+            #print(f"attempting to remove a node {node_idx = } that's not degree 2, adjacent to: {graph.adj[node_idx]}")
+            # dealing with looped edges, as the start and end are the same node, making len(neighbors)=1 as we can't represent duplicate neighbors when not using multigraph
+            if self.edges.at[original_edge_id, 'start'] == self.edges.at[original_edge_id, 'end']:
+                start = self.edges.at[original_edge_id, 'start']
+                end = self.edges.at[original_edge_id, 'end']
+                weight = self.edges.at[original_edge_id, 'weight']
+                #print ("fixed looped node edge on removal")
+            else:
+                ## TODO: Check if there are cases that lead to this outcome
+                return
+        else:
+            start = int(neighbors[0])
+            end = int(neighbors[1])
+            weight = graph.adj[node_idx][start]["weight"] + graph.adj[node_idx][end]["weight"]
 
-        start = int(neighbors[0])
-        end = int(neighbors[1])
-        weight = graph.adj[node_idx][start]["weight"] + graph.adj[node_idx][end]["weight"]
-
-        original_edge_id = self.nodes.at[node_idx, "nearest_edge_id"]
+        
 
         # remove node after we got the attributes we needed..
         graph.remove_node(node_idx)

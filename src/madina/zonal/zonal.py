@@ -468,6 +468,9 @@ class Zonal:
         return r
 
     def color_layer(self, layer_name, color_by_attribute=None, color_method="single_color", color=None):
+        '''
+        This function is used internally to apply default color settings for given layers
+        '''
         if layer_name in self.DEFAULT_COLORS.keys() and color_by_attribute is None and color is None:
             # set default colors first. all default layers call without specifying "color_by_attribute"
             # default layer creation always calls self.color_layer(layer_name) without any other parameters

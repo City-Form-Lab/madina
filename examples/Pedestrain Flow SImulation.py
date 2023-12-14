@@ -3,7 +3,7 @@ from madina.una.betweenness import betweenness_flow_simulation
 
 
 if __name__ == '__main__':
-    city_name = 'Somerville'
+    city_name = 'somerville'
 
     betweenness_flow_simulation(
         city_name=city_name,

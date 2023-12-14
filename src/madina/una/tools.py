@@ -260,3 +260,166 @@ def alternative_paths(
     )
 
     zonal.network.remove_node_to_graph(o_graph, origin_id)
+
+
+
+
+import psutil
+import time
+import concurrent
+import multiprocessing as mp
+import pandas as pd
+
+
+
+def parallel_accessibility(
+    zonal: Zonal,
+    reach: bool = False,
+    gravity: bool =False,
+    closest_facility: bool =False,
+    weight: str = None,
+    search_radius: float=None,
+    alpha:float=1,
+    beta:float=None
+    ):
+    node_gdf = zonal.network.nodes
+    origins = node_gdf[node_gdf["type"] == "origin"]
+
+
+    num_procs = psutil.cpu_count(logical=True)
+
+    with concurrent.futures.ProcessPoolExecutor(max_workers=num_procs) as executor:
+        with mp.Manager() as manager:
+            origin_queue = manager.Queue()
+
+            for o_idx in list(origins.index):
+                origin_queue.put(o_idx)
+            for core_index in range(num_procs):
+                origin_queue.put("done")
+
+            execution_results = []
+            for core_index in range(num_procs):
+                execution_results.append(
+                    executor.submit(
+                        single_accessibility,
+                        zonal=zonal,
+                        reach=reach,
+                        gravity=gravity,
+                        closest_facility=closest_facility,
+                        weight=weight,
+                        search_radius=search_radius,
+                        alpha=alpha,
+                        beta=beta,
+                        origin_queue=origin_queue,
+                        )
+                    )
+
+            # Trackinmg queue progress
+            start = time.time()
+            while not all([future.done() for future in execution_results]):
+                time.sleep(0.5)
+                print (f"Time spent: {round(time.time()-start):,}s [Done {max(origins.shape[0] - origin_queue.qsize(), 0):,} of {origins.shape[0]:,} origins ({max(origins.shape[0] - origin_queue.qsize(), 0)/origins.shape[0] * 100:4.2f}%)]",  end='\r')
+                for future in [f for f in execution_results if f.done() and (f.exception() is not None)]: # if a process is done and have an exception, raise it
+                    raise (future.exception())
+           
+   
+            origin_returns = [result.result() for result in concurrent.futures.as_completed(execution_results)]
+
+
+    ## find a way to join results back to both the network and original layer?
+    x = pd.concat(origin_returns)
+    return x
+
+
+
+def single_accessibility(
+    zonal: Zonal,
+    reach: bool = False,
+    gravity: bool =False,
+    closest_facility: bool =False,
+    weight: str = None,
+    search_radius: float=None,
+    alpha:float=1,
+    beta:float=None, 
+    origin_queue=None,
+    ):
+    """
+    Modifies the input zonal with accessibility metrics such as `reach`, `gravity`, and `closest_facility` analysis.
+        Equivalent of 'una_accessibility' function in madina.py
+
+        Returns:
+            A modified Zonal object
+
+        Raises:
+            ValueError if `gravity` is True but beta is None/unspecified.
+    """
+    if gravity and (beta is None):
+        raise ValueError("Please specify parameter 'beta' when 'gravity' is True")
+
+    node_gdf = zonal.network.nodes
+    origin_gdf = node_gdf[node_gdf["type"] == "origin"]
+
+    reaches = {}
+    gravities = {}
+    processed_origins = []
+    while True:
+        o_idx = origin_queue.get()
+        if o_idx == "done":
+            origin_queue.task_done()
+            break
+        processed_origins.append(o_idx)
+        reaches[o_idx] = {}
+        gravities[o_idx] = {}
+
+        o_graph = zonal.network.d_graph
+        zonal.network.add_node_to_graph(o_graph, o_idx)
+
+        d_idxs, o_scope, o_scope_paths = turn_o_scope(
+            network=zonal.network,
+            o_idx=o_idx,
+            search_radius=search_radius,
+            detour_ratio=1.00, 
+            turn_penalty=False,
+            o_graph=o_graph,
+            return_paths=False
+        )
+
+        zonal.network.remove_node_to_graph(o_graph, o_idx)
+
+        
+
+
+        for d_idx in d_idxs:
+            source_id = int(node_gdf.at[d_idx, "source_id"])
+            source_layer = node_gdf.at[d_idx, "source_layer"]
+            d_weight = 1 if weight is None else zonal.layers[source_layer].gdf.at[source_id, weight]
+
+            if reach:
+                reaches[o_idx][d_idx] = d_weight
+            if gravity:
+                gravities[o_idx][d_idx] = pow(d_weight, alpha) / (pow(math.e, (beta * d_idxs[d_idx])))
+
+            if closest_facility:
+                if ("una_closest_destination" not in node_gdf.loc[d_idx]) or (np.isnan(node_gdf.loc[d_idx]["una_closest_destination"])):
+                    node_gdf.at[d_idx, "una_closest_destination"] = o_idx
+                    node_gdf.at[d_idx, "una_closest_destination_distance"] = d_idxs[d_idx]
+                elif d_idxs[d_idx] < node_gdf.at[d_idx, "una_closest_destination_distance"]:
+                    node_gdf.at[d_idx, "una_closest_destination"] = o_idx
+                    node_gdf.at[d_idx, "una_closest_destination_distance"] = d_idxs[d_idx]
+
+        if reach:
+            node_gdf.at[o_idx, "una_reach"] = sum([value for value in reaches[o_idx].values() if not np.isnan(value)])
+
+        if gravity:
+            node_gdf.at[o_idx, "una_gravity"] = sum([value for value in gravities[o_idx].values() if not np.isnan(value)])
+
+    if closest_facility:
+        for o_idx in origin_gdf.index:
+            o_closest_destinations = list(node_gdf[node_gdf["una_closest_destination"] == o_idx].index)
+            if reach:
+                node_gdf.at[o_idx, "una_reach"] = sum([reaches[o_idx][d_idx] for d_idx in o_closest_destinations])
+            if gravity:
+                node_gdf.at[o_idx, "una_gravity"] = sum([gravities[o_idx][d_idx] for d_idx in o_closest_destinations])
+    return node_gdf.loc[processed_origins]
+
+
