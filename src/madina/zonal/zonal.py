@@ -19,8 +19,8 @@ from .utils import prepare_geometry, DEFAULT_COLORS
 from .layer import Layer, Layers
 
 
-VERSION = '0.0.4'
-RELEASE_DATE = '2023-08-13'
+VERSION = '0.0.8'
+RELEASE_DATE = '2023-12-14'
 
 
 class Zonal:
