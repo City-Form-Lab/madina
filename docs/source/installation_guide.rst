@@ -8,14 +8,12 @@ Installation Guide
 2) Install Madina
 -----------------------
 
-MacOS, Linux
-^^^^^^^^^^^^^
-
-To install madina, make sure you have python installed, and pip is available.
 
 
 
-Windows
+
+
+Windows, MacOS, Linux
 ^^^^^^^^
 Madina depends on  `geopandas <geopandas.org/en/stable/>`_, a python package that is used inside Madina recmment using conda as the simplest and most reliable way to install that package.
 Download and install conda from here: `Installing Miniconda <https://docs.conda.io/projects/miniconda/en/latest/miniconda-install.html>`_.
@@ -58,8 +56,7 @@ The next command installs madina
 
 .. code-block:: console
 
-    pip install -i https://test.pypi.org/simple/ madina
-
+    pip install -i https://test.pypi.org/simple/ madina==0.0.7
 
 3) Run an example
 -----------------------
@@ -72,7 +69,7 @@ The folloing instructions are useful to familiarize yourself with running madina
 * Download `Visual Studio Code <https://code.visualstudio.com/>`_, a simple and powerful code editor. 
 * Download `The example folder <https://www.dropbox.com/scl/fi/1fbidbc5bqz7ccn61u1yq/examples.zip?rlkey=y0ppgukbyck0scw6pakrcn7f5&dl=0>`_, and unzip it.
 * In VS code, Click FIle > Open FOlder and navigate to the unzipped "examples folder"
-* Make sure to set the environment to "madina_env" that you created during package installation. (If you followed the MacOS/Linux instructions, make sure to select the appropriate python environment)
+* Make sure to set the environment to "madina_env" that you created during package installation.
 * Open the example notebooks and follow along step by step
 * if you want to take a quick look, these python notebooks are available in rthe example section of this documentation
 
