@@ -1,0 +1,2 @@
+,Flow_Name,Network_File,Network_Cost,Origin_File,Origin_Name,Origin_Weight,Destination_File,Destination_Name,Destination_Weight,Radius,Beta,Decay,Decay_Mode,Closest_destination,Detour,Elastic_Weights,KNN_Weight,Plateau,Turns,Turn_Threshold,Turn_Penalty
+2,Somerville_Homes_Schools,network.geojson,PercLen,homes.geojson,Homes,RES_2020B,schools.geojson,Schools,Count,800,0.001,TRUE,exponent,FALSE,1.15,FALSE,,,FALSE,0,0

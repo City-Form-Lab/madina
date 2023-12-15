@@ -16,7 +16,7 @@ Windows, MacOS, Linux
 ^^^^^^^^^^^^^^^^^^^^^^^
 After installing ``Miniconda``, Run your terminal as administrator
 (in Windows, run ``Command Prompt`` as administrator by searching for ``Command Prompt`` in the start menu, right click, and ``Run as administrator``). 
-Run the following command to creates an environment called ``madina_env`` and install some packages that madina depends on including `geopandas <geopandas.org/en/stable/>`
+Run the following command to creates an environment called ``madina_env`` and install some packages that madina depends on including `geopandas <geopandas.org/en/stable/>`_ 
 
 
 .. code-block:: console
@@ -36,6 +36,13 @@ Run the next command to install madina from a test repository. Keep in mind that
 
     pip install -i https://test.pypi.org/simple/ madina
 
+
+Run the following command to be able to run and interact with example notebooks in VS Code, install ``ipython`` and ``ipykernel``
+
+.. code-block:: console
+
+    pip install ipython ipykernel
+
 3) Run an example
 -----------------------
 
@@ -45,7 +52,16 @@ The folloing instructions are useful to familiarize yourself with running madina
 * Download `Visual Studio Code <https://code.visualstudio.com/>`_, a simple and powerful code editor. 
 * Download `The example folder <https://www.dropbox.com/scl/fi/1fbidbc5bqz7ccn61u1yq/examples.zip?rlkey=y0ppgukbyck0scw6pakrcn7f5&dl=1>`_, and unzip it.
 * In VS code, Click FIle > Open FOlder and navigate to the unzipped "examples folder"
+
+Running Example notebooks
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+* Open the Explorer side panel and open example_1.ipynb. If prompted to install extensions for python and jupyter, approve and wait for extension installation
 * Make sure to set the environment to "madina_env" that you created during package installation. you can choose/change the environment by clicking the python version number in the buttom right corner of VS Code
+
+
+Running example scripts
+^^^^^^^^^^^^^^^^^^^^^^^^^
 * Open the example notebooks and follow along step by step
 * if you want to take a quick look, these python notebooks are available in rthe example section of this documentation
 

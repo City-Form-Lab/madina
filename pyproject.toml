@@ -8,7 +8,7 @@ include = ["*"]  # package names should match these glob patterns (["*"] by defa
 
 [project]
 name = "madina"
-version = "0.0.8"
+version = "0.0.9"
 authors = [
     {name="City Form Lab", email="madina@mit.edu"},
 ]
@@ -23,9 +23,9 @@ classifiers = [
 ]
 dependencies = [
     "geopandas>=0.13.2",
-    "pydeck>=0.8.0b4",
-    "pyogrio>=0.6.0",
-    "Rtree>=1.0.1",
-    "psutil>=5.0.0"
+    "pydeck",
+    "pyogrio",
+    "Rtree",
+    "psutil"
 ]
 
