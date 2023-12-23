@@ -3,3 +3,5 @@ pydeck
 pyogrio
 Rtree
 psutil
+ipython
+ipykernel

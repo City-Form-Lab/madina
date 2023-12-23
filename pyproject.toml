@@ -8,7 +8,7 @@ include = ["*"]  # package names should match these glob patterns (["*"] by defa
 
 [project]
 name = "madina"
-version = "0.0.9"
+version = "0.0.10"
 authors = [
     {name="City Form Lab", email="madina@mit.edu"},
 ]
@@ -26,6 +26,8 @@ dependencies = [
     "pydeck",
     "pyogrio",
     "Rtree",
-    "psutil"
+    "psutil",
+    "ipython",
+    "ipykernel", 
 ]
 

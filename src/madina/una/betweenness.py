@@ -684,6 +684,34 @@ def betweenness_exposure(
 
                     # This fixes numerical issues  when path length = 0
                     d_path_weights[d_path_weights < 0.01] = 0.01
+                    '''
+                    d_path_weights [400, 405, 407]
+
+                    num_bins = 5
+                    bin_width = (np.max(d_path_weights) - np.min(d_path_weights))/num_bins
+                    range_min = np.min(d_path_weights)
+
+                    binned_porbabilities = []
+                    for i in range(num_bins):
+                        current_bin_weightrs = d_path_weights[(d_path_weights >= (range_min + i*bin_width)) & (d_path_weights < (range_min + (i+1)*bin_width))]
+
+                        ## Equal Probability
+                        if path_detour_penalty == "equal":
+                            current_bin_probabilities = np.ones(len(current_bin_weightrs))
+
+
+                        elif path_detour_penalty == "exponent":
+                        ## Distance weightred probability
+                            current_bin_probabilities = 1.0 / pow(np.e, beta * current_bin_weightrs)
+
+
+                        current_bin_probabilities = current_bin_probabilities/sum(current_bin_probabilities)
+
+
+                        binned_porbabilities.append(current_bin_weightrs)
+                    path_probabilities = np.concat(binned_porbabilities)
+                    ''' 
+
 
 
                     if path_detour_penalty == "exponent":

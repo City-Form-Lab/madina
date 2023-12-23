@@ -471,7 +471,8 @@ def turn_o_scope(
                 
             
             #not seen, check eligibility
-            if neighbor_weight > max(search_radius, furthest_dest_weight * (0.5+detour_ratio*0.5) ):
+            #if neighbor_weight > max(search_radius, furthest_dest_weight * (0.5+detour_ratio*0.5) ):
+            if neighbor_weight > (search_radius*detour_ratio) :
                 continue
 
             if len(list(o_graph.neighbors(neighbor))) == 1:

@@ -19,7 +19,7 @@ from .utils import prepare_geometry, DEFAULT_COLORS
 from .layer import Layer, Layers
 
 
-VERSION = '0.0.9'
+VERSION = '0.0.10'
 RELEASE_DATE = '2023-12-15'
 
 

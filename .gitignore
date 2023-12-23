@@ -26,7 +26,7 @@ share/python-wheels/
 *.zip
 *.egg
 MANIFEST
-
+*.png
 # UNA Test Data
 archive
 tests/unit_testing/Test Cases
