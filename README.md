@@ -1,26 +1,61 @@
-# madina
-A library to simplify creating workflows for urban planning research. Tools to work with geometry, networks and geoprocessing
+# Madina
+Madina *(Arabic for the word 'city')* is a package of classes and functions to streamline the representation and analysis of urban data. The package provide layer management (Similar to layers in CAD/GIS), urban network representation and visualization. The package also includes a python implemetation of the ***Urban Network Analysis Toolbox*** ([Homepage](https://cityform.mit.edu/projects/una-rhino-toolbox) - [User Guide](https://unatoolbox.notion.site/)).
 
-## Code Structure (06/05/2023)
+More detailed documentation of the package is available [here](https://madinadocs.readthedocs.io/)
 
-- `zonal`: contains the Layer(s), Zonal and Network classes
-  - `Layer` class: a container for geographic layers
-  - `Layers` class: a data structure to organize multiple `Layer` objects with an order
-  - `Zonal` class: a collection of geographic layers and the Network they generate.
-    - `zonal.py`: The class itself
-    - `zonal_utils.py`: Currently a collection of non-computation functionalities. Will be separated into different sub-collections (e. g. map cleaning, visualization, etc.)
-  - `Network` class: street networks generated from geographic layers with nodes, edges, and special nodes
-    - `network.py`: The class itself
-    - `network_utils.py`: Currently containing some function skeletons not used, will be used to migrate some helper functions in
-- `una`: contains operations of UNA
-  - `betweenness.py`: Entry points to betweenness calculation
-  - `paths.py`: Functions for finding all paths between one O-D pair
-  - `elastic.py`: Entry point to Elastic Weight calculation
-  - `una_utils.py`: Helper functions used by multiple UNA operations
+## HIghlights
+* Organization of data layers using [Geopandas](https://geopandas.org/en/stable)
+* Creation of topological (Routable) networks from a geometric representaion. Network is represented using [NetworkX](https://networkx.org/)
+* Insertion of origin and destination poitnts from data layers into topological network
+* Creating maps using [DeckGL](https://deck.gl/) with various streamlined styling options
+* Improved implementation of [UNA Tools](https://cityform.mit.edu/projects/una-rhino-toolbox) that uses multiprocessing and novel path generation algorithoms to enable effecient betweenness flow simulations on large scale.
+* Added functionalities for UNA including percieved distance, elastic trip generation, turn penalties,
+* streamlined workflow for pedestrian flow simulation in urban environments.
 
-## TODO List (06/05/2023)
+## Pedestrain Flow Simulation
+The package features a streamlined way to model pedestrian activity in urban areas between pairs of pre-specified origins and destinations. This can be done by following these steps:
+* Prepare input data files for the network, and each origin and destination. Place all data in a folder called `Cities/city_name/Data`
+* Fill in the pairing table to specify origin-destination pairs, and specify specific parameters for each pair. Save the filled pairing table in the same `Cities/city_name/Data` folder
+* run the simulation:
+```
+from madina.una.betweenness import betweenness_flow_simulation
 
-- Add turn penalty argument to the betweenness pipeline
-- Rewrite specs for most UNA functions
-- Add map cleaning, visualization, and generative geometry
-- Rewrite logic for reprojections: Use the first loaded layer's built in projection as the overall projection, and reproject every other layer to that projection. Assume all layers are valid (nothing like the Somerville network case). Give a warning (PYTHONIC) to users when reprojections actually happen.
+betweenness_flow_simulation(
+    city_name="new_york"
+)
+```
+* Output would be saved in `Cities/city_name/Simulations`.
+* More instructions on running a pedestrain flow simulation, preparing data and creating the pairing table are found in the documentation here
+
+
+![Simulated Flow in New York City](docs/source//img//nyc_flow.png)
+
+## Installation
+First, install geopandas through conda in a new environment
+```
+conda create -n madina_env -c conda-forge --strict-channel-priority geopandas
+```
+Activate the newly created environment
+
+```
+conda activate madina_env
+```
+Install Madina through pip
+```
+pip install -i https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple madina
+```
+
+Detailed instructions are available in the documentation here
+
+## Library Structure
+* `Zonal` class: This is the main class that the user interacts with. A user would create a Zonal object, populate it with data layers and calls functions to create a network object within a Zonal object. 
+* `Network` Class: Created inside a Zonal ovject to represent a network of origins, destinations and 'street' connections. This object is used internally as input to most network algorithms.
+* `UNA` Module: A set of functions implementing the UNA functionalities. Each function tales a `Zonal` object as input.
+* `Workflows` module: A set of standarized workdlows that takes a set of structured inpurs. Examples for Pedesstrain flow simulartiob
+
+## Referencing this work
+If you find this package useful in your research, feel free to read and reference this paper (Link).
+
+```
+Bibtex ENTRY PLACEHOLDER
+```
