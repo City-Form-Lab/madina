@@ -1,5 +1,5 @@
-Installation Guide
-==================
+Quick Installation Guide
+==========================
 
 1) Get Conda
 --------------
@@ -12,8 +12,7 @@ Conda makes it easy to create and manage environments, and if you're using pytho
 
 2) Install Madina
 -----------------------
-Windows, MacOS, Linux
-^^^^^^^^^^^^^^^^^^^^^^^
+
 After installing ``Miniconda``, Run your terminal as administrator
 (in Windows, run ``Command Prompt`` as administrator by searching for ``Command Prompt`` in the start menu, right click, and ``Run as administrator``). 
 Run the following command to creates an environment called ``madina_env`` and install some packages that madina depends on including `geopandas <geopandas.org/en/stable/>`_ 
@@ -60,9 +59,88 @@ The folloing instructions are useful to familiarize yourself with running madina
 
 
 
-4) Step-by-step visual instructions on Windows
-Download and Install VScode
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Step-by-step visual instructions
+=================================================
+
+1) Install Conda and use it to Install Madina
+----------------------------------------------
+* Go to the download link for `Miniconda <https://docs.conda.io/projects/miniconda/en/latest/miniconda-install.html>`_, and click ``Download the installer``
+.. image:: img/0-1-download-installer.png
+  :width: 400
+  :alt: Download CONDA
+
+* Pick the appropriate installer for your operarion system
+
+.. image:: img/0-2-pick-os-installer.png
+  :width: 400
+  :alt: pick installer
+
+* Install using default settings
+
+.. image:: img/0-3-install-default.png
+  :width: 400
+  :alt: Install conda
+
+
+* Run your OS's terminal as administration. on windows, run Powershell as administrator
+
+
+
+.. image:: img/0-4-run-powershell.png
+  :width: 400
+  :alt: Run powershell
+
+.. note::
+  In case you faced errors with the terminal/Powershell, try running the same commands using "Conda Prompt" that installs with Miniconda.
+
+* copy and paste this command into powershell and hit enter to create a python environment called ``madina_env`` with ``geopandas`` installed.
+
+.. code-block:: console
+
+   conda create -n madina_env -c conda-forge --strict-channel-priority geopandas
+
+
+.. image:: img/0-5-create-env.png
+  :width: 400
+  :alt: create environment
+
+* When prompted, type ``y`` to approve installing ``geopandas`` and its dependencies 
+
+.. image:: img/0-6-approve.png
+  :width: 400
+  :alt: create environment
+
+* activate the newly created ``madina_env`` by running this command:
+
+.. code-block:: console
+
+    conda activate madina_env
+
+.. image:: img/0-7-activate.png
+  :width: 400
+  :alt: activate environment
+
+Install madina through pip by running this command (copy and paste into Powershell/terminal):
+
+.. code-block:: console
+
+    pip install -i https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple madina
+
+.. image:: img/0-8-pip-install.png
+  :width: 400
+  :alt: activate environment
+
+You should get a message indicating successful installation of Madina and its dependencies:
+
+.. image:: img/0-9-success.png
+  :width: 400
+  :alt: activate environment
+
+
+
+2) Install VScode and Run Example
+----------------------------------------------
+
 * Download `The example folder <https://www.dropbox.com/scl/fi/1fbidbc5bqz7ccn61u1yq/examples.zip?rlkey=y0ppgukbyck0scw6pakrcn7f5&dl=1>`_, and unzip it.
 
 
@@ -132,7 +210,7 @@ Download and Install VScode
   :alt: selecting an environment
 
 
-CLick the Run Python FIle button in nthe top tight corner. The script should start running a flow simulation and show progress.
+Click the Run Python FIle button in nthe top tight corner. The script should start running a flow simulation and show progress.
 
 
 .. image:: img/11-run-script.png

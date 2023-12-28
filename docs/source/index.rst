@@ -3,22 +3,50 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-madina
-==================================
-``madina`` is a library to simplify creating workflows for urban planning research.
-It contains tools to work with geometry, networks and geo-processing.
+Madina
+============
+Madina **(Arabic for the word 'city')** is a python package of classes and functions to streamline the representation and analysis of urban data. The package provide layer management (Similar to layers in CAD/GIS), urban network representation, and spatial visualization. The package also includes a python implemetation of the **Urban Network Analysis Toolbox** (`Homepage <https://cityform.mit.edu/projects/una-rhino-toolbox>`_ - `User Guide <https://unatoolbox.notion.site/>`_). The source code for Madina is available `on github <https://github.com/City-Form-Lab/madina>`_.
 
-Get started with :doc:`quickstart`, or view our complete API :doc:`reference`.
-
-User's Guide
-==================
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Installation Guides:
 
    installation_guide
    notebooks/quickstart
 
-Indices and tables
+
+
+Pedestrain Flow Simulation
+====================================
+The package features a streamlined way to model pedestrian activity in urban areas between pairs of pre-specified origins and destinations. This can be done by following these steps:
+* Prepare input data files for the network, and each origin and destination. Place all data in a folder called ``Cities/city_name/Data``
+
+* Fill in the pairing table to specify origin-destination pairs, and specify specific parameters for each pair. Save the filled pairing table in the same ``Cities/city_name/Data`` folder
+
+* run the simulation::
+
+   from madina.una.betweenness import betweenness_flow_simulation
+
+   betweenness_flow_simulation(
+      city_name="new_york"
+   )
+
+* Output would be saved in ``Cities/city_name/Simulations``.
+* More instructions on running a pedestrain flow simulation, preparing data and creating the pairing table are found in the documentation here
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Instructions for Preparing and Running a Simulation:
+
+   ped_flow
+
+
+.. image:: img//nyc_flow.png
+  :width: 600
+  :alt: Instruction Guide
+
+
+
+Package reference
 ==================
 * :doc:`reference`
