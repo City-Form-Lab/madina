@@ -5,7 +5,7 @@
 
 Madina
 ============
-Madina **(Arabic for the word 'city')** is a python package of classes and functions to streamline the representation and analysis of urban data. The package provide layer management (Similar to layers in CAD/GIS), urban network representation, and spatial visualization. The package also includes a python implemetation of the **Urban Network Analysis Toolbox** (`Homepage <https://cityform.mit.edu/projects/una-rhino-toolbox>`_ - `User Guide <https://unatoolbox.notion.site/>`_). The source code for Madina is available `on github <https://github.com/City-Form-Lab/madina>`_.
+Madina **(Arabic for the word 'city')** is a python package of classes and functions to streamline the representation and analysis of urban data. The package enables layer management (Similar to layers in CAD/GIS), spatial network representation, and spatial visualizations. The package also includes a Python implemetation of the **Urban Network Analysis Toolbox** (`Homepage <https://unatoolbox.notion.site/>`_). The source code for Madina is available `on github <https://github.com/City-Form-Lab/madina>`_.
 
 .. toctree::
    :maxdepth: 2
@@ -14,11 +14,9 @@ Madina **(Arabic for the word 'city')** is a python package of classes and funct
    installation_guide
    notebooks/quickstart
 
-
-
-Pedestrain Flow Simulation
+UNA Pedestrain Flow Simulation
 ====================================
-The package features a streamlined way to model pedestrian activity in urban areas between pairs of pre-specified origins and destinations. This can be done by following these steps:
+The package enables modelling pedestrian accessibility and movement in urban areas between pairs of pre-specified origins and destinations. This can be done by following these steps:
 * Prepare input data files for the network, and each origin and destination. Place all data in a folder called ``Cities/city_name/Data``
 
 * Fill in the pairing table to specify origin-destination pairs, and specify specific parameters for each pair. Save the filled pairing table in the same ``Cities/city_name/Data`` folder
