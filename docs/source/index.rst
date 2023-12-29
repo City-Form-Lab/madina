@@ -5,7 +5,7 @@
 
 Madina
 ============
-Madina **(Arabic for the word 'city')** is a python package of classes and functions to streamline the representation and analysis of urban data. The package enables layer management (Similar to layers in CAD/GIS), spatial network representation, and spatial visualizations. The package also includes a Python implemetation of the **Urban Network Analysis Toolbox** (`Homepage <https://unatoolbox.notion.site/>`_). The source code for Madina is available `on github <https://github.com/City-Form-Lab/madina>`_.
+Madina **(Arabic for the word 'city')** is a python package of classes and functions to streamline the representation and analysis of urban data. The package enables layer management (Similar to layers in CAD/GIS), spatial network representation, and spatial visualizations. The package also includes a Python implemetation of the **Urban Network Analysis** tools (`Homepage <https://unatoolbox.notion.site/>`_). The source code for Madina is available `on github <https://github.com/City-Form-Lab/madina>`_.
 
 .. toctree::
    :maxdepth: 2
