@@ -30,5 +30,6 @@ MANIFEST
 archive
 tests/unit_testing/Test Cases
 examples/Cities/Milan
+examples/Cities/LA
 examples/Cities/bronx
 examples/Cities/Somerville/Fifteen_min_city
