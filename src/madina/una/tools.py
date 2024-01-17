@@ -201,6 +201,52 @@ def closest_facility(
 
     return
 
+
+from madina.una.paths import path_generator
+from shapely import GeometryCollection
+
+
+def alternative_paths(
+    zonal: Zonal,
+    o_idx: int,
+    search_radius: float,
+    detour_ratio: float = 1,
+    turn_penalty: bool = False,
+):
+    path_edges, distances, d_idxs = path_generator(
+        network=zonal.network,
+        o_idx=o_idx,
+        search_radius=search_radius,
+        detour_ratio=detour_ratio,
+        turn_penalty=turn_penalty
+    )
+
+    destination_list = []
+    distance_list = []
+    path_geometries = []
+
+    for destinatio_idx, destination_distances in distances.items():
+        destination_list = destination_list + [str(destinatio_idx)] * len(destination_distances)
+        distance_list = distance_list + list(destination_distances)
+        for segment_list in path_edges[destinatio_idx]:
+            origin_segment_id = int(zonal.network.nodes.at[o_idx, 'nearest_edge_id'])
+            destination_segment_id = int(zonal.network.nodes.at[destinatio_idx, 'nearest_edge_id'])
+            path_segments = [zonal.network.edges.at[origin_segment_id, 'geometry']] + list(zonal.network.edges.loc[segment_list]['geometry']) + [zonal.network.edges.at[destination_segment_id, 'geometry']]
+
+            path_geometries.append(
+                GeometryCollection(
+                    path_segments
+                )
+            )
+        #print (f"destination {destinatio_idx} done")
+
+
+    destination_gdf = gpd.GeoDataFrame({'destination': destination_list, 'distance': distance_list, 'geometry': path_geometries}, crs = zonal.network.nodes.crs)
+    #destination_gdf['width'] = (destination_gdf['distance'] - destination_gdf['distance'].min())/(destination_gdf['distance'].max() - destination_gdf['distance'].min()) * 5
+    destination_gdf = destination_gdf.sort_values("distance").reset_index(drop=True)
+    return destination_gdf
+
+'''
 def closest_destination(
     zonal:Zonal,
     beta:float=0.003,
@@ -221,6 +267,8 @@ def closest_destination(
 
     zonal.network.nodes = node_gdf
     return
+
+
 
 
 def alternative_paths(
@@ -260,7 +308,7 @@ def alternative_paths(
     )
 
     zonal.network.remove_node_to_graph(o_graph, origin_id)
-
+'''
 
 
 
