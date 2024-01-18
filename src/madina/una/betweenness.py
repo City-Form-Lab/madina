@@ -552,6 +552,9 @@ def betweenness_exposure(
                     o_graph=None,
                     d_idxs=d_idxs,
                 )
+                #TODO: because node_gdf is modified internally, need to update the copy origin_gdf as it doesn't see the new updates. Consider alternatives.
+                origin_gdf=node_gdf[node_gdf['type'] == 'origin']
+
             origin_weight = origin_gdf.at[origin_idx, origin_weight_attribute]
         except Exception as ex:
             print (f"CORE: {core_index}: [betweenness_exposure]: error generating weight for origin {origin_idx = }, {len(processed_origins) = }, skipping origin.")
@@ -559,6 +562,8 @@ def betweenness_exposure(
             continue
 
         try:
+            max_chunck_size = 100 
+            chunking_method = 'cocentric-chunks'
             if closest_destination:
                 # just use the closest destination.
                 destination_probabilities = [1]
@@ -569,9 +574,7 @@ def betweenness_exposure(
                 eligible_destinations = d_idxs if destniation_cap   is None else dict(list(d_idxs.items())[:destniation_cap])
                 destination_ids = list(eligible_destinations.keys())
                 #max_chunck_size = 100
-                chunking_method = 'cocentric-chunks'
                 #chunking_method = self.network.chunking_method
-                max_chunck_size = 100 
                 #max_chunck_size = self.network.max_chunck_size
                 if len(destination_ids) > max_chunck_size:
                     if chunking_method == 'no_chunking':
@@ -730,7 +733,8 @@ def betweenness_exposure(
                     path_decays = np.ones(len(weights[destination_idx]))
                     if decay:
                         if decay_method == "exponent":
-                            path_decays = 1.0 / pow(np.e, beta * d_path_weights)
+                            # path_decays = 1.0 / pow(np.e, beta * d_path_weights)
+                            path_decays = 1.0 / pow(np.e, beta * min(list(d_idxs.values())))
                         elif decay_method == "power":
                             ## WAENING: Path weight cannot be zero!! handle properly.
                             path_decays = 1.0 / (d_path_weights ** 2.0)
@@ -980,9 +984,15 @@ def get_origin_properties(
             return_paths=False
         )
     ## K-neareast Neighbor
-    if isinstance(self.network.knn_weight, str):
-        knn_weights = self.network.knn_weight[1:-1].split(';')
-        knn_weights = [float(x) for x in knn_weights]
+    if self.network.knn_weight is not None:
+        if isinstance(self.network.knn_weight, str):
+            knn_weights = self.network.knn_weight[1:-1].split(';')
+            knn_weights = [float(x) for x in knn_weights]
+        elif isinstance(self.network.knn_weight, list):
+            knn_weights = self.network.knn_weight
+        else:
+            raise ValueError("knn_weight should be a list of numerical values like [0.5, 0.25, 0.25]")
+        
         knn_weight = 0
         for neighbor_weight, neighbor_distance in zip(knn_weights, d_idxs.values()):
             if neighbor_distance < self.network.knn_plateau:

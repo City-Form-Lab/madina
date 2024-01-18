@@ -47,13 +47,13 @@ class Zonal:
     def __getitem__(self, item):
         return self.layers[item]
 
-    def load_layer(self, layer_name: str, file_path: str, pos=None, first=False, before=None, after=None):
+    def load_layer(self, layer_name: str, file_path: str | gpd.GeoDataFrame, pos=None, first=False, before=None, after=None):
         """
         Load a new layer from the given file path with the specified layer name.
 
         Args:
             layer_name (str): The name of the new layer.
-            file_path (str): The file path to the data source for the layer. Acceptable file types are '.geojson', '.shp', or any file accepted by geopanda's read_file()
+            file_path (str): The file path to the data source for the layer. Acceptable file types are '.geojson', '.shp', or any file accepted by geopanda's read_file(). a GeoDataFrame could be provided instead. 
             pos (int, optional): Position to insert the new layer within the layers list. Default is None.
             first (bool, optional): If True, insert the new layer as the first layer. Default is False.
             before (str, optional): Insert the new layer before the layer with the specified name. Default is None.
@@ -76,11 +76,13 @@ class Zonal:
             >>> zonal.load_layer("streets", "path/to/streets.geojson", first=True) # Load a new layer at the beginning of the layers list.
 
         """
-
-        gdf = gpd.read_file(
-            file_path,
-            engine='pyogrio'
-        )
+        if isinstance(file_path, gpd.GeoDataFrame):
+            gdf = file_path.copy(deep=True)
+        else:
+            gdf = gpd.read_file(
+                file_path,
+                engine='pyogrio'
+            )
 
         gdf['id'] = range(gdf.shape[0])
         gdf.set_index('id')
@@ -188,7 +190,8 @@ class Zonal:
         if tag_edges:
             edge_gdf = _tag_edges(edge_gdf, tolerance=node_snapping_tolerance)
 
-        self.network = Network(node_gdf, edge_gdf, turn_threshold_degree, turn_penalty_amount, weight_attribute)
+        self.network = Network(node_gdf, edge_gdf, turn_threshold_degree, turn_penalty_amount, weight_attribute, edge_source_layer=source_layer)
+        source_layer
         return
 
     def insert_node(self, layer_name: str, label: str = "origin", weight_attribute: str = None):

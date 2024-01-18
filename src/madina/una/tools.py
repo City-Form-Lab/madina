@@ -246,6 +246,70 @@ def alternative_paths(
     destination_gdf = destination_gdf.sort_values("distance").reset_index(drop=True)
     return destination_gdf
 
+from madina.una.betweenness import paralell_betweenness_exposure
+def betweenness(
+    zonal: Zonal,
+    search_radius: float,
+    detour_ratio: float = 1,
+    decay: bool = False,
+    decay_method: str = "exponent",
+    beta: float = 0.003,
+    num_cores: int = 1,
+    closest_destination: bool = True,
+    elastic_weight: bool = False,
+    knn_weight: str | list = None,
+    knn_plateau: float = 0, 
+    turn_penalty: bool = False,
+    turn_penalty_amount: float = 0, 
+    turn_threshold_degree: float = 0,
+    save_betweenness_as: str = None
+):
+    zonal.network.turn_penalty_amount = turn_penalty_amount
+    zonal.network.turn_threshold_degree = turn_threshold_degree
+    zonal.network.knn_weight = knn_weight
+    zonal.network.knn_plateau = knn_plateau
+
+    betweenness_output = paralell_betweenness_exposure(
+        zonal,
+        search_radius=search_radius,
+        detour_ratio=detour_ratio,
+        decay=decay,
+        decay_method=decay_method,
+        beta=beta,
+        num_cores=num_cores,
+        path_detour_penalty='equal', # "power" | "exponent" | "equal"
+        closest_destination=closest_destination,
+        elastic_weight=elastic_weight,
+        turn_penalty=turn_penalty,
+        path_exposure_attribute=None,
+        return_path_record=False, 
+        destniation_cap=None
+    )
+
+    if save_betweenness_as is not None:
+        edge_layer_name = zonal.network.edge_source_layer
+        edge_gdf = zonal.network.edges
+
+        # if the name is already a column, drop it to avoid 'GeoDataFrame cannot contain duplicated column names' error.
+        if save_betweenness_as in zonal[edge_layer_name].gdf.columns:
+            zonal[edge_layer_name].gdf.drop(columns=[save_betweenness_as], inplace=True)
+
+        zonal[edge_layer_name].gdf = zonal[edge_layer_name].gdf.join(
+        edge_gdf[['parent_street_id', 'betweenness']].drop_duplicates(subset='parent_street_id').set_index('parent_street_id')).rename(
+        columns={"betweenness": save_betweenness_as})
+
+        #TODO: The index became a float after te join, probably due to the type of 'parent_street_id' in the edge gdf.
+        zonal[edge_layer_name].gdf.index = zonal[edge_layer_name].gdf.index.astype(int)
+
+    # TODO: Save reach, gravity, elastic weight and other origin attributes?
+    return
+
+
+    
+
+
+
+
 '''
 def closest_destination(
     zonal:Zonal,
