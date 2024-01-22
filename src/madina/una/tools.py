@@ -262,7 +262,11 @@ def betweenness(
     turn_penalty: bool = False,
     turn_penalty_amount: float = 0, 
     turn_threshold_degree: float = 0,
-    save_betweenness_as: str = None
+    save_betweenness_as: str = None, 
+    save_reach_as: str = None, 
+    save_gravity_as: str = None,
+    save_elastic_weight_as: str = None,
+    keep_diagnostics: bool = False, 
 ):
     zonal.network.turn_penalty_amount = turn_penalty_amount
     zonal.network.turn_threshold_degree = turn_threshold_degree
@@ -283,7 +287,7 @@ def betweenness(
         turn_penalty=turn_penalty,
         path_exposure_attribute=None,
         return_path_record=False, 
-        destniation_cap=None
+        destniation_cap=None, 
     )
 
     if save_betweenness_as is not None:
@@ -301,7 +305,43 @@ def betweenness(
         #TODO: The index became a float after te join, probably due to the type of 'parent_street_id' in the edge gdf.
         zonal[edge_layer_name].gdf.index = zonal[edge_layer_name].gdf.index.astype(int)
 
-    # TODO: Save reach, gravity, elastic weight and other origin attributes?
+
+    if (save_reach_as is not None) or (save_gravity_as is not None) or (save_elastic_weight_as is not None): 
+        origin_gdf = betweenness_output['origin_gdf']
+        origin_layer = origin_gdf.iloc[0]['source_layer']
+        saved_attributes = {}
+
+
+        if save_reach_as is not None:
+            origin_gdf['reach'] = origin_gdf['reach'].fillna(0)
+            saved_attributes['reach'] = save_reach_as
+            if save_reach_as in zonal[edge_layer_name].gdf.columns:
+                zonal[origin_layer].gdf.drop(columns=[save_reach_as], inplace=True)
+
+        if save_gravity_as is not None:
+            origin_gdf['gravity'] = origin_gdf['gravity'].fillna(0)
+            saved_attributes['gravity'] = save_gravity_as
+            if save_gravity_as in zonal[edge_layer_name].gdf.columns:
+                zonal[origin_layer].gdf.drop(columns=[save_gravity_as], inplace=True)
+
+        if (save_elastic_weight_as is not None) and (elastic_weight):
+            origin_gdf['knn_weight'] = origin_gdf['knn_weight'].fillna(0)
+            saved_attributes['knn_weight'] = save_elastic_weight_as
+            if save_elastic_weight_as in zonal[edge_layer_name].gdf.columns:
+                zonal[origin_layer].gdf.drop(columns=[save_elastic_weight_as], inplace=True)
+
+        
+        if keep_diagnostics:
+            for column_name in origin_gdf.columns:
+                if (column_name not in saved_attributes.keys()) and (column_name not in ["source_id"]):
+                    saved_attributes[column_name] = save_betweenness_as + "_" + column_name
+            zonal[origin_layer].gdf = zonal[origin_layer].gdf.join(origin_gdf.drop(columns=['geometry']).set_index("source_id").rename(columns=saved_attributes))
+        else:
+            zonal[origin_layer].gdf = zonal[origin_layer].gdf.join(origin_gdf[['source_id'] + list(saved_attributes.keys()) ].set_index("source_id").rename(columns=saved_attributes))
+
+        zonal[origin_layer].gdf.index = zonal[origin_layer].gdf.index.astype(int)
+
+
     return
 
 

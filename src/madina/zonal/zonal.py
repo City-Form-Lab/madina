@@ -19,8 +19,8 @@ from .utils import prepare_geometry, DEFAULT_COLORS
 from .layer import Layer, Layers
 
 
-VERSION = '0.0.10'
-RELEASE_DATE = '2023-12-15'
+VERSION = '0.0.11'
+RELEASE_DATE = '2023-01-22'
 
 
 class Zonal:
@@ -85,7 +85,7 @@ class Zonal:
             )
 
         gdf['id'] = range(gdf.shape[0])
-        gdf.set_index('id')
+        gdf = gdf.set_index('id')
         original_crs = gdf.crs
         gdf = self.color_gdf(gdf)
 

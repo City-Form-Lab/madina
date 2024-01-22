@@ -5,25 +5,25 @@ os.environ['USE_PYGEOS'] = '0'
 import time
 import concurrent
 from concurrent import futures
+
 import multiprocessing as mp
-import sys
-import networkx as nx
+
+import networkx as nx  ## when one_betweenness_2 is deleted, this import is no longer needed. 
 import pandas as pd
 import geopandas as gpd
 import psutil
-import shapely as shp
 
-from datetime import datetime
+import math
+import numpy as np
+import random
+
 import os
-from pathlib import Path
+from sys import getsizeof
 
-import shapely.geometry as geo
 
-import pydeck as pdk
-from pydeck.types import String
-import warnings
 
-from ..zonal import Zonal, VERSION, RELEASE_DATE
+
+from ..zonal import Zonal
 from ..zonal import Network
 from .paths import path_generator, turn_o_scope, bfs_subgraph_generation, wandering_messenger
 
@@ -404,8 +404,7 @@ def one_betweenness_2(
     return return_dict
 
 
-import math
-import numpy as np
+
 def clockwiseangle_and_distance(origin, point):
     refvec = [0, 1]
     # Vector between point and the origin: v = p - o
@@ -428,7 +427,7 @@ def clockwiseangle_and_distance(origin, point):
     # but if two vectors have the same angle then the shorter distance should come first.
     return angle
 
-import random
+
 def betweenness_exposure(
         self: Zonal,
         core_index=None,
@@ -450,6 +449,10 @@ def betweenness_exposure(
     node_gdf = self.network.nodes
     origin_gdf=node_gdf[node_gdf['type'] == 'origin']
     node_gdf['chunck_time'] = pd.Series(dtype=object)
+    node_gdf['chunck_path_count'] = pd.Series(dtype=object)
+    node_gdf['chunck_path_segment_count'] = pd.Series(dtype=object)
+    node_gdf['chunck_path_segment_memory'] = pd.Series(dtype=object)
+
 
     # TODO: convert this to a numby array to simplify calculations.
     batch_betweenness_tracker = {edge_id: 0.0 for edge_id in list(edge_gdf.index)}
@@ -535,6 +538,8 @@ def betweenness_exposure(
         try:
             # skip this origin if cannot reach any destination
             if len(d_idxs) == 0:
+                self.network.remove_node_to_graph(o_graph, origin_idx)
+                origin_queue.task_done()
                 continue
             
             # this makes sure destinations are sorted based on distance. (sorting the dictionary nased on its values.)
@@ -560,7 +565,6 @@ def betweenness_exposure(
             print (f"CORE: {core_index}: [betweenness_exposure]: error generating weight for origin {origin_idx = }, {len(processed_origins) = }, skipping origin.")
             traceback.print_exc()
             continue
-
         try:
             max_chunck_size = 100 
             chunking_method = 'cocentric-chunks'
@@ -620,6 +624,12 @@ def betweenness_exposure(
         destination_prep_time = time.time() - start
         memory_stalls = 0
         chunck_time = []
+        chunck_path_count = []
+        chunck_segment_count = []
+        chunck_path_segment_memory = []
+
+
+
         for chunck_num, (d_idx_chunck, destination_probabilities_ckunck) in enumerate(zip(d_idx_chuncks, destination_probabilities_ckuncks)): 
             try:
                 start = time.time()
@@ -663,6 +673,11 @@ def betweenness_exposure(
                     turn_penalty=turn_penalty,
                     od_scope=scope_nodes
                 )
+
+                #Diagnostics
+                chunck_path_count.append(sum([len(dest_paths) for dest_paths in path_edges.values()]))
+                chunck_segment_count.append(sum([sum([len(path_edges) for path_edges in dest_paths]) for dest_paths in path_edges.values()]))
+                chunck_path_segment_memory.append(sum([sum([getsizeof(path_edges) for path_edges in dest_paths]) for dest_paths in path_edges.values()]))
             except Exception as ex:
                 print (f"CORE: {core_index}: [betweenness_exposure]: error generating paths for origin {origin_idx = } destination chunck {chunck_num = }, {len(processed_origins) = }, skipping destination")
                 import traceback
@@ -765,8 +780,7 @@ def betweenness_exposure(
                     continue
             chunck_time.append(time.time()-start)
             #done chunck, since there is chance to pause for memory, delete this ieration's variables
-            del path_edges, weights
-            del path_detour_penalties, d_path_weights, path_probabilities, path_decays, destination_path_probabilies, betweennes_contributions
+
 
         '''
                     if path_exposure_attribute is not None:
@@ -820,15 +834,22 @@ def betweenness_exposure(
         try:
             #pass
             node_gdf.at[origin_idx, 'reach'] = len(d_idxs)
-            #node_gdf.at[origin_idx, 'path_count'] = sum([len(dest_paths) for dest_paths in path_edges.values()])
-            #node_gdf.at[origin_idx, 'path_segment_count'] = sum([sum([len(path_edges) for path_edges in dest_paths]) for dest_paths in path_edges.values()])
-            #node_gdf.at[origin_idx, 'path_segment_memory'] = sum([sum([getsizeof(path_edges) for path_edges in dest_paths]) for dest_paths in path_edges.values()])
+            node_gdf.at[origin_idx, "gravity"] = sum(1.0 / pow(math.e, (beta * np.array(list(d_idxs.values())))))
+            if elastic_weight:
+                node_gdf.at[origin_idx, "knn_weight"] = origin_weight
+            node_gdf.at[origin_idx, 'path_count'] = sum(chunck_path_count)
+            node_gdf.at[origin_idx, 'path_segment_count'] = sum(chunck_segment_count)
+            node_gdf.at[origin_idx, 'path_segment_memory'] = sum(chunck_path_segment_memory)
             node_gdf.at[origin_idx, 'destination_discovery_time'] = destination_discovery_time
             node_gdf.at[origin_idx, 'destination_prep_time'] = destination_prep_time
             node_gdf.at[origin_idx, 'path_generation_time'] = sum(chunck_time)
             node_gdf.at[origin_idx, 'chunck_count'] = len(chunck_time)
             node_gdf.at[origin_idx, 'chunck_time'] = chunck_time
+            node_gdf.at[origin_idx, 'chunck_path_count'] = chunck_path_count
+            node_gdf.at[origin_idx, 'chunck_path_segment_count'] = chunck_segment_count
+            node_gdf.at[origin_idx, 'chunck_path_segment_memory'] = chunck_path_segment_memory
             node_gdf.at[origin_idx, 'memory_stalls'] = memory_stalls
+
 
             
         except:
@@ -838,6 +859,8 @@ def betweenness_exposure(
             continue
 
         try:
+            del path_edges, weights
+            del path_detour_penalties, d_path_weights, path_probabilities, path_decays, destination_path_probabilies, betweennes_contributions
             self.network.remove_node_to_graph(o_graph, origin_idx)
             origin_queue.task_done()
         except:
@@ -1004,368 +1027,3 @@ def get_origin_properties(
     node_gdf.at[o_idx, "gravity"] = sum(1.0 / pow(math.e, (beta * np.array(list(d_idxs.values())))))
     node_gdf.at[o_idx, "reach"] = int(len(d_idxs))
     return
-
-class Logger():
-    def __init__(self, output_folder):
-        self.output_folder = output_folder
-        self.start_time = datetime.now()
-        self.log_df = pd.DataFrame(
-            {
-                "time": pd.Series(dtype='datetime64[ns]'),
-                "flow_name": pd.Series(dtype="string"),
-                "event": pd.Series(dtype="string")
-            }
-        )
-
-        self.betweenness_record = None
-        self.log(f"SIMULATION STARTED: VERSION: {VERSION}, RELEASE DATEL {RELEASE_DATE}")
-        self.log(f"{sys.version}")
-        self.log(f"Dependencies: Geopandas:{gpd.__version__}, Shapely:{shp.__version__}, Pandas:{pd.__version__}, Numpy:{np.__version__}, NetworkX:{nx.__version__}")
-
-    def log(self, event: str, pairing: pd.Series = None):
-        time = datetime.now()
-
-        #printing the log header if this is the first log entry
-        if self.log_df.shape[0] == 0:
-            print(f"{'total time':^10s} | {'seconds elapsed':^15s} | {'flow_name':^40s} | event")
-            seconds_elapsed = 0
-            cumulative_seconds = 0
-        else:
-            cumulative_seconds = (time - self.start_time).total_seconds()
-            seconds_elapsed = (cumulative_seconds - self.log_df['seconds_elapsed'].sum())
-
-
-        log_entry = {
-            "time": [time],
-            "seconds_elapsed": [seconds_elapsed],
-            "cumulative_seconds": [cumulative_seconds],
-            'event': [event]
-        }
-        if pairing is not None:
-            log_entry['flow_name'] = [pairing['Flow_Name']]
-
-        self.log_df = pd.concat([self.log_df, pd.DataFrame(log_entry)] ,ignore_index=True)
-
-        print(
-            f"{cumulative_seconds:10.4f} | "
-            f"{seconds_elapsed:15.6f} | "
-            f"{pairing['Flow_Name'] if pairing is not None else '---':^40s} | "
-            f"{event}"
-        )
-
-    def pairing_end(
-            self,
-            shaqra: Zonal,
-            pairing: pd.Series,
-            save_flow_map=True,
-            save_flow_geoJSON=True,
-            save_flow_csv=False,
-            save_origin_geoJSON=True,
-            save_origin_csv=False,
-            save_diagnostics_map=False,
-        ):
-        # creating a folder for output
-
-        if self.betweenness_record is None:
-            self.betweenness_record = shaqra.layers['streets'].gdf.copy(deep=True)
-        
-        pairing_folder = os.path.join(self.output_folder, f"{pairing['Flow_Name']}_O({pairing['Origin_Name']})_D({pairing['Destination_Name']})")
-        Path(pairing_folder).mkdir(parents=True, exist_ok=True)
-
-        street_gdf = shaqra.layers["streets"].gdf
-        node_gdf = shaqra.network.nodes
-        origin_gdf = node_gdf[node_gdf["type"] == "origin"]
-        destination_gdf = node_gdf[node_gdf["type"] == "destination"]
-        edge_gdf = shaqra.network.edges
-
-        self.betweenness_record = self.betweenness_record.join(
-            edge_gdf[['parent_street_id', 'betweenness']].drop_duplicates(subset='parent_street_id').set_index('parent_street_id')).rename(
-            columns={"betweenness": pairing['Flow_Name']})
-        
-        # .drop_duplicates(subset='parent_street_id') is needed to handle split parallel edges. this won't be needed if parallel edges were allowed and not needed to be split
-
-
-        # creating origins and desrinations connector lines
-        origin_layer = shaqra.layers[pairing['Origin_Name']].gdf
-        origin_joined = origin_layer.join(origin_gdf.set_index('source_id'),lsuffix='_origin')
-        origin_joined['geometry'] = origin_joined.apply(lambda x:geo.LineString([x['geometry'], x["geometry_origin"]]), axis=1)
-
-
-        destination_layer = shaqra.layers[pairing['Destination_Name']].gdf
-        destination_joined = destination_layer.join(destination_gdf.set_index('source_id'),lsuffix='_destination')
-        destination_joined['geometry'] = destination_joined.apply(lambda x:geo.LineString([x['geometry'], x["geometry_destination"]]), axis=1)
-
-        if save_flow_map:
-            self.flow_map_template_1(
-                flow_gdf=edge_gdf,
-                flow_parameter='betweenness',
-                max_flow=None, 
-                dark_mode=True,
-                file_name=os.path.join(pairing_folder, "flow_map_dark.html")
-            )
-            self.flow_map_template_1(
-                flow_gdf=edge_gdf,
-                flow_parameter='betweenness',
-                max_flow=None, 
-                dark_mode=False,
-                file_name=os.path.join(pairing_folder, "flow_map_light.html")
-            )
-        if save_diagnostics_map:
-            edge_gdf["width"] = ((edge_gdf["betweenness"] - edge_gdf["betweenness"].min()) / (edge_gdf["betweenness"].max() - edge_gdf["betweenness"].min()) + 0.1) * 5
-
-            shaqra.create_map(
-                layer_list=[
-                    {"gdf": street_gdf, "color": [0, 255, 255], "opacity": 0.1},
-                    {
-                        "gdf": edge_gdf[edge_gdf["betweenness"] > 0],
-                        "color_by_attribute": "betweenness",
-                        "opacity": 0.50,
-                        "color_method": "quantile",
-                        "width": "width", "text": "betweenness"
-                    },
-                    {"gdf": origin_gdf, "color": [100, 0, 255], "opacity": 0.5},
-                    {'gdf': origin_joined[['geometry']], 'color': [100, 0, 255]},
-                    {'gdf': origin_layer, 'color': [100, 0, 255]},
-                    {"gdf": destination_gdf, "color": [255, 0, 100], "opacity": 0.5},
-                    {'gdf': destination_layer, 'color': [255, 0, 100]},
-                    {'gdf': destination_joined[['geometry']], 'color': [255, 0, 100]},
-                ],
-                basemap=False,
-                save_as=os.path.join(pairing_folder, "flow_map.html")
-            )
-
-        if save_flow_geoJSON:
-            self.betweenness_record.to_file(os.path.join(pairing_folder, "betweenness_record_so_far.geoJSON"), driver="GeoJSON",  engine='pyogrio')
-
-        if save_flow_csv:
-            self.betweenness_record.to_csv(os.path.join(pairing_folder, "betweenness_record_so_far.csv"))
-
-        if save_origin_geoJSON:
-            save_origin = shaqra.layers[pairing["Origin_Name"]].gdf.join(origin_gdf.set_index("source_id").drop(columns=['geometry']))
-            save_origin.to_file(os.path.join(f'{pairing_folder}', f'origin_record_({pairing["Origin_Name"]}).geoJSON'), driver="GeoJSON",  engine='pyogrio')
-
-        if save_origin_csv: 
-            save_origin = shaqra.layers[pairing["Origin_Name"]].gdf.join(origin_gdf.set_index("source_id").drop(columns=['geometry']))
-            save_origin.to_csv(os.path.join(f'{pairing_folder}', f'origin_record_({pairing["Origin_Name"]}).csv'))
-
-        self.log_df.to_csv(os.path.join(pairing_folder, "time_log.csv"))
-
-        self.log("Output saved", pairing)
-
-    def simulation_end(
-            self,
-        ):
-        self.log_df.to_csv(os.path.join(self.output_folder, "time_log.csv"))
-        self.betweenness_record.to_file(os.path.join(self.output_folder, "betweenness_record.geoJSON"), driver="GeoJSON",  engine='pyogrio')
-        self.betweenness_record.to_csv(os.path.join(self.output_folder, "betweenness_record.csv"))
-
-        self.log("Simulation Output saved: ALL DONE")
-    
-    def flow_map_template_1(
-        self, 
-        flow_gdf,
-        flow_parameter,
-        max_flow=None, 
-        dark_mode=True,
-        file_name=None
-        ):
-        predicted_flow_gdf = flow_gdf.copy(deep=True)
-        pdk_layers = []
-
-
-        # preprocessing, probably should be done prior to function calling
-        predicted_flow_gdf = predicted_flow_gdf[~predicted_flow_gdf[flow_parameter].isna()]
-
-        if predicted_flow_gdf['geometry'].crs != 'EPSG:4326':
-            predicted_flow_gdf['geometry'] = predicted_flow_gdf['geometry'].to_crs('EPSG:4326')
-
-
-        h_s = predicted_flow_gdf[flow_parameter]
-        if max_flow is None:
-            max_flow = h_s.max()
-        predicted_flow_gdf['__width__'] = (h_s - 0)/ (max_flow-0) * 40 + 0.5
-
-        rbg_color = [249, 245, 10] if dark_mode else [255, 105, 180]
-        predicted_flow_gdf['__color__'] = [rbg_color] * predicted_flow_gdf.shape[0] 
-
-        predicted_flow_gdf['__text__'] = predicted_flow_gdf[flow_parameter].apply(lambda x: f"{int(x):,}")
-
-        pdk_layers.append(pdk.Layer(
-            'GeoJsonLayer',
-            predicted_flow_gdf,
-            opacity=0.99,
-            stroked=True,
-            filled=True,
-            wireframe=True,
-            get_line_width='__width__',         ## line width attribute
-            get_line_color='__color__',             ## line color for line data, or stroke color for points and poygons
-            get_fill_color="__color__",             ## fill color for points and polygons
-            pickable=True,
-        )
-        )
-
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore", category=UserWarning)
-            predicted_flow_gdf['geometry']  = predicted_flow_gdf['geometry'].centroid
-
-        pdk_layers.append(pdk.Layer(
-            "TextLayer",
-            predicted_flow_gdf,
-            pickable=False,
-            get_position="geometry.coordinates",
-            get_text="__text__",
-            get_size=3,            ## text font size
-            size_units=String('meters'),
-            sizeMaxPixels=18,         #  prevent the icon from getting too big when zoomed in.
-            opacity=1,
-            get_color='__color__',
-            get_angle=0,
-            background=True,
-            get_background_color=[0, 0, 0]if dark_mode else [255, 255, 255],  ## gives a black background box for text with transperancy 0.25
-            get_text_anchor=String("middle"),
-            get_alignment_baseline=String("center"),
-        ))
-
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore", category=UserWarning)
-            initial_view_state = pdk.data_utils.compute_view(
-                points=[[p.coords[0][0], p.coords[0][1]] for p in predicted_flow_gdf['geometry'].centroid],
-                view_proportion=1
-            )
-            initial_view_state.zoom = initial_view_state.zoom + 2
-
-        tooltip = {
-            "html": F"<b>{flow_parameter}:</b> {{{'__text__'}}}",
-            "style": {
-                    "backgroundColor": "steelblue",
-                    "color": "white"
-            }
-        }
-
-
-        r = pdk.Deck(
-            layers=pdk_layers,
-            initial_view_state=initial_view_state,
-            map_style='dark_no_labels' if dark_mode else 'light_no_labels',                                # options are  ‘light’, ‘dark’, ‘road’, ‘satellite’, ‘dark_no_labels’, and ‘light_no_labels’, a URI for a basemap style, which varies by provider, or a dict that follows the Mapbox style specification <https://docs.mapbox.com/mapbox-gl-js/style-spec/
-            tooltip=tooltip
-        )
-
-        r.to_html(file_name)
-        return r
-
-def betweenness_flow_simulation(
-        city_name=None,
-        data_folder=None,
-        output_folder=None,
-        pairings_file="Pairings.csv",
-        num_cores=8,
-    ):
-
-    if city_name is None:
-        raise ValueError("parameter 'city_name' needs to be specified")
-
-    if data_folder is None:
-        data_folder = os.path.join("Cities", city_name, "Data")
-    if output_folder is None:
-        start_time = datetime.now()
-        output_folder = os.path.join("Cities", f"{city_name}", "Simulations", f"{start_time.year}-{start_time.month:02d}-{start_time.day:02d} {start_time.hour:02d}-{start_time.minute:02d}")
-
-    logger=Logger(output_folder)
-
-    pairings = pd.read_csv(os.path.join(data_folder, pairings_file))
-
-    # Shaqra is a town in Saudi Arabia. this name would be used to reference a generic place that we're running a simulation for
-    shaqra = Zonal()
-
-    shaqra.load_layer(
-        layer_name='streets',
-        file_path=os.path.join(data_folder,  pairings.at[0, "Network_File"])
-    )
-
-    logger.log(f"network FIle Loaded, Projection: {shaqra.layers['streets'].gdf.crs}")
-
-
-    for pairing_idx, pairing in pairings.iterrows():
-
-        # Setting up a street network if this is the first pairing, or if the network weight changed from previous pairing
-        if (pairing_idx == 0) or (pairings.at[pairing_idx, 'Network_Cost'] != pairings.at[pairing_idx-1, 'Network_Cost']):
-            shaqra.create_street_network(
-                source_layer='streets', 
-                node_snapping_tolerance=0.00001,  #todo: remove parameter once a finalized default is set.
-                weight_attribute=pairings.at[pairing_idx, 'Network_Cost'] if pairings.at[pairing_idx, 'Network_Cost'] != "Geometric" else None
-            )
-            logger.log("network topology created", pairing)
-            clean_network_nodes = shaqra.network.nodes.copy(deep=True)
-        else:
-            # either generate a new network, or flush nodes.
-            shaqra.network.nodes = clean_network_nodes.copy(deep=True)
-
-
-
-        # Loading layers, if they're not already loaded.
-        if pairing["Origin_Name"] not in shaqra.layers:
-            shaqra.load_layer(
-                layer_name=pairing["Origin_Name"],
-                file_path=os.path.join(data_folder, pairing["Origin_File"])
-            )
-            logger.log(f"{pairing['Origin_Name']} file {pairing['Origin_File']} Loaded, Projection: {shaqra.layers[pairing['Origin_Name']].gdf.crs}", pairing)
-
-        if pairing["Destination_Name"] not in shaqra.layers:
-            shaqra.load_layer(
-                layer_name=pairing["Destination_Name"],
-                file_path=os.path.join(data_folder, pairing["Destination_File"])
-            )
-            logger.log(f"{pairing['Destination_Name']} file {pairing['Destination_File']} Loaded, Projection: {shaqra.layers[pairing['Destination_Name']].gdf.crs}", pairing)
-
-        
-
-        shaqra.insert_node(
-            layer_name=pairing['Origin_Name'], 
-            label='origin', 
-            weight_attribute=pairing['Origin_Weight'] if pairing['Origin_Weight'] != "Count" else None
-        )
-        shaqra.insert_node(
-            layer_name=pairing['Destination_Name'], 
-            label='destination', 
-            weight_attribute=pairing['Destination_Weight'] if pairing['Destination_Weight'] != "Count" else None
-        )
-
-        logger.log("Origins and Destinations Inserted.", pairing)
-
-        shaqra.create_graph()
-
-        logger.log("NetworkX Graphs Created.", pairing)
-
-        #parameter settings for turns and elastic weights
-        shaqra.network.turn_penalty_amount = pairing['Turn_Penalty']
-        shaqra.network.turn_threshold_degree = pairing['Turn_Threshold']
-        shaqra.network.knn_weight = pairing['KNN_Weight']
-        shaqra.network.knn_plateau = pairing['Plateau']
-
-        #setting appropriate number of cores
-        node_gdf = shaqra.network.nodes
-        origin_gdf = node_gdf[node_gdf["type"] == "origin"]
-        num_cores = min(origin_gdf.shape[0], num_cores)
-
-        betweenness_output = paralell_betweenness_exposure(
-            shaqra,
-            search_radius=pairing['Radius'],
-            detour_ratio=pairing['Detour'],
-            decay=False if pairing['Elastic_Weights'] else pairing['Decay'],  # elastic weight already reduces origin weight factoring in decay. if this pairing uses elastic weights, don't decay again,
-            decay_method=pairing['Decay_Mode'],
-            beta=pairing['Beta'],
-            num_cores=num_cores,
-            path_detour_penalty='equal', # "power" | "exponent" | "equal"
-            closest_destination=pairing['Closest_destination'],
-            elastic_weight=pairing['Elastic_Weights'],
-            turn_penalty=pairing['Turns'],
-            path_exposure_attribute=None,
-            return_path_record=False, 
-            destniation_cap=None
-        )
-
-        logger.log("Betweenness estimated.", pairing)
-        logger.pairing_end(shaqra, pairing)
-    logger.simulation_end()
-    return 
-

@@ -1,5 +1,5 @@
 import os
-from madina.una.betweenness import betweenness_flow_simulation
+from madina.una.workflows import betweenness_flow_simulation
 
 
 if __name__ == '__main__':
