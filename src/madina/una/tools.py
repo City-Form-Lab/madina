@@ -25,6 +25,10 @@ def accessibility(
     turn_penalty: bool = False,
     turn_penalty_amount: float = 0, 
     turn_threshold_degree: float = 0,
+    save_reach_as: str = None, 
+    save_gravity_as: str = None,
+    savd_cclosest_facility_as: str = None, 
+    savd_cclosest_facility_distance_as: str = None, 
 ):
     """
     Modifies the input zonal with accessibility metrics such as `reach`, `gravity`, and `closest_facility` analysis.
@@ -79,26 +83,71 @@ def accessibility(
                 gravities[o_idx][d_idx] = pow(d_weight, alpha) / (pow(math.e, (beta * d_idxs[d_idx])))
 
             if closest_facility:
-                if ("una_closest_destination" not in node_gdf.loc[d_idx]) or (np.isnan(node_gdf.loc[d_idx]["una_closest_destination"])):
-                    node_gdf.at[d_idx, "una_closest_destination"] = o_idx
-                    node_gdf.at[d_idx, "una_closest_destination_distance"] = d_idxs[d_idx]
-                elif d_idxs[d_idx] < node_gdf.at[d_idx, "una_closest_destination_distance"]:
-                    node_gdf.at[d_idx, "una_closest_destination"] = o_idx
-                    node_gdf.at[d_idx, "una_closest_destination_distance"] = d_idxs[d_idx]
+                if ("closest_facility" not in node_gdf.loc[d_idx]) or (np.isnan(node_gdf.loc[d_idx]["una_closest_destination"])):
+                    node_gdf.at[d_idx, "closest_facility"] = o_idx
+                    node_gdf.at[d_idx, "closest_facility_distance"] = d_idxs[d_idx]
+                elif d_idxs[d_idx] < node_gdf.at[d_idx, "closest_facility_distance"]:
+                    node_gdf.at[d_idx, "closest_facility"] = o_idx
+                    node_gdf.at[d_idx, "closest_facility_distance"] = d_idxs[d_idx]
 
         if reach:
-            node_gdf.at[o_idx, "una_reach"] = sum([value for value in reaches[o_idx].values() if not np.isnan(value)])
+            node_gdf.at[o_idx, "reach"] = sum([value for value in reaches[o_idx].values() if not np.isnan(value)])
 
         if gravity:
-            node_gdf.at[o_idx, "una_gravity"] = sum([value for value in gravities[o_idx].values() if not np.isnan(value)])
+            node_gdf.at[o_idx, "gravity"] = sum([value for value in gravities[o_idx].values() if not np.isnan(value)])
 
     if closest_facility:
         for o_idx in origin_gdf.index:
-            o_closest_destinations = list(node_gdf[node_gdf["una_closest_destination"] == o_idx].index)
+            o_closest_destinations = list(node_gdf[node_gdf["closest_facility"] == o_idx].index)
             if reach:
-                node_gdf.at[o_idx, "una_reach"] = sum([reaches[o_idx][d_idx] for d_idx in o_closest_destinations])
+                node_gdf.at[o_idx, "reach"] = sum([reaches[o_idx][d_idx] for d_idx in o_closest_destinations])
             if gravity:
-                node_gdf.at[o_idx, "una_gravity"] = sum([gravities[o_idx][d_idx] for d_idx in o_closest_destinations])
+                node_gdf.at[o_idx, "gravity"] = sum([gravities[o_idx][d_idx] for d_idx in o_closest_destinations])
+    
+
+
+
+
+    if (save_reach_as is not None) or (save_gravity_as is not None): 
+        origin_gdf = node_gdf[node_gdf["type"] == "origin"]
+        origin_layer = origin_gdf.iloc[0]['source_layer']
+
+        saved_attributes = {}
+        if save_reach_as is not None:
+            saved_attributes['reach'] = save_reach_as
+
+        if save_gravity_as is not None:
+            saved_attributes['gravity'] = save_gravity_as
+
+        for key, value in saved_attributes.items:
+            origin_gdf[key] = origin_gdf[key].fillna(0)
+            if value in zonal[origin_layer].gdf.columns:
+                zonal[origin_layer].gdf.drop(columns=[value], inplace=True)
+
+        zonal[origin_layer].gdf = zonal[origin_layer].gdf.join(origin_gdf[['source_id'] + list(saved_attributes.keys()) ].set_index("source_id").rename(columns=saved_attributes))
+        zonal[origin_layer].gdf.index = zonal[origin_layer].gdf.index.astype(int)
+
+
+
+    if (savd_cclosest_facility_as is not None) or (savd_cclosest_facility_distance_as is not None): 
+        destination_gdf = node_gdf[node_gdf["type"] == "destination"]
+        destination_layer = destination_gdf.iloc[0]['source_layer']
+
+        saved_attributes = {}
+        if savd_cclosest_facility_as is not None:
+            saved_attributes['closest_facility'] = savd_cclosest_facility_as
+
+        if savd_cclosest_facility_distance_as is not None:
+            saved_attributes['closest_facility_distance'] = savd_cclosest_facility_distance_as
+
+        for key, value in saved_attributes.items:
+            destination_gdf[key] = destination_gdf[key].fillna(0)
+            if value in zonal[destination_layer].gdf.columns:
+                zonal[destination_layer].gdf.drop(columns=[value], inplace=True)
+
+        zonal[destination_layer].gdf = zonal[destination_layer].gdf.join(destination_layer[['source_id'] + list(saved_attributes.keys()) ].set_index("source_id").rename(columns=saved_attributes))
+        zonal[destination_layer].gdf.index = zonal[destination_layer].gdf.index.astype(int)
+
     return
 
 
@@ -209,13 +258,13 @@ def closest_facility(
     alpha:float=1,
     turn_penalty: bool = False,
     turn_penalty_amount: float = 0, 
-    turn_threshold_degree: float = 0
+    turn_threshold_degree: float = 0, 
+    save_reach_as: str = None, 
+    save_gravity_as: str = None,
+    savd_cclosest_facility_as: str = None, 
+    savd_cclosest_facility_distance_as: str = None, 
     ):
-    if turn_penalty:
-        zonal.network.turn_penalty_amount = turn_penalty_amount
-        zonal.network.turn_threshold_degree = turn_threshold_degree
-    if gravity and (beta is None):
-        raise ValueError("Please specify parameter 'beta' when 'gravity' is True")
+
     accessibility(
         zonal=zonal,
         reach=reach,
@@ -228,6 +277,10 @@ def closest_facility(
         turn_penalty=turn_penalty,
         turn_penalty_amount=turn_penalty_amount, 
         turn_threshold_degree=turn_threshold_degree,
+        save_reach_as=save_reach_as, 
+        save_gravity_as=save_gravity_as,
+        savd_cclosest_facility_as=savd_cclosest_facility_as, 
+        savd_cclosest_facility_distance_as=savd_cclosest_facility_distance_as, 
     )
 
     return
@@ -359,7 +412,7 @@ def betweenness(
 
         for key, value in saved_attributes.items:
             origin_gdf[key] = origin_gdf[key].fillna(0)
-            if value in zonal[edge_layer_name].gdf.columns:
+            if value in zonal[origin_layer].gdf.columns:
                 zonal[origin_layer].gdf.drop(columns=[value], inplace=True)
 
 
@@ -373,8 +426,6 @@ def betweenness(
             zonal[origin_layer].gdf = zonal[origin_layer].gdf.join(origin_gdf[['source_id'] + list(saved_attributes.keys()) ].set_index("source_id").rename(columns=saved_attributes))
 
         zonal[origin_layer].gdf.index = zonal[origin_layer].gdf.index.astype(int)
-
-
     return
 
 
