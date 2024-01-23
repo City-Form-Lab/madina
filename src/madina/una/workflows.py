@@ -390,8 +390,10 @@ def betweenness_flow_simulation(
             save_betweenness_as=pairing['Flow_Name'], 
             save_reach_as='reach_'+pairing['Flow_Name'], 
             save_gravity_as='gravity_'+pairing['Flow_Name'],
-            save_elastic_weight_as='elastic_weight__'+pairing['Flow_Name'] if pairing['Elastic_Weights'] else None,
-            keep_diagnostics=True
+            save_elastic_weight_as='elastic_weight_'+pairing['Flow_Name'] if pairing['Elastic_Weights'] else None,
+            keep_diagnostics=True, 
+            path_exposure_attribute=pairing['Exposure_Attribute']  if 'Exposure_Attribute' in pairing.index else None,
+            save_path_exposure_as="exposure_"+pairing['Flow_Name'] if 'Exposure_Attribute' in pairing.index else None,
         )
 
 

@@ -1,9 +1,16 @@
-from ..zonal import Zonal
-from .paths import turn_o_scope, wandering_messenger
 import math
 import numpy as np
 import geopandas as gpd
-import networkx as nx
+
+from shapely import GeometryCollection
+from .paths import turn_o_scope, wandering_messenger, path_generator
+from .betweenness import paralell_betweenness_exposure
+from ..zonal import Zonal
+
+
+
+
+
 
 
 def accessibility(
@@ -14,7 +21,10 @@ def accessibility(
     weight: str = None,
     search_radius: float=None,
     alpha:float=1,
-    beta:float=None
+    beta:float=None, 
+    turn_penalty: bool = False,
+    turn_penalty_amount: float = 0, 
+    turn_threshold_degree: float = 0,
 ):
     """
     Modifies the input zonal with accessibility metrics such as `reach`, `gravity`, and `closest_facility` analysis.
@@ -26,6 +36,9 @@ def accessibility(
         Raises:
             ValueError if `gravity` is True but beta is None/unspecified.
     """
+    if turn_penalty:
+        zonal.network.turn_penalty_amount = turn_penalty_amount
+        zonal.network.turn_threshold_degree = turn_threshold_degree
     if gravity and (beta is None):
         raise ValueError("Please specify parameter 'beta' when 'gravity' is True")
 
@@ -47,7 +60,7 @@ def accessibility(
             o_idx=o_idx,
             search_radius=search_radius,
             detour_ratio=1.00, 
-            turn_penalty=False,
+            turn_penalty=turn_penalty,
             o_graph=o_graph,
             return_paths=False
         )
@@ -91,15 +104,24 @@ def accessibility(
 
 def service_area(
     zonal: Zonal,
-    origin_ids: list=None,
-    search_radius: float=None
+    origin_ids: list = None,
+    search_radius: float = None, 
+    turn_penalty: bool = False,
+    turn_penalty_amount: float = 0, 
+    turn_threshold_degree: float = 0,
+
 ):
+    
     """
      Calculates the service area of the origins in `origin_ids`.
 
         Returns:
             a tuple of destinations accessible from the origins, edges traversed, and a pandas GeoDataFrame of their scope
     """
+    if turn_penalty:
+        zonal.network.turn_penalty_amount = turn_penalty_amount
+        zonal.network.turn_threshold_degree = turn_threshold_degree
+
     node_gdf = zonal.network.nodes
     edge_gdf = zonal.network.edges
     origins = node_gdf[node_gdf["type"] == "origin"]
@@ -132,7 +154,7 @@ def service_area(
             o_idx=origin_id,
             search_radius=search_radius,
             detour_ratio=1.00, 
-            turn_penalty=False,
+            turn_penalty=turn_penalty,
             o_graph=o_graph,
             return_paths=False
         )
@@ -184,8 +206,14 @@ def closest_facility(
     gravity:bool=False,
     search_radius:float=None,
     beta:float=None,
-    alpha:float=1
+    alpha:float=1,
+    turn_penalty: bool = False,
+    turn_penalty_amount: float = 0, 
+    turn_threshold_degree: float = 0
     ):
+    if turn_penalty:
+        zonal.network.turn_penalty_amount = turn_penalty_amount
+        zonal.network.turn_threshold_degree = turn_threshold_degree
     if gravity and (beta is None):
         raise ValueError("Please specify parameter 'beta' when 'gravity' is True")
     accessibility(
@@ -196,15 +224,13 @@ def closest_facility(
         weight=weight,
         search_radius=search_radius,
         alpha=alpha,
-        beta=beta
+        beta=beta, 
+        turn_penalty=turn_penalty,
+        turn_penalty_amount=turn_penalty_amount, 
+        turn_threshold_degree=turn_threshold_degree,
     )
 
     return
-
-
-from madina.una.paths import path_generator
-from shapely import GeometryCollection
-
 
 def alternative_paths(
     zonal: Zonal,
@@ -212,7 +238,14 @@ def alternative_paths(
     search_radius: float,
     detour_ratio: float = 1,
     turn_penalty: bool = False,
+    turn_penalty_amount: float = 0, 
+    turn_threshold_degree: float = 0
+
 ):
+    if turn_penalty:
+        zonal.network.turn_penalty_amount = turn_penalty_amount
+        zonal.network.turn_threshold_degree = turn_threshold_degree
+
     path_edges, distances, d_idxs = path_generator(
         network=zonal.network,
         o_idx=o_idx,
@@ -246,7 +279,6 @@ def alternative_paths(
     destination_gdf = destination_gdf.sort_values("distance").reset_index(drop=True)
     return destination_gdf
 
-from madina.una.betweenness import paralell_betweenness_exposure
 def betweenness(
     zonal: Zonal,
     search_radius: float,
@@ -267,6 +299,8 @@ def betweenness(
     save_gravity_as: str = None,
     save_elastic_weight_as: str = None,
     keep_diagnostics: bool = False, 
+    path_exposure_attribute: str = None,
+    save_path_exposure_as: str = None,
 ):
     zonal.network.turn_penalty_amount = turn_penalty_amount
     zonal.network.turn_threshold_degree = turn_threshold_degree
@@ -285,7 +319,7 @@ def betweenness(
         closest_destination=closest_destination,
         elastic_weight=elastic_weight,
         turn_penalty=turn_penalty,
-        path_exposure_attribute=None,
+        path_exposure_attribute=path_exposure_attribute,
         return_path_record=False, 
         destniation_cap=None, 
     )
@@ -309,26 +343,25 @@ def betweenness(
     if (save_reach_as is not None) or (save_gravity_as is not None) or (save_elastic_weight_as is not None): 
         origin_gdf = betweenness_output['origin_gdf']
         origin_layer = origin_gdf.iloc[0]['source_layer']
+
         saved_attributes = {}
-
-
         if save_reach_as is not None:
-            origin_gdf['reach'] = origin_gdf['reach'].fillna(0)
             saved_attributes['reach'] = save_reach_as
-            if save_reach_as in zonal[edge_layer_name].gdf.columns:
-                zonal[origin_layer].gdf.drop(columns=[save_reach_as], inplace=True)
 
         if save_gravity_as is not None:
-            origin_gdf['gravity'] = origin_gdf['gravity'].fillna(0)
             saved_attributes['gravity'] = save_gravity_as
-            if save_gravity_as in zonal[edge_layer_name].gdf.columns:
-                zonal[origin_layer].gdf.drop(columns=[save_gravity_as], inplace=True)
 
         if (save_elastic_weight_as is not None) and (elastic_weight):
-            origin_gdf['knn_weight'] = origin_gdf['knn_weight'].fillna(0)
             saved_attributes['knn_weight'] = save_elastic_weight_as
-            if save_elastic_weight_as in zonal[edge_layer_name].gdf.columns:
-                zonal[origin_layer].gdf.drop(columns=[save_elastic_weight_as], inplace=True)
+        
+        if (save_path_exposure_as is not None) and (path_exposure_attribute is not None):
+            saved_attributes['expected_hazzard_meters'] = save_elastic_weight_as
+
+        for key, value in saved_attributes.items:
+            origin_gdf[key] = origin_gdf[key].fillna(0)
+            if value in zonal[edge_layer_name].gdf.columns:
+                zonal[origin_layer].gdf.drop(columns=[value], inplace=True)
+
 
         
         if keep_diagnostics:
@@ -346,76 +379,6 @@ def betweenness(
 
 
     
-
-
-
-
-'''
-def closest_destination(
-    zonal:Zonal,
-    beta:float=0.003,
-    light_graph=True
-):
-    node_gdf = zonal.network.nodes
-    origins = node_gdf[node_gdf["type"] == "origin"]
-    destinations = node_gdf[node_gdf["type"] == "destination"]
-    distance, path = nx.multi_source_dijkstra(
-        zonal.G,
-        sources=list(destinations.index),
-        weight='weight'
-    )
-    for idx in origins.index:
-        node_gdf.at[idx, 'closest_destination'] = path[idx][0]
-        node_gdf.at[idx, 'closest_destination_distance'] = distance[idx]
-        node_gdf.at[idx, 'closest_destination_gravity'] = 1 / pow(math.e, (beta * distance[idx]))
-
-    zonal.network.nodes = node_gdf
-    return
-
-
-
-
-def alternative_paths(
-    zonal:Zonal,
-    search_radius:float, 
-    detour_ratio:float, 
-    o_idx: int, 
-    d_idx: int
-):
-
-    o_graph = zonal.network.d_graph
-    zonal.network.add_node_to_graph(o_graph, origin_id)
-    
-    scope_nodes, distance_matrix, _ = bfs_subgraph_generation(
-        o_idx=origin_idx,
-        detour_ratio=detour_ratio,
-        o_graph=o_graph,
-        d_idxs=dict(sorted(d_idx_chunck.items(), key=lambda item: item[1])),  ## Seems like this expects destinations to be sorted by distance?
-        #d_idxs=d_idx_chunck,
-        o_scope=o_scope,
-        o_scope_paths=o_scope_paths,
-    )
-
-    d_allowed_distances = {}
-    for d_idx in d_idx_chunck.keys():
-        d_allowed_distances[d_idx] =  d_idx_chunck[d_idx] * detour_ratio
-
-    path_edges, weights = wandering_messenger(
-    #path_edges, weights = bfs_path_edges_many_targets_iterative(
-        network=self.network,
-        o_graph=o_graph,
-        o_idx=origin_idx,
-        d_idxs=d_allowed_distances,
-        distance_matrix=distance_matrix,
-        turn_penalty=turn_penalty,
-        od_scope=scope_nodes
-    )
-
-    zonal.network.remove_node_to_graph(o_graph, origin_id)
-'''
-
-
-
 import psutil
 import time
 import concurrent

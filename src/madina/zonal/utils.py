@@ -33,9 +33,10 @@ def prepare_geometry(geometry_gdf: GeoDataFrame):
     "geometry"] = geometry_gdf.loc[polygon_idxs, "geometry"].boundary
 
     # if geometry is multilineString, convert to lineString
-    if (geometry_gdf["geometry"].geom_type == 'MultiLineString').all() \
-            and (np.array(list(map(len, geometry_gdf["geometry"].values))) == 1).all():
-        geometry_gdf["geometry"] = geometry_gdf["geometry"].apply(lambda x: list(x)[0])
+    if (geometry_gdf["geometry"].geom_type == 'MultiLineString').all():  #\
+            #and (np.array(list(map(len, geometry_gdf["geometry"].values))) == 1).all():
+        geometry_gdf["geometry"] = geometry_gdf["geometry"].apply(lambda x: x.geoms[0])
+
 
     # deleting any Z coordinate if they exist
     from shapely.ops import transform

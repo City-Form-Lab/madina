@@ -491,6 +491,15 @@ def betweenness_exposure(
                 continue
 
             #origin_edge = node_gdf.at[origin_idx, "nearest_edge_id"]
+            if path_exposure_attribute is not None:
+                origin_mean_hazzard = 0
+                origin_decayed_mean_hazzard = 0
+                expected_hazzard_meters = 0
+                probable_travel_distance_weighted_hazzard = 0
+
+            #origin stats
+            origin_mean_path_length = 0
+            probable_travel_distance = 0
         except Exception as ex:
             print (f"CORE: {core_index}: [betweenness_exposure]: error aquiring new origin, returning what was processed so far {len(processed_origins) = }")
             return {"batch_betweenness_tracker": batch_betweenness_tracker, 'origins': origin_gdf.loc[processed_origins]}
@@ -627,6 +636,7 @@ def betweenness_exposure(
         chunck_path_count = []
         chunck_segment_count = []
         chunck_path_segment_memory = []
+        chunk_scope_node_count = []
 
 
 
@@ -678,6 +688,7 @@ def betweenness_exposure(
                 chunck_path_count.append(sum([len(dest_paths) for dest_paths in path_edges.values()]))
                 chunck_segment_count.append(sum([sum([len(path_edges) for path_edges in dest_paths]) for dest_paths in path_edges.values()]))
                 chunck_path_segment_memory.append(sum([sum([getsizeof(path_edges) for path_edges in dest_paths]) for dest_paths in path_edges.values()]))
+                chunk_scope_node_count.append(len(scope_nodes))
             except Exception as ex:
                 print (f"CORE: {core_index}: [betweenness_exposure]: error generating paths for origin {origin_idx = } destination chunck {chunck_num = }, {len(processed_origins) = }, skipping destination")
                 import traceback
@@ -744,12 +755,12 @@ def betweenness_exposure(
                     path_probabilities = path_detour_penalties / sum(path_detour_penalties)
 
 
-                    # FInding path decays.
+                    # FInding path decays. TODO: consider taking out of the loop as this 
                     path_decays = np.ones(len(weights[destination_idx]))
                     if decay:
                         if decay_method == "exponent":
                             # path_decays = 1.0 / pow(np.e, beta * d_path_weights)
-                            path_decays = 1.0 / pow(np.e, beta * min(list(d_idxs.values())))
+                            path_decays = 1.0 / pow(np.e, beta * path_decays *  min(list(d_idxs.values())))
                         elif decay_method == "power":
                             ## WAENING: Path weight cannot be zero!! handle properly.
                             path_decays = 1.0 / (d_path_weights ** 2.0)
@@ -761,41 +772,59 @@ def betweenness_exposure(
                     # Betweenness attributes
                     destination_path_probabilies = path_probabilities * this_destination_probability
                     betweennes_contributions = destination_path_probabilies * path_decays * origin_weight
-                
+
+                    # origin stats accumulation
+                    origin_mean_path_length += (destination_path_probabilies * d_path_weights).sum()
+                    probable_travel_distance += (destination_path_probabilies * path_decays * d_path_weights).sum()
+
                     if len(d_path_weights[d_path_weights > (d_idx_chunck[destination_idx] * detour_ratio)+ 0.01]) > 0:
                         print(f"SOme paths exceeded allowed tolerance: {d_path_weights[d_path_weights > (d_idx_chunck[destination_idx] * detour_ratio)+ 0.01]}")
 
                 except Exception as ex:
                     print (f"CORE: {core_index}: [betweenness_exposure]: error generating path probabilities, decay,  betweenness for origin {origin_idx = } destination {destination_idx = }, {len(processed_origins) = }, skipping destination")
+                    import traceback
+                    traceback.print_exc()
                     continue
 
 
                 try:
-                    for this_path_edges, betweennes_contribution in zip (path_edges[destination_idx], betweennes_contributions): 
-                        for edge_id in this_path_edges:
-                        #for edge_id in set(this_path_edges).union(od_edges):
-                            batch_betweenness_tracker[edge_id] += betweennes_contribution
+                    if path_exposure_attribute is None:
+
+                        for this_path_edges, betweennes_contribution in zip (path_edges[destination_idx], betweennes_contributions): 
+                            for edge_id in this_path_edges:
+                            #for edge_id in set(this_path_edges).union(od_edges):
+                                batch_betweenness_tracker[edge_id] += betweennes_contribution
+
+                    else:  # for exposure
+                        for this_path_edges, betweennes_contribution, destination_path_probability, path_decay, this_path_weight in zip (path_edges[destination_idx], betweennes_contributions, destination_path_probabilies, path_decays, d_path_weights): 
+                            path_weight_exposure = 0       
+                            path_weight_sum = 0            
+
+
+                            for edge_id in this_path_edges:
+                                batch_betweenness_tracker[edge_id] += betweennes_contribution
+                                segment_weight = edge_gdf.at[int(edge_id), 'weight']
+                                path_weight_sum += segment_weight
+                                path_weight_exposure += segment_weight * self[self.network.edge_source_layer].gdf.at[edge_gdf.at[edge_id, 'parent_street_id'], path_exposure_attribute]
+                                
+                            
+                        
+                            path_mean_exposure = path_weight_exposure / path_weight_sum
+
+                            origin_mean_hazzard += destination_path_probability * path_mean_exposure
+                            origin_decayed_mean_hazzard += destination_path_probability * path_decay * path_mean_exposure
+                            expected_hazzard_meters += path_mean_exposure * destination_path_probability * this_path_weight
+                            probable_travel_distance_weighted_hazzard += destination_path_probability * path_decay * path_mean_exposure * this_path_weight
                 except:
                     print (f"CORE: {core_index}: [betweenness_exposure]: error assigning path betweenness to segment {origin_idx = } destination {destination_idx = }, {len(processed_origins) = }, skipping destination")
+                    import traceback
+                    traceback.print_exc()
                     continue
             chunck_time.append(time.time()-start)
             #done chunck, since there is chance to pause for memory, delete this ieration's variables
 
 
         '''
-                    if path_exposure_attribute is not None:
-                        segment_weight = edge_gdf.at[int(edge_id), 'weight']
-                        path_weight_sum += segment_weight
-                        path_weight_exposure += segment_weight * edge_gdf.at[int(edge_id), path_exposure_attribute]
-
-                if path_exposure_attribute is not None:
-                    path_mean_exposure = path_weight_exposure / path_weight_sum
-
-                    origin_mean_hazzard += destination_path_probability * path_mean_exposure
-                    origin_decayed_mean_hazzard += destination_path_probability * path_decay * path_mean_exposure
-                    expected_hazzard_meters += path_mean_exposure * destination_path_probability * this_path_weight
-                    probable_travel_distance_weighted_hazzard += destination_path_probability * path_decay * path_mean_exposure * this_path_weight
-
                 if return_path_record:
                     path_record['origin_id'].append(origin_idx)
                     path_record['destination_id'].append(destination_idx)
@@ -809,37 +838,30 @@ def betweenness_exposure(
                     if path_exposure_attribute is not None:
                         path_record['mean_path_exposure'].append(path_mean_exposure)
 
-                
-
-                        
-        
-        if path_exposure_attribute is not None:
-            origins.at[origin_idx, 'mean_hazzard'] = origin_mean_hazzard
-            origins.at[origin_idx, 'decayed_mean_hazzad'] = origin_decayed_mean_hazzard
-            origins.at[origin_idx, 'expected_hazzard_meters'] = expected_hazzard_meters
-            origins.at[origin_idx, 'probable_travel_distance_weighted_hazzard'] = probable_travel_distance_weighted_hazzard
-        
-        #origins.at[origin_idx, 'shortest_path_length'] = list(eligible_destinations.values())[0]
-        #origins.at[origin_idx, 'mean_path_length'] = origin_mean_path_length
-        #origins.at[origin_idx, 'probable_travel_distance'] = probable_travel_distance
-        #origins.at[origin_idx, 'eligible_destinations'] = len(eligible_destinations)
-        origin_mean_hazzard = 0
-        origin_decayed_mean_hazzard = 0
-        expected_hazzard_meters = 0
-        probable_travel_distance_weighted_hazzard = 0
-
-        origin_mean_path_length = 0
-        probable_travel_distance = 0
         '''
         try:
             #pass
             node_gdf.at[origin_idx, 'reach'] = len(d_idxs)
             node_gdf.at[origin_idx, "gravity"] = sum(1.0 / pow(math.e, (beta * np.array(list(d_idxs.values())))))
+
             if elastic_weight:
                 node_gdf.at[origin_idx, "knn_weight"] = origin_weight
+                    
+            if path_exposure_attribute is not None:
+                node_gdf.at[origin_idx, 'mean_hazzard'] = origin_mean_hazzard
+                node_gdf.at[origin_idx, 'decayed_mean_hazzad'] = origin_decayed_mean_hazzard
+                node_gdf.at[origin_idx, 'expected_hazzard_meters'] = expected_hazzard_meters
+                node_gdf.at[origin_idx, 'probable_travel_distance_weighted_hazzard'] = probable_travel_distance_weighted_hazzard
+            
+            node_gdf.at[origin_idx, 'closest_destination_distance'] = eligible_destinations_shortest_distance.min()
+            node_gdf.at[origin_idx, 'furthest_destination_distance'] = eligible_destinations_shortest_distance.max()
+            node_gdf.at[origin_idx, 'mean_path_length'] = origin_mean_path_length
+            node_gdf.at[origin_idx, 'probable_travel_distance'] = probable_travel_distance
+            node_gdf.at[origin_idx, 'eligible_destinations'] = len(eligible_destinations)
             node_gdf.at[origin_idx, 'path_count'] = sum(chunck_path_count)
             node_gdf.at[origin_idx, 'path_segment_count'] = sum(chunck_segment_count)
             node_gdf.at[origin_idx, 'path_segment_memory'] = sum(chunck_path_segment_memory)
+            node_gdf.at[origin_idx, 'scope_node_count'] = sum(chunk_scope_node_count)
             node_gdf.at[origin_idx, 'destination_discovery_time'] = destination_discovery_time
             node_gdf.at[origin_idx, 'destination_prep_time'] = destination_prep_time
             node_gdf.at[origin_idx, 'path_generation_time'] = sum(chunck_time)
@@ -848,6 +870,7 @@ def betweenness_exposure(
             node_gdf.at[origin_idx, 'chunck_path_count'] = chunck_path_count
             node_gdf.at[origin_idx, 'chunck_path_segment_count'] = chunck_segment_count
             node_gdf.at[origin_idx, 'chunck_path_segment_memory'] = chunck_path_segment_memory
+            node_gdf.at[origin_idx, 'chunk_scope_node_count'] = sum(chunk_scope_node_count)
             node_gdf.at[origin_idx, 'memory_stalls'] = memory_stalls
 
 
@@ -865,6 +888,8 @@ def betweenness_exposure(
             origin_queue.task_done()
         except:
             print (f"CORE: {core_index}: [betweenness_exposure]: error marking task done {origin_idx = } , {len(processed_origins) = }, proceeding to next task")
+            import traceback
+            traceback.print_exc()
             continue
 
 
