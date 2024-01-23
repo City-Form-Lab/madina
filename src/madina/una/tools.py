@@ -416,7 +416,7 @@ def betweenness(
             saved_attributes['knn_weight'] = save_elastic_weight_as
         
         if (save_path_exposure_as is not None) and (path_exposure_attribute is not None):
-            saved_attributes['expected_hazzard_meters'] = save_elastic_weight_as
+            saved_attributes['expected_hazzard_meters'] = save_path_exposure_as
 
         for key, value in saved_attributes.items():
             origin_gdf[key] = origin_gdf[key].fillna(0)
@@ -429,6 +429,8 @@ def betweenness(
             for column_name in origin_gdf.columns:
                 if (column_name not in saved_attributes.keys()) and (column_name not in ["source_id"]):
                     saved_attributes[column_name] = save_betweenness_as + "_" + column_name
+                    if saved_attributes[column_name] in zonal[origin_layer].gdf.columns:
+                        zonal[origin_layer].gdf.drop(columns=[saved_attributes[column_name]], inplace=True)
             zonal[origin_layer].gdf = zonal[origin_layer].gdf.join(origin_gdf.drop(columns=['geometry']).set_index("source_id").rename(columns=saved_attributes))
         else:
             zonal[origin_layer].gdf = zonal[origin_layer].gdf.join(origin_gdf[['source_id'] + list(saved_attributes.keys()) ].set_index("source_id").rename(columns=saved_attributes))

@@ -452,6 +452,8 @@ def betweenness_exposure(
     node_gdf['chunck_path_count'] = pd.Series(dtype=object)
     node_gdf['chunck_path_segment_count'] = pd.Series(dtype=object)
     node_gdf['chunck_path_segment_memory'] = pd.Series(dtype=object)
+    node_gdf['chunk_scope_node_count'] = pd.Series(dtype=object)
+
 
 
     # TODO: convert this to a numby array to simplify calculations.
@@ -1048,6 +1050,8 @@ def get_origin_properties(
             else:
                 knn_weight += neighbor_weight / pow(math.e, (beta * (neighbor_distance-self.network.knn_plateau)))
         node_gdf.at[o_idx, "knn_weight"] = knn_weight *  node_gdf.at[o_idx, "weight"]
+        node_gdf.at[o_idx, "knn_access"] = knn_weight
+
 
     node_gdf.at[o_idx, "gravity"] = sum(1.0 / pow(math.e, (beta * np.array(list(d_idxs.values())))))
     node_gdf.at[o_idx, "reach"] = int(len(d_idxs))
