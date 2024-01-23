@@ -27,8 +27,8 @@ def accessibility(
     turn_threshold_degree: float = 0,
     save_reach_as: str = None, 
     save_gravity_as: str = None,
-    savd_cclosest_facility_as: str = None, 
-    savd_cclosest_facility_distance_as: str = None, 
+    save_closest_facility_as: str = None, 
+    save_closest_facility_distance_as: str = None, 
 ):
     """
     Modifies the input zonal with accessibility metrics such as `reach`, `gravity`, and `closest_facility` analysis.
@@ -119,7 +119,7 @@ def accessibility(
         if save_gravity_as is not None:
             saved_attributes['gravity'] = save_gravity_as
 
-        for key, value in saved_attributes.items:
+        for key, value in saved_attributes.items():
             origin_gdf[key] = origin_gdf[key].fillna(0)
             if value in zonal[origin_layer].gdf.columns:
                 zonal[origin_layer].gdf.drop(columns=[value], inplace=True)
@@ -129,16 +129,16 @@ def accessibility(
 
 
 
-    if (savd_cclosest_facility_as is not None) or (savd_cclosest_facility_distance_as is not None): 
+    if (save_closest_facility_as is not None) or (save_closest_facility_distance_as is not None): 
         destination_gdf = node_gdf[node_gdf["type"] == "destination"]
         destination_layer = destination_gdf.iloc[0]['source_layer']
 
         saved_attributes = {}
-        if savd_cclosest_facility_as is not None:
-            saved_attributes['closest_facility'] = savd_cclosest_facility_as
+        if save_closest_facility_as is not None:
+            saved_attributes['closest_facility'] = save_closest_facility_as
 
-        if savd_cclosest_facility_distance_as is not None:
-            saved_attributes['closest_facility_distance'] = savd_cclosest_facility_distance_as
+        if save_closest_facility_distance_as is not None:
+            saved_attributes['closest_facility_distance'] = save_closest_facility_distance_as
 
         for key, value in saved_attributes.items:
             destination_gdf[key] = destination_gdf[key].fillna(0)
@@ -173,34 +173,42 @@ def service_area(
 
     node_gdf = zonal.network.nodes
     edge_gdf = zonal.network.edges
-    origins = node_gdf[node_gdf["type"] == "origin"]
+
+    origin_gdf = node_gdf[node_gdf["type"] == "origin"]
+    origin_layer = origin_gdf.loc[0]['source_layer']
+
+    destination_gdf = node_gdf[node_gdf["type"] == "destination"]
+    destination_layer = destination_gdf.loc[0]['source_layer']
+    
 
     if origin_ids is None:
-        origin_ids = list(origins.index)
+        o_idxs = list(origin_gdf.index)
     elif not isinstance(origin_ids, list):
         raise ValueError("the 'origin_ids' parameter expects a list, for single origins, set it to [11] for example")
-
-    if len(set(origin_ids) - set(origins.index)) != 0:
-        raise ValueError(f"some of the indices given are not for an origin {set(origin_ids) - set(origins.index)}")
+    elif len(set(origin_ids) - set(zonal[origin_layer].gdf.index)) != 0:
+        raise ValueError(f"some of the indices given are not for an origin {set(origin_ids) - set(zonal[origin_layer].gdf.index)}")
+    else:
+        o_idxs = list(origin_gdf[origin_gdf['source_id'].isin(origin_ids)].index)
 
     scope_names = []
     scope_geometries = []
     scope_origin_ids = []
 
-    network_edges = []
-    destination_ids = set()
-    source_layer = None
+    all_network_edges = []
+    all_destination_ids = set()
+            
 
     # TODO: This loop assumes all destinations are the same layer, generalize to all layers.
-    for origin_id in origin_ids:
+    o_graph = zonal.network.d_graph
+    for o_idx in o_idxs:
 
-        o_graph = zonal.network.d_graph
-        zonal.network.add_node_to_graph(o_graph, origin_id)
+        
+        zonal.network.add_node_to_graph(o_graph, o_idx)
 
 
         d_idxs, o_scope, o_scope_paths = turn_o_scope(
             network=zonal.network,
-            o_idx=origin_id,
+            o_idx=o_idx,
             search_radius=search_radius,
             detour_ratio=1.00, 
             turn_penalty=turn_penalty,
@@ -208,27 +216,23 @@ def service_area(
             return_paths=False
         )
 
-        zonal.network.remove_node_to_graph(o_graph, origin_id)
+        zonal.network.remove_node_to_graph(o_graph, o_idx)
 
         if (len(d_idxs)) == 0:
             continue
 
-        destination_original_ids = node_gdf.loc[list(d_idxs.keys())]["source_id"]
-        source_layer = node_gdf.at[list(d_idxs.keys())[0], "source_layer"]
-        destination_ids = destination_ids.union(destination_original_ids)
+        destination_ids = node_gdf.loc[list(d_idxs.keys())]["source_id"]
+        all_destination_ids = all_destination_ids.union(destination_ids)
         
 
-        destinations = zonal.layers[source_layer].gdf.loc[destination_original_ids]
-        # destination_scope = destinations.dissolve().convex_hull.exterior
-        destination_scope = destinations["geometry"].unary_union.convex_hull
-
-
+        destination_scope = zonal[destination_layer].gdf.loc[destination_ids]["geometry"].unary_union.convex_hull
         network_scope = node_gdf.loc[list(o_scope.keys())]["geometry"].unary_union.convex_hull
         scope = destination_scope.union(network_scope)
-        # network_edges.append(edge_gdf.clip(scope).dissolve().iloc[0]["geometry"].geoms)
-        network_edges.append(edge_gdf.clip(scope)["geometry"].unary_union)
 
-        origin_geom = node_gdf.at[origin_id, "geometry"]
+        all_network_edges.append(edge_gdf.clip(scope)["geometry"].unary_union)
+
+        origin_id = node_gdf.at[o_idx, "source_id"]
+        origin_geom = zonal[origin_layer].gdf.at[origin_id, 'geometry']
 
         scope_names.append("service area border")
         scope_names.append("origin")
@@ -242,10 +246,10 @@ def service_area(
             "name": scope_names,
             "origin_id": scope_origin_ids,
         }
-    ).set_geometry(scope_geometries).set_crs(zonal.layers[source_layer].gdf.crs)
+    ).set_geometry(scope_geometries).set_crs(zonal[destination_layer].gdf.crs)
 
-    destinations = zonal.layers[source_layer].gdf.loc[list(destination_ids)]
-    network_edges = gpd.GeoDataFrame({}).set_geometry(network_edges).set_crs(zonal.layers[source_layer].gdf.crs).explode(index_parts=False)
+    destinations = zonal[destination_layer].gdf.loc[list(all_destination_ids)]
+    network_edges = gpd.GeoDataFrame({}).set_geometry(all_network_edges).set_crs(zonal.layers[destination_layer].gdf.crs).explode(index_parts=False)
     return destinations, network_edges, scope_gdf
 
 def closest_facility(
@@ -261,8 +265,8 @@ def closest_facility(
     turn_threshold_degree: float = 0, 
     save_reach_as: str = None, 
     save_gravity_as: str = None,
-    savd_cclosest_facility_as: str = None, 
-    savd_cclosest_facility_distance_as: str = None, 
+    save_closest_facility_as: str = None, 
+    save_closest_facility_distance_as: str = None, 
     ):
 
     accessibility(
@@ -279,25 +283,28 @@ def closest_facility(
         turn_threshold_degree=turn_threshold_degree,
         save_reach_as=save_reach_as, 
         save_gravity_as=save_gravity_as,
-        savd_cclosest_facility_as=savd_cclosest_facility_as, 
-        savd_cclosest_facility_distance_as=savd_cclosest_facility_distance_as, 
+        save_closest_facility_as=save_closest_facility_as, 
+        save_closest_facility_distance_as=save_closest_facility_distance_as, 
     )
 
     return
 
 def alternative_paths(
     zonal: Zonal,
-    o_idx: int,
+    origin_id: int,
     search_radius: float,
+    #destination_id: int,
     detour_ratio: float = 1,
     turn_penalty: bool = False,
     turn_penalty_amount: float = 0, 
     turn_threshold_degree: float = 0
-
 ):
     if turn_penalty:
         zonal.network.turn_penalty_amount = turn_penalty_amount
         zonal.network.turn_threshold_degree = turn_threshold_degree
+
+    origin_gdf = zonal.network.nodes[zonal.network.nodes['type'] == 'origin']
+    o_idx = int(origin_gdf[origin_gdf['source_id'] == origin_id].iloc[0].name)
 
     path_edges, distances, d_idxs = path_generator(
         network=zonal.network,
@@ -311,12 +318,13 @@ def alternative_paths(
     distance_list = []
     path_geometries = []
 
-    for destinatio_idx, destination_distances in distances.items():
-        destination_list = destination_list + [str(destinatio_idx)] * len(destination_distances)
+    for d_idx, destination_distances in distances.items():
+        destination_id = zonal.network.nodes.at[d_idx, 'source_id']
+        destination_list = destination_list + [str(destination_id)] * len(destination_distances)
         distance_list = distance_list + list(destination_distances)
-        for segment_list in path_edges[destinatio_idx]:
+        for segment_list in path_edges[d_idx]:
             origin_segment_id = int(zonal.network.nodes.at[o_idx, 'nearest_edge_id'])
-            destination_segment_id = int(zonal.network.nodes.at[destinatio_idx, 'nearest_edge_id'])
+            destination_segment_id = int(zonal.network.nodes.at[d_idx, 'nearest_edge_id'])
             path_segments = [zonal.network.edges.at[origin_segment_id, 'geometry']] + list(zonal.network.edges.loc[segment_list]['geometry']) + [zonal.network.edges.at[destination_segment_id, 'geometry']]
 
             path_geometries.append(
@@ -410,7 +418,7 @@ def betweenness(
         if (save_path_exposure_as is not None) and (path_exposure_attribute is not None):
             saved_attributes['expected_hazzard_meters'] = save_elastic_weight_as
 
-        for key, value in saved_attributes.items:
+        for key, value in saved_attributes.items():
             origin_gdf[key] = origin_gdf[key].fillna(0)
             if value in zonal[origin_layer].gdf.columns:
                 zonal[origin_layer].gdf.drop(columns=[value], inplace=True)
