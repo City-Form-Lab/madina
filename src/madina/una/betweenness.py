@@ -570,8 +570,8 @@ def betweenness_exposure(
                 )
                 #TODO: because node_gdf is modified internally, need to update the copy origin_gdf as it doesn't see the new updates. Consider alternatives.
                 origin_gdf=node_gdf[node_gdf['type'] == 'origin']
-
             origin_weight = origin_gdf.at[origin_idx, origin_weight_attribute]
+
         except Exception as ex:
             print (f"CORE: {core_index}: [betweenness_exposure]: error generating weight for origin {origin_idx = }, {len(processed_origins) = }, skipping origin.")
             traceback.print_exc()

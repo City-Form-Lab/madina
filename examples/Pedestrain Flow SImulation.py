@@ -13,4 +13,3 @@ if __name__ == '__main__':
         pairings_file="pairings.csv",       
         num_cores=6,
     )
-

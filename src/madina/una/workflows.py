@@ -407,14 +407,13 @@ def betweenness_flow_simulation(
 
 
 
-def KNN_workflow(
+def KNN_accessibility(
         city_name=None,
         data_folder=None,
         output_folder=None,
         pairings_file="pairing.csv",
         num_cores=8,
     ):
-    origin_record =  None
 
     if city_name is None:
         raise ValueError("parameter 'city_name' needs to be specified")
@@ -425,9 +424,10 @@ def KNN_workflow(
         start_time = datetime.now()
         output_folder = os.path.join("Cities", f"{city_name}", "KNN_workflow", f"{start_time.year}-{start_time.month:02d}-{start_time.day:02d} {start_time.hour:02d}-{start_time.minute:02d}")
 
-    logger=Logger(output_folder)
+    
 
     pairings = pd.read_csv(os.path.join(data_folder, pairings_file))
+    logger=Logger(output_folder, pairings)
 
 
 
@@ -486,63 +486,170 @@ def KNN_workflow(
         logger.log("NetworkX Graphs Created.", pairing)
 
 
+        shaqra.network.turn_penalty_amount = pairing['Turn_Penalty']
+        shaqra.network.turn_threshold_degree = pairing['Turn_Threshold']
+        shaqra.network.knn_weight = pairing['KNN_Weight']
+        shaqra.network.knn_plateau = pairing['Plateau']
 
-        if origin_record is None:
-            origin_record = shaqra[pairing['Origin_Name']].gdf.copy(deep=True)
+        origin_gdf = parallel_access(
+            shaqra,
+            num_cores=num_cores,
+            search_radius=pairing['Radius'],
+            beta=pairing['Beta'],
+            turn_penalty=pairing['Turns'],
+        )
 
-        origins = shaqra.network.nodes[shaqra.network.nodes['type'] == 'origin']
-        o_graph = shaqra.network.d_graph
+        # bring back results to layer...
+
+        saved_attributes = {metric: pairing['Flow_Name']+"_"+metric for metric in ['reach', 'gravity', 'knn_access', 'knn_weight']}
+
+        for key, value in saved_attributes.items():
+            origin_gdf[key] = origin_gdf[key].fillna(0)
+            if value in shaqra[pairing['Origin_Name']].gdf.columns:
+                shaqra[pairing['Origin_Name']].gdf.drop(columns=[value], inplace=True)
+
+
+        shaqra[pairing['Origin_Name']].gdf = shaqra[pairing['Origin_Name']].gdf.join(origin_gdf[['source_id'] + list(saved_attributes.keys()) ].set_index("source_id").rename(columns=saved_attributes))
+        shaqra[pairing['Origin_Name']].gdf.index = shaqra[pairing['Origin_Name']].gdf.index.astype(int)
         
-        start = time.time()
-        i = 0
-        for origin_idx in origins.index:
-            print (f"Time spent: {round(time.time()-start):,}s [Done {i:,} of {origins.shape[0]:,} origins ({i  /origins.shape[0] * 100:4.2f}%)]",  end='\r')
-            i = i + 1
 
-            shaqra.network.add_node_to_graph(o_graph, origin_idx)
+    
+        Path(logger.output_folder).mkdir(parents=True, exist_ok=True)
+        shaqra[pairing['Origin_Name']].gdf.to_csv(os.path.join(logger.output_folder, "origin_record.csv"))
+        logger.log("accissibility calculated.", pairing)    
 
-            #parameter settings for turns and elastic weights
-            shaqra.network.turn_penalty_amount = pairing['Turn_Penalty']
-            shaqra.network.turn_threshold_degree = pairing['Turn_Threshold']
-            shaqra.network.knn_weight = pairing['KNN_Weight']
-            shaqra.network.knn_plateau = pairing['Plateau']
+    shaqra[pairing['Origin_Name']].gdf.to_file(os.path.join(logger.output_folder, "origin_record.geoJSON"), driver="GeoJSON",  engine='pyogrio')
+    logger.log_df.to_csv(os.path.join(logger.output_folder, "time_log.csv"))
+    logger.log("Output saved: ALL DONE")
+    return 
+
+
+
+
+
+
+
+
+def one_access(
+    self: Zonal,
+    origin_queue = None,
+    search_radius: float = 0, 
+    beta: float = 0, 
+    turn_penalty: bool = False, 
+    reporting: bool = False, 
+    ):
+
+    node_gdf = self.network.nodes
+    origin_gdf=node_gdf[node_gdf['type'] == 'origin']
+
+    o_graph = self.network.d_graph
+    
+    start = time.time()
+    i = 0
+    processed_origins = []
+    try: 
+        while True:
+            origin_idx = origin_queue.get()
+
+            if origin_idx == "done":
+                origin_queue.task_done()
+                break
+            processed_origins.append(origin_idx)
+
+            if reporting:
+                print (f"Time spent: {round(time.time()-start):,}s [Done {i:,} of {origin_gdf.shape[0]:,} origins ({i  /origin_gdf.shape[0] * 100:4.2f}%)]",  end='\r')
+                i = i + 1
+
+            self.network.add_node_to_graph(o_graph, origin_idx)
+
+
 
             d_idxs, _, _ = turn_o_scope(
-                network=shaqra.network,
+                network=self.network,
                 o_idx=origin_idx,
-                search_radius=pairing['Radius'],
+                search_radius=search_radius,
                 detour_ratio=1,
-                turn_penalty=pairing['Turns'],
+                turn_penalty=turn_penalty,
                 o_graph=o_graph,
                 return_paths=False
             )
 
             get_origin_properties(
-                shaqra,
-                search_radius=pairing['Radius'],
-                beta=pairing['Beta'],
-                turn_penalty=pairing['Turns'],
+                self,
+                search_radius=search_radius,
+                beta=beta,
+                turn_penalty=turn_penalty,
                 o_idx=origin_idx,
                 o_graph=o_graph,
                 d_idxs=d_idxs,
             )
 
-            shaqra.network.remove_node_to_graph(o_graph, origin_idx)
+            self.network.remove_node_to_graph(o_graph, origin_idx)
 
-            origin_source_id = origins.at[origin_idx, 'source_id']
-            origin_record.at[origin_source_id, pairing['Destination_Name']+"_knn_weight"] = shaqra.network.nodes.at[origin_idx, 'knn_weight']
-            origin_record.at[origin_source_id, pairing['Destination_Name']+"_knn_access"] = shaqra.network.nodes.at[origin_idx, 'knn_access']
-            origin_record.at[origin_source_id, pairing['Destination_Name']+"_gravity"] = shaqra.network.nodes.at[origin_idx, 'gravity']
-            origin_record.at[origin_source_id, pairing['Destination_Name']+"_reach"] = shaqra.network.nodes.at[origin_idx, 'reach']
-        
+    except Exception as ex:
+        print ('Issues in one access...')
+        import traceback
+        traceback.print_exc()
 
-        
+    return node_gdf.loc[processed_origins]
+
+
+import multiprocessing as mp
+import concurrent
+#from concurrent import futures
+
+def parallel_access(
+    self: Zonal,
+    num_cores: int = 1,
+    search_radius: float = 0, 
+    beta: float = 0, 
+    turn_penalty: bool = False, 
+):
+    node_gdf = self.network.nodes
+    origins = node_gdf[node_gdf["type"] == "origin"]
+    origins = origins.sample(frac=1)
+    origins.index = origins.index.astype("int")
+
     
-        Path(logger.output_folder).mkdir(parents=True, exist_ok=True)
-        origin_record.to_csv(os.path.join(logger.output_folder, "origin_record.csv"))
-        logger.log("accissibility calculated.", pairing)    
+    with mp.Manager() as manager:
 
-    origin_record.to_file(os.path.join(logger.output_folder, "origin_record.geoJSON"), driver="GeoJSON",  engine='pyogrio')
-    logger.log_df.to_csv(os.path.join(logger.output_folder, "time_log.csv"))
-    logger.log("Output saved: ALL DONE")
-    return 
+        origin_queue = manager.Queue()
+
+        for o_idx in origins.index:
+            origin_queue.put(o_idx)
+
+        for core_index in range(num_cores):
+            origin_queue.put("done")
+
+        ## TODO: possible to implement single core without needing to create external process, use a thread?
+
+        with concurrent.futures.ProcessPoolExecutor(max_workers=num_cores) as executor:        
+            execution_results = [
+                executor.submit(
+                    one_access,
+                    self=self,
+                    origin_queue=origin_queue,
+                    search_radius=search_radius,
+                    beta=beta,
+                    turn_penalty=turn_penalty,
+                ) for core_index in range(num_cores)
+            ]
+
+            # Progress update and raising exceptions..
+            start = time.time()
+            while not all([future.done() for future in execution_results]):
+                time.sleep(0.5)
+                print (f"Time spent: {round(time.time()-start):,}s [Done {max(origins.shape[0] - origin_queue.qsize(), 0):,} of {origins.shape[0]:,} origins ({max(origins.shape[0] - origin_queue.qsize(), 0)/origins.shape[0] * 100:4.2f}%)]",  end='\r')
+                for future in [f for f in execution_results if f.done() and (f.exception() is not None)]: # if a process is done and have an exception, raise it
+                    raise (future.exception())
+        
+            origin_gdf = pd.concat([result.result() for result in concurrent.futures.as_completed(execution_results)])
+
+
+        
+
+    return origin_gdf
+
+
+
+
