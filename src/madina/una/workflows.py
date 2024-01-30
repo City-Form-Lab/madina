@@ -429,44 +429,50 @@ def KNN_accessibility(
     pairings = pd.read_csv(os.path.join(data_folder, pairings_file))
     logger=Logger(output_folder, pairings)
 
+    # Shaqra is a town in Saudi Arabia. this name would be used to reference a generic place that we're running a simulation for
+    shaqra = Zonal()
+
+    shaqra.load_layer(
+        layer_name='streets',
+        file_path=os.path.join(data_folder,  pairings.at[0, "Network_File"])
+    )
+    logger.log(f"network FIle Loaded, Projection: {shaqra.layers['streets'].gdf.crs}", pairing)
 
 
     for pairing_idx, pairing in pairings.iterrows():
-
-        # Shaqra is a town in Saudi Arabia. this name would be used to reference a generic place that we're running a simulation for
-        shaqra = Zonal()
-
-        shaqra.load_layer(
-            layer_name='streets',
-            file_path=os.path.join(data_folder,  pairings.at[pairing_idx, "Network_File"])
-        )
-
-        logger.log(f"network FIle Loaded, Projection: {shaqra.layers['streets'].gdf.crs}", pairing)
-
-        shaqra.create_street_network(
-            source_layer='streets', 
-            node_snapping_tolerance=0.00001,  #todo: remove parameter once a finalized default is set.
-            weight_attribute=pairings.at[pairing_idx, 'Network_Cost'] if pairings.at[pairing_idx, 'Network_Cost'] != "Geometric" else None
-        )
-        logger.log("network topology created", pairing)
+        
+        if (pairing_idx == 0) or (pairings.at[pairing_idx, 'Network_Cost'] != pairings.at[pairing_idx-1, 'Network_Cost']):
+            shaqra.create_street_network(
+                source_layer='streets', 
+                node_snapping_tolerance=0.00001,  #todo: remove parameter once a finalized default is set.
+                split_redundant_edges=False, 
+                discard_redundant_edges=True,
+                weight_attribute=pairings.at[pairing_idx, 'Network_Cost'] if pairings.at[pairing_idx, 'Network_Cost'] != "Geometric" else None
+            )
+            logger.log("network topology created", pairing)
+            clean_network_nodes = shaqra.network.nodes.copy(deep=True)
+        else:
+            # either generate a new network, or flush nodes.
+            shaqra.network.nodes = clean_network_nodes.copy(deep=True)
 
 
 
 
         # Loading layers, if they're not already loaded.
+        if pairing["Origin_Name"] not in shaqra.layers:
+            shaqra.load_layer(
+                layer_name=pairing["Origin_Name"],
+                file_path=os.path.join(data_folder, pairing["Origin_File"])
+            )
+            logger.log(f"{pairing['Origin_Name']} file {pairing['Origin_File']} Loaded, Projection: {shaqra.layers[pairing['Origin_Name']].gdf.crs}", pairing)
 
-        shaqra.load_layer(
-            layer_name=pairing["Origin_Name"],
-            file_path=os.path.join(data_folder, pairing["Origin_File"])
-        )
-        logger.log(f"{pairing['Origin_Name']} file {pairing['Origin_File']} Loaded, Projection: {shaqra.layers[pairing['Origin_Name']].gdf.crs}", pairing)
 
-
-        shaqra.load_layer(
-            layer_name=pairing["Destination_Name"],
-            file_path=os.path.join(data_folder, pairing["Destination_File"])
-        )
-        logger.log(f"{pairing['Destination_Name']} file {pairing['Destination_File']} Loaded, Projection: {shaqra.layers[pairing['Destination_Name']].gdf.crs}", pairing)
+        if pairing["Destination_Name"] not in shaqra.layers:
+            shaqra.load_layer(
+                layer_name=pairing["Destination_Name"],
+                file_path=os.path.join(data_folder, pairing["Destination_File"])
+            )
+            logger.log(f"{pairing['Destination_Name']} file {pairing['Destination_File']} Loaded, Projection: {shaqra.layers[pairing['Destination_Name']].gdf.crs}", pairing)
 
         
 
@@ -518,6 +524,7 @@ def KNN_accessibility(
         shaqra[pairing['Origin_Name']].gdf.to_csv(os.path.join(logger.output_folder, "origin_record.csv"))
         logger.log("accissibility calculated.", pairing)    
 
+    shaqra[pairing['Origin_Name']].gdf['total_knn_access']= shaqra[pairing['Origin_Name']].gdf[[flow_name+"_knn_access" for flow_name in pairings['Flow_Name']]].sum(axis=1)
     shaqra[pairing['Origin_Name']].gdf.to_file(os.path.join(logger.output_folder, "origin_record.geoJSON"), driver="GeoJSON",  engine='pyogrio')
     logger.log_df.to_csv(os.path.join(logger.output_folder, "time_log.csv"))
     logger.log("Output saved: ALL DONE")

@@ -7,7 +7,7 @@ from shapely.ops import split, snap
 
 # from pygeos.lib import get_x, get_y, get_point
 
-def node_edge_builder(geometry_gdf, weight_attribute=None, tolerance=0.0):
+def node_edge_builder(geometry_gdf, weight_attribute=None, tolerance=0.0, source_layer: str =None):
     if tolerance == 0.0:
         # use vectorized implementaytion
         point_xy = GeoPandaExtractor(geometry_gdf.geometry.values.data)
@@ -16,12 +16,12 @@ def node_edge_builder(geometry_gdf, weight_attribute=None, tolerance=0.0):
         # could this gain effeciency by being sorted?
         # TODO: complete the implementation of this case by copyinfg the for-loop thT UTILIz MATCHING RESULTS..
         point_geometries = geometry_gdf["geometry"].boundary.explode(index_parts=False).reset_index(drop=True)
-        matching = point_geometries.sindex.query(
-            point_geometries.buffer(tolerance))
+        #matching = point_geometries.sindex.query(
+            #point_geometries.buffer(tolerance))
 
         # construct node and edge gdfs
         edge_count = geometry_gdf.shape[0]
-        index = pd.Index(np.arange(edge_count), name="id")
+        index = pd.Index(np.arange(edge_count, dtype=int), dtype=int, name="id")
         length = pd.Series(
             geometry_gdf["geometry"].length.values, fastpath=True, index=index)
         edge_gdf = gpd.GeoDataFrame(
@@ -32,9 +32,9 @@ def node_edge_builder(geometry_gdf, weight_attribute=None, tolerance=0.0):
                     axis=1),
                 "type": pd.Series(np.repeat(np.array(["street"], dtype=object), repeats=edge_count), fastpath=True,
                                   index=index, dtype="category"),
-                "parent_street_id": pd.Series(geometry_gdf.index.values, fastpath=True, index=index),
-                "start": pd.Series(edge_start_node, fastpath=True, index=index),
-                "end": pd.Series(edge_end_node, fastpath=True, index=index),
+                "parent_street_id": pd.Series(geometry_gdf.index.values,dtype=int,  fastpath=True, index=index),
+                "start": pd.Series(edge_start_node, dtype=np.int32, fastpath=True, index=index),
+                "end": pd.Series(edge_end_node, dtype=np.int32, fastpath=True, index=index),
             },
             index=index,
             geometry=geometry_gdf["geometry"]
@@ -44,7 +44,7 @@ def node_edge_builder(geometry_gdf, weight_attribute=None, tolerance=0.0):
         index = pd.Index(np.arange(node_count), name="id")
         node_gdf = gpd.GeoDataFrame(
             {
-                "source_layer": pd.Series(np.repeat(np.array(["streets"], dtype=object), repeats=node_count),
+                "source_layer": pd.Series(np.repeat(np.array([source_layer], dtype=object), repeats=node_count),
                                           fastpath=True, index=index, dtype="category"),
                 "source_id": pd.Series(np.repeat(np.array([0], dtype=np.int32), repeats=node_count), fastpath=True,
                                        index=index, dtype=np.int32),
@@ -68,7 +68,8 @@ def node_edge_builder(geometry_gdf, weight_attribute=None, tolerance=0.0):
         node_gdf, edge_gdf = tolerance_network_nodes_edges(
             geometry_gdf=geometry_gdf,
             weight_attribute=weight_attribute,
-            tolerance=tolerance
+            tolerance=tolerance, 
+            source_layer=source_layer,
         )
     else:
         raise ValueError(f"tolerance must either be zero or a positive number, {tolerance} was given.")
@@ -158,7 +159,7 @@ def GeoPandaExtractor(poly_line_data):
     )
 
 
-def tolerance_network_nodes_edges(geometry_gdf, weight_attribute=None, tolerance=1.0):
+def tolerance_network_nodes_edges(geometry_gdf, weight_attribute=None, tolerance=1.0, source_layer=None):
     # geometry_gdf["weight"] = geometry_gdf["geometry"].length if weight_attribute is None else geometry_gdf[weight_attribute].apply(
     #    lambda x: max(1, x))
 
@@ -228,7 +229,7 @@ def tolerance_network_nodes_edges(geometry_gdf, weight_attribute=None, tolerance
     node_gdf = gpd.GeoDataFrame(
         {
             "id": pd.Series(range(new_node_id + 1), dtype="int64"),
-            "source_layer": pd.Series(["streets"] * (new_node_id + 1), dtype="category"),
+            "source_layer": pd.Series([source_layer] * (new_node_id + 1), dtype="category"),
             "source_id": pd.Series([0] * (new_node_id + 1), dtype="int64"),
             "type": pd.Series(["street_node"] * (new_node_id + 1), dtype="category"),
             "weight": pd.Series([0.0] * (new_node_id + 1), dtype="float64"),
@@ -427,9 +428,9 @@ def _split_redundant_edges(node_gdf: GeoDataFrame, edge_gdf: GeoDataFrame):
             "weight": pd.Series(np.array(edge_weights), fastpath=True, index=edge_index),
             "type": pd.Series(np.repeat(np.array(["street"], dtype=object), repeats=edge_count), fastpath=True,
                               index=edge_index, dtype="category"),
-            "parent_street_id": pd.Series(np.array(edge_parent_street_ids), fastpath=True, index=edge_index),
-            "start": pd.Series(np.array(edge_starts), fastpath=True, index=edge_index),
-            "end": pd.Series(np.array(edge_ends), fastpath=True, index=edge_index),
+            "parent_street_id": pd.Series(np.array(edge_parent_street_ids, dtype=int), fastpath=True, index=edge_index),
+            "start": pd.Series(np.array(edge_starts, dtype=np.int32), fastpath=True, index=edge_index),
+            "end": pd.Series(np.array(edge_ends, dtype=np.int32), fastpath=True, index=edge_index),
         },
         index=edge_index,
         geometry=edge_geometry_series

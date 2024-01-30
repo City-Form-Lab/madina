@@ -8,7 +8,7 @@ DEFAULT_COLORS = {
     "parcels": [50, 50, 50],
     "network_edges": {
         "__attribute_name__": "type",
-        "street": [0, 150, 150],
+        "street": [155, 155, 155],
         "project_line": [0, 0, 150],
         "__other__": [0, 0, 0]
     },
@@ -16,8 +16,8 @@ DEFAULT_COLORS = {
         "__attribute_name__": "type",
         "street_node": [0, 255, 255],
         "project_node": [0, 0, 255],
-        "destination": [255, 0, 0],
-        "origin": [0, 255, 0],
+        "destination": [239,89,128],
+        "origin": [86,5,255],
         "__other__": [0, 0, 0]
     }
 }

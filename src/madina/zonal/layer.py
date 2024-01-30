@@ -157,13 +157,13 @@ class Layer:
     Represents a `Zonal` layer with name `label`, source `file_path` and crs `original_crs`.
     """
 
-    def __init__(self, label: str, gdf, show: bool, original_crs: str, file_path: str, default_colors = None, **kwargs):
+    def __init__(self, label: str, gdf, show: bool, original_crs: str, file_path: str, default_color = None, **kwargs):
         self.gdf = gdf
         self.label = label
         self.show = show
         self.crs = original_crs
         self.file_path = file_path
-        self.default_colors = default_colors
+        self.default_color = default_color
 
         self.other_fields = {} | kwargs
 

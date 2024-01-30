@@ -87,7 +87,7 @@ class Zonal:
         gdf['id'] = range(gdf.shape[0])
         gdf = gdf.set_index('id')
         original_crs = gdf.crs
-        gdf = self.color_gdf(gdf)
+        #gdf = self.color_gdf(gdf)
 
         # perform a standard data cleaning process to ensure compatibility with later processes
         gdf = prepare_geometry(gdf)
@@ -97,7 +97,8 @@ class Zonal:
             gdf,
             True,
             original_crs,
-            file_path
+            file_path, 
+            default_color=[round(random.random() * 255), round(random.random() * 255), round(random.random() * 255)]
         )
         self.layers.add(
             layer,
@@ -109,7 +110,7 @@ class Zonal:
 
         if None in self.geo_center:
             with warnings.catch_warnings():
-                # This is to ignore a warning issued for dpoing calculations in a geographic coordinate system, but that's the needed output:
+                # This is to ignore a warning issued for doing calculations in a geographic coordinate system, but that's the needed output:
                 # a point in a geographic coordinate system to center the visualization
                 warnings.simplefilter("ignore", category=UserWarning)
                 # centroid_point = gdf.iloc[[0]].to_crs(self.DEFAULT_GEOGRAPHIC_CRS).centroid.iloc[0]
@@ -179,7 +180,8 @@ class Zonal:
         node_gdf, edge_gdf = node_edge_builder(
             geometry_gdf,
             weight_attribute=weight_attribute,
-            tolerance=node_snapping_tolerance
+            tolerance=node_snapping_tolerance, 
+            source_layer=source_layer
         )
 
         if split_redundant_edges:
@@ -190,8 +192,23 @@ class Zonal:
         if tag_edges:
             edge_gdf = _tag_edges(edge_gdf, tolerance=node_snapping_tolerance)
 
+        edge_gdf = self.color_gdf(
+            edge_gdf,
+            color=[125, 125, 125],
+        )
+
+        node_gdf = self.color_gdf(
+            node_gdf,
+            color=[125, 125, 125],
+        )
+
+        #type is a placeholder for now, for future use when there are multuple network types, like sidewalks, bikepaths, subway links,...
+        edge_gdf = edge_gdf.drop(columns=['type'])
+
+
+
+        
         self.network = Network(node_gdf, edge_gdf, turn_threshold_degree, turn_penalty_amount, weight_attribute, edge_source_layer=source_layer)
-        source_layer
         return
 
     def insert_node(self, layer_name: str, label: str = "origin", weight_attribute: str = None):
@@ -222,12 +239,31 @@ class Zonal:
             # Insert a homes as origins, schools as destinations into the 'shgaqra' Zonal object
 
         """
-        n_node_gdf = self.network.nodes
-        n_edge_gdf = self.network.edges
+
         source_gdf = self.layers[layer_name].gdf
-        inserted_node_gdf = efficient_node_insertion(n_node_gdf, n_edge_gdf, source_gdf, layer_name=layer_name,
-                                                      label=label, weight_attribute=weight_attribute)
-        self.network.nodes = pd.concat([n_node_gdf, inserted_node_gdf])
+        inserted_node_gdf = efficient_node_insertion(
+            self.network.nodes, 
+            self.network.edges, 
+            source_gdf, 
+            layer_name=layer_name, 
+            label=label,
+            weight_attribute=weight_attribute
+        )
+
+
+        # these columns are not created during network creation. Adding them now prevent them from being NaN and changing column type to float instead of int. 
+        for column in ['nearest_edge_id', 'edge_start_node', 'weight_to_start', 'edge_end_node', 'weight_to_end']:
+            if column not in self.network.nodes:
+                self.network.nodes[column] = 0
+
+        self.network.nodes = pd.concat([self.network.nodes, inserted_node_gdf])
+
+        self.network.nodes = self.color_gdf(
+            self.network.nodes,
+            color_by_attribute='type',
+            color_method= 'categorical',
+            color= {'origin': [86,5,255], 'destination': [239,89,128], 'street_node': [125, 125, 125]}
+        )
         return
 
     def create_graph(self, light_graph=True, d_graph=True, od_graph=False):
@@ -324,12 +360,18 @@ class Zonal:
             layer_list = []
             for layer_name in self.layers.layers:
                 if self.layers[layer_name].show:
-                    layer_list.append({"gdf": self.layers[layer_name].gdf})
+                    layer_gdf = self.layers[layer_name].gdf.copy(deep=True)
+                    layer_gdf = self.color_gdf(layer_gdf, color=self.layers[layer_name].default_color)
+                    layer_list.append({"gdf": layer_gdf})
         else:
             for layer_position, layer_dict in enumerate(layer_list):
                 if "layer" in layer_dict:
                     # switch from ysung the keyword layer, into using the keyword 'gdf' by supplying layer's gdf
-                    layer_dict['gdf'] = self.layers[layer_dict["layer"]].gdf
+                    # TODO: here;s a good place to impose default stylings from layer attribute. the layer_dict overrides default layer styling.
+
+                    # color by default layer, would be overriden if different parameters are given..
+                    layer_gdf = self.layers[layer_dict["layer"]].gdf.copy(deep=True)
+                    layer_dict['gdf'] = self.color_gdf(layer_gdf, color=self.layers[layer_dict["layer"]].default_color)
                     layer_list[layer_position] = layer_dict
         map = self.create_deckGL_map(
             gdf_list=layer_list,
@@ -352,7 +394,7 @@ class Zonal:
         start = time.time()
         pdk_layers = []
         for layer_number, gdf_dict in enumerate(gdf_list):
-            local_gdf = gdf_dict["gdf"].copy(deep=True)
+            local_gdf = gdf_dict["gdf"].copy(deep=True).reset_index()
             local_gdf["geometry"] = local_gdf["geometry"].to_crs("EPSG:4326")
             # print(f"{(time.time()-start)*1000:6.2f}ms\t {layer_number = }, gdf copied")
             start = time.time()
@@ -362,7 +404,12 @@ class Zonal:
                 radius_attribute = gdf_dict["radius"]
                 local_gdf = local_gdf[~local_gdf[radius_attribute].isna()]
                 r_series = local_gdf[radius_attribute]
-                r_series = (r_series - r_series.mean()) / r_series.std() * 3
+
+                radius_min = gdf_dict["radius_min"] if "radius_min" in gdf_dict else 5
+                radius_max = gdf_dict["radius_max"] if "radius_max" in gdf_dict else 10
+                #r_series = radius_min + (r_series - r_series.mean()) / r_series.std() * radius_max
+                r_series = radius_min + (r_series - r_series.min()) / (r_series.max()-r_series.min()) * (radius_max-radius_min)
+
                 # r_series = r_series.apply(lambda x: (x - r_series.mean()) / r_series.std() if not np.isnan(x) else np.nan)
 
                 # r_series = r_series.apply(lambda x: max(1,x) + 3 if not np.isnan(x) else np.nan)
@@ -407,7 +454,7 @@ class Zonal:
             if "text" in gdf_dict:
                 # if numerical, round within four decimals, else, do nothing and treat as string
                 try:
-                    local_gdf["text"] = round(local_gdf[gdf_dict["text"]], 6).astype('string')
+                    local_gdf["text"] = round(local_gdf[gdf_dict["text"]], 2).astype('string')
                 except TypeError:
                     local_gdf["text"] = local_gdf[gdf_dict["text"]].astype('string')
 

@@ -1036,7 +1036,7 @@ def get_origin_properties(
     ## K-neareast Neighbor
     if self.network.knn_weight is not None:
         if isinstance(self.network.knn_weight, str):
-            knn_weights = self.network.knn_weight[1:-1].split(';')
+            knn_weights = self.network.knn_weight[1:-1].split(',')
             knn_weights = [float(x) for x in knn_weights]
         elif isinstance(self.network.knn_weight, list):
             knn_weights = self.network.knn_weight

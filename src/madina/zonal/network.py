@@ -63,7 +63,7 @@ class Network:
                     int(self.edges.at[idx, "start"]),
                     int(self.edges.at[idx, "end"]),
                     weight=max(self.edges.at[idx, "weight"], 0),
-                    type=self.edges.at[idx, "type"],
+                    #type=self.edges.at[idx, "type"],
                     id=idx
                 )
 
