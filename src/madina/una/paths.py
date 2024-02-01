@@ -494,6 +494,7 @@ def turn_penalty_value(network: Network, previous_node, current_node, next_node)
     """
     node_gdf = network.nodes
     edge_gdf = network.edges
+    '''
     previous_segment = edge_gdf[
         (edge_gdf['start'] == previous_node) & (edge_gdf['end'] == current_node) | 
         (edge_gdf['end'] == previous_node) & (edge_gdf['start'] == current_node) 
@@ -503,6 +504,7 @@ def turn_penalty_value(network: Network, previous_node, current_node, next_node)
         (edge_gdf['start'] == current_node) & (edge_gdf['end'] == next_node) | 
         (edge_gdf['end'] == current_node) & (edge_gdf['start'] == next_node) 
     ]
+    '''
 
     
     angle = angle_deviation_between_two_lines(
