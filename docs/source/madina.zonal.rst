@@ -8,18 +8,3 @@ Zonal - A Workspace for Analysis Tools and Workflows.
    :members:
    :show-inheritance:
 
-Layer
--------------------------
-
-.. automodule:: madina.zonal.layer
-   :members:
-   :show-inheritance:
-
-Network
----------------------------
-
-.. automodule:: madina.zonal.network
-   :members:
-   :show-inheritance:
-
-

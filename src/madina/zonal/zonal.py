@@ -5,6 +5,7 @@ import random
 import warnings
 import geopandas as gpd
 import pandas as pd
+import pydeck as pdk
 
 from pathlib import Path
 from .network import Network
@@ -23,10 +24,9 @@ class Zonal:
     A Zonal object populated with a veriety of data layeers and network could be used as input toi many urban analysis tools.
     Please look at the examples to see a gallery of use cases.
 
-    Example:
+    :Example:
         >>> shaqra = Zonal()
-        >>> shaqra.add_layer(layer_name='streets', file_path='streets.geojson')
-        >>> shaqra.color_layer(layer_name='streets', color=[125, 125, 125])
+        >>> shaqra.add_layer(name='streets', source='streets.geojson')
         >>> shaqra.create_map(save_as='street_map.html', basemap=False)
     """
     DEFAULT_PROJECTED_CRS = "EPSG:3857"
@@ -223,24 +223,21 @@ class Zonal:
         self.network = Network(node_gdf, edge_gdf, turn_threshold_degree, turn_penalty_amount, weight_attribute, edge_source_layer=source_layer)
         return
 
-    def insert_node(self, layer_name: str, label: str = "origin", weight_attribute: str = None):
-        """
-        Insert "origin" and "destination" nodes into the network. This function must be called aftet the 'create_street_network' function is called, and the corresponding layer have already been loaded by calling 'load_layer'
+    def insert_node(
+            self,
+            layer_name: str,
+            label: str,
+            weight_attribute: str = None
+        ) -> None:
+        """Insert "origin" and "destination" nodes into the network. This function must be called aftet the 'create_street_network' function is called, and the corresponding layer have already been loaded by calling 'load_layer'
 
-        Args:
-            layer_name (str): The name of the layer to insert the nodes from.
-            label (str): The label for the new node. Default is "origin", could wither be "origin", or "destination".
-            weight_attribute (str, optional): Name of the attribute to use as the node's weight. Default is None. If no weight is given, all nodes are weighted equally (Assigned a weight of 1). The attribute name must exist in the layer
-
-        Returns:
-            None: This method updates the `Zonal` object but does not return a value.
-
-        Notes:
-            - This method inserts nodes into the network within the `Zonal` object.
-            - Label must either be 'origin' or 'destination'. 
-            - By defualt, nodes are weighted equally, unless a 'weight_attribute" is specified
-
-        Example:
+        :param layer_name: The name of the layer to insert the nodes from.
+        :type layer_name: str
+        :param label: The label for the new node. Could either be "origin" or "destination".
+        :type label: str
+        :param weight_attribute: Name of the attribute to use as the node's weight. Default is None. If no weight is given, all nodes are weighted equally (Assigned a weight of 1). The attribute name must exist in the layer.
+        :type weight_attribute: str, optional
+        :Example:
             >>> shaqra = Zonal()  # Create a Zonal object.
             >>> shaqra.load_layer('streets', 'streets.geojson') # load streets layer
             >>> shaqra.create_street_network("streets")  # Create a street network
@@ -251,6 +248,21 @@ class Zonal:
             # Insert a homes as origins, schools as destinations into the 'shgaqra' Zonal object
 
         """
+
+        # input validation
+        if not isinstance(layer_name, str):
+            raise TypeError(f"Parameter 'layer_name' must be a string. {type(layer_name)} was given.")
+
+        if layer_name not in self.layers:
+            raise ValueError(f"Source layer {layer_name} not in zonal zonal_layers, available layers are: {self.layers.layers}")
+        
+        if label not in ['origin', 'destination']:
+            if not isinstance(label, str):
+                raise TypeError(f"Parameter 'label' must be a string. {type(label)} was given.")
+            else: 
+                raise ValueError(f"Parameter 'label': must be one of ['origin', 'destination']. label={label} was given.")
+
+
 
         source_gdf = self.layers[layer_name].gdf
         inserted_node_gdf = efficient_node_insertion(
@@ -278,19 +290,21 @@ class Zonal:
         )
         return
 
-    def create_graph(self, light_graph=True, d_graph=True, od_graph=False):
-        """
-        After creating a street network, adding origin nodes, and destination nodes, this function must be called to construct a NetworkX object internally. This is needed to run UNA tools. 
+    def create_graph(
+            self,
+            light_graph: bool=True,
+            d_graph: bool=True,
+            od_graph:bool =False
+        ) -> None:
+        """After creating a street network, adding origin nodes, and destination nodes, this function must be called to construct a NetworkX object internally. This is needed to run UNA tools. 
 
-        Args:
-            light_graph: (bool) - contains only network nodes and edges
-            d_graph: (bool) - contains all destination nodes and network intersectionsa. This is needed to run UNA tools. 
-            od_graph: (bool) - contains all origin, destination, network, etc. nodes
-
-        Returns:
-            None
-
-        Example: 
+        :param light_graph: contains only network nodes and edges, defaults to True
+        :type light_graph: bool, optional
+        :param d_graph: contains all destination nodes and network intersectionsa. This is needed to run UNA tools, defaults to True
+        :type d_graph: bool, optional
+        :param od_graph: contains all origin, destination, network, etc. nodes, defaults to False
+        :type od_graph: bool, optional
+        :Example:
             >>> shaqra = Zonal()  # Create a Zonal object.
             >>> shaqra.load_layer('streets', 'streets.geojson') # load streets layer
             >>> shaqra.create_street_network("streets")  # Create a street network
@@ -301,22 +315,31 @@ class Zonal:
             >>> shaqra.create_graph()
             # The zonal object now have everything it needs to be used as input in a UNA tool.
         """
+        # input validation
+        if not isinstance(light_graph, bool):
+            raise TypeError(f"Parameter 'light_graph' must either be a boolean True or False, {type(light_graph)} was given.")
+        
+        if not isinstance(d_graph, bool):
+            raise TypeError(f"Parameter 'd_graph' must either be a boolean True or False, {type(d_graph)} was given.")
+        
+        if not isinstance(od_graph, bool):
+            raise TypeError(f"Parameter 'od_graph' must either be a boolean True or False, {type(od_graph)} was given.")
+
+
         self.network.create_graph(light_graph, d_graph, od_graph)
 
-    def describe(self):
-        """
-        prints a textual representation of the zonal objecgt, listing and describing layers
+    def describe(self) -> None:
+        """prints a textual representation of the zonal objecgt, listing and describing layers
 
-        Returns:
-            None
-
-        Example:
+        :Example:
             >>> zshaqra = Zonal()
             >>> shaqra.describe()
             >>> shaqra.load_layer('homes', 'homes.geojson')
             >>> shaqra.describe()
             a string representation of the `Zonal` object, a list of layers if any exists. 
+
         """
+
         if len(self.layers.layers) == 0:
             print("No zonal_layers yet, load a layer using 'load_layer(layer_name, file_path)'")
         else:
@@ -339,27 +362,24 @@ class Zonal:
             print(f"\tThen,  insert origins and destinations using 'insert_nodes(label, layer_name, weight_attribute)'")
             print(f"\tFinally, when done, create a network by calling 'create_street_network()'")
 
-    def create_map(self, layer_list=None, save_as=None, basemap=False):
-        """
-        Create a map visualization using the specified layers within the `Zonal` object.
+    def create_map(
+            self,
+            layer_list: list = None,
+            save_as: str=None,
+            basemap: bool=False
+        ) -> pdk.Deck:
+        """ Create a map visualization using the specified layers within the `Zonal` object.
 
-        Args:
-            layer_list (list, optional): A list of dictionaries, each containing a 'gdf' key with a GeoDataFrame. 
-            If None, the method includes all visible layers from the `Zonal` object.
-            save_as (str, optional): The filename to save the map visualization. Default is None (not saved).
-            basemap (bool, optional): Include a basemap in the map if True. Default is False.
 
-        Returns:
-            map: The generated Deck object representing the map visualization.
-
-        Notes:
-            - This method creates a map visualization based on the specified layers from the `Zonal` object.
-            - You can provide a custom list of layers with GeoDataFrames, or the method includes all visible layers if `layer_list` is None.
-            - If a filename is provided in `save_as`, the map will be saved as an interactive HTML file.
-            - The map is centered around the geographic center of the Zonal object.
-            - You can choose to include a basemap in the map by setting `basemap` to True.
-
-        Example:
+        :param layer_list:  A list of dictionaries, each containing a 'gdf' key with a GeoDataFrame, defaults to None. If None, the method includes all visible layers from the `Zonal` object.
+        :type layer_list: list, optional
+        :param save_as: The filename to save the map visualization. Default is None (not saved)., defaults to None
+        :type save_as: str, optional
+        :param basemap: Include a basemap in the map if True. Default is False.
+        :type basemap: bool, optional
+        :return: returns a PyDeck's Deck object that can be visualized in Jupyter notebooks.
+        :rtype: pdk.Deck
+        :Example:
             >>> zonal = Zonal()  # Create a Zonal object.
             >>> zonal.load_layer("streets", "streets.geojson")  # load streets layer.
             >>> zonal.load_layer("homes", "homes.geojson")  # load homes layer.
@@ -368,12 +388,14 @@ class Zonal:
 
         """
 
+
+
         if layer_list is None:
             layer_list = []
             for layer_name in self.layers.layers:
                 if self.layers[layer_name].show:
                     layer_gdf = self.layers[layer_name].gdf.copy(deep=True)
-                    layer_gdf = self.color_gdf(layer_gdf, color=self.layers[layer_name].default_color)
+                    layer_gdf = color_gdf(layer_gdf, color=self.layers[layer_name].default_color)
                     layer_list.append({"gdf": layer_gdf})
         else:
             for layer_position, layer_dict in enumerate(layer_list):
@@ -383,7 +405,7 @@ class Zonal:
 
                     # color by default layer, would be overriden if different parameters are given..
                     layer_gdf = self.layers[layer_dict["layer"]].gdf.copy(deep=True)
-                    layer_dict['gdf'] = self.color_gdf(layer_gdf, color=self.layers[layer_dict["layer"]].default_color)
+                    layer_dict['gdf'] = color_gdf(layer_gdf, color=self.layers[layer_dict["layer"]].default_color)
                     layer_list[layer_position] = layer_dict
         map = create_deckGL_map(
             gdf_list=layer_list,
@@ -395,9 +417,9 @@ class Zonal:
         )
         return map
 
-    def clear_nodes(self):
-        node_gdf = self.network.nodes
-        node_gdf = node_gdf[node_gdf["type"] == "street_node"]
-        self.network.nodes = node_gdf
+    def clear_nodes(self) -> None:
+        """Erase the existing origins and destinations from the current network, but retains the network nodes and edges
+        """
+        self.network.nodes = self.network.nodes[self.network.nodes["type"] == "street_node"]
         return
 
