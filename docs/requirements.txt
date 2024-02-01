@@ -8,3 +8,4 @@ Rtree
 psutil
 ipython
 ipykernel
+networkx
