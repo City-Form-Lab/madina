@@ -45,6 +45,13 @@ The package enables modelling pedestrian accessibility and movement in urban are
 
 
 
-Package reference
+
 ==================
 * :doc:`reference`
+
+
+.. toctree::
+   :maxdepth: 6
+   :caption: Package Modules, Classes and Functions
+
+   reference

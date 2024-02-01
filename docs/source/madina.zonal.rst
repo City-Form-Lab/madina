@@ -1,6 +1,13 @@
 Zonal Reference
 ====================
 
+Zonal - A Workspace for Analysis Tools and Workflows.
+-------------------------
+
+.. automodule:: madina.zonal.zonal
+   :members:
+   :show-inheritance:
+
 Layer
 -------------------------
 
@@ -15,11 +22,4 @@ Network
    :members:
    :show-inheritance:
 
-
-Zonal
--------------------------
-
-.. automodule:: madina.zonal.zonal
-   :members:
-   :show-inheritance:
 

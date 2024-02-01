@@ -1,7 +1,7 @@
 Reference
 ==============
 
-Subpackages
+Modules
 -----------
 
 .. toctree::

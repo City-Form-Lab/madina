@@ -1,22 +1,15 @@
 # this lets geopandas exclusively use shapely (not pygeos) silences a warning about depreciating pygeos out of geopandas. This is not needed when geopandas 1.0 is released in the future
 import os
 os.environ['USE_PYGEOS'] = '0'      ## This needs to be done before importing geopandas to prevent warnings
-import numpy as np
 import random
-import time
 import warnings
 import geopandas as gpd
 import pandas as pd
-import pydeck as pdk
 
-from typing import Union
-from pydeck.types import String
 from pathlib import Path
-
 from .network import Network
-from .network_utils import node_edge_builder, _discard_redundant_edges, _split_redundant_edges, \
-    _tag_edges, efficient_node_insertion
-from .utils import prepare_geometry, DEFAULT_COLORS
+from .network_utils import node_edge_builder, _discard_redundant_edges, _split_redundant_edges, efficient_node_insertion
+from .utils import prepare_geometry, color_gdf, create_deckGL_map, DEFAULT_COLORS
 from .layer import Layer, Layers
 
 
@@ -58,6 +51,7 @@ class Zonal:
             after: str = None
         ) -> None:
         """ Loads a new layer from the given source with the specified layer name.
+
         :param name: A name for the layer the new layer.  
         :type name: str
         :param source: The data source of this layer. Could either be an existing GeoDataFrame, or a path to an acceptable file. Supported types are '.geojson', '.shp', or any file accepted by geopanda's read_file()
@@ -77,18 +71,14 @@ class Zonal:
             >>> shaqra = Zonal()  # Create a Zonal object.
             >>> zonal.load_layer("streets", "path/to/streets.geojson", first=True) # Load a new layer at the beginning of the layers list.
         """
-        # input verification
+        # input validation
         if not isinstance(name, str):
             raise TypeError(f"Parameter 'layer_name' must be a string. {type(name)} was given.")
         
         if not isinstance(source, (Path, str, gpd.GeoDataFrame)): 
             raise TypeError(f"Parameter 'file_path' must be either {Path, str, gpd.GeoDataFrame}. {type(source)} was given.")
         
-
-
-
-
-        if isinstance(source, (gpd.GeoDataFrame, Path, str)):
+        if isinstance(source, gpd.GeoDataFrame):
             gdf = source.copy(deep=True)
         else:
             gdf = gpd.read_file(
@@ -170,7 +160,6 @@ class Zonal:
         if source_layer not in self.layers:
             raise ValueError(f"Source layer {source_layer} not in zonal zonal_layers, available layers are: {self.layers.layers}")
         
-        
         if weight_attribute is not None:
             if not isinstance(weight_attribute, str): 
                 raise TypeError(f"Parameter 'weight_attribute' must be a string. {type(weight_attribute)} was given.")
@@ -184,7 +173,6 @@ class Zonal:
         if node_snapping_tolerance < 0:
             raise ValueError(f"Parameter 'node_snapping_tolerance': Cannot be negative. node_snapping_tolerance={node_snapping_tolerance} was given.")
         
-
         if redundant_edge_treatment not in ['keep', 'discard', 'split']:
             if not isinstance(redundant_edge_treatment, str):
                 raise TypeError(f"Parameter 'redundant_edge_treatment' must be a string. {type(redundant_edge_treatment)} was given.")
@@ -205,8 +193,6 @@ class Zonal:
             raise ValueError(f"Parameter 'turn_penalty_amount': Cannot be negative. turn_penalty_amount={turn_penalty_amount} was given.")
         
 
-        
-
         geometry_gdf = self.layers[source_layer].gdf
 
         node_gdf, edge_gdf = node_edge_builder(
@@ -221,21 +207,18 @@ class Zonal:
         elif redundant_edge_treatment == 'discard':
             edge_gdf = _discard_redundant_edges(edge_gdf)
 
-        edge_gdf = self.color_gdf(
+        edge_gdf = color_gdf(
             edge_gdf,
             color=[125, 125, 125],
         )
 
-        node_gdf = self.color_gdf(
+        node_gdf = color_gdf(
             node_gdf,
             color=[125, 125, 125],
         )
 
         #type is a placeholder for now, for future use when there are multuple network types, like sidewalks, bikepaths, subway links,...
         edge_gdf = edge_gdf.drop(columns=['type'])
-
-
-
         
         self.network = Network(node_gdf, edge_gdf, turn_threshold_degree, turn_penalty_amount, weight_attribute, edge_source_layer=source_layer)
         return
@@ -287,7 +270,7 @@ class Zonal:
 
         self.network.nodes = pd.concat([self.network.nodes, inserted_node_gdf])
 
-        self.network.nodes = self.color_gdf(
+        self.network.nodes = color_gdf(
             self.network.nodes,
             color_by_attribute='type',
             color_method= 'categorical',
@@ -340,7 +323,7 @@ class Zonal:
             print(f"{'Layer name':20} | {'Visible':7} | {'projection':10} | {'rows':5} | {'File path':20}")
             for key in self.layers:
                 print(
-                    f"{key:20} | {self.layers[key].show:7} | {str(self.layers[key].gdf.crs):10} | {self.layers[key].gdf.shape[0]:5} | {self.layers[key].file_path:20}")
+                    f"{key:20} | {self.layers[key].show:7} | {str(self.layers[key].gdf.crs):10} | {self.layers[key].gdf.shape[0]:5} | {str(self.layers[key].file_path):20}")
                 # print(f"\tColumn names: {list(self.layers[key].gdf.columns)}")
 
         geo_center_x, geo_center_y = self.geo_center
@@ -402,7 +385,7 @@ class Zonal:
                     layer_gdf = self.layers[layer_dict["layer"]].gdf.copy(deep=True)
                     layer_dict['gdf'] = self.color_gdf(layer_gdf, color=self.layers[layer_dict["layer"]].default_color)
                     layer_list[layer_position] = layer_dict
-        map = self.create_deckGL_map(
+        map = create_deckGL_map(
             gdf_list=layer_list,
             centerX=self.geo_center[0],
             centerY=self.geo_center[1],
@@ -418,208 +401,3 @@ class Zonal:
         self.network.nodes = node_gdf
         return
 
-    @staticmethod
-    def create_deckGL_map(gdf_list=[], centerX=46.6725, centerY=24.7425, basemap=False, zoom=17, filename=None):
-        start = time.time()
-        pdk_layers = []
-        for layer_number, gdf_dict in enumerate(gdf_list):
-            local_gdf = gdf_dict["gdf"].copy(deep=True).reset_index()
-            local_gdf["geometry"] = local_gdf["geometry"].to_crs("EPSG:4326")
-            # print(f"{(time.time()-start)*1000:6.2f}ms\t {layer_number = }, gdf copied")
-            start = time.time()
-
-            radius_attribute = 1
-            if "radius" in gdf_dict:
-                radius_attribute = gdf_dict["radius"]
-                local_gdf = local_gdf[~local_gdf[radius_attribute].isna()]
-                r_series = local_gdf[radius_attribute]
-
-                radius_min = gdf_dict["radius_min"] if "radius_min" in gdf_dict else 5
-                radius_max = gdf_dict["radius_max"] if "radius_max" in gdf_dict else 10
-                #r_series = radius_min + (r_series - r_series.mean()) / r_series.std() * radius_max
-                r_series = radius_min + (r_series - r_series.min()) / (r_series.max()-r_series.min()) * (radius_max-radius_min)
-
-                # r_series = r_series.apply(lambda x: (x - r_series.mean()) / r_series.std() if not np.isnan(x) else np.nan)
-
-                # r_series = r_series.apply(lambda x: max(1,x) + 3 if not np.isnan(x) else np.nan)
-                local_gdf['__radius__'] = r_series
-
-            width_attribute = 1
-            width_scale = 1
-            if "width" in gdf_dict:
-                width_attribute = gdf_dict["width"]
-                if "width_scale" in gdf_dict:
-                    width_scale = gdf_dict["width_scale"]
-                local_gdf['__width__'] = local_gdf[width_attribute] * width_scale
-
-            if "opacity" in gdf_dict:
-                opacity = gdf_dict["opacity"]
-            else:
-                opacity = 1
-
-            if ("color_by_attribute" in gdf_dict) or ("color_method" in gdf_dict) or ("color" in gdf_dict):
-                args = {arg: gdf_dict[arg] for arg in ['color_by_attribute', 'color_method', 'color'] if
-                        arg in gdf_dict}
-                local_gdf = Zonal.color_gdf(local_gdf, **args)
-                # print (local_gdf['color'])
-
-            pdk_layer = pdk.Layer(
-                'GeoJsonLayer',
-                local_gdf.reset_index(),
-                opacity=opacity,
-                stroked=True,
-                filled=True,
-                wireframe=True,
-                get_line_width='__width__',
-                get_radius='__radius__',
-                get_line_color='color',
-                get_fill_color="color",
-                pickable=True,
-            )
-            pdk_layers.append(pdk_layer)
-            # print(f"{(time.time()-start)*1000:6.2f}ms\t {layer_number = }, pdk.Layer created.")
-            start = time.time()
-
-            if "text" in gdf_dict:
-                # if numerical, round within four decimals, else, do nothing and treat as string
-                try:
-                    local_gdf["text"] = round(local_gdf[gdf_dict["text"]], 2).astype('string')
-                except TypeError:
-                    local_gdf["text"] = local_gdf[gdf_dict["text"]].astype('string')
-
-                # formatting a centroid point to be [lat, long]
-                with warnings.catch_warnings():
-                    warnings.simplefilter("ignore", category=UserWarning)
-                    local_gdf["coordinates"] = local_gdf["geometry"].centroid
-                local_gdf["coordinates"] = [[p.coords[0][0], p.coords[0][1]] for p in local_gdf["coordinates"]]
-
-                layer = pdk.Layer(
-                    "TextLayer",
-                    local_gdf.reset_index(),
-                    pickable=True,
-                    get_position="coordinates",
-                    get_text="text",
-                    get_size=16,
-                    get_color='color',
-                    get_angle=0,
-                    background=True,
-                    get_background_color=[0, 0, 0, 125],
-                    # Note that string constants in pydeck are explicitly passed as strings
-                    # This distinguishes them from columns in a data set
-                    get_text_anchor=String("middle"),
-                    get_alignment_baseline=String("center"),
-                )
-                pdk_layers.append(layer)
-                # print(f"{(time.time()-start)*1000:6.2f}ms\t {layer_number = }, text layer created and added.")
-                start = time.time()
-
-        initial_view_state = pdk.ViewState(
-            latitude=centerY,
-            longitude=centerX,
-            zoom=zoom,
-            max_zoom=20,
-            pitch=0,
-            bearing=0
-        )
-
-        if basemap:
-            r = pdk.Deck(
-                layers=pdk_layers,
-                initial_view_state=initial_view_state,
-            )
-        else:
-            r = pdk.Deck(
-                layers=pdk_layers,
-                initial_view_state=initial_view_state,
-                map_provider=None,
-                parameters={
-                    "clearColor": [0.00, 0.00, 0.00, 1]
-                },
-            )
-
-        if filename is not None:
-            r.to_html(
-                filename,
-                css_background_color="cornflowerblue"
-            )
-        # print(f"{(time.time()-start)*1000:6.2f}ms\t {layer_number = }, map rendered.")
-        start = time.time()
-        return r
-
-    def color_layer(self, layer_name, color_by_attribute=None, color_method="single_color", color=None):
-        '''
-        This function is used internally to apply default color settings for given layers
-        '''
-        if layer_name in self.DEFAULT_COLORS.keys() and color_by_attribute is None and color is None:
-            # set default colors first. all default layers call without specifying "color_by_attribute"
-            # default layer creation always calls self.color_layer(layer_name) without any other parameters
-            color = self.DEFAULT_COLORS[layer_name].copy()
-            color_method = "single_color"
-            if type(color) is dict:
-                # the default color is categorical..
-                color_by_attribute = color["__attribute_name__"]
-                color_method = "categorical"
-        self.layers[layer_name]["gdf"] = self.color_gdf(
-            self.layers[layer_name]["gdf"],
-            color_by_attribute=color_by_attribute,
-            color_method=color_method,
-            color=color
-        )
-        return
-
-    @staticmethod
-    def color_gdf(gdf, color_by_attribute=None, color_method=None, color=None):
-        """Sets geometry color
-
-        :param gdf: GeoDataFrame to be colored.
-        :param color_by_attribute: string, attribute name, or column name to visualize geometry by
-        :param color_method: string, "single_color" to color all geometry by the same color.
-        "categorical" to use distinct color to distinct value, "gradient": to use a gradient of colors for a numeric, scalar attribute.
-        :param color: if color method is single color, expects one color. if categorical, expects nothing and would give automatic assignment, or a dict {"val': [0,0,0]}. if color_method is gradient, expects nothing for a default color map, or a color map name
-
-        """
-        if color_method is None:
-            if color_by_attribute is not None:
-                color_method = "categorical"
-            else:
-                color_method = "single_color"
-
-        if color_by_attribute is None and color is None:
-            # if "color_by_attribute" is not given, and its not a default layer, assuming color_method == "single_color"
-            # if no color is given, assign random color, else, color=color
-            color = [random.random() * 255, random.random() * 255, random.random() * 255]
-            color_method = "single_color"
-        elif color is None:
-            # color by attribute ia given, but no color is given..
-            if color_method == "single_color":
-                # if color by attribute is given, and color method is single color, this is redundant but just in case:
-                color = [random.random() * 255, random.random() * 255, random.random() * 255]
-            if color_method == "categorical":
-                color = {"__other__": [255, 255, 255]}
-                for distinct_value in gdf[color_by_attribute].unique():
-                    color[distinct_value] = [random.random() * 255, random.random() * 255, random.random() * 255]
-
-        # create color column
-        if color_method == "single_color":
-            color_column = [color] * len(gdf)
-        elif color_method == "categorical":
-            # color = {"__other__": [255, 255, 255]}
-            color_column = []
-            for value in gdf[color_by_attribute]:
-                if value in color.keys():
-                    color_column.append(color[value])
-                else:
-                    color_column.append(color["__other__"])
-        elif color_method == "gradient":
-            cbc = gdf[color_by_attribute]  # color by column
-            nc = 255 * (cbc - cbc.min()) / (cbc.max() - cbc.min())  # normalized column
-            color_column = [[255 - v, 0 + v, 0] if not np.isnan(v) else [255, 255, 255] for v in
-                            list(nc)]  # convert normalized values to color spectrom.
-            # TODO: insert color map options here..
-        elif color_method == 'quantile':
-            scaled_percentile_rank = 255 * gdf[color_by_attribute].rank(pct=True)
-            color_column = [[255.0 - v, 0.0 + v, 0] if not np.isnan(v) else [255, 255, 255] for v in
-                            scaled_percentile_rank]  # convert normalized values to color spectrom.
-
-        gdf["color"] = color_column
-        return gdf
