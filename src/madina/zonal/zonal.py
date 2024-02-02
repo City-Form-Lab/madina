@@ -135,13 +135,13 @@ class Zonal:
         :param weight_attribute: Name of the attribute to use as percieved diatance. Given name must exist in layer attributes. Default is None, and the network cost would be calculated using geometric distance.
         :type weight_attribute: str, optional
         :param node_snapping_tolerance: Tolerance for snapping nodes. Default is 0.0 assuming that line geometries that are connected share identical common start/end points, defaults to 0.0
-        :type node_snapping_tolerance: int, float, optional
+        :type node_snapping_tolerance: int | float, optional
         :param redundant_edge_treatment: Due to current limitations, only one edge can exist between a pair of nodes. Three options: "keep": redundant edges will be kept, posing a risk for error in network construction/calculations. "discard": The shortest edge of redundant edges will be kept. others are discarded. is kept if set to True. "split": Split redundant edges by thier centroids into non-redundant segments. Default "split".
         :type redundant_edge_treatment: str, optional
         :param turn_threshold_degree: Degree threshold for considering a turn. Default is 45. This threshold would only be used whem enabling turn penalty in UNA operations. The angle is measured as the deviation from a straight line. Can only be between 0-180. 90 degrees means a right or left turn, a 180 degree means a full U-turn
-        :type turn_threshold_degree: int, float,  optional
+        :type turn_threshold_degree: int | float,  optional
         :param turn_penalty_amount: Penalty amount for turns. Default is 30. This penalty (in the units of the layers' CRS) would be used as turn cost when enabling turn penalty in UNA operations. Cannot b e negative.  defaults to 30
-        :type turn_penalty_amount: int, float, optional
+        :type turn_penalty_amount: int | float, optional
         :raises ValueError: if the source layer did not exist in the object.
         :Example:
             >>> zonal = Zonal()  # Create a Zonal object.

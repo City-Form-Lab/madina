@@ -94,7 +94,7 @@ def accessibility(
     if not isinstance(alpha, (int, float)):
         raise TypeError(f"Parameter 'alpha' must be either {int, float}. {type(alpha)} was given.")
     
-    if (beta is not None) and (not isinstance(alpha, (int, float))):
+    if (beta is not None) and (not isinstance(beta, (int, float))):
         raise TypeError(f"Parameter 'beta' must be either {int, float}. {type(beta)} was given.")
 
     if (save_reach_as is not None) and (not isinstance(save_gravity_as, str)):
@@ -121,7 +121,7 @@ def accessibility(
             raise TypeError(f"Parameter 'save_closest_facility_distance_as' must be a string. {type(save_closest_facility_distance_as)} was given.")
 
     if not isinstance(turn_penalty, bool):
-        raise TypeError(f"Parameter 'turn_penalty' must either be a boolean True or False, {type(closest_facility)} was given.")
+        raise TypeError(f"Parameter 'turn_penalty' must either be a boolean True or False, {type(turn_penalty)} was given.")
 
     
     
@@ -239,7 +239,7 @@ def service_area(
     :param origin_ids: If not provided, the service area for all origins is generated. This parameter can either be the id of an origin as an integer, or a list of origin IDs
     :type origin_ids: int | list
     :param search_radius: the maximum search distance for accessible destinations from an origin, measured as a network distance in the same units as the network's CRS, defaults to None
-    :type search_radius: float
+    :type search_radius: float | int
     :param turn_penalty: If True, turn penalty is enabled, defaults to False
     :type turn_penalty: bool, optional
     :raises ValueError: if an origin id is not for an origin in the origin layer.
@@ -249,6 +249,20 @@ def service_area(
         - `scope_gdf`: for each origin, a polygon of its service ares
     :rtype: GeoDataFrame
     """
+
+    validate_zonal_ready(zonal)
+
+    if not isinstance(search_radius, (int, float)):
+        raise TypeError(f"Parameter 'search_radius' must be either {int, float}. {type(search_radius)} was given.")
+    elif search_radius < 0:
+        raise ValueError(f"Parameter 'search_radius': Cannot be negative. search_radius={search_radius} was given.")
+
+    if (origin_ids is not None) and not isinstance(origin_ids, (int, list)):
+        raise TypeError(f"Parameter 'origin_ids' must be either {int, list} representing an origin id or a list of origin ids. {type(origin_ids)} was given.")
+
+
+    if not isinstance(turn_penalty, bool):
+        raise TypeError(f"Parameter 'turn_penalty' must either be a boolean True or False, {type(turn_penalty)} was given.")
 
 
     node_gdf = zonal.network.nodes
@@ -267,7 +281,7 @@ def service_area(
         # put user input in a list
         o_idxs = list(origin_gdf[origin_gdf['source_id'].isin([origin_ids])].index)
     elif len(set(origin_ids) - set(zonal[origin_layer].gdf.index)) != 0:
-        raise ValueError(f"some of the indices given are not for an origin {set(origin_ids) - set(zonal[origin_layer].gdf.index)}")
+        raise ValueError(f"some of the indices given in `origin_ids` are not for an origin {set(origin_ids) - set(zonal[origin_layer].gdf.index)}")
     else: 
         ## convert user input to network IDs
         o_idxs = list(origin_gdf[origin_gdf['source_id'].isin(origin_ids)].index)
@@ -339,27 +353,51 @@ def service_area(
 def alternative_paths(
     zonal: Zonal,
     origin_id: int,
-    search_radius: float,
-    detour_ratio: float = 1,
+    search_radius: float | int,
+    detour_ratio: float | int = 1,
     turn_penalty: bool = False,
 ):
     """Generates all alternative patha between an origin and all reachable destinations within a detour from the shortest path
 
-    :param zonal: _description_
+    :param zonal: A zonal object populated with a network, origins, destinations and a graph
     :type zonal: Zonal
-    :param origin_id: the ID for the origin where the paths start
+    :param origin_id: an ID for the origin used as a start. Must be an ID from the origin layer. 
     :type origin_id: int
-    :param search_radius: the maximum search distance for accessible destinations from an origin, measured as a network distance in the same units as the network's CRS, defaults to None
-    :type search_radius: float
-    :param detour_ratio: The percentage of allowed detour of the shortest path. if set to 1.15, all paths longer than the shortest path by 15 percent are generated. By default, set to 1: only the shortest paths are generated, defaults to 1
-    :type detour_ratio: float, optional
+    :param search_radius: The maximum distance to search for reachable destinatations. In the same unit as the network CRS.
+    :type search_radius: float | int
+    :param detour_ratio: A percentage of detour over the shortest path between an origin and a destination when generating alternative paths. , defaults to 1 and only generates the shortest path. Must be greater than or equal to one. if set to a large number, could result in severe performance issues and memory overflow
+    :type detour_ratio: float | int, optional
     :param turn_penalty: If True, turn penalty is enabled, defaults to False
     :type turn_penalty: bool, optional
-    :return: _description_
-    :rtype: _type_
+    :return: This function returns a GeoDataFrame of all paths generated to all reachable destinations. The GeoDataFrame has three columns: 
+        - `destination`: the destination ID where a path ends
+        - `distance`: the weight of this path: reflecting the network settings for network weight, and turn penalty.
+        ` `geometry` a column of Shapely GeometryCollection containing all network segments along the path. origin and destination segments are not trimmed but returned whole.
+    :rtype: GeoDataFrame
     """
-
     origin_gdf = zonal.network.nodes[zonal.network.nodes['type'] == 'origin']
+
+
+    if not isinstance(origin_id, (int, list)):
+        raise TypeError(f"Parameter 'origin_id' must be {int} representing an origin id. {type(origin_id)} was given.")
+    if origin_id not in origin_gdf['source_id']:
+        raise ValueError(f"Parameter 'origin_id': is not for an origin included in the network.")
+
+    if not isinstance(search_radius, (int, float)):
+        raise TypeError(f"Parameter 'search_radius' must be either {int, float}. {type(search_radius)} was given.")
+    elif search_radius < 0:
+        raise ValueError(f"Parameter 'search_radius': Cannot be negative. search_radius={search_radius} was given.")
+
+    if not isinstance(detour_ratio, (int, float)):
+        raise TypeError(f"Parameter 'detour_ratio' must be either {int, float}. {type(detour_ratio)} was given.")
+    elif detour_ratio < 1:
+        raise ValueError(f"Parameter 'detour_ratio': Cannot be less than 1. detour_ratio={detour_ratio} was given.")
+
+    if not isinstance(turn_penalty, bool):
+        raise TypeError(f"Parameter 'turn_penalty' must either be a boolean True or False, {type(turn_penalty)} was given.")
+
+
+
     o_idx = origin_gdf[origin_gdf['source_id'] == origin_id].iloc[0].name
 
     path_edges, distances, d_idxs = path_generator(
@@ -405,7 +443,7 @@ def betweenness(
     closest_destination: bool = True,
     elastic_weight: bool = False,
     knn_weight: str | list = None,
-    knn_plateau: float = 0, 
+    knn_plateau: float | int = 0, 
     turn_penalty: bool = False,
     save_betweenness_as: str = None, 
     save_reach_as: str = None, 
@@ -415,51 +453,135 @@ def betweenness(
     path_exposure_attribute: str = None,
     save_path_exposure_as: str = None,
 ):
-    """_summary_
+    """Generate trips between origins and destinations along network segment, accounting for a search radius, decay, detour, destination competition, turn penalty and elastic trip generation.
 
-    :param zonal: _description_
+    :param zonal: A zonal object populated with a network, origins, destinations and a graph
     :type zonal: Zonal
-    :param search_radius: _description_
+    :param search_radius: The maximum distance to search for reachable destinatations. In the same unit as the network CRS.
     :type search_radius: float
-    :param detour_ratio: _description_, defaults to 1
+    :param detour_ratio: A percentage of detour over the shortest path between an origin and a destination when allocating trips across alternative paths. Defaults to 1 and only allocate trips along the shortest path. Must be greater than or equal to one. if set to a large number, could result in severe performance issues and memory overflow
     :type detour_ratio: float, optional
-    :param decay: _description_, defaults to False
+    :param decay: If ennabled, trip generation is decayed according to the chosen decay function and beta parameter, defaults to False
     :type decay: bool, optional
-    :param decay_method: _description_, defaults to "exponent"
+    :param decay_method: the function that applies distance decay to trips. could be one of ['exponent', 'power'], defaults to "exponent"
     :type decay_method: str, optional
-    :param beta: _description_, defaults to 0.003
+    :param beta: When applying decay to trip generation, the beta parameter represent the sensitivity to walk. a smaller beta value means that people are less sensitive to walking. When units are in meters, a typical beta value ranges between 0.001 (Low sensitivity) and 0.004 (High sensitivity), defaults to 0.003
     :type beta: float, optional
-    :param num_cores: _description_, defaults to 1
+    :param num_cores: By default, only use a single core, set to as many cores as you want to use for running parallel calculations., defaults to 1
     :type num_cores: int, optional
-    :param closest_destination: _description_, defaults to True
+    :param closest_destination: If set to true, trips are only routed to the closest destination. if set to false, destinations compete to attract trips based on the Huff model that factors in destination attractivenes and distance, defaults to True
     :type closest_destination: bool, optional
-    :param elastic_weight: _description_, defaults to False
+    :param elastic_weight: If set to false, origins generate theur full trip potential irrespective of how many destinations they can access. if set to true, origins generate more trips as they have access to more destinations, as defined by the K-nearest neighbor access, defaults to False
     :type elastic_weight: bool, optional
-    :param knn_weight: _description_, defaults to None
+    :param knn_weight: The K-nesrest neighbor access array, should be of the form [0.5, 0.25, ..., 0.01] to assign partial score foe each reachable destination. Should add up to one so it controls trip generation appropriatly, defaults to None
     :type knn_weight: str | list, optional
-    :param knn_plateau: _description_, defaults to 0
-    :type knn_plateau: float, optional
+    :param knn_plateau: A distance penalty could be applied to the KNN access score depending on how close the destination is. the KNN plateau gives a penalty-free score sccumilation for destinations that are closer than the plateau, and applies penalty on the distance that exceeds the plateau, defaults to 0
+    :type knn_plateau: float | int, optional
     :param turn_penalty: _description_, defaults to False
     :type turn_penalty: bool, optional
-    :param turn_penalty_amount: _description_, defaults to 0
-    :type turn_penalty_amount: float, optional
-    :param turn_threshold_degree: _description_, defaults to 0
-    :type turn_threshold_degree: float, optional
-    :param save_betweenness_as: _description_, defaults to None
+    :param save_betweenness_as: Specify a name for the column in the network layer where the betweenness flow is stored, defaults to None
     :type save_betweenness_as: str, optional
-    :param save_reach_as: _description_, defaults to None
+    :param save_reach_as: Specify a name for thecolumn in the origin layer where the reach accessibility score is stored , defaults to None
     :type save_reach_as: str, optional
-    :param save_gravity_as: _description_, defaults to None
+    :param save_gravity_as: Specify a name for the column in the origin layer where the gravity score is stored, defaults to None
     :type save_gravity_as: str, optional
-    :param save_elastic_weight_as: _description_, defaults to None
+    :param save_elastic_weight_as: specify a name for the column in the origin layer where the KNN-adjusted origin weight is stored, defaults to None
     :type save_elastic_weight_as: str, optional
-    :param keep_diagnostics: _description_, defaults to False
+    :param keep_diagnostics: If set to true, store performance and memory statistics in the network, defaults to False
     :type keep_diagnostics: bool, optional
-    :param path_exposure_attribute: _description_, defaults to None
-    :type path_exposure_attribute: str, optional
-    :param save_path_exposure_as: _description_, defaults to None
+    :param path_exposure_attribute: If provided, calculates an exposure to a network value for trips originatinbg from an origin en route to destinations, defaults to None
+    :type path_exposure_attribute: str, optional 
+    :param save_path_exposure_as: if path exposure attribute is proviided, this is a name for a column in the origin layer that captures origin's exposure to the network exposure attribute, defaults to None
     :type save_path_exposure_as: str, optional
     """
+
+    validate_zonal_ready(zonal)
+
+    if not isinstance(search_radius, (int, float)):
+        raise TypeError(f"Parameter 'search_radius' must be either {int, float}. {type(search_radius)} was given.")
+    elif search_radius < 0:
+        raise ValueError(f"Parameter 'search_radius': Cannot be negative. search_radius={search_radius} was given.")
+
+    if not isinstance(detour_ratio, (int, float)):
+        raise TypeError(f"Parameter 'detour_ratio' must be either {int, float}. {type(detour_ratio)} was given.")
+    elif detour_ratio < 1:
+        raise ValueError(f"Parameter 'detour_ratio': Cannot be less than 1. detour_ratio={detour_ratio} was given.")
+
+    if not isinstance(decay, bool):
+        raise TypeError(f"Parameter 'decay' must either be a boolean True or False, {type(decay)} was given.")
+    
+    if decay and (decay_method not in ['exponent', 'power']):
+        if not isinstance(decay_method, str):
+            raise TypeError(f"Parameter 'decay_method' must be a string. {type(decay_method)} was given.")
+        else: 
+            raise ValueError(f"Parameter 'decay_method': must be one of ['exponent', 'power']. node_snapping_tolerance={decay_method} was given.")
+
+    if (decay or save_gravity_as is not None) and (not isinstance(beta, (int, float))):
+        raise TypeError(f"Parameter 'beta' must be either {int, float}. {type(beta)} was given.")
+
+    if not isinstance(num_cores, int):
+        raise TypeError(f"Parameter 'num_cores' must be {int}. {type(num_cores)} was given.")
+    elif num_cores < 1:
+        raise ValueError(f"Parameter 'num_cores': Cannot be less than 1. num_cores={num_cores} was given.")
+    
+    if not isinstance(closest_destination, bool):
+        raise TypeError(f"Parameter 'closest_destination' must either be a boolean True or False, {type(closest_destination)} was given.")
+    
+    if not isinstance(elastic_weight, bool):
+        raise TypeError(f"Parameter 'elastic_weight' must either be a boolean True or False, {type(elastic_weight)} was given.")
+
+
+    if elastic_weight:
+        if knn_weight is None:
+            raise ValueError(f"Parameter 'elastic_weight': must be provided if `elastic_weight=True`")
+        if not isinstance(knn_weight, (str, list)):
+            raise TypeError(f"Parameter 'beta' must be either {int, float}. {type(beta)} was given.")
+
+        if not isinstance(knn_plateau, (int, float)):
+            raise TypeError(f"Parameter 'knn_plateau' must be either {int, float}. {type(knn_plateau)} was given.")
+        if knn_plateau < 0:
+            raise ValueError(f"Parameter 'knn_plateau': Cannot be negative. knn_plateau={knn_plateau} was given.")
+
+
+    if not isinstance(turn_penalty, bool):
+        raise TypeError(f"Parameter 'turn_penalty' must either be a boolean True or False, {type(turn_penalty)} was given.")
+
+    if (save_betweenness_as is not None) and not isinstance(save_betweenness_as, str):
+        raise TypeError(f"Parameter 'save_betweenness_as' must be a string. {type(save_betweenness_as)} was given.")
+    
+    if (save_reach_as is not None) and not isinstance(save_reach_as, str):
+        raise TypeError(f"Parameter 'save_reach_as' must be a string. {type(save_reach_as)} was given.")
+
+    if (save_gravity_as is not None) and not isinstance(save_gravity_as, str):
+        raise TypeError(f"Parameter 'save_gravity_as' must be a string. {type(save_gravity_as)} was given.")
+    
+    if (save_gravity_as is not None) and not isinstance(save_gravity_as, str):
+        raise TypeError(f"Parameter 'save_gravity_as' must be a string. {type(save_gravity_as)} was given.")
+    
+    if save_elastic_weight_as is not None:
+        if not isinstance(save_elastic_weight_as, str):
+            raise TypeError(f"Parameter 'save_elastic_weight_as' must be a string. {type(save_elastic_weight_as)} was given.")
+        if not elastic_weight:
+            raise ValueError(f"Parameter 'elastic_weight': must be set to True if `save_elastic_weight_as` is provided")
+
+
+    if not isinstance(keep_diagnostics, bool):
+        raise TypeError(f"Parameter 'keep_diagnostics' must either be a boolean True or False, {type(keep_diagnostics)} was given.")
+
+
+    if path_exposure_attribute is not None:
+        if not isinstance(path_exposure_attribute, str):
+            raise TypeError(f"Parameter 'path_exposure_attribute' must be a string. {type(path_exposure_attribute)} was given.")
+        
+        if path_exposure_attribute not in zonal[zonal.network.edge_source_layer].gdf.columns:
+            raise ValueError(f"Parameter 'path_exposure_attribute' not in layer {zonal.network.edge_source_layer}'s columns. options are: {list(zonal[zonal.network.edge_source_layer].gdf.columns)}")
+
+    if save_path_exposure_as is not None:
+        if not isinstance(save_path_exposure_as, str):
+            raise TypeError(f"Parameter 'save_path_exposure_as' must be a string. {type(save_path_exposure_as)} was given.")
+        if path_exposure_attribute is None:
+            raise ValueError(f"Parameter 'path_exposure_attribute' must be provided if `save_path_exposure_as` is provided")
+
     zonal.network.knn_weight = knn_weight
     zonal.network.knn_plateau = knn_plateau
 
