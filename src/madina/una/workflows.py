@@ -298,6 +298,20 @@ def betweenness_flow_simulation(
         pairings_file="Pairings.csv",
         num_cores=8,
     ):
+    """_summary_
+
+    :param city_name: _description_, defaults to None
+    :type city_name: _type_, optional
+    :param data_folder: _description_, defaults to None
+    :type data_folder: _type_, optional
+    :param output_folder: _description_, defaults to None
+    :type output_folder: _type_, optional
+    :param pairings_file: _description_, defaults to "Pairings.csv"
+    :type pairings_file: str, optional
+    :param num_cores: _description_, defaults to 8
+    :type num_cores: int, optional
+    :raises ValueError: _description_
+    """
 
     if city_name is None:
         raise ValueError("parameter 'city_name' needs to be specified")
@@ -414,6 +428,20 @@ def KNN_accessibility(
         pairings_file="pairing.csv",
         num_cores=8,
     ):
+    """_summary_
+
+    :param city_name: _description_, defaults to None
+    :type city_name: _type_, optional
+    :param data_folder: _description_, defaults to None
+    :type data_folder: _type_, optional
+    :param output_folder: _description_, defaults to None
+    :type output_folder: _type_, optional
+    :param pairings_file: _description_, defaults to "pairing.csv"
+    :type pairings_file: str, optional
+    :param num_cores: _description_, defaults to 8
+    :type num_cores: int, optional
+    :raises ValueError: _description_
+    """
 
     if city_name is None:
         raise ValueError("parameter 'city_name' needs to be specified")

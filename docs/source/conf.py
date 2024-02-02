@@ -10,9 +10,9 @@ import sys
 sys.path.insert(0, os.path.abspath("../../src"))
 
 project = 'madina'
-copyright = '2023, City Form Lab'
+copyright = '2024, City Form Lab'
 author = 'City Form Lab'
-release = '0.0.5'
+release = '0.1'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

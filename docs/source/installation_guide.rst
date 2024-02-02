@@ -65,6 +65,7 @@ Step-by-step visual instructions
 1) Install Conda and use it to Install Madina
 ----------------------------------------------
 * Go to the download link for `Miniconda <https://docs.conda.io/projects/miniconda/en/latest/miniconda-install.html>`_, and click ``Download the installer``
+
 .. image:: img/0-1-download-installer.png
   :width: 400
   :alt: Download CONDA
@@ -203,14 +204,14 @@ You should get a message indicating successful installation of Madina and its de
   :width: 400
   :alt: Openning a script
 
-  In the buttom right corner of VS Code, you'll find a python version, click on it to ensure we select the right python environment, from the dropdown list, select ``madina_env``
+*  In the buttom right corner of VS Code, you'll find a python version, click on it to ensure we select the right python environment, from the dropdown list, select ``madina_env``
 
 .. image:: img/10-select-madina_env.png
   :width: 400
   :alt: selecting an environment
 
 
-Click the Run Python FIle button in nthe top tight corner. The script should start running a flow simulation and show progress.
+* Click the Run Python FIle button in nthe top tight corner. The script should start running a flow simulation and show progress.
 
 
 .. image:: img/11-run-script.png
@@ -218,7 +219,7 @@ Click the Run Python FIle button in nthe top tight corner. The script should sta
   :alt: selecting an environment
 
 
-If the terminal shows progress, this mean you have successfully installed madina and managed to run a script. Feel free to close VS Code (or click the trash icon in the terminal) to stop this script. You are ready now to go through the examples.
+* If the terminal shows progress, this mean you have successfully installed madina and managed to run a script. Feel free to close VS Code (or click the trash icon in the terminal) to stop this script. You are ready now to go through the examples.
 
 
 

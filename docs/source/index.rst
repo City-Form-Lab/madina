@@ -67,16 +67,9 @@ The package enables modelling pedestrian accessibility and movement in urban are
 
 
 
-
-
-
-Documentation
-==============
-
-
 .. toctree::
-   :maxdepth: 4
-   :caption: Package Modules, Classes and Functions
+   :maxdepth: 5
+   :caption: Documentation: Package Modules, Classes and Functions
 
 
    madina.una

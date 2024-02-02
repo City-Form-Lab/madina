@@ -1,5 +1,5 @@
 Instructions for Pedestrian Flow Simulation
-============
+====================================================
 
 
 
@@ -42,6 +42,7 @@ Instructions for Pedestrian Flow Simulation
 ``Network_File``
 ----------------
 * This should be the name for your network file, for example ``sidewalks.geoJSON``.
+
 .. warning:: 
     You need to use the same network file for all rows in the pairing table as results from all pairs are reported to the same network.
 
@@ -50,7 +51,7 @@ Instructions for Pedestrian Flow Simulation
 -------------------
 * Each OD pair in the pairing table can have its own network cost.
 * For geometric distance, use the **keyword** ``Geometric``.
-If you needed to use a specific network weight, perceived distance for example, you need to specify a column name that exists in the network file specified in ``Network_File``.
+* If you needed to use a specific network weight, perceived distance for example, you need to specify a column name that exists in the network file specified in ``Network_File``.
 * If you specified a network cost, and the column you specified contained zero or negative values, the ``Geometric`` distance would be used for network segment that have 0 or negative values.
 
 
@@ -132,8 +133,9 @@ A name for your destination, this name would be used to name the destination fil
 ``KNN_Weight``
 -----------------
 * If ``Elastic_Weights`` is set to **keyword** ``TRUE``, this parameter must be provided.
-Example ``[0.5; 0.3; 0.2]`` means that only three neighbors would be considered to give this origin a weight. The first neighbor is weighted ``0.5``, the second ``0.3`` and the third ``0.2``. 
+* Example ``[0.5, 0.3, 0.2]`` means that only three neighbors would be considered to give this origin a weight. The first neighbor is weighted ``0.5``, the second ``0.3`` and the third ``0.2``. 
 * The number of weights in the list equals the number of destinations that would be considered.
+
 .. warning:: 
     The simulation does not check for correctness, but numbers in the list are expected to sum up to 1.
 

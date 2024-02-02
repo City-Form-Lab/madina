@@ -1,7 +1,7 @@
-Zonal Reference
-====================
-
 Zonal - A Workspace for Analysis Tools and Workflows.
+===========================================================
+
+Zonal
 -------------------------
 
 .. automodule:: madina.zonal.zonal
