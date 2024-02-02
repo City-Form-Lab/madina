@@ -316,8 +316,8 @@ def betweenness_flow_simulation(
     shaqra = Zonal()
 
     shaqra.load_layer(
-        layer_name='streets',
-        file_path=os.path.join(data_folder,  pairings.at[0, "Network_File"])
+        name='streets',
+        source=os.path.join(data_folder,  pairings.at[0, "Network_File"])
     )
 
     logger.log(f"network FIle Loaded, Projection: {shaqra.layers['streets'].gdf.crs}")
@@ -343,15 +343,15 @@ def betweenness_flow_simulation(
         # Loading layers, if they're not already loaded.
         if pairing["Origin_Name"] not in shaqra.layers:
             shaqra.load_layer(
-                layer_name=pairing["Origin_Name"],
-                file_path=os.path.join(data_folder, pairing["Origin_File"])
+                name=pairing["Origin_Name"],
+                source=os.path.join(data_folder, pairing["Origin_File"])
             )
             logger.log(f"{pairing['Origin_Name']} file {pairing['Origin_File']} Loaded, Projection: {shaqra.layers[pairing['Origin_Name']].gdf.crs}", pairing)
 
         if pairing["Destination_Name"] not in shaqra.layers:
             shaqra.load_layer(
-                layer_name=pairing["Destination_Name"],
-                file_path=os.path.join(data_folder, pairing["Destination_File"])
+                name=pairing["Destination_Name"],
+                source=os.path.join(data_folder, pairing["Destination_File"])
             )
             logger.log(f"{pairing['Destination_Name']} file {pairing['Destination_File']} Loaded, Projection: {shaqra.layers[pairing['Destination_Name']].gdf.crs}", pairing)
 

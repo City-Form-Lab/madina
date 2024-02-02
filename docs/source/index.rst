@@ -12,7 +12,29 @@ Madina **(Arabic for the word 'city')** is a python package of classes and funct
    :caption: Installation Guides:
 
    installation_guide
-   notebooks/quickstart
+
+
+
+Examples and Notebooks
+=========================
+The example notebooks and the datat needed to run them are available in the `github repository  <https://github.com/City-Form-Lab/madina/tree/main/examples>`_
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+   notebooks/1-loading_data.ipynb
+   notebooks/2-creating_networks.ipynb
+   notebooks/3-UNA_tools_access.ipynb
+   notebooks/4-UNA_tools_paths.ipynb
+   notebooks/5-Pedestrian_flow_multiple_ODs.ipynb
+   notebooks/6-UNA_workflows.ipynb
+
+
+Here is a link to a generated map : `Light Map <_static/flow_map_light.html>`_  and  `Dark Map <_static/flow_map_dark.html>`_
+
+
+
 
 UNA Pedestrain Flow Simulation
 ====================================
