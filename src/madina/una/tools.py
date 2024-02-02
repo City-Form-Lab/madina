@@ -3,75 +3,128 @@ import numpy as np
 import geopandas as gpd
 
 from shapely import GeometryCollection
-from .paths import turn_o_scope, wandering_messenger, path_generator
+from .paths import turn_o_scope, path_generator
 from .betweenness import paralell_betweenness_exposure
 from ..zonal import Zonal
 
+def validate_zonal_ready(zonal: Zonal):
+    if not isinstance(zonal, Zonal):
+        raise TypeError(f"Parameter 'zonal' must be {Zonal}. {type(zonal)} was given.")
+    
+    if len(zonal.layers.layers) == 0:
+        raise ValueError("Zonal object does not have layers, call zonal.load_layer(name='layer_name', source='layer_source' to add layers")
+
+    
+    node_gdf = zonal.network.nodes
+
+    if (node_gdf is None) or (node_gdf[node_gdf["type"] == "street_node"].shape[0] == 0):
+        raise ValueError("Zonal object does not have network nodes and edges, call zonal.create_street_network() first.")
+
+    if node_gdf[node_gdf["type"] == "origin"].shape[0] == 0:
+        raise ValueError("Zonal object does not have origin nodes, call zonal.insert_node(layer_name, label='origin') to add origins from layers.")
+    
+    if node_gdf[node_gdf["type"] == "destination"].shape[0] == 0:
+        raise ValueError("Zonal object does not have destination nodes, call zonal.insert_node(layer_name, label='destination') to add destinations from layers.")
+
+
+    if zonal.network.d_graph is None:
+        raise ValueError("Zonal object does not have a d_graph, call zonal..create_graph() to create graphs first.")
+    return
 
 
 
 def accessibility(
     zonal: Zonal,
-    reach: bool = False,
-    gravity: bool =False,
-    closest_facility: bool =False,
-    weight: str = None,
-    search_radius: float=None,
+    search_radius: float | int,
+    destination_weight: str = None,
     alpha:float=1,
     beta:float=None, 
-    turn_penalty: bool = False,
-    turn_penalty_amount: float = 0, 
-    turn_threshold_degree: float = 0,
     save_reach_as: str = None, 
     save_gravity_as: str = None,
+    closest_facility: bool = False,
     save_closest_facility_as: str = None, 
     save_closest_facility_distance_as: str = None, 
+    turn_penalty: bool = False,
 ) -> None:
-    """Measures accessibility metrics like reach and gravity
+    """Measures accessibility metrics like reach and gravity to reachable destinations within a search radius to all origins in the network. 
 
     :param zonal: A zonal object populated with a network, origins, destinations and a graph
     :type zonal: Zonal
-    :param reach: Calculates reach if set to true, defaults to False
-    :type reach: bool, optional
-    :param gravity: Calculates reach if set to true, defaults to False
-    :type gravity: bool, optional
-    :param closest_facility: restrict reach and access such that a destination is assigned its closest origin, defaults to False
-    :type closest_facility: bool, optional
-    :param weight: origin weight, must be an attribute in the origin layer, defaults to None
-    :type weight: str, optional
     :param search_radius: the maximum search distance for accessible destinations from an origin, measured as a network distance in the same units as the network's CRS, defaults to None
     :type search_radius: float, optional
+    :param destination_weight: destination weight, must be an attribute in the destination layer, defaults to None: fall back to the destination weight specified during network construction which is 1 for all destinations by default.
+    :type weight: str, optional
     :param alpha: in gravity calculations, the alpha term increases the importance of destination weight by applying a power. default is 1, destination weight is not adjusted, defaults to 1
     :type alpha: float, optional
     :param beta: In gravity calculations, the beta parameter represent the sensitivity to walk. a smaller beta value means that people are less sensitive to walking. When units are in meters, a typical beta value ranges between 0.001 (Low sensitivity) and 0.004 (High sensitivity), defaults to None
     :type beta: float, optional
-    :param turn_penalty: If True, turn penalty is enabled, defaults to False
-    :type turn_penalty: bool, optional
-    :param turn_penalty_amount: if turn penalty is enbabled, this parameter define the penalty incured by each turn in a path, in the same unit as the network CRS, defaults to 0
-    :type turn_penalty_amount: float, optional
-    :param turn_threshold_degree: if turn penalty is enabled, this parameter defines the minimum anglular deviation for a turn to be penalized, defaults to 0
-    :type turn_threshold_degree: float, optional
     :param save_reach_as: Save the reach metric back to the origin layer as a column with this name, defaults to None
     :type save_reach_as: str, optional
     :param save_gravity_as: Save the gravity metric back to the origin layer as a column with this name, defaults to None
     :type save_gravity_as: str, optional
+    :param closest_facility: restrict reach and access such that a destination is assigned its closest origin, defaults to False
+    :type closest_facility: bool, optional
     :param save_closest_facility_as: if closest_facility=True, save the closest origin ID as a column in the destination layer with this name, defaults to None
     :type save_closest_facility_as: str, optional
     :param save_closest_facility_distance_as: if closest_facility=True, save thw distance to the closest origin as a column in the destination layer with this name, defaults to None
     :type save_closest_facility_distance_as: str, optional
-    :raises ValueError: if beta not provided when asking for a gravity metric
+    :param turn_penalty: If True, turn penalty is enabled, defaults to False. Uses the turn penalty amount and turn degree threshold specified in the network
+    :type turn_penalty: bool, optional
     """    
-
-
-    if turn_penalty:
-        zonal.network.turn_penalty_amount = turn_penalty_amount
-        zonal.network.turn_threshold_degree = turn_threshold_degree
-    if gravity and (beta is None):
-        raise ValueError("Please specify parameter 'beta' when 'gravity' is True")
-
     node_gdf = zonal.network.nodes
     origin_gdf = node_gdf[node_gdf["type"] == "origin"]
+    origin_layer = origin_gdf.iloc[0]['source_layer']
+    destination_gdf = node_gdf[node_gdf["type"] == "destination"]
+    destination_layer = destination_gdf.iloc[0]['source_layer']
 
+    validate_zonal_ready(zonal)
+
+    if not isinstance(search_radius, (int, float)):
+        raise TypeError(f"Parameter 'search_radius' must be either {int, float}. {type(search_radius)} was given.")
+    elif search_radius < 0:
+        raise ValueError(f"Parameter 'search_radius': Cannot be negative. search_radius={search_radius} was given.")
+
+
+    if destination_weight is not None:
+        if not isinstance(destination_weight, str):
+            raise TypeError(f"Parameter 'destination_weight' must be {str}. {type(destination_weight)} was given.")
+        elif destination_weight not in zonal[destination_layer].gdf.columns:
+            raise ValueError(f"Parameter 'destination_weight': {destination_weight} not in layer {destination_layer}. Available attributes are: {list(zonal[destination_layer].gdf.columns)}")
+
+    if not isinstance(alpha, (int, float)):
+        raise TypeError(f"Parameter 'alpha' must be either {int, float}. {type(alpha)} was given.")
+    
+    if (beta is not None) and (not isinstance(alpha, (int, float))):
+        raise TypeError(f"Parameter 'beta' must be either {int, float}. {type(beta)} was given.")
+
+    if (save_reach_as is not None) and (not isinstance(save_gravity_as, str)):
+        raise TypeError(f"Parameter 'save_reach_as' must be a string. {type(save_reach_as)} was given.")
+
+    if (save_gravity_as is not None): 
+        if not isinstance(save_gravity_as, str):
+            raise TypeError(f"Parameter 'save_gravity_as' must be a string. {type(save_gravity_as)} was given.")
+        if (beta is None):
+            raise ValueError("Please specify parameter 'beta' when 'save_gravity_as' is provided")
+         
+    if not isinstance(closest_facility, bool):
+        raise TypeError(f"Parameter 'closest_facility' must either be a boolean True or False, {type(closest_facility)} was given.")
+    elif not closest_facility:
+        if save_closest_facility_as is not None:
+            raise ValueError("Please set parameter 'closest_facility=True' when 'save_closest_facility_as' is provided")
+        if save_closest_facility_distance_as is not None:
+            raise ValueError("Please set parameter 'closest_facility=True' when 'save_closest_facility_distance_as' is provided")
+    else:
+        if not isinstance(save_closest_facility_as, str):
+            raise TypeError(f"Parameter 'save_closest_facility_as' must be a string. {type(save_closest_facility_as)} was given.")
+        
+        if not isinstance(save_closest_facility_distance_as, str):
+            raise TypeError(f"Parameter 'save_closest_facility_distance_as' must be a string. {type(save_closest_facility_distance_as)} was given.")
+
+    if not isinstance(turn_penalty, bool):
+        raise TypeError(f"Parameter 'turn_penalty' must either be a boolean True or False, {type(closest_facility)} was given.")
+
+    
+    
     reaches = {}
     gravities = {}
 
@@ -98,11 +151,10 @@ def accessibility(
         for d_idx in d_idxs:
             source_id = int(node_gdf.at[d_idx, "source_id"])
             source_layer = node_gdf.at[d_idx, "source_layer"]
-            d_weight = 1 if weight is None else zonal.layers[source_layer].gdf.at[source_id, weight]
+            d_weight = 1 if destination_weight is None else zonal.layers[source_layer].gdf.at[source_id, destination_weight]
 
-            if reach:
-                reaches[o_idx][d_idx] = d_weight
-            if gravity:
+            reaches[o_idx][d_idx] = d_weight
+            if beta is not None:
                 gravities[o_idx][d_idx] = pow(d_weight, alpha) / (pow(math.e, (beta * d_idxs[d_idx])))
 
             if closest_facility:
@@ -113,27 +165,24 @@ def accessibility(
                     node_gdf.at[d_idx, "closest_facility"] = o_idx
                     node_gdf.at[d_idx, "closest_facility_distance"] = d_idxs[d_idx]
 
-        if reach:
-            node_gdf.at[o_idx, "reach"] = sum([value for value in reaches[o_idx].values() if not np.isnan(value)])
 
-        if gravity:
+        node_gdf.at[o_idx, "reach"] = sum([value for value in reaches[o_idx].values() if not np.isnan(value)])
+
+        if beta is not None:
             node_gdf.at[o_idx, "gravity"] = sum([value for value in gravities[o_idx].values() if not np.isnan(value)])
 
     if closest_facility:
         for o_idx in origin_gdf.index:
             o_closest_destinations = list(node_gdf[node_gdf["closest_facility"] == o_idx].index)
-            if reach:
-                node_gdf.at[o_idx, "reach"] = sum([reaches[o_idx][d_idx] for d_idx in o_closest_destinations])
-            if gravity:
+            node_gdf.at[o_idx, "reach"] = sum([reaches[o_idx][d_idx] for d_idx in o_closest_destinations])
+            if beta is not None:
                 node_gdf.at[o_idx, "gravity"] = sum([gravities[o_idx][d_idx] for d_idx in o_closest_destinations])
     
 
 
 
-
+    # todo: isolate this into network.save_from_nodes_to_layer(zonal, layer_name, name_map={result:param_name..})
     if (save_reach_as is not None) or (save_gravity_as is not None): 
-        origin_gdf = node_gdf[node_gdf["type"] == "origin"]
-        origin_layer = origin_gdf.iloc[0]['source_layer']
 
         saved_attributes = {}
         if save_reach_as is not None:
@@ -155,8 +204,7 @@ def accessibility(
 
 
     if (save_closest_facility_as is not None) or (save_closest_facility_distance_as is not None): 
-        destination_gdf = node_gdf[node_gdf["type"] == "destination"]
-        destination_layer = destination_gdf.iloc[0]['source_layer']
+
 
         saved_attributes = {}
         if save_closest_facility_as is not None:
@@ -183,8 +231,6 @@ def service_area(
     search_radius: float, 
     origin_ids: int | list = None,
     turn_penalty: bool = False,
-    turn_penalty_amount: float = 0, 
-    turn_threshold_degree: float = 0,
 ):
     """For each origin, generate a polygon of its service area, defined by the boundary around the destinations it could reach within a specified searchj radius. A list of destinations is returned, as well as the network geometry inside the service area
 
@@ -196,10 +242,6 @@ def service_area(
     :type search_radius: float
     :param turn_penalty: If True, turn penalty is enabled, defaults to False
     :type turn_penalty: bool, optional
-    :param turn_penalty_amount: if turn penalty is enbabled, this parameter define the penalty incured by each turn in a path, in the same unit as the network CRS, defaults to 0
-    :type turn_penalty_amount: float, optional
-    :param turn_threshold_degree: if turn penalty is enabled, this parameter defines the minimum anglular deviation for a turn to be penalized, defaults to 0
-    :type turn_threshold_degree: float, optional
     :raises ValueError: if an origin id is not for an origin in the origin layer.
     :return: 
         - `destinations`: A dataframe howing a list of destinations for each origin that falls within the search radius
@@ -208,9 +250,6 @@ def service_area(
     :rtype: GeoDataFrame
     """
 
-    if turn_penalty:
-        zonal.network.turn_penalty_amount = turn_penalty_amount
-        zonal.network.turn_threshold_degree = turn_threshold_degree
 
     node_gdf = zonal.network.nodes
     edge_gdf = zonal.network.edges
@@ -295,75 +334,7 @@ def service_area(
     network_edges = gpd.GeoDataFrame({}).set_geometry(all_network_edges).set_crs(zonal.layers[destination_layer].gdf.crs).explode(index_parts=False)
     return destinations, network_edges, scope_gdf
 
-def closest_facility(
-    zonal:Zonal,
-    weight:str=None,
-    reach:bool=False,
-    gravity:bool=False,
-    search_radius:float=None,
-    beta:float=None,
-    alpha:float=1,
-    turn_penalty: bool = False,
-    turn_penalty_amount: float = 0, 
-    turn_threshold_degree: float = 0, 
-    save_reach_as: str = None, 
-    save_gravity_as: str = None,
-    save_closest_facility_as: str = None, 
-    save_closest_facility_distance_as: str = None, 
-    ):
-    """Measures accessibility metrics like reach and gravity while assigning each destination to strictly the neareest origin
 
-    :param zonal: A zonal object populated with a network, origins, destinations and a graph
-    :type zonal: Zonal
-    :param reach: Calculates reach if set to true, defaults to False
-    :type reach: bool, optional
-    :param gravity: Calculates reach if set to true, defaults to False
-    :type gravity: bool, optional
-    :param weight: origin weight, must be an attribute in the origin layer, defaults to None
-    :type weight: str, optional
-    :param search_radius: the maximum search distance for accessible destinations from an origin, measured as a network distance in the same units as the network's CRS, defaults to None
-    :type search_radius: float, optional
-    :param alpha: in gravity calculations, the alpha term increases the importance of destination weight by applying a power. default is 1, destination weight is not adjusted, defaults to 1
-    :type alpha: float, optional
-    :param beta: In gravity calculations, the beta parameter represent the sensitivity to walk. a smaller beta value means that people are less sensitive to walking. When units are in meters, a typical beta value ranges between 0.001 (Low sensitivity) and 0.004 (High sensitivity), defaults to None
-    :type beta: float, optional
-    :param turn_penalty: If True, turn penalty is enabled, defaults to False
-    :type turn_penalty: bool, optional
-    :param turn_penalty_amount: if turn penalty is enbabled, this parameter define the penalty incured by each turn in a path, in the same unit as the network CRS, defaults to 0
-    :type turn_penalty_amount: float, optional
-    :param turn_threshold_degree: if turn penalty is enabled, this parameter defines the minimum anglular deviation for a turn to be penalized, defaults to 0
-    :type turn_threshold_degree: float, optional
-    :param save_reach_as: Save the reach metric back to the origin layer as a column with this name, defaults to None
-    :type save_reach_as: str, optional
-    :param save_gravity_as: Save the gravity metric back to the origin layer as a column with this name, defaults to None
-    :type save_gravity_as: str, optional
-    :param save_closest_facility_as: Save the closest origin ID as a column in the destination layer with this name, defaults to None
-    :type save_closest_facility_as: str, optional
-    :param save_closest_facility_distance_as: Save thw distance to the closest origin as a column in the destination layer with this name, defaults to None
-    :type save_closest_facility_distance_as: str, optional
-    :raises ValueError: if beta not provided when asking for a gravity metric
-    """    
-
-
-    accessibility(
-        zonal=zonal,
-        reach=reach,
-        gravity=gravity,
-        closest_facility=True,
-        weight=weight,
-        search_radius=search_radius,
-        alpha=alpha,
-        beta=beta, 
-        turn_penalty=turn_penalty,
-        turn_penalty_amount=turn_penalty_amount, 
-        turn_threshold_degree=turn_threshold_degree,
-        save_reach_as=save_reach_as, 
-        save_gravity_as=save_gravity_as,
-        save_closest_facility_as=save_closest_facility_as, 
-        save_closest_facility_distance_as=save_closest_facility_distance_as, 
-    )
-
-    return
 
 def alternative_paths(
     zonal: Zonal,
@@ -371,8 +342,6 @@ def alternative_paths(
     search_radius: float,
     detour_ratio: float = 1,
     turn_penalty: bool = False,
-    turn_penalty_amount: float = 0, 
-    turn_threshold_degree: float = 0
 ):
     """Generates all alternative patha between an origin and all reachable destinations within a detour from the shortest path
 
@@ -386,16 +355,9 @@ def alternative_paths(
     :type detour_ratio: float, optional
     :param turn_penalty: If True, turn penalty is enabled, defaults to False
     :type turn_penalty: bool, optional
-    :param turn_penalty_amount: if turn penalty is enbabled, this parameter define the penalty incured by each turn in a path, in the same unit as the network CRS, defaults to 0
-    :type turn_penalty_amount: float, optional
-    :param turn_threshold_degree: if turn penalty is enabled, this parameter defines the minimum anglular deviation for a turn to be penalized, defaults to 0
-    :type turn_threshold_degree: float, optional
     :return: _description_
     :rtype: _type_
     """
-    if turn_penalty:
-        zonal.network.turn_penalty_amount = turn_penalty_amount
-        zonal.network.turn_threshold_degree = turn_threshold_degree
 
     origin_gdf = zonal.network.nodes[zonal.network.nodes['type'] == 'origin']
     o_idx = origin_gdf[origin_gdf['source_id'] == origin_id].iloc[0].name
@@ -445,8 +407,6 @@ def betweenness(
     knn_weight: str | list = None,
     knn_plateau: float = 0, 
     turn_penalty: bool = False,
-    turn_penalty_amount: float = 0, 
-    turn_threshold_degree: float = 0,
     save_betweenness_as: str = None, 
     save_reach_as: str = None, 
     save_gravity_as: str = None,
@@ -500,8 +460,6 @@ def betweenness(
     :param save_path_exposure_as: _description_, defaults to None
     :type save_path_exposure_as: str, optional
     """
-    zonal.network.turn_penalty_amount = turn_penalty_amount
-    zonal.network.turn_threshold_degree = turn_threshold_degree
     zonal.network.knn_weight = knn_weight
     zonal.network.knn_plateau = knn_plateau
 

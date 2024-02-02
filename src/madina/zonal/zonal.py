@@ -139,9 +139,9 @@ class Zonal:
         :param redundant_edge_treatment: Due to current limitations, only one edge can exist between a pair of nodes. Three options: "keep": redundant edges will be kept, posing a risk for error in network construction/calculations. "discard": The shortest edge of redundant edges will be kept. others are discarded. is kept if set to True. "split": Split redundant edges by thier centroids into non-redundant segments. Default "split".
         :type redundant_edge_treatment: str, optional
         :param turn_threshold_degree: Degree threshold for considering a turn. Default is 45. This threshold would only be used whem enabling turn penalty in UNA operations. The angle is measured as the deviation from a straight line. Can only be between 0-180. 90 degrees means a right or left turn, a 180 degree means a full U-turn
-        :type turn_threshold_degree: int, optional
+        :type turn_threshold_degree: int, float,  optional
         :param turn_penalty_amount: Penalty amount for turns. Default is 30. This penalty (in the units of the layers' CRS) would be used as turn cost when enabling turn penalty in UNA operations. Cannot b e negative.  defaults to 30
-        :type turn_penalty_amount: int, optional
+        :type turn_penalty_amount: int, float, optional
         :raises ValueError: if the source layer did not exist in the object.
         :Example:
             >>> zonal = Zonal()  # Create a Zonal object.
@@ -179,18 +179,6 @@ class Zonal:
             else: 
                 raise ValueError(f"Parameter 'redundant_edge_treatment': must be one of ['keep', 'discard', 'split']. node_snapping_tolerance={redundant_edge_treatment} was given.")
             
-        if not isinstance(turn_threshold_degree, (int, float)): 
-            raise TypeError(f"Parameter 'turn_threshold_degree' must be either {int, float}. {type(turn_threshold_degree)} was given.")
-
-        if (turn_threshold_degree < 0) or (turn_threshold_degree > 180):
-            raise ValueError(f"Parameter 'turn_threshold_degree': Must be between 0 and 180. turn_threshold_degree={turn_threshold_degree} was given.")
-        
-
-        if not isinstance(turn_penalty_amount, (int, float)): 
-            raise TypeError(f"Parameter 'turn_penalty_amount' must be either {int, float}. {type(turn_penalty_amount)} was given.")
-
-        if turn_penalty_amount < 0:
-            raise ValueError(f"Parameter 'turn_penalty_amount': Cannot be negative. turn_penalty_amount={turn_penalty_amount} was given.")
         
 
         geometry_gdf = self.layers[source_layer].gdf
@@ -220,8 +208,45 @@ class Zonal:
         #type is a placeholder for now, for future use when there are multuple network types, like sidewalks, bikepaths, subway links,...
         edge_gdf = edge_gdf.drop(columns=['type'])
         
-        self.network = Network(node_gdf, edge_gdf, turn_threshold_degree, turn_penalty_amount, weight_attribute, edge_source_layer=source_layer)
+        self.network = Network(node_gdf, edge_gdf, None, None, weight_attribute, edge_source_layer=source_layer)
+        
+        self.network.set_turn_parameters(turn_threshold_degree, turn_penalty_amount)
         return
+
+    def set_turn_parameters(
+        self,
+        turn_threshold_degree: int | float,
+        turn_penalty_amount: int | float,
+    ) -> None :
+        """Set the turn penalty threshold and turn penalty amount for use when turn penalty is enabled in analysis tools.
+        :param turn_threshold_degree: Degree threshold for considering a turn. Default is 45. This threshold would only be used whem enabling turn penalty in UNA operations. The angle is measured as the deviation from a straight line. Can only be between 0-180. 90 degrees means a right or left turn, a 180 degree means a full U-turn
+        :type turn_threshold_degree: int | float
+        :param turn_penalty_amount: Penalty amount for turns. Default is 30. This penalty (in the units of the layers' CRS) would be used as turn cost when enabling turn penalty in UNA operations. Cannot b e negative.  defaults to 30
+        :type turn_penalty_amount: int | float
+        :raises TypeError: if parameter `turn_threshold_degree` is not int or float
+        :raises ValueError: if parameter `turn_threshold_degree` is not between 0 and 180 degrees.
+        :raises TypeError: if parameter `turn_penalty_amount` is not int or float
+        :raises ValueError: if parameter `turn_penalty_amount` is negative
+        """
+
+        if not isinstance(turn_threshold_degree, (int, float)): 
+            raise TypeError(f"Parameter 'turn_threshold_degree' must be either {int, float}. {type(turn_threshold_degree)} was given.")
+
+        if (turn_threshold_degree < 0) or (turn_threshold_degree > 180):
+            raise ValueError(f"Parameter 'turn_threshold_degree': Must be between 0 and 180. turn_threshold_degree={turn_threshold_degree} was given.")
+        
+
+        if not isinstance(turn_penalty_amount, (int, float)): 
+            raise TypeError(f"Parameter 'turn_penalty_amount' must be either {int, float}. {type(turn_penalty_amount)} was given.")
+
+        if turn_penalty_amount < 0:
+            raise ValueError(f"Parameter 'turn_penalty_amount': Cannot be negative. turn_penalty_amount={turn_penalty_amount} was given.")
+
+        self.network.turn_threshold_degree = turn_threshold_degree
+        self.network.turn_penalty_amount = turn_penalty_amount
+        
+        return 
+        
 
     def insert_node(
             self,

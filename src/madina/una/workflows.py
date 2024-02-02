@@ -434,7 +434,7 @@ def KNN_accessibility(
     :type city_name: _type_, optional
     :param data_folder: _description_, defaults to None
     :type data_folder: _type_, optional
-    :param output_folder: _description_, defaults to None
+    :param output_folder: _description_, defaults to Nonek 
     :type output_folder: _type_, optional
     :param pairings_file: _description_, defaults to "pairing.csv"
     :type pairings_file: str, optional
@@ -461,8 +461,8 @@ def KNN_accessibility(
     shaqra = Zonal()
 
     shaqra.load_layer(
-        layer_name='streets',
-        file_path=os.path.join(data_folder,  pairings.at[0, "Network_File"])
+        name='streets',
+        source=os.path.join(data_folder,  pairings.at[0, "Network_File"])
     )
     logger.log(f"network FIle Loaded, Projection: {shaqra.layers['streets'].gdf.crs}", pairing)
 
@@ -471,34 +471,30 @@ def KNN_accessibility(
         
         if (pairing_idx == 0) or (pairings.at[pairing_idx, 'Network_Cost'] != pairings.at[pairing_idx-1, 'Network_Cost']):
             shaqra.create_street_network(
-                source_layer='streets', 
+                source_layer='streets',
+                weight_attribute=pairings.at[pairing_idx, 'Network_Cost'] if pairings.at[pairing_idx, 'Network_Cost'] != "Geometric" else None,
                 node_snapping_tolerance=0.00001,  #todo: remove parameter once a finalized default is set.
-                split_redundant_edges=False, 
-                discard_redundant_edges=True,
-                weight_attribute=pairings.at[pairing_idx, 'Network_Cost'] if pairings.at[pairing_idx, 'Network_Cost'] != "Geometric" else None
+                redundant_edge_treatment='discard',
             )
             logger.log("network topology created", pairing)
-            clean_network_nodes = shaqra.network.nodes.copy(deep=True)
         else:
-            # either generate a new network, or flush nodes.
-            shaqra.network.nodes = clean_network_nodes.copy(deep=True)
-
+            shaqra.clear_nodes()
 
 
 
         # Loading layers, if they're not already loaded.
         if pairing["Origin_Name"] not in shaqra.layers:
             shaqra.load_layer(
-                layer_name=pairing["Origin_Name"],
-                file_path=os.path.join(data_folder, pairing["Origin_File"])
+                name=pairing["Origin_Name"],
+                source=os.path.join(data_folder, pairing["Origin_File"])
             )
             logger.log(f"{pairing['Origin_Name']} file {pairing['Origin_File']} Loaded, Projection: {shaqra.layers[pairing['Origin_Name']].gdf.crs}", pairing)
 
 
         if pairing["Destination_Name"] not in shaqra.layers:
             shaqra.load_layer(
-                layer_name=pairing["Destination_Name"],
-                file_path=os.path.join(data_folder, pairing["Destination_File"])
+                name=pairing["Destination_Name"],
+                source=os.path.join(data_folder, pairing["Destination_File"])
             )
             logger.log(f"{pairing['Destination_Name']} file {pairing['Destination_File']} Loaded, Projection: {shaqra.layers[pairing['Destination_Name']].gdf.crs}", pairing)
 
