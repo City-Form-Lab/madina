@@ -169,7 +169,7 @@ To run a simulation, import the function  ```betweenness_flow_simulation`` and g
 
 run the simulation::
 
-   from madina.una.betweenness import betweenness_flow_simulation
+   from madina.una.workflows import betweenness_flow_simulation
 
    betweenness_flow_simulation(
       city_name="Somerville"

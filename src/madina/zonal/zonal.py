@@ -210,7 +210,7 @@ class Zonal:
         
         self.network = Network(node_gdf, edge_gdf, None, None, weight_attribute, edge_source_layer=source_layer)
         
-        self.network.set_turn_parameters(turn_threshold_degree, turn_penalty_amount)
+        self.set_turn_parameters(turn_threshold_degree, turn_penalty_amount)
         return
 
     def set_turn_parameters(

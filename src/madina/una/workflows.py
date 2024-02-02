@@ -295,26 +295,26 @@ def betweenness_flow_simulation(
         city_name=None,
         data_folder=None,
         output_folder=None,
-        pairings_file="Pairings.csv",
+        pairings_file="pairings.csv",
         num_cores=8,
-    ):
-    """_summary_
+    ) -> None:
+    """A workflow to generate trips between pairs of origins and destonations along a network. for detailed description of the workflow, please reference this page: https://madinadocs.readthedocs.io/en/latest/ped_flow.html to learn more about preparing data and constructing a pairing table needed for this workflow
 
-    :param city_name: _description_, defaults to None
-    :type city_name: _type_, optional
-    :param data_folder: _description_, defaults to None
-    :type data_folder: _type_, optional
-    :param output_folder: _description_, defaults to None
-    :type output_folder: _type_, optional
-    :param pairings_file: _description_, defaults to "Pairings.csv"
+    :param city_name: a city name that correspond to a folder inside the "Cities" folder in the current working directory, defaults to None
+    :type city_name: str, optional
+    :param data_folder: If the parameter `city_name` was provided, this parameter is optional if the data and pairing table were stored in a folder "Cities/city_name/Data" relative to the current working directory, defaults to None
+    :type data_folder: str, optional
+    :param output_folder:if the parameter `city_name` was provided, this prameter is optional, and all output would be stored in a folder inside "Cities\city_name\Simulations" relatie to the current working directory, defaults to None
+    :type output_folder: str, optional
+    :param pairings_file: the name of the file containing the pairing table inside the data folder, defaults to "pairings.csv"
     :type pairings_file: str, optional
-    :param num_cores: _description_, defaults to 8
+    :param num_cores: the number of cores to be used in multiprocessing to speed up the simulation, defaults to 8
     :type num_cores: int, optional
-    :raises ValueError: _description_
     """
+    
 
-    if city_name is None:
-        raise ValueError("parameter 'city_name' needs to be specified")
+    if (city_name is None) and (data_folder is None) and (output_folder is None):
+        raise ValueError("parameter 'city_name' needs to be specified if `data_folder` and `output_folder` are not provided, or provide paths to the `data_folder` and `output_folder`")
 
     if data_folder is None:
         data_folder = os.path.join("Cities", city_name, "Data")
@@ -352,6 +352,10 @@ def betweenness_flow_simulation(
             # either generate a new network, or flush nodes.
             shaqra.network.nodes = clean_network_nodes.copy(deep=True)
 
+        shaqra.set_turn_parameters(
+            turn_penalty_amount=pairing['Turn_Penalty'], 
+            turn_threshold_degree=pairing['Turn_Threshold'],
+        )
 
 
         # Loading layers, if they're not already loaded.
@@ -389,6 +393,7 @@ def betweenness_flow_simulation(
         logger.log("NetworkX Graphs Created.", pairing)
 
 
+
         betweenness(
             zonal=shaqra,
             search_radius=pairing['Radius'],
@@ -402,8 +407,6 @@ def betweenness_flow_simulation(
             knn_weight=pairing['KNN_Weight'],
             knn_plateau=pairing['Plateau'], 
             turn_penalty=pairing['Turns'],
-            turn_penalty_amount=pairing['Turn_Penalty'], 
-            turn_threshold_degree=pairing['Turn_Threshold'],
             save_betweenness_as=pairing['Flow_Name'], 
             save_reach_as='reach_'+pairing['Flow_Name'], 
             save_gravity_as='gravity_'+pairing['Flow_Name'],
@@ -428,20 +431,20 @@ def KNN_accessibility(
         pairings_file="pairing.csv",
         num_cores=8,
     ):
-    """_summary_
+    """A workflow to generate accessibility metrics: reach, gravity and KNN access for an origin to all its paired destinations in the pairing table.
 
-    :param city_name: _description_, defaults to None
-    :type city_name: _type_, optional
-    :param data_folder: _description_, defaults to None
-    :type data_folder: _type_, optional
-    :param output_folder: _description_, defaults to Nonek 
-    :type output_folder: _type_, optional
-    :param pairings_file: _description_, defaults to "pairing.csv"
+    :param city_name: a city name that correspond to a folder inside the "Cities" folder in the current working directory, defaults to None
+    :type city_name: str, optional
+    :param data_folder: If the parameter `city_name` was provided, this parameter is optional if the data and pairing table were stored in a folder "Cities/city_name/Data" relative to the current working directory, defaults to None
+    :type data_folder: str, optional
+    :param output_folder:if the parameter `city_name` was provided, this prameter is optional, and all output would be stored in a folder inside "Cities\city_name\Simulations" relatie to the current working directory, defaults to None
+    :type output_folder: str, optional
+    :param pairings_file: the name of the file containing the pairing table inside the data folder, defaults to "pairings.csv"
     :type pairings_file: str, optional
-    :param num_cores: _description_, defaults to 8
+    :param num_cores: the number of cores to be used in multiprocessing to speed up the simulation, defaults to 8
     :type num_cores: int, optional
-    :raises ValueError: _description_
     """
+
 
     if city_name is None:
         raise ValueError("parameter 'city_name' needs to be specified")
@@ -515,9 +518,11 @@ def KNN_accessibility(
         shaqra.create_graph()
         logger.log("NetworkX Graphs Created.", pairing)
 
+        shaqra.set_turn_parameters(
+            turn_penalty_amount=pairing['Turn_Penalty'], 
+            turn_threshold_degree=pairing['Turn_Threshold'],
+        )
 
-        shaqra.network.turn_penalty_amount = pairing['Turn_Penalty']
-        shaqra.network.turn_threshold_degree = pairing['Turn_Threshold']
         shaqra.network.knn_weight = pairing['KNN_Weight']
         shaqra.network.knn_plateau = pairing['Plateau']
 

@@ -52,7 +52,7 @@ def accessibility(
     :type zonal: Zonal
     :param search_radius: the maximum search distance for accessible destinations from an origin, measured as a network distance in the same units as the network's CRS, defaults to None
     :type search_radius: float, optional
-    :param destination_weight: destination weight, must be an attribute in the destination layer, defaults to None: fall back to the destination weight specified during network construction which is 1 for all destinations by default.
+    :param destination_weight: destination weight, must be an attribute in the destination layer, defaults to None: equal weight of 1 for all destinations by default.
     :type weight: str, optional
     :param alpha: in gravity calculations, the alpha term increases the importance of destination weight by applying a power. default is 1, destination weight is not adjusted, defaults to 1
     :type alpha: float, optional
@@ -97,7 +97,7 @@ def accessibility(
     if (beta is not None) and (not isinstance(beta, (int, float))):
         raise TypeError(f"Parameter 'beta' must be either {int, float}. {type(beta)} was given.")
 
-    if (save_reach_as is not None) and (not isinstance(save_gravity_as, str)):
+    if (save_reach_as is not None) and (not isinstance(save_reach_as, str)):
         raise TypeError(f"Parameter 'save_reach_as' must be a string. {type(save_reach_as)} was given.")
 
     if (save_gravity_as is not None): 
@@ -177,6 +177,14 @@ def accessibility(
             node_gdf.at[o_idx, "reach"] = sum([reaches[o_idx][d_idx] for d_idx in o_closest_destinations])
             if beta is not None:
                 node_gdf.at[o_idx, "gravity"] = sum([gravities[o_idx][d_idx] for d_idx in o_closest_destinations])
+        
+        ## reverting to layer indexing...
+        for d_idx in destination_gdf.index: 
+            if not np.isnan(node_gdf.at[d_idx, "closest_facility"]):
+                o_idx = int(node_gdf.at[d_idx, "closest_facility"])
+                origin_id = node_gdf.at[o_idx, "source_id"]
+                node_gdf.at[d_idx, "closest_facility"] = origin_id
+
     
 
 
@@ -214,7 +222,8 @@ def accessibility(
             saved_attributes['closest_facility_distance'] = save_closest_facility_distance_as
 
         for key, value in saved_attributes.items():
-            node_gdf.loc[destination_gdf.index, key] = node_gdf.loc[destination_gdf.index, key].fillna(0)
+            #node_gdf.loc[destination_gdf.index, key] = node_gdf.loc[destination_gdf.index, key].fillna(0)
+            # NA should not be replaced in closest facility/distance. 
             if value in zonal[destination_layer].gdf.columns:
                 zonal[destination_layer].gdf.drop(columns=[value], inplace=True)
 
@@ -380,7 +389,7 @@ def alternative_paths(
 
     if not isinstance(origin_id, (int, list)):
         raise TypeError(f"Parameter 'origin_id' must be {int} representing an origin id. {type(origin_id)} was given.")
-    if origin_id not in origin_gdf['source_id']:
+    if origin_id not in origin_gdf['source_id'].values:
         raise ValueError(f"Parameter 'origin_id': is not for an origin included in the network.")
 
     if not isinstance(search_radius, (int, float)):
@@ -514,7 +523,7 @@ def betweenness(
         if not isinstance(decay_method, str):
             raise TypeError(f"Parameter 'decay_method' must be a string. {type(decay_method)} was given.")
         else: 
-            raise ValueError(f"Parameter 'decay_method': must be one of ['exponent', 'power']. node_snapping_tolerance={decay_method} was given.")
+            raise ValueError(f"Parameter 'decay_method': must be one of ['exponent', 'power']. decay_method={decay_method} was given.")
 
     if (decay or save_gravity_as is not None) and (not isinstance(beta, (int, float))):
         raise TypeError(f"Parameter 'beta' must be either {int, float}. {type(beta)} was given.")
@@ -535,7 +544,7 @@ def betweenness(
         if knn_weight is None:
             raise ValueError(f"Parameter 'elastic_weight': must be provided if `elastic_weight=True`")
         if not isinstance(knn_weight, (str, list)):
-            raise TypeError(f"Parameter 'beta' must be either {int, float}. {type(beta)} was given.")
+            raise TypeError(f"Parameter 'knn_weight' must be either {str, list}. {type(knn_weight)} was given.")
 
         if not isinstance(knn_plateau, (int, float)):
             raise TypeError(f"Parameter 'knn_plateau' must be either {int, float}. {type(knn_plateau)} was given.")
