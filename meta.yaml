@@ -1,6 +1,6 @@
 package:
   name: "madina"
-  version: "0.0.7"
+  version: "0.0.11"
 
 source:
   git_rev: v1.3.1

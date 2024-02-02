@@ -15,7 +15,7 @@ from .layer import Layer, Layers
 
 
 VERSION = '0.0.11'
-RELEASE_DATE = '2023-01-22'
+RELEASE_DATE = '2023-02-02'
 
 
 class Zonal:
