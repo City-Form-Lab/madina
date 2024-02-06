@@ -21,7 +21,7 @@ The example notebooks and the datat needed to run them are available in the `git
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Notebooks:
 
    notebooks/1-loading_data.ipynb
    notebooks/2-creating_networks.ipynb

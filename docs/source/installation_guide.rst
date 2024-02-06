@@ -3,18 +3,15 @@ Quick Installation Guide
 
 1) Get Conda
 --------------
-Download and install ``Miniconda`` from here: `Installing Miniconda <https://docs.conda.io/projects/miniconda/en/latest/miniconda-install.html>`_.
+* Download and install `Visual Studio Code <https://code.visualstudio.com/>`_
+* Download and install ``Miniconda`` from here: `Installing Miniconda <https://docs.conda.io/projects/miniconda/en/latest/miniconda-install.html>`_: click ``Download the installer``, and find thew right version for your OS.
 Once you're done, continute to the next section.
-
-Conda is a an environment and packaee manager that simplify the installation of python packages.
-A python environment is a collection of packages in speccific versions that work well together for a specific project. 
-Conda makes it easy to create and manage environments, and if you're using python for multiple projects, it might be helpful to create an environment for each of those projects to make sure each project is using the recommended version of python and the recommended versions of each package that progect depends on.
 
 2) Install Madina
 -----------------------
 
 After installing ``Miniconda``, Run your terminal as administrator
-(in Windows, run ``Command Prompt`` as administrator by searching for ``Command Prompt`` in the start menu, right click, and ``Run as administrator``). 
+(in Windows, run ``Command Prompt`` as administrator by searching for ``Command Prompt`` in the start menu, right click, and ``Run as administrator``,, on MacOS, launch your terminal). 
 Run the following command to creates an environment called ``madina_env`` and install some packages that madina depends on including `geopandas <geopandas.org/en/stable/>`_ 
 
 
@@ -43,12 +40,12 @@ Run the next command to install madina from a test repository. Keep in mind that
 If you're familiar with programming in python, feel free to choose your favorate text editor.
 The folloing instructions are useful to familiarize yourself with running madina for the first time.
 
-* `Download example notebooks <https://www.dropbox.com/scl/fo/vvhukdl6vc2wcprzp9kwc/h?rlkey=3zteo0dj08d5mhbeyo95v8qd2&dl=1>`_ file, and unzip it.
-* In VS code, Click FIle > Open Folder and navigate to the unzipped "examples folder"
-* Open the Explorer side panel and open example_1.ipynb. If prompted to install extensions for python and jupyter, approve and wait for extension installation
-* Make sure to set the environment to "madina_env" that you created during package installation. you can choose/change the environment by clicking the python version number in the buttom right corner of VS Code
-* Open the example notebooks and follow along step by step
-* if you want to take a quick look, these python notebooks are available in rthe example section of this documentation
+* `Download the example notebooks <https://www.dropbox.com/scl/fo/vvhukdl6vc2wcprzp9kwc/h?rlkey=3zteo0dj08d5mhbeyo95v8qd2&dl=1>`_ folder, and unzip it.
+* In VS code, Click FIle > Open Folder and navigate to the unzipped "notebooks"
+* Open the Explorer side panel and open the first notebook. If prompted to install extensions for python and jupyter, approve and wait for extension installation **(might need to restart VScode after installing extensions)**
+* Make sure to set the environment to "madina_env" that you created during package installation. you can choose/change the environment by clicking `Select Kernel` version number in the buttom right corner of VS Code
+* Open the example notebooks and follow along step by step by running each cell
+* if you want to take a quick look, these python notebooks are available on this website for viewing, Check the Notebooks section in the side panel.
 
 
 
@@ -178,7 +175,7 @@ You should get a message indicating successful installation of Madina and its de
 
 
 
-* Depending on how many python installations you have on your machine, you'll see different options. Choose the ``madina_env`` from the list
+* Depending on how many python installations you have on your machine, you'll see different options. Choose the ``madina_env`` from the list. If VS code prompts you to install a kernel/extension, approve then **Restart VS Code** 
 
 .. image:: img/7-select-madina_env.png
   :width: 400
@@ -190,32 +187,3 @@ You should get a message indicating successful installation of Madina and its de
 .. image:: img/8-run-cell.png
   :width: 400
   :alt: Run Cell
-
-* Now, let's try running a script. Scripts are code files that do a specific objective or provide a template. from the Explorer side panel, open the file ``Pedestrain Flow SImulation.py`` 
-
-.. image:: img/9-open-script.png
-  :width: 400
-  :alt: Openning a script
-
-*  In the buttom right corner of VS Code, you'll find a python version, click on it to ensure we select the right python environment, from the dropdown list, select ``madina_env``
-
-.. image:: img/10-select-madina_env.png
-  :width: 400
-  :alt: selecting an environment
-
-
-* Click the Run Python FIle button in nthe top tight corner. The script should start running a flow simulation and show progress.
-
-
-.. image:: img/11-run-script.png
-  :width: 400
-  :alt: selecting an environment
-
-
-* If the terminal shows progress, this mean you have successfully installed madina and managed to run a script. Feel free to close VS Code (or click the trash icon in the terminal) to stop this script. You are ready now to go through the examples.
-
-
-
-
-
-
