@@ -1,7 +1,0 @@
-,Flow_Name,Network_File,Network_Cost,Origin_File,Origin_Name,Destination_File,Destination_Name,Destination_Weight,Radius,Beta,Turns,Turn_Threshold,Turn_Penalty
-0,15min,network.geojson,Geometric,CensusBlock.geojson,Homes,subway.geojson,Subway,Count,1600,0.001,FALSE,0,0
-1,15min,network.geojson,Geometric,CensusBlock.geojson,Homes,bus.geojson,Bus,Count,1600,0.001,FALSE,0,0
-2,15min,network.geojson,Geometric,CensusBlock.geojson,Homes,jobs.geojson,Jobs,Count,1600,0.001,FALSE,0,0
-3,15min,network.geojson,Geometric,CensusBlock.geojson,Homes,amenities.geojson,Amenities,Count,1600,0.001,FALSE,0,0
-4,15min,network.geojson,Geometric,CensusBlock.geojson,Homes,institutions.geojson,Institutions,Count,1600,0.001,FALSE,0,0
-5,15min,network.geojson,Geometric,CensusBlock.geojson,Homes,parks.geojson,Parks,Count,1600,0.001,FALSE,0,0
