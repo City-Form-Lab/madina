@@ -41,9 +41,13 @@ def accessibility(
     beta:float=None, 
     save_reach_as: str = None, 
     save_gravity_as: str = None,
+    knn_weights: list | str = None, 
+    knn_plateau: int | float = None,
+    save_knn_access_as: str = None,
     closest_facility: bool = False,
     save_closest_facility_as: str = None, 
     save_closest_facility_distance_as: str = None, 
+
     turn_penalty: bool = False,
 ) -> None:
     """Measures accessibility metrics like reach and gravity to reachable destinations within a search radius to all origins in the network. 
@@ -105,7 +109,33 @@ def accessibility(
             raise TypeError(f"Parameter 'save_gravity_as' must be a string. {type(save_gravity_as)} was given.")
         if (beta is None):
             raise ValueError("Please specify parameter 'beta' when 'save_gravity_as' is provided")
-         
+        
+
+    ##KNN input validation: 
+    if save_knn_access_as is not None:
+        if knn_weights is None:
+            raise ValueError("Please specify parameter 'knn_weights' when 'save_knn_access_as' is provided")
+        elif isinstance(knn_weights, str):
+            knn_weights = knn_weights[1:-1].split(',')
+            knn_weights = [float(x) for x in knn_weights]
+        elif isinstance(knn_weights, list):
+            knn_weights = knn_weights
+        else:
+            raise ValueError("knn_weight should be a list of numerical values like [0.5, 0.25, 0.25]")
+        
+        if knn_plateau is None:
+            knn_plateau = search_radius
+        elif not isinstance(knn_plateau, (int, float)):
+            raise TypeError(f"Parameter 'knn_plateau' must be either {int, float}. {type(knn_plateau)} was given.")
+        elif knn_plateau<0:
+            raise ValueError(f"Parameter 'knn_plateau': Cannot be negative. knn_plateau={knn_plateau} was given.")
+        elif knn_plateau>search_radius:
+            raise ValueError(f"Parameter 'knn_plateau': Cannot be larger than search radius. knn_plateau={knn_plateau}, search_radius={search_radius} was given.")
+        elif beta is None:
+            raise ValueError("Please specify parameter 'beta' when 'knn_plateau' is provided")
+
+
+    #closest_facility input validation
     if not isinstance(closest_facility, bool):
         raise TypeError(f"Parameter 'closest_facility' must either be a boolean True or False, {type(closest_facility)} was given.")
     elif not closest_facility:
@@ -147,7 +177,6 @@ def accessibility(
 
         zonal.network.remove_node_to_graph(o_graph, o_idx)
 
-
         for d_idx in d_idxs:
             source_id = int(node_gdf.at[d_idx, "source_id"])
             source_layer = node_gdf.at[d_idx, "source_layer"]
@@ -165,11 +194,21 @@ def accessibility(
                     node_gdf.at[d_idx, "closest_facility"] = o_idx
                     node_gdf.at[d_idx, "closest_facility_distance"] = d_idxs[d_idx]
 
-
         node_gdf.at[o_idx, "reach"] = sum([value for value in reaches[o_idx].values() if not np.isnan(value)])
 
         if beta is not None:
             node_gdf.at[o_idx, "gravity"] = sum([value for value in gravities[o_idx].values() if not np.isnan(value)])
+
+        if save_knn_access_as is not None:
+            knn_weight = 0
+            for neighbor_weight, neighbor_distance in zip(knn_weights, d_idxs.values()):
+                if neighbor_distance < knn_plateau:
+                    knn_weight += neighbor_weight
+                else:
+                    knn_weight += neighbor_weight / pow(math.e, (beta * (neighbor_distance-knn_plateau)))
+            #node_gdf.at[o_idx, "knn_weight"] = knn_weight *  node_gdf.at[o_idx, "weight"]
+            node_gdf.at[o_idx, "knn_access"] = knn_weight
+
 
     if closest_facility:
         for o_idx in origin_gdf.index:
@@ -190,7 +229,7 @@ def accessibility(
 
 
     # todo: isolate this into network.save_from_nodes_to_layer(zonal, layer_name, name_map={result:param_name..})
-    if (save_reach_as is not None) or (save_gravity_as is not None): 
+    if (save_reach_as is not None) or (save_gravity_as is not None) or (save_knn_access_as is not None): 
 
         saved_attributes = {}
         if save_reach_as is not None:
@@ -198,6 +237,9 @@ def accessibility(
 
         if save_gravity_as is not None:
             saved_attributes['gravity'] = save_gravity_as
+
+        if save_knn_access_as is not None:
+            saved_attributes['knn_access'] = save_knn_access_as
 
         for key, value in saved_attributes.items():
             node_gdf.loc[origin_gdf.index, key] = node_gdf.loc[origin_gdf.index, key].fillna(0)
