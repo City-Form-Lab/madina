@@ -14,7 +14,7 @@ from .utils import prepare_geometry, color_gdf, create_deckGL_map, DEFAULT_COLOR
 from .layer import Layer, Layers
 
 
-VERSION = '0.0.12'
+VERSION = '0.0.14'
 RELEASE_DATE = '2023-02-06'
 
 
@@ -124,7 +124,7 @@ class Zonal:
             source_layer: str,
             weight_attribute: str = None,
             node_snapping_tolerance: int | float = 0,
-            redundant_edge_treatment: str ='split',
+            redundant_edge_treatment: str ='discard',
             turn_threshold_degree: int | float = 45,
             turn_penalty_amount: int | float = 30,
     ) -> None:

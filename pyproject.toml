@@ -8,7 +8,7 @@ include = ["*"]  # package names should match these glob patterns (["*"] by defa
 
 [project]
 name = "madina"
-version = "0.0.13"
+version = "0.0.14"
 authors = [
     {name="City Form Lab", email="madina@mit.edu"},
 ]
