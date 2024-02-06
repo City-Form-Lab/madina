@@ -37,3 +37,11 @@ html_static_path = ['_static']
 
 
 nbsphinx_allow_errors = True
+
+## COnstants used inside the documentation:
+rst_epilog = """
+.. |notebook_folder_download|: `Download example notebooks <https://www.dropbox.com/scl/fo/vvhukdl6vc2wcprzp9kwc/h?rlkey=3zteo0dj08d5mhbeyo95v8qd2&dl=1>`_
+"""
+
+
+

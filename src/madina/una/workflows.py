@@ -304,7 +304,7 @@ def betweenness_flow_simulation(
     :type city_name: str, optional
     :param data_folder: If the parameter `city_name` was provided, this parameter is optional if the data and pairing table were stored in a folder "Cities/city_name/Data" relative to the current working directory, defaults to None
     :type data_folder: str, optional
-    :param output_folder:if the parameter `city_name` was provided, this prameter is optional, and all output would be stored in a folder inside "Cities\city_name\Simulations" relatie to the current working directory, defaults to None
+    :param output_folder: if the parameter `city_name` was provided, this prameter is optional, and all output would be stored in a folder inside "Cities\city_name\Simulations" relatie to the current working directory, defaults to None
     :type output_folder: str, optional
     :param pairings_file: the name of the file containing the pairing table inside the data folder, defaults to "pairings.csv"
     :type pairings_file: str, optional
@@ -437,7 +437,7 @@ def KNN_accessibility(
     :type city_name: str, optional
     :param data_folder: If the parameter `city_name` was provided, this parameter is optional if the data and pairing table were stored in a folder "Cities/city_name/Data" relative to the current working directory, defaults to None
     :type data_folder: str, optional
-    :param output_folder:if the parameter `city_name` was provided, this prameter is optional, and all output would be stored in a folder inside "Cities\city_name\Simulations" relatie to the current working directory, defaults to None
+    :param output_folder: if the parameter `city_name` was provided, this prameter is optional, and all output would be stored in a folder inside "Cities\city_name\Simulations" relatie to the current working directory, defaults to None
     :type output_folder: str, optional
     :param pairings_file: the name of the file containing the pairing table inside the data folder, defaults to "pairings.csv"
     :type pairings_file: str, optional

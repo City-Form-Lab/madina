@@ -43,7 +43,7 @@ Run the next command to install madina from a test repository. Keep in mind that
 If you're familiar with programming in python, feel free to choose your favorate text editor.
 The folloing instructions are useful to familiarize yourself with running madina for the first time.
 
-* Download `The example folder <https://www.dropbox.com/scl/fo/vvhukdl6vc2wcprzp9kwc/h?rlkey=3zteo0dj08d5mhbeyo95v8qd2&dl=1>`_, and unzip it.
+* `Download example notebooks <https://www.dropbox.com/scl/fo/vvhukdl6vc2wcprzp9kwc/h?rlkey=3zteo0dj08d5mhbeyo95v8qd2&dl=1>`_ file, and unzip it.
 * In VS code, Click FIle > Open Folder and navigate to the unzipped "examples folder"
 * Open the Explorer side panel and open example_1.ipynb. If prompted to install extensions for python and jupyter, approve and wait for extension installation
 * Make sure to set the environment to "madina_env" that you created during package installation. you can choose/change the environment by clicking the python version number in the buttom right corner of VS Code

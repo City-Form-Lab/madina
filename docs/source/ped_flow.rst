@@ -165,7 +165,7 @@ A name for your destination, this name would be used to name the destination fil
 
 3) Running a Simulation 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-To run a simulation, import the function  ```betweenness_flow_simulation`` and give it a ``city_name`` parameter that represent a folder inside your ``Cities`` folder. The example provided in the installation guide comes with a ``Cities\SOmerville\Data`` folder that comes with a prepared ``pairings.csv`` file.  `The examples folder <https://www.dropbox.com/scl/fi/1fbidbc5bqz7ccn61u1yq/examples.zip?rlkey=y0ppgukbyck0scw6pakrcn7f5&dl=1>`_
+To run a simulation, import the function  ```betweenness_flow_simulation`` and give it a ``city_name`` parameter that represent a folder inside your ``Cities`` folder. The example provided in the installation guide comes with a ``Cities\SOmerville\Data`` folder that comes with a prepared ``pairings.csv`` file.  `Download example notebooks <https://www.dropbox.com/scl/fo/vvhukdl6vc2wcprzp9kwc/h?rlkey=3zteo0dj08d5mhbeyo95v8qd2&dl=1>`_
 
 run the simulation::
 
