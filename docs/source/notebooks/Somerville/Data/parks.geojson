@@ -1,0 +1,5654 @@
+{
+  "type": "FeatureCollection",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "EPSG:26986"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "4c073c90-8be8-4aad-a26e-c240a4fc41ff",
+        "FID": 0.0,
+        "Name": "Leathers Community Park",
+        "OBJECTID": 2.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 32348.0954446,
+        "SHAPE_Leng": 936.367912702
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233450.104638455,
+          904126.616183363
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "d9e6f4a4-5b9b-420c-b1d6-12ee4f4eeaaf",
+        "FID": 1.0,
+        "Name": "Central Hill Park High School Entrance",
+        "OBJECTID": 4.0,
+        "ORIG_FID": 1.0,
+        "SHAPE_Area": 24732.847896,
+        "SHAPE_Leng": 1379.31485583
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233317.783799513,
+          903993.796411256
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "4d023362-8c92-40bf-9064-0ea6ab7159ae",
+        "FID": 2.0,
+        "Name": "Otis Street Playground",
+        "OBJECTID": 5.0,
+        "ORIG_FID": 2.0,
+        "SHAPE_Area": 7582.50097836,
+        "SHAPE_Leng": 352.777157957
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233748.085964599,
+          904274.895558008
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "c9dc7886-92d0-4876-8cae-8c013d7190a2",
+        "FID": 3.0,
+        "Name": "Marshall Street Playground",
+        "OBJECTID": 6.0,
+        "ORIG_FID": 3.0,
+        "SHAPE_Area": 10284.9280674,
+        "SHAPE_Leng": 405.538427864
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233422.83176463,
+          904502.313873934
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "b09a151e-dd5e-4c09-8ab4-699abd42cb0b",
+        "FID": 4.0,
+        "Name": "Harris Playground",
+        "OBJECTID": 8.0,
+        "ORIG_FID": 4.0,
+        "SHAPE_Area": 12655.2956002,
+        "SHAPE_Leng": 483.176978021
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234251.077145435,
+          904511.341646973
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "1ee6c590-60a7-4523-b42f-b615d9559ee4",
+        "FID": 5.0,
+        "Name": "Chuckie Harris Park",
+        "OBJECTID": 9.0,
+        "ORIG_FID": 5.0,
+        "SHAPE_Area": 16729.7252565,
+        "SHAPE_Leng": 578.346938477
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234156.0162787,
+          904383.641875484
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "96f997e6-6da2-4521-bbdb-36f071b76e4d",
+        "FID": 6.0,
+        "Name": "Perkins Playground",
+        "OBJECTID": 10.0,
+        "ORIG_FID": 6.0,
+        "SHAPE_Area": 6790.49962115,
+        "SHAPE_Leng": 336.109225407
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234524.108355262,
+          903937.365594994
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "0a954b04-09dc-4138-87ce-25b1c2106610",
+        "FID": 7.0,
+        "Name": "Glen Park Capuano Field",
+        "OBJECTID": 11.0,
+        "ORIG_FID": 7.0,
+        "SHAPE_Area": 37884.6578861,
+        "SHAPE_Leng": 771.679706073
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234059.834306124,
+          903672.655523626
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "b41cf126-9067-431e-b39c-3a739377e782",
+        "FID": 8.0,
+        "Name": "Florence Playground",
+        "OBJECTID": 12.0,
+        "ORIG_FID": 8.0,
+        "SHAPE_Area": 11042.2877116,
+        "SHAPE_Leng": 438.640323235
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234348.331927084,
+          903646.078311764
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "a349b1dc-c029-4c08-b331-898000c820c1",
+        "FID": 9.0,
+        "Name": "Zero New Washington Street Dog Park",
+        "OBJECTID": 13.0,
+        "ORIG_FID": 9.0,
+        "SHAPE_Area": 34406.426802,
+        "SHAPE_Leng": 1218.50465829
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234417.30158666,
+          903365.528734474
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "7aa149a8-7394-43ce-8ed4-feadfcb0a113",
+        "FID": 10.0,
+        "Name": "Hodgkins-Curtin Park",
+        "OBJECTID": 14.0,
+        "ORIG_FID": 10.0,
+        "SHAPE_Area": 48311.8685399,
+        "SHAPE_Leng": 920.951158901
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230913.633713452,
+          905530.873252156
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "e312947b-7b80-40cd-b7c4-d350e8c4994a",
+        "FID": 11.0,
+        "Name": "Statue Park",
+        "OBJECTID": 17.0,
+        "ORIG_FID": 11.0,
+        "SHAPE_Area": 12918.047666,
+        "SHAPE_Leng": 514.322132782
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231082.214523228,
+          905212.205550884
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "907e60c6-51b6-40c9-b614-7b4bb8faad64",
+        "FID": 12.0,
+        "Name": "Kenney Park",
+        "OBJECTID": 19.0,
+        "ORIG_FID": 13.0,
+        "SHAPE_Area": 22695.4921216,
+        "SHAPE_Leng": 611.669535578
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231256.144502482,
+          905046.673656554
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "9b01549e-a1f1-4fa8-8af9-b62c8d7961e7",
+        "FID": 13.0,
+        "Name": "Lexington Park",
+        "OBJECTID": 20.0,
+        "ORIG_FID": 14.0,
+        "SHAPE_Area": 13592.7111503,
+        "SHAPE_Leng": 481.269289697
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231795.802158702,
+          904953.70694286
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "d7ea1fbb-55de-4c53-b584-e0ac34842014",
+        "FID": 14.0,
+        "Name": "Trum Playground",
+        "OBJECTID": 22.0,
+        "ORIG_FID": 15.0,
+        "SHAPE_Area": 20093.8005311,
+        "SHAPE_Leng": 584.638135073
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232237.896900677,
+          905273.065761453
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "f294eefd-19cc-479c-ab0c-0082e4eb8a64",
+        "FID": 15.0,
+        "Name": "Albion Playground",
+        "OBJECTID": 23.0,
+        "ORIG_FID": 16.0,
+        "SHAPE_Area": 29686.9623495,
+        "SHAPE_Leng": 695.163154301
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232285.458725612,
+          904687.009622747
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "cf13acb8-ce29-4d13-b744-2d988f73efd7",
+        "FID": 16.0,
+        "Name": "Morse-Kelley Playground",
+        "OBJECTID": 25.0,
+        "ORIG_FID": 17.0,
+        "SHAPE_Area": 28693.5985043,
+        "SHAPE_Leng": 687.965264588
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232070.266317083,
+          904235.034407945
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "d8c54d39-7629-4057-b41c-610ec82811b5",
+        "FID": 17.0,
+        "Name": "Dickerman Playground",
+        "OBJECTID": 26.0,
+        "ORIG_FID": 18.0,
+        "SHAPE_Area": 17059.3094024,
+        "SHAPE_Leng": 524.727381544
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231986.973235567,
+          904077.901622502
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "755abafe-8e00-49ff-a1fd-011867a79ef8",
+        "FID": 18.0,
+        "Name": "Somerville Junction Park",
+        "OBJECTID": 27.0,
+        "ORIG_FID": 19.0,
+        "SHAPE_Area": 35903.4372791,
+        "SHAPE_Leng": 851.877360733
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232618.089881863,
+          904575.285425627
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "bf2a6614-0fac-4a4a-a7e4-8739180c50d9",
+        "FID": 19.0,
+        "Name": "Bailey Park",
+        "OBJECTID": 28.0,
+        "ORIG_FID": 20.0,
+        "SHAPE_Area": 17032.3864682,
+        "SHAPE_Leng": 544.603818462
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232193.987632232,
+          904242.007732641
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "054296d6-a473-4283-9c06-6c676c127643",
+        "FID": 20.0,
+        "Name": "Conway Park",
+        "OBJECTID": 29.0,
+        "ORIG_FID": 21.0,
+        "SHAPE_Area": 163784.987195,
+        "SHAPE_Leng": 2229.36605538
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232293.0069915,
+          903667.287309398
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "21a505bc-f813-4fb7-a68f-cb2ddf724aaa",
+        "FID": 21.0,
+        "Name": "Durell Community Garden",
+        "OBJECTID": 30.0,
+        "ORIG_FID": 22.0,
+        "SHAPE_Area": 5444.21027827,
+        "SHAPE_Leng": 325.531852748
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232099.258710041,
+          903542.933980866
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "b29b0a9f-264b-407e-91cc-62ed346e0937",
+        "FID": 22.0,
+        "Name": "Hoyt-Sullivan Park",
+        "OBJECTID": 32.0,
+        "ORIG_FID": 23.0,
+        "SHAPE_Area": 22337.3734444,
+        "SHAPE_Leng": 598.402134739
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232811.467642519,
+          904529.812283688
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "6691991c-1244-4e1a-9e89-38e47802d9cc",
+        "FID": 23.0,
+        "Name": "North Street Veterans Playground",
+        "OBJECTID": 33.0,
+        "ORIG_FID": 24.0,
+        "SHAPE_Area": 13891.0678097,
+        "SHAPE_Leng": 496.270342487
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230362.327720037,
+          906289.412556655
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "197dd366-4f46-410e-b5b7-63cccbbb79fb",
+        "FID": 24.0,
+        "Name": "Palmacci Playground",
+        "OBJECTID": 35.0,
+        "ORIG_FID": 25.0,
+        "SHAPE_Area": 3461.89061533,
+        "SHAPE_Leng": 256.987247752
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232448.734912906,
+          903340.065436126
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "9c6457c5-99e1-451e-a82c-1f785181e714",
+        "FID": 25.0,
+        "Name": "Grimmons Park",
+        "OBJECTID": 36.0,
+        "ORIG_FID": 26.0,
+        "SHAPE_Area": 19325.3145586,
+        "SHAPE_Leng": 573.812815766
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233882.891745822,
+          905285.879890932
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "614f538e-5c4c-44ef-a0a7-fd62ac3e154e",
+        "FID": 26.0,
+        "Name": "Nunziato Field",
+        "OBJECTID": 37.0,
+        "ORIG_FID": 27.0,
+        "SHAPE_Area": 49217.8949152,
+        "SHAPE_Leng": 935.63404271
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233065.907377666,
+          903673.03517745
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "bd151976-6f83-43f8-9431-b8af66c865eb",
+        "FID": 27.0,
+        "Name": "Somerville Community Growing Center",
+        "OBJECTID": 38.0,
+        "ORIG_FID": 28.0,
+        "SHAPE_Area": 15388.7434142,
+        "SHAPE_Leng": 497.473304982
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233099.197894231,
+          903715.798507326
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "7df5e7b9-c3fd-4653-9f3e-f465cd202055",
+        "FID": 28.0,
+        "Name": "Perry Park",
+        "OBJECTID": 40.0,
+        "ORIG_FID": 29.0,
+        "SHAPE_Area": 55461.4386149,
+        "SHAPE_Leng": 1039.95745078
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232660.111619125,
+          903303.663616794
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "43ad0abc-d764-4768-a356-08c75080fee4",
+        "FID": 29.0,
+        "Name": "Milk Row Cemetery",
+        "OBJECTID": 41.0,
+        "ORIG_FID": 30.0,
+        "SHAPE_Area": 30341.3982118,
+        "SHAPE_Leng": 702.958253491
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232771.320445926,
+          903530.574856927
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "b3c57e59-47fc-41ea-b5f6-2d37add16050",
+        "FID": 30.0,
+        "Name": "Powder House Circle",
+        "OBJECTID": 44.0,
+        "ORIG_FID": 33.0,
+        "SHAPE_Area": 9267.8067065,
+        "SHAPE_Leng": 351.883998776
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231549.493790217,
+          905696.125783835
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "50dab2bd-c5bb-47ba-ac1a-152ae61f66f9",
+        "FID": 31.0,
+        "Name": "Stone Place Park",
+        "OBJECTID": 45.0,
+        "ORIG_FID": 34.0,
+        "SHAPE_Area": 6182.55804874,
+        "SHAPE_Leng": 335.722936622
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233379.473911077,
+          903385.114795984
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "438ca546-2e1f-4e17-9492-69ef0c2b8bb9",
+        "FID": 32.0,
+        "Name": "Concord Square",
+        "OBJECTID": 50.0,
+        "ORIG_FID": 36.0,
+        "SHAPE_Area": 5620.63990847,
+        "SHAPE_Leng": 632.843747466
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233079.959637886,
+          902987.104452339
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "be3ab071-497a-4278-9e58-2f96b3b3dbb4",
+        "FID": 33.0,
+        "Name": "Healey Community Schoolyard",
+        "OBJECTID": 57.0,
+        "ORIG_FID": 39.0,
+        "SHAPE_Area": 55845.2246809,
+        "SHAPE_Leng": 1327.81396644
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233366.277829474,
+          905345.346545693
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "44cbf080-be48-41a5-80aa-119a3580fc7b",
+        "FID": 34.0,
+        "Name": "Paul Revere Park",
+        "OBJECTID": 67.0,
+        "ORIG_FID": 40.0,
+        "SHAPE_Area": 1258.05885461,
+        "SHAPE_Leng": 145.817043705
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233113.197877036,
+          905032.048879514
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "59772cde-7a7a-4601-8c20-30f75e4c0b7d",
+        "FID": 35.0,
+        "Name": "Hansen Park",
+        "OBJECTID": 68.0,
+        "ORIG_FID": 41.0,
+        "SHAPE_Area": 2607.2231132,
+        "SHAPE_Leng": 232.236939649
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232708.994375825,
+          905070.623379041
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "71e29809-edac-4d59-b5f3-2cb12a498be4",
+        "FID": 36.0,
+        "Name": "Winter Hill Community Innovation Schoolyard",
+        "OBJECTID": 69.0,
+        "ORIG_FID": 42.0,
+        "SHAPE_Area": 42351.0059798,
+        "SHAPE_Leng": 1047.92510706
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233088.836824035,
+          904688.071127803
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "6aef7705-596f-450a-abe5-d426de0f153c",
+        "FID": 37.0,
+        "Name": "Cummings Schoolyard",
+        "OBJECTID": 72.0,
+        "ORIG_FID": 43.0,
+        "SHAPE_Area": 19292.9983322,
+        "SHAPE_Leng": 810.244475682
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232978.139029476,
+          903946.461322588
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "5443ee88-be04-4a3a-8f26-e0830e1c9ee0",
+        "FID": 38.0,
+        "Name": "Quincy Street Park",
+        "OBJECTID": 73.0,
+        "ORIG_FID": 44.0,
+        "SHAPE_Area": 5097.58667353,
+        "SHAPE_Leng": 290.546750928
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232858.719989681,
+          903639.197253925
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "619dde28-5708-4bf1-a632-0a74f79bad0e",
+        "FID": 39.0,
+        "Name": "Walnut Street Park",
+        "OBJECTID": 74.0,
+        "ORIG_FID": 45.0,
+        "SHAPE_Area": 12999.3810838,
+        "SHAPE_Leng": 460.00059799
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233202.123607172,
+          903567.475295362
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "76618400-9513-4cba-826b-2c4a30b9bc3a",
+        "FID": 40.0,
+        "Name": "Allen Street Community Garden",
+        "OBJECTID": 75.0,
+        "ORIG_FID": 46.0,
+        "SHAPE_Area": 5153.19340911,
+        "SHAPE_Leng": 287.521123516
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233515.935964769,
+          903095.992491883
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "40c312c8-a9f1-44f2-ace3-b9d1344eca2d",
+        "FID": 41.0,
+        "Name": "Kennedy Schoolyard",
+        "OBJECTID": 77.0,
+        "ORIG_FID": 47.0,
+        "SHAPE_Area": 17726.2101741,
+        "SHAPE_Leng": 551.558870009
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231634.162231342,
+          904417.476906668
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "4bc99cde-3e65-4ba0-8811-853b66e9ee33",
+        "FID": 42.0,
+        "Name": "Powerderhouse School Community Park",
+        "OBJECTID": 80.0,
+        "ORIG_FID": 48.0,
+        "SHAPE_Area": 28388.4445655,
+        "SHAPE_Leng": 678.030829129
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230843.578668161,
+          905795.435637928
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "2c4706e7-aeee-4c09-b82b-7c41d3c59f7f",
+        "FID": 43.0,
+        "Name": "West Somerville Neighborhood Schoolyard",
+        "OBJECTID": 81.0,
+        "ORIG_FID": 49.0,
+        "SHAPE_Area": 12688.7178001,
+        "SHAPE_Leng": 547.211099999
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230715.311604474,
+          906299.529377411
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "0ff48db7-b600-412c-85a3-7a59b75eecfa",
+        "FID": 44.0,
+        "Name": "East Branch Library Lawn",
+        "OBJECTID": 88.0,
+        "ORIG_FID": 51.0,
+        "SHAPE_Area": 8021.83082965,
+        "SHAPE_Leng": 676.74184022
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234292.06149913,
+          904230.992444543
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "86017f67-fc73-4491-b612-9da362daece2",
+        "FID": 45.0,
+        "Name": "Veterans Memorial Cemetery",
+        "OBJECTID": 90.0,
+        "ORIG_FID": 52.0,
+        "SHAPE_Area": 34455.2210734,
+        "SHAPE_Leng": 750.691972899
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230309.252132796,
+          906287.040751817
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "e76f6621-3edb-4297-822c-2e8ed2ac8354",
+        "FID": 46.0,
+        "Name": "Woodstock Playground",
+        "OBJECTID": 98.0,
+        "ORIG_FID": 55.0,
+        "SHAPE_Area": 17547.299193,
+        "SHAPE_Leng": 629.05486243
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230131.704761039,
+          906073.385057747
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "08d5f48f-632b-4dbf-92b2-9e7b1563b198",
+        "FID": 47.0,
+        "Name": "Symphony Park",
+        "OBJECTID": 104.0,
+        "ORIG_FID": 56.0,
+        "SHAPE_Area": 8150.99517855,
+        "SHAPE_Leng": 407.232621332
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234365.857672655,
+          903789.064122998
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "a0ec4781-9934-408d-95e8-b32f21b82880",
+        "FID": 48.0,
+        "Name": "South St Farm 1",
+        "OBJECTID": 106.0,
+        "ORIG_FID": 57.0,
+        "SHAPE_Area": 2892.86555968,
+        "SHAPE_Leng": 229.06244114
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233639.149635058,
+          902751.688586957
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "5d325f05-4eeb-4a52-b015-21dbd42fcad0",
+        "FID": 49.0,
+        "Name": "South St Farm 2",
+        "OBJECTID": 107.0,
+        "ORIG_FID": 58.0,
+        "SHAPE_Area": 11959.6815816,
+        "SHAPE_Leng": 572.543771777
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233562.090529077,
+          902795.769438742
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "6e9c5472-cc36-497b-b34c-a8d7152c9a6d",
+        "FID": 50.0,
+        "Name": "Central Hill Park Veterans Memorial",
+        "OBJECTID": 124.0,
+        "ORIG_FID": 59.0,
+        "SHAPE_Area": 2034.06659055,
+        "SHAPE_Leng": 175.992716306
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233112.410209591,
+          904100.503358597
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "28a1310a-5efc-4e38-bd46-4fde5c113834",
+        "FID": 51.0,
+        "Name": "Central Hill Park High School Concourse",
+        "OBJECTID": 126.0,
+        "ORIG_FID": 60.0,
+        "SHAPE_Area": 33979.1948776,
+        "SHAPE_Leng": 1069.94037471
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233158.044220643,
+          904088.702597062
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "5e1038a0-5144-414b-969b-55975b6dde88",
+        "FID": 52.0,
+        "Name": "Glen Park",
+        "OBJECTID": 133.0,
+        "ORIG_FID": 62.0,
+        "SHAPE_Area": 25964.1402686,
+        "SHAPE_Leng": 755.917998072
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234021.242663487,
+          903724.239596152
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "a8c534a3-0cde-4932-8430-d88d54d54995",
+        "FID": 53.0,
+        "Name": "Glen Park",
+        "OBJECTID": 134.0,
+        "ORIG_FID": 63.0,
+        "SHAPE_Area": 2359.37446813,
+        "SHAPE_Leng": 195.657939963
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234062.642908304,
+          903738.251141454
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "2bc1af85-3e4b-44c3-b050-cf2dd2933717",
+        "FID": 54.0,
+        "Name": "Glen Park",
+        "OBJECTID": 136.0,
+        "ORIG_FID": 64.0,
+        "SHAPE_Area": 4892.46516887,
+        "SHAPE_Leng": 422.712091477
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234111.46467947,
+          903633.69544412
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "9523717c-d391-40af-bd08-6cb01e175dfd",
+        "FID": 55.0,
+        "Name": "Glen Park",
+        "OBJECTID": 140.0,
+        "ORIG_FID": 65.0,
+        "SHAPE_Area": 12475.7256375,
+        "SHAPE_Leng": 468.645533052
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234118.062834582,
+          903670.318859088
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "e0cc8fec-69c3-418a-aaa7-784aeb1aa8f9",
+        "FID": 56.0,
+        "Name": "Hodgkins-Curtin Playground",
+        "OBJECTID": 141.0,
+        "ORIG_FID": 66.0,
+        "SHAPE_Area": 14298.4543667,
+        "SHAPE_Leng": 789.579484617
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230902.57125447,
+          905579.966043619
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "cba4489b-6aa4-4ba9-98b4-bc8d12bea41f",
+        "FID": 57.0,
+        "Name": "Kennedy Schoolyard",
+        "OBJECTID": 163.0,
+        "ORIG_FID": 67.0,
+        "SHAPE_Area": 5688.3966993,
+        "SHAPE_Leng": 420.207322372
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231656.987303059,
+          904337.743136301
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "2eb86a1d-7884-414a-aaa5-59816429a2c1",
+        "FID": 58.0,
+        "Name": "Argenziano Schoolyard",
+        "OBJECTID": 170.0,
+        "ORIG_FID": 68.0,
+        "SHAPE_Area": 22636.8046779,
+        "SHAPE_Leng": 1404.48858486
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233054.556929469,
+          903212.398901349
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "6ef2d7ae-12ab-4077-9d01-16b746335833",
+        "FID": 59.0,
+        "Name": "Central Hill Park Playground",
+        "OBJECTID": 174.0,
+        "ORIG_FID": 69.0,
+        "SHAPE_Area": 9348.33743711,
+        "SHAPE_Leng": 416.529959069
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233315.611308893,
+          904007.551014618
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "6becb66f-2ecd-457c-be2c-116d3dcb25f8",
+        "FID": 60.0,
+        "Name": "Avon Street Community Garden",
+        "OBJECTID": 193.0,
+        "ORIG_FID": 71.0,
+        "SHAPE_Area": 4229.28441489,
+        "SHAPE_Leng": 264.996820493
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232742.738563389,
+          903974.708151603
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "d4822ca2-ba22-4173-9d03-9713e7daae4b",
+        "FID": 61.0,
+        "Name": "Tufts Community Garden",
+        "OBJECTID": 194.0,
+        "ORIG_FID": 72.0,
+        "SHAPE_Area": 8396.09119801,
+        "SHAPE_Leng": 444.215388937
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231192.338329472,
+          905963.890065049
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "c64a5432-bd94-41b6-a305-e4d74b734d75",
+        "FID": 62.0,
+        "Name": "Brown Schoolyard",
+        "OBJECTID": 195.0,
+        "ORIG_FID": 73.0,
+        "SHAPE_Area": 16118.9450955,
+        "SHAPE_Leng": 1159.84717
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231765.196329476,
+          905256.121079997
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "a7949587-a782-45dc-bd2e-903f19eceae1",
+        "FID": 63.0,
+        "Name": "Edgerly Education Center Schoolyard",
+        "OBJECTID": 196.0,
+        "ORIG_FID": 74.0,
+        "SHAPE_Area": 8968.06460714,
+        "SHAPE_Leng": 1116.36135863
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233983.518029475,
+          904217.504259037
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "814cbbb5-563e-4b31-a7c6-f4faf080bf36",
+        "FID": 64.0,
+        "Name": "Central Hill Park Library",
+        "OBJECTID": 197.0,
+        "ORIG_FID": 75.0,
+        "SHAPE_Area": 30816.5045153,
+        "SHAPE_Leng": 1292.08874686
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233394.144729472,
+          903969.039266617
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "25e66518-ea39-4c9f-9411-c459e49a2796",
+        "FID": 65.0,
+        "Name": "West Branch Library Lawn",
+        "OBJECTID": 198.0,
+        "ORIG_FID": 76.0,
+        "SHAPE_Area": 9678.04359066,
+        "SHAPE_Leng": 829.481757954
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231157.921279472,
+          905355.891768607
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "16057edd-9f06-4465-8aa2-5f657d957ce6",
+        "FID": 66.0,
+        "Name": "Union Square Plaza",
+        "OBJECTID": 200.0,
+        "ORIG_FID": 77.0,
+        "SHAPE_Area": 16301.8277705,
+        "SHAPE_Leng": 934.292710608
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233341.786029477,
+          903318.344051405
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "9963e1c2-423b-4c1a-a7a4-01771fafe4ca",
+        "FID": 67.0,
+        "Name": "Union Square Triangle",
+        "OBJECTID": 201.0,
+        "ORIG_FID": 78.0,
+        "SHAPE_Area": 1376.37490179,
+        "SHAPE_Leng": 178.527643094
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233254.967132569,
+          903330.860110455
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "32248220-eb00-4a76-80de-6d2a76fa82b2",
+        "FID": 68.0,
+        "Name": "Alewife Brook Reservation",
+        "OBJECTID": 206.0,
+        "ORIG_FID": 83.0,
+        "SHAPE_Area": 36673.3820405,
+        "SHAPE_Leng": 878.225764043
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230635.742007847,
+          907553.280521117
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "097cbe98-6f99-488e-9099-944cfea5a712",
+        "FID": 69.0,
+        "Name": "Community Path",
+        "OBJECTID": 211.0,
+        "ORIG_FID": 87.0,
+        "SHAPE_Area": 16395.9965832,
+        "SHAPE_Leng": 744.093880795
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230978.954879469,
+          905247.788393106
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "43fd824c-29c6-42ea-8013-f160a64cbd2d",
+        "FID": 70.0,
+        "Name": "Seven Hills Park",
+        "OBJECTID": 219.0,
+        "ORIG_FID": 89.0,
+        "SHAPE_Area": 12023.3754149,
+        "SHAPE_Leng": 626.823765738
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230947.843821914,
+          905239.243290794
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "edaaf444-b2b9-4b34-b9eb-d6ef6d35c260",
+        "FID": 71.0,
+        "Name": "Seven Hills Park",
+        "OBJECTID": 220.0,
+        "ORIG_FID": 90.0,
+        "SHAPE_Area": 5004.47169947,
+        "SHAPE_Leng": 347.456227502
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230895.518574894,
+          905248.285883149
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "78075941-7a03-45de-bd32-7b3e67f91ce7",
+        "FID": 72.0,
+        "Name": "Central Hill Park High School Concourse",
+        "OBJECTID": 221.0,
+        "ORIG_FID": 91.0,
+        "SHAPE_Area": 12529.8259851,
+        "SHAPE_Leng": 543.606160722
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233243.010949893,
+          904040.264211999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "c68ab473-4683-4efb-9965-293073fc2feb",
+        "FID": 73.0,
+        "Name": "Central Hill Park Vietnam Memorial",
+        "OBJECTID": 223.0,
+        "ORIG_FID": 92.0,
+        "SHAPE_Area": 120.269075437,
+        "SHAPE_Leng": 45.6995008574
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233322.014623183,
+          904028.406324818
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "7f5063a7-9f81-4c32-bdd9-028fb5a3075c",
+        "FID": 74.0,
+        "Name": "Central Hill Park Union Square Memorial",
+        "OBJECTID": 224.0,
+        "ORIG_FID": 93.0,
+        "SHAPE_Area": 442.785900922,
+        "SHAPE_Leng": 81.4650611772
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233329.078227645,
+          904021.88865872
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "21033aaa-bc23-4769-bd58-579e980416e2",
+        "FID": 75.0,
+        "Name": "Tufts University Triangle Field",
+        "OBJECTID": 229.0,
+        "ORIG_FID": 94.0,
+        "SHAPE_Area": 51210.9035192,
+        "SHAPE_Leng": 989.918090898
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231505.325548797,
+          905773.66427956
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "9f20d46b-6b9b-423c-b063-1aa48e3ce10a",
+        "FID": 76.0,
+        "Name": "Central Hill Park Library",
+        "OBJECTID": 232.0,
+        "ORIG_FID": 96.0,
+        "SHAPE_Area": 20412.6888881,
+        "SHAPE_Leng": 1086.27302715
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233365.347372983,
+          904045.500342841
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "afd6136f-c3eb-424d-8ab1-f94c37a6a8c9",
+        "FID": 77.0,
+        "Name": "Central Hill Park City Hall",
+        "OBJECTID": 233.0,
+        "ORIG_FID": 97.0,
+        "SHAPE_Area": 10632.9549767,
+        "SHAPE_Leng": 1227.12947579
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233067.799081594,
+          904118.958223642
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "828c80f5-56df-40d8-9c5c-b7291f1ada22",
+        "FID": 78.0,
+        "Name": "Central Hill Park High School EcoLab",
+        "OBJECTID": 234.0,
+        "ORIG_FID": 98.0,
+        "SHAPE_Area": 56946.9203186,
+        "SHAPE_Leng": 1709.93514603
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233155.283929479,
+          904233.4701207
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "b67b9abb-ddfb-4c81-a0f3-f48c9ba286ac",
+        "FID": 79.0,
+        "Name": "Gilman Square",
+        "OBJECTID": 235.0,
+        "ORIG_FID": 99.0,
+        "SHAPE_Area": 15653.7207388,
+        "SHAPE_Leng": 707.990808069
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233299.356035586,
+          904231.370599112
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "b360fc78-5f7f-4676-a24e-0285af90f33b",
+        "FID": 80.0,
+        "Name": "Central Hill Park High School Schoolyard",
+        "OBJECTID": 236.0,
+        "ORIG_FID": 100.0,
+        "SHAPE_Area": 27414.1811692,
+        "SHAPE_Leng": 2247.14402345
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233144.306347035,
+          904165.733281467
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "2de11e39-556b-49aa-8760-726e221de30a",
+        "FID": 81.0,
+        "Name": "Central Hill Park High School Schoolyard",
+        "OBJECTID": 238.0,
+        "ORIG_FID": 101.0,
+        "SHAPE_Area": 43964.7303099,
+        "SHAPE_Leng": 2477.46118293
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233252.838704464,
+          904128.313602509
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "55ff6688-7a23-4bbc-8487-42ebb59e69d9",
+        "FID": 82.0,
+        "Name": "Central Hill Park High School Plaza",
+        "OBJECTID": 239.0,
+        "ORIG_FID": 102.0,
+        "SHAPE_Area": 15374.6824007,
+        "SHAPE_Leng": 655.853499813
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233289.183156778,
+          904051.547051452
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "84c4190f-5adf-4c2a-8d37-ae69e88adb43",
+        "FID": 83.0,
+        "Name": "Assembly Square Block 2A Plaza",
+        "OBJECTID": 240.0,
+        "ORIG_FID": 103.0,
+        "SHAPE_Area": 14359.4157214,
+        "SHAPE_Leng": 992.065691331
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234612.348549541,
+          905108.713178161
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "9242b31c-e657-45be-98dc-533d36def316",
+        "FID": 84.0,
+        "Name": "MaxPac Square",
+        "OBJECTID": 248.0,
+        "ORIG_FID": 104.0,
+        "SHAPE_Area": 15156.6281537,
+        "SHAPE_Leng": 525.216778272
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232331.197465679,
+          904874.351052408
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "fc346a8b-3c90-4deb-b382-78419be18745",
+        "FID": 85.0,
+        "Name": "MaxPac Dog Park",
+        "OBJECTID": 249.0,
+        "ORIG_FID": 105.0,
+        "SHAPE_Area": 4703.69147941,
+        "SHAPE_Leng": 381.548067538
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232361.389427819,
+          904811.497679075
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "e61c4e41-4085-4187-addb-1ce47c0af29e",
+        "FID": 86.0,
+        "Name": "50 Middlesex Park",
+        "OBJECTID": 250.0,
+        "ORIG_FID": 106.0,
+        "SHAPE_Area": 8437.89679827,
+        "SHAPE_Leng": 427.442785817
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234297.986198376,
+          904782.946295682
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "44f81530-580d-4d9b-98da-a8ededc7a910",
+        "FID": 87.0,
+        "Name": "50 Middlesex Plaza",
+        "OBJECTID": 251.0,
+        "ORIG_FID": 107.0,
+        "SHAPE_Area": 4511.03868368,
+        "SHAPE_Leng": 281.375841866
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234303.861863529,
+          904765.331160259
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "ba87bf47-e4d8-48d3-9eed-ff0280c55e67",
+        "FID": 88.0,
+        "Name": "Central Hill Park WWII Memorial",
+        "OBJECTID": 252.0,
+        "ORIG_FID": 108.0,
+        "SHAPE_Area": 1126.03845665,
+        "SHAPE_Leng": 127.241611419
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233239.386418559,
+          904054.860373509
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "e9dd3648-07f2-45be-bc26-272a0b8da622",
+        "FID": 89.0,
+        "Name": "East Somerville Community Schoolyard",
+        "OBJECTID": 280.0,
+        "ORIG_FID": 112.0,
+        "SHAPE_Area": 21414.1523457,
+        "SHAPE_Leng": 590.589290269
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234041.959869113,
+          903978.701935942
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "0df0de27-a057-4ac1-b01d-a36943a130fb",
+        "FID": 90.0,
+        "Name": "East Somerville Community Schoolyard",
+        "OBJECTID": 281.0,
+        "ORIG_FID": 113.0,
+        "SHAPE_Area": 44661.4999736,
+        "SHAPE_Leng": 1039.61103035
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233992.610973317,
+          904040.83489032
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "3c362788-1892-4874-a85a-c8fb36fea196",
+        "FID": 91.0,
+        "Name": "Mystic Housing Development",
+        "OBJECTID": 287.0,
+        "ORIG_FID": 114.0,
+        "SHAPE_Area": 4157.94741468,
+        "SHAPE_Leng": 266.836694491
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233473.588990136,
+          905118.63539963
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "4c690db3-e2b4-401a-b51e-c59915642246",
+        "FID": 92.0,
+        "Name": "Mystic Housing Development",
+        "OBJECTID": 288.0,
+        "ORIG_FID": 115.0,
+        "SHAPE_Area": 8440.87129854,
+        "SHAPE_Leng": 503.437717955
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233675.974232337,
+          905108.406440266
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "9cfd1c82-d5ca-4bb2-8d15-44578f503091",
+        "FID": 93.0,
+        "Name": "Mystic Housing Development",
+        "OBJECTID": 289.0,
+        "ORIG_FID": 116.0,
+        "SHAPE_Area": 4281.66008464,
+        "SHAPE_Leng": 288.222528267
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233589.466629473,
+          905206.477495921
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "9553a93d-eaa7-4c29-ab1e-7ca94d33e0d9",
+        "FID": 94.0,
+        "Name": "Mystic Housing Development",
+        "OBJECTID": 290.0,
+        "ORIG_FID": 117.0,
+        "SHAPE_Area": 9979.99759404,
+        "SHAPE_Leng": 456.745914888
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233581.144911126,
+          905271.445639334
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "35887ad7-e8cb-4797-b282-e19bad08fb00",
+        "FID": 95.0,
+        "Name": "Osgood Park",
+        "OBJECTID": 292.0,
+        "ORIG_FID": 119.0,
+        "SHAPE_Area": 3105.37189264,
+        "SHAPE_Leng": 237.248600885
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232727.853336839,
+          903736.898414116
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "f5ea2365-9364-4915-9167-24334e29f3f5",
+        "FID": 96.0,
+        "Name": "Osgood Park",
+        "OBJECTID": 293.0,
+        "ORIG_FID": 120.0,
+        "SHAPE_Area": 14232.1253635,
+        "SHAPE_Leng": 478.481587353
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232760.289455231,
+          903761.8329063
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "219ab471-bdcd-4546-a266-ffc5ef819c8c",
+        "FID": 97.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231364.95166805,
+          905127.296562994
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "200a3d19-3bc1-4f69-b086-252ef93754b8",
+        "FID": 98.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231391.989340711,
+          905119.135127918
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "afa3d19d-4692-4055-af79-583afea01284",
+        "FID": 99.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234545.343730708,
+          905137.252440258
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "a9a6a1de-6a6a-400c-a58e-53c7ef2226ea",
+        "FID": 100.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234652.452479469,
+          905139.654493606
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "673a8ea9-f2d3-4aef-a774-e487c4071d86",
+        "FID": 101.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234731.34507947,
+          905112.059853534
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "d1b8fa03-01cb-4203-ad39-28f15b81a9ab",
+        "FID": 102.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234459.265058771,
+          905214.503829144
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "63c7ac35-7c81-4cf6-b5c5-a176df308dbd",
+        "FID": 103.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234524.391359348,
+          905179.084655737
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "d6ca6b80-4bbb-4acf-aa69-73f9bb9d3a7a",
+        "FID": 104.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234622.56408208,
+          905161.636499693
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "cac4db7b-98db-4ac1-82e8-f4e012121e2a",
+        "FID": 105.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234687.885288678,
+          905150.817113441
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "8b663323-336f-4d13-8c1f-5c7f1b50daf9",
+        "FID": 106.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234266.36093892,
+          905329.396866154
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "fbed38fa-34d1-4821-bf48-05ac6e0078d0",
+        "FID": 107.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234315.83007728,
+          905303.883307954
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "e6bd3a58-61a1-437a-ad21-f0789797c151",
+        "FID": 108.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234404.304654981,
+          905255.555578572
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "aaddc5cd-ca23-4d20-8019-21da9b7db450",
+        "FID": 109.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234268.475983995,
+          905370.848231222
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "90f3b89d-e906-435a-bca2-79f87ed9c79f",
+        "FID": 110.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234283.326958021,
+          905371.086940643
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "63184a6e-a571-4a1c-80dd-dc15d20750fc",
+        "FID": 111.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231534.397383458,
+          905542.164716015
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "0c418443-09cf-41fb-bea2-ffb52a293fd8",
+        "FID": 112.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231613.037982502,
+          905541.457348716
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "da59013d-dc93-4943-8a8f-a93e31bd6384",
+        "FID": 113.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231476.594875375,
+          905584.309276191
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "290b10f4-a15d-4d2b-91a1-54895ed3504d",
+        "FID": 114.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231536.783831509,
+          905592.665319067
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "0e28792c-04b7-43df-8352-1f2b9f65c0c0",
+        "FID": 115.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231613.173692968,
+          905601.115685687
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "a9c9faf1-9377-49bf-a76d-0e6b09406a22",
+        "FID": 116.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231562.11916028,
+          905654.257791488
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "6a7cb9db-1f73-4fd8-a551-d24fbe64fe28",
+        "FID": 117.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231623.396410802,
+          905658.368746295
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "6b2cc590-7964-45cd-a4be-63e96cd1095f",
+        "FID": 118.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231678.038846131,
+          905660.355880326
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "ad845a63-0476-4b4c-af67-3e55ddb3b0e9",
+        "FID": 119.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232852.732623781,
+          903120.302693649
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "3339d0c8-6c57-4d8b-b4c5-25b2a9496c42",
+        "FID": 120.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232919.776155672,
+          903126.324180093
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "dc90907f-fae1-473e-b391-a1401ec477d2",
+        "FID": 121.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233010.375371796,
+          903132.977342389
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "bdb83209-fb03-4dae-86f0-3f7b8a893d49",
+        "FID": 122.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232851.038727925,
+          903161.231767156
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "44d53925-a05d-4ae9-9a6f-882ccf7a8ba7",
+        "FID": 123.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232927.452479474,
+          903162.519877927
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "2c04dc6a-a768-42f7-9687-50368b6b4005",
+        "FID": 124.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233018.144257848,
+          903181.055363141
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "38287f78-7b32-4ab6-8aa4-582d073478b7",
+        "FID": 125.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230416.239215903,
+          905740.656140009
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "c2ba8f32-0e2e-4075-9311-5020d7c9ccd0",
+        "FID": 126.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230371.161716757,
+          905803.515344595
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "54a437fc-afea-419e-9be1-7686ff10fbcf",
+        "FID": 127.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230424.809132669,
+          905801.759361888
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "0f96a095-de3f-42df-b155-312c9b599ffb",
+        "FID": 128.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230489.517732153,
+          905829.978398805
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "933c558b-70de-4bd6-a318-77a5a9c0644c",
+        "FID": 129.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230442.058518602,
+          905884.165544192
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "b2af8a06-fd98-46b4-841f-a389e0bac199",
+        "FID": 130.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230497.335975339,
+          905868.86590002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "5788c6b4-6316-4bf7-9df6-023501de15fe",
+        "FID": 131.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234847.573823051,
+          904427.634522524
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "21952dcf-f7f3-4f19-82bb-8a210a18e411",
+        "FID": 132.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234853.795978042,
+          904501.03683701
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "c26bd083-503f-480d-920f-629b26b59117",
+        "FID": 133.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234859.142636146,
+          904594.469256066
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "0ce0638c-3be5-4e44-bde6-b5136c802f8e",
+        "FID": 134.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234888.527356982,
+          904615.544849815
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "52594409-319f-4db7-b386-b89272818906",
+        "FID": 135.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234857.319677719,
+          904694.137190129
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "73ea5d10-a66d-4a2e-90b3-060b8c9df9bf",
+        "FID": 136.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234912.268171728,
+          904701.33172459
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "e51671f2-763e-4b1d-804c-b88725139292",
+        "FID": 137.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234855.376277134,
+          904794.066174247
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "47524686-8188-419f-8e3b-b0ac7ca7b3fb",
+        "FID": 138.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234923.083421086,
+          904790.658208522
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "e0898881-a849-4edc-9eb9-89ab7f352606",
+        "FID": 139.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234978.068571702,
+          904766.374754136
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "ae001508-8574-4228-bc00-886da9147520",
+        "FID": 140.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234852.224850718,
+          904894.639350733
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "3e5ffa45-d577-49af-ad48-b640b9dc47d6",
+        "FID": 141.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234904.736765851,
+          904885.807520013
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "6f964457-81e7-4bc3-8611-eac6f2fe6c3f",
+        "FID": 142.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234849.556121122,
+          904991.786945564
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "bf81bbe0-d281-4e46-b20c-788f6288611d",
+        "FID": 143.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234886.037119727,
+          904965.552412936
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "488147bb-ccd4-48ae-9235-924948fd79a9",
+        "FID": 144.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234836.903581219,
+          905071.920948671
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "501bd71c-a119-40eb-acdc-368e6b0a34b3",
+        "FID": 145.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230276.146105999,
+          906738.640538095
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "e0247166-0350-41f6-a4a8-3e180f58f46e",
+        "FID": 146.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230327.0134405,
+          906736.936806135
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "9675967a-c1b6-4c7d-b020-76632b87b1a4",
+        "FID": 147.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230270.610519472,
+          906805.168103354
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "90532a20-d5ee-4edb-9a38-de115d532fa7",
+        "FID": 148.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230321.432652622,
+          906792.931512754
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "42b71f33-3aed-425c-aecd-99ac780c2d8b",
+        "FID": 149.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230263.321070172,
+          906897.708890163
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "e5115485-894b-4ef2-9462-6e78a90b5022",
+        "FID": 150.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230322.089383212,
+          906893.193405522
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "8382dc0d-2726-400d-94d1-4e19e1441e13",
+        "FID": 151.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230261.785456268,
+          906989.752718894
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "5f38f608-2182-4c66-8d5c-d7af1f2eed69",
+        "FID": 152.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230314.655204281,
+          906990.428076396
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "b91d13c3-0187-4eb7-ac73-dd033321aafc",
+        "FID": 153.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230268.00835898,
+          907078.372347987
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "1db77888-5f45-452d-8ad1-b78b7ac185f7",
+        "FID": 154.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230306.273818511,
+          907075.300965028
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "31a81656-920c-4a54-a074-57d3750bed5c",
+        "FID": 155.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230262.521249347,
+          906493.775207148
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "bee78d9f-5f8c-457c-b83d-6e4859850d96",
+        "FID": 156.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230313.881895875,
+          906513.800125583
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "fb358e3c-1c1f-42f8-9dd1-4399acc1ee9e",
+        "FID": 157.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230274.358670511,
+          906553.237220963
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "7e3d1ca0-5147-40ab-96eb-69ec156075a2",
+        "FID": 158.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230329.440965777,
+          906592.29501054
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "86ecffd4-ceed-48bb-8307-6271d9069521",
+        "FID": 159.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230386.435775538,
+          906602.735511776
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "a22c207e-4ef4-4ce3-a42e-8e0a0361a63f",
+        "FID": 160.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230276.34934687,
+          906728.771241849
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "f0b1e366-fef9-4ad5-9768-3c4f490eec04",
+        "FID": 161.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230329.529792573,
+          906687.647034856
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "f497f92a-d187-4eaa-a1b0-978ce798346c",
+        "FID": 162.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230383.033504978,
+          906666.124815802
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "d5d0b952-63c9-4abc-b989-15a9110aaff5",
+        "FID": 163.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232369.016325664,
+          905238.449422702
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "4967f36c-8865-40e2-b7d4-68693225ea01",
+        "FID": 164.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232394.872040436,
+          905233.801986442
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "58503a09-84de-4c77-8df7-65233feb468c",
+        "FID": 165.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232263.509439971,
+          905319.435905701
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "4e21daf1-e55c-489a-b755-f1ed6131e933",
+        "FID": 166.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232331.244474918,
+          905300.775566886
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "0b57e1a1-0663-4281-83f7-2a3df806429b",
+        "FID": 167.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232406.032641658,
+          905293.27044112
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "5abf6f99-e4e4-4118-8937-6bc890392112",
+        "FID": 168.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232268.684956418,
+          905360.487674236
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "bdefce55-7fe4-46fe-9611-da232f271157",
+        "FID": 169.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232314.001639838,
+          905359.368498614
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "cf9d5ae0-e750-4a2d-aa4c-f53cc7a0abbd",
+        "FID": 170.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232381.437146498,
+          905345.02648047
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "4683cf99-ce29-40ec-87ef-cd0366d66dae",
+        "FID": 171.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233528.669327119,
+          903435.649523002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "cee4037c-931b-47f5-a1f4-52221d1188c7",
+        "FID": 172.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233460.522072637,
+          903504.957160905
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "e71ea668-d394-4924-a17a-c3e5ba878c7c",
+        "FID": 173.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233517.031779469,
+          903458.285056569
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "0ae14997-f4c3-442d-844c-5651e26b5e6f",
+        "FID": 174.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233597.011562995,
+          905338.50554872
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "aa2a2c4f-a083-41fa-b79c-a509a71d5cee",
+        "FID": 175.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233693.452232606,
+          905338.745844989
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "fb76a5ec-1ff4-4ec1-b80b-3fb966dda152",
+        "FID": 176.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233529.284082526,
+          905409.648821576
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "a79fc2a1-2835-4b85-a704-95b857a98440",
+        "FID": 177.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233642.169249203,
+          905401.421529926
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "9837b5b7-d42f-489a-82cd-8ffcf3816bd1",
+        "FID": 178.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233727.254329765,
+          905384.101054992
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "f83a928c-a3a3-4544-898e-4c00a1c95be9",
+        "FID": 179.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233811.06399465,
+          905422.362466624
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "a9bf94bf-3cba-4db4-a359-c1ee6e1a01b4",
+        "FID": 180.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234157.235402981,
+          905427.707253038
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "c144ac91-c7e4-4cbe-98a6-f089a11c939c",
+        "FID": 181.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234202.600913493,
+          905413.759423352
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "48e048be-1f34-4581-859b-357bd561f4c3",
+        "FID": 182.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233367.325799951,
+          905536.441822931
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "43b33b1c-3189-4f67-a9ca-421acb64c84d",
+        "FID": 183.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233426.915276104,
+          905510.075698163
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "0463620a-9aef-49d4-99aa-6ca250dc789c",
+        "FID": 184.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233487.31115244,
+          905454.923485714
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "cf553990-7d27-441f-96fb-50955c58aa7e",
+        "FID": 185.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233586.79516312,
+          905443.94538205
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "f3c96f5f-877e-48e1-88bb-ca380c85b6ff",
+        "FID": 186.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233854.026155106,
+          905449.516703392
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "7722c8a2-51db-40a5-9c7b-f2e8c311249e",
+        "FID": 187.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233927.452479473,
+          905485.742201108
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "33ca9d94-043a-44f0-a176-b148d25128fa",
+        "FID": 188.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234052.45247947,
+          905505.582217614
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "165a1ed3-c85d-43b1-b6bc-7d716ea14e97",
+        "FID": 189.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234117.503385726,
+          905466.85654261
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "101a1daa-4005-44ef-894a-1764c1ad0354",
+        "FID": 190.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234228.280760042,
+          905448.032345898
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "b3844211-85c6-442d-8a19-3d797f15f97c",
+        "FID": 191.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233274.96647947,
+          905598.736852455
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "27a00b53-ca35-4411-81f7-4b53da6ca9c0",
+        "FID": 192.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233336.548786956,
+          905565.356514409
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "6fb6345c-3075-4789-9f69-c74d4091bc7a",
+        "FID": 193.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233387.419655292,
+          905548.795945576
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "f063e363-fec1-4862-9bc2-4a88039c3737",
+        "FID": 194.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230088.121061382,
+          906034.416349625
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "6da85ed1-a727-4601-9428-6254279f65f6",
+        "FID": 195.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230086.676803423,
+          906089.770947663
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "7d42c797-4a49-4713-8369-7494d3e7bd70",
+        "FID": 196.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230086.408557949,
+          906177.970078854
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "d6cfd5f7-d6ec-4305-b9a9-460a624e2f47",
+        "FID": 197.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230121.463901049,
+          906293.398568708
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "d9731a80-c8f0-4a6e-a64d-ad86ddf942fe",
+        "FID": 198.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230164.66958613,
+          906372.131699722
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "fe4f1c93-7b99-4735-9a03-9cd6bcd359a3",
+        "FID": 199.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230204.149923397,
+          906417.564066088
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "24301774-e52f-40c4-8d6f-c607d16d97eb",
+        "FID": 200.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230212.728577584,
+          906460.613399585
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "c73e09bd-d54d-4491-a7a0-26d6afe98fdf",
+        "FID": 201.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230271.013514784,
+          906580.641154446
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "fb04e465-6571-41cf-97f8-5e07c1ff2042",
+        "FID": 202.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230281.029768431,
+          906617.537416597
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "86af6689-a806-4a0d-96c6-08503accab3a",
+        "FID": 203.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230272.857595361,
+          906709.662863236
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "f744bd90-2185-435b-8606-a085287f6731",
+        "FID": 204.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230281.180107299,
+          906672.67354799
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "ef061292-03ce-442b-b25e-71bea34dd4ab",
+        "FID": 205.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230252.753495617,
+          906798.906211551
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "4aae68c6-a2f1-451a-9f76-5644ea54ded6",
+        "FID": 206.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230235.342829453,
+          906891.40282002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "059c8b53-fb51-46cb-8630-579f8e342fa4",
+        "FID": 207.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230236.005461013,
+          906993.289064725
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "a38cf02d-a5cc-4d05-b479-7c473ebc1856",
+        "FID": 208.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230252.620277873,
+          907098.897810527
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "71ade2a9-f90d-4a37-a616-c871523f22b1",
+        "FID": 209.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230312.544251561,
+          907124.149169617
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "1b5deafe-5ed0-4818-93dc-d25c423359e4",
+        "FID": 210.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230261.37295771,
+          907158.069959857
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "45cc6d30-2f2f-4d50-9f33-904d989d5f74",
+        "FID": 211.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230307.325224247,
+          907158.704063533
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "db957c31-4611-4f96-8d9e-9b357ea85764",
+        "FID": 212.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230263.862799245,
+          907215.726125086
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "2de4a089-d29a-416a-96fa-3f9103df6fc7",
+        "FID": 213.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230313.457583889,
+          907222.606696899
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "2095fe17-cc86-4b7c-a582-c0d884ea5e67",
+        "FID": 214.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230265.230290784,
+          907248.738514645
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "847de90a-29b2-4350-9718-b5ecedb61651",
+        "FID": 215.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230342.812399919,
+          907287.697791585
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "4f4ca066-1382-46dc-aea7-92b4fdb9b4c3",
+        "FID": 216.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230398.700656345,
+          907312.654536337
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "932e0fd4-bfa2-4f53-b27b-212db89f6d8c",
+        "FID": 217.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230349.323270648,
+          907392.68229006
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "b79e2b9c-e8d7-4e0f-a472-80b7ad67c3bf",
+        "FID": 218.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230421.279795302,
+          907394.931290218
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "e4308bb7-7c73-488f-99f6-0d5c2d9a6eae",
+        "FID": 219.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230480.863665871,
+          907404.740882308
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "1c8819c8-fc16-498d-ac0f-6969420fe2b6",
+        "FID": 220.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230361.019197118,
+          907454.942333286
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "781140a4-f054-4a8a-96d7-b384f60bce41",
+        "FID": 221.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230402.491151559,
+          907459.986599915
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "95635f08-eb32-4555-b1e9-68fe49d3bda5",
+        "FID": 222.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230476.208564936,
+          907442.224013861
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "9b7dff1b-064b-4a17-b68f-bf05ed3b5d93",
+        "FID": 223.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230502.355697709,
+          907432.417932813
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "f56d22d4-b0d9-4800-a3af-8d898230c1e3",
+        "FID": 224.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230455.146129015,
+          907487.567034409
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "771bdd32-5c69-4b9c-9a2d-d739d121e705",
+        "FID": 225.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230524.476490393,
+          907494.720782789
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "30100bcf-e05c-4a2a-bb23-f5c40c6ed552",
+        "FID": 226.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230583.884212994,
+          907509.410788774
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "4380ed8a-66ea-4db5-9742-650ee12899a6",
+        "FID": 227.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230556.668211032,
+          907545.528484391
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "9d55d837-a354-42d2-b321-4a2a09d48268",
+        "FID": 228.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232253.782354512,
+          904830.583189236
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "d2036d31-7c17-4d1e-ba0e-12f028252b13",
+        "FID": 229.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232327.652089405,
+          904805.450907042
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "3f146e64-b2ea-4787-bf8a-1b66d14253a4",
+        "FID": 230.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232399.316316941,
+          904780.196994229
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "74cd8ddd-cf33-46e9-b3f3-81754ad01dcc",
+        "FID": 231.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232052.312315996,
+          904898.211698675
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "270087cc-449f-40f3-a502-602a369fe016",
+        "FID": 232.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232128.028995255,
+          904874.386576638
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "ee8184e2-e787-4e1d-a9cf-710a8ce9d2db",
+        "FID": 233.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232203.812904642,
+          904853.596674471
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "700fe238-ccda-4bfa-a3bf-fcf0d3a2b8d5",
+        "FID": 234.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231875.624582818,
+          904942.738246892
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "b2dec41f-53c9-4f3f-8b28-6e28a4d89841",
+        "FID": 235.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231942.975417754,
+          904931.270155866
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "591f4f04-b56e-40ac-8915-b4b2d9a4ed01",
+        "FID": 236.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231996.823259075,
+          904916.934570296
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "150635f6-11f8-4724-9111-0cc7c079f305",
+        "FID": 237.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231649.575223354,
+          905027.663135567
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "4dd01adf-3f2e-4c66-9328-93325536c47d",
+        "FID": 238.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231727.429427783,
+          905003.504282848
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "be94c912-757c-417e-a220-ac2e60ce9839",
+        "FID": 239.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231827.327935155,
+          904971.336370965
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "a8069811-663f-46b2-a1f0-1d559a0acff4",
+        "FID": 240.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231902.957159774,
+          904951.52433493
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "0e4b1c45-e38f-46a4-9f9a-2ff58461b322",
+        "FID": 241.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231631.392962964,
+          905045.41781498
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "94d12fce-0f13-4504-9372-3364f41000ad",
+        "FID": 242.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231572.452575435,
+          905041.73046817
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "61bf1544-f060-4027-a9e0-ef8a575bc6ef",
+        "FID": 243.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231591.83184363,
+          905039.000304721
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "9e5d49ea-c622-414e-abe3-45dedda6e5aa",
+        "FID": 244.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231362.027794815,
+          905115.395647968
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "d5a4c3ca-e339-4e7e-a713-6f521933ae4f",
+        "FID": 245.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231432.322127436,
+          905096.793189825
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "74242cf5-d6b7-46bf-a5f8-e850953739e2",
+        "FID": 246.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231521.525764285,
+          905068.687986958
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "6ab85d40-6a4b-4af5-92bf-69fd18b51f5b",
+        "FID": 247.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231588.861388006,
+          905047.661635512
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "f8ff101b-6d71-4fd2-800a-4e16c2de24d9",
+        "FID": 248.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231303.845814799,
+          905150.233944126
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "75896e83-9a66-47e0-a726-7c79a9eaab1c",
+        "FID": 249.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230660.218817196,
+          905297.828669914
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "212f3bfd-6218-4e3e-9154-36e8a8f2b505",
+        "FID": 250.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230723.875293916,
+          905287.651705964
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "c612ebab-4078-4788-951d-98343c9e59ac",
+        "FID": 251.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230833.158675186,
+          905278.715577097
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "017806cc-68ad-4611-89a8-c597038ab135",
+        "FID": 252.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230887.155761012,
+          905272.69067382
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "7606064d-3ff2-42b2-bbf8-834a085d788d",
+        "FID": 253.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231348.983254515,
+          905829.947878271
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "d24137f4-9798-4c26-8a09-488d4c4ba825",
+        "FID": 254.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231431.161044087,
+          905816.469273997
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "e7b442e7-6003-44f1-af06-3cc1553920d2",
+        "FID": 255.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231495.958423726,
+          905826.647535013
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "97af0288-3a38-49b0-9dbe-7caed4dd8313",
+        "FID": 256.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231256.808979474,
+          905907.215729403
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "44610d1f-a9a8-49a0-9d54-3956aed7876c",
+        "FID": 257.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231327.990566639,
+          905893.893767569
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "8b18cdef-9d75-41d5-8744-664d292113d9",
+        "FID": 258.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231427.45247947,
+          905893.331582057
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "1e4a0317-ca31-4f57-b49c-fda1a18e21ac",
+        "FID": 259.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231498.039809293,
+          905891.049140569
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "2268ed12-1939-4f24-aafc-5b11136d42a4",
+        "FID": 260.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231270.932786895,
+          905956.058011995
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "e6b1b3e4-3260-4621-9d54-380c4fa5120d",
+        "FID": 261.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231327.452479471,
+          905963.63648288
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "87449892-a63d-4a20-b9ab-7251c4f8446e",
+        "FID": 262.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231428.936807467,
+          905984.255010311
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "f59e2541-e726-4e94-92a2-846d231d4b3c",
+        "FID": 263.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231493.034846849,
+          905975.738304159
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "406418bf-1825-4711-8512-cf0ddecfbbd5",
+        "FID": 264.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233924.767655859,
+          903040.691489012
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "bcf2b74a-9bb2-4619-b2d5-8bf93f5ac43c",
+        "FID": 265.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233874.098991338,
+          903093.001991577
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "a466ac9f-dc90-43ad-b1d9-6276b0be46d6",
+        "FID": 266.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233929.062036096,
+          903091.775107044
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "2dedbd9c-e732-41ae-a033-76723a94edf9",
+        "FID": 267.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233983.634529474,
+          903086.868315856
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "e5e163d3-d4d0-47da-8eaf-dae1f3f5c57b",
+        "FID": 268.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233942.04698932,
+          903147.231315386
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "65ebb58d-054d-4b25-8f43-da8f878555ef",
+        "FID": 269.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233463.762914137,
+          903531.593552676
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "88a95041-b1d0-4a3d-a773-afcff46cf97a",
+        "FID": 270.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233498.351731281,
+          903512.277074592
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "2177cb65-72b6-4953-b7c9-ccf7616a34f2",
+        "FID": 271.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233426.238285881,
+          903577.215492747
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "86fce6a0-f23d-4f69-b7c3-e536d4a250e1",
+        "FID": 272.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233482.373862607,
+          903549.517012175
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "e52959ca-8487-43b3-a57d-0382fcba65a4",
+        "FID": 273.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233854.289749868,
+          904526.929656234
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "d69ab3bc-2bc3-48c7-9422-8f4d924278f0",
+        "FID": 274.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233911.850344072,
+          904515.733940453
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "e24c5b5c-d499-4d54-993c-c94004ebe571",
+        "FID": 275.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233772.271379477,
+          904577.948332219
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "63803222-b57e-420f-8081-f4bece92dd73",
+        "FID": 276.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233834.263654192,
+          904589.875840149
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "964aa2ea-b789-4a56-953e-d152e5ef8e39",
+        "FID": 277.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233926.975338752,
+          904593.793920122
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "c4ccb1d2-f17c-466f-9e56-e01ee533f435",
+        "FID": 278.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233998.109404192,
+          904615.545259247
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "da4a7a4c-9f67-456f-af26-eacae33e40d8",
+        "FID": 279.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233861.230103345,
+          904659.550811609
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "70e286bd-1e5c-4425-a85e-2aa0ba57e037",
+        "FID": 280.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233932.445516064,
+          904688.338041314
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "a47fa442-7708-4cd5-b1a2-a7ef83c241fa",
+        "FID": 281.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234021.348068793,
+          904696.880969313
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "fa11c8dc-492e-443a-a03e-bf2e657926f9",
+        "FID": 282.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234077.855474476,
+          904741.500048462
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "bf302a54-edcb-42e3-9704-98f40da07c68",
+        "FID": 283.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233961.236570095,
+          904759.544346115
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "5387f467-c287-441d-81b8-4d4989b6751e",
+        "FID": 284.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234031.830024374,
+          904787.559385708
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "84911ff5-4243-457d-950b-382b4b9ece78",
+        "FID": 285.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234080.669703967,
+          904789.253349875
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "34b8abfa-de52-4745-8c59-4f21626527f8",
+        "FID": 286.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234044.954708343,
+          904848.705846374
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "dbe8a00f-9fc5-45a8-a671-72338867a65e",
+        "FID": 287.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233566.994851179,
+          905033.138034049
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "1985bcf2-2a22-4de8-a3ed-024266aeaffe",
+        "FID": 288.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233593.369529469,
+          905013.156307053
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "8174d5be-3843-443a-86d6-024ca0365eb0",
+        "FID": 289.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233443.251467885,
+          905124.324593152
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "42819d56-f6a2-4c93-ba44-2d795987f7af",
+        "FID": 290.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233523.394056251,
+          905056.463235005
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "e8cf84c8-8bd5-4b2c-92bf-e20e076ea6bb",
+        "FID": 291.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233357.724028393,
+          905201.628876355
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "f2b25457-eb7d-49e9-a0c8-b52459677186",
+        "FID": 292.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233384.985123955,
+          905164.308399796
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "8605163d-cfd0-4634-9941-577f0aa45fbc",
+        "FID": 293.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233366.292380518,
+          905257.390857952
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "b7ef2072-7936-458c-a9a4-0dded0dcc697",
+        "FID": 294.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233412.52515736,
+          905300.967914459
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "d6670703-339a-4967-b2fe-00cad5f614d2",
+        "FID": 295.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233423.371361808,
+          905387.673895204
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "d0a63ba6-1843-4989-85a9-b79e0d022445",
+        "FID": 296.0,
+        "Name": " ",
+        "OBJECTID": 0.0,
+        "ORIG_FID": 0.0,
+        "SHAPE_Area": 0.0,
+        "SHAPE_Leng": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233395.823017348,
+          905456.89571426
+        ]
+      }
+    }
+  ]
+}

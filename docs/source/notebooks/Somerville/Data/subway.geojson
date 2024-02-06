@@ -1,0 +1,125 @@
+{
+  "type": "FeatureCollection",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "EPSG:26986"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "a1e74c90-36d1-4ad6-8afb-e65d598e4e61",
+        "FID": 0,
+        "line": "ORANGE",
+        "LINE": 0,
+        "OBJECTID": 0,
+        "station": "COMMUNITY_COLLEGE",
+        "STATION": 0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          235450.250026017,
+          902661.874999278
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "6def34a6-301f-424b-b93a-2e32927c4c04",
+        "FID": 0,
+        "line": "ORANGE",
+        "LINE": 0,
+        "OBJECTID": 0,
+        "station": "SULLIVAN",
+        "STATION": 0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234839.312489448,
+          903937.187512466
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "0f946f39-9beb-4d27-9b86-4a73d128a5f7",
+        "FID": 5.0,
+        "line": 0,
+        "LINE": "RED",
+        "OBJECTID": 6.0,
+        "station": 0,
+        "STATION": "PORTER"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231359.97310203212,
+          904271.73157229845
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "f921edb8-d443-4198-b21e-2734b31a14b9",
+        "FID": 0,
+        "line": "ORANGE",
+        "LINE": 0,
+        "OBJECTID": 0,
+        "station": "ASSEMBLY",
+        "STATION": 0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234764.38230846837,
+          904843.61324824847
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "fa51a0e8-8b3e-41b0-b0ec-7449ac98ed6b",
+        "FID": 115.0,
+        "line": 0,
+        "LINE": "RED",
+        "OBJECTID": 116.0,
+        "station": 0,
+        "STATION": "DAVIS"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231086.66199252266,
+          905224.700955862
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "793fbb75-2362-4a89-9d30-4d4b81699c80",
+        "FID": 0,
+        "line": "GREEN",
+        "LINE": 0,
+        "OBJECTID": 0,
+        "station": "LECHMERE",
+        "STATION": 0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234869.11767647491,
+          902324.90460976656
+        ]
+      }
+    }
+  ]
+}

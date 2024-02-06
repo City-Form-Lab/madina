@@ -1,0 +1,7136 @@
+{
+  "type": "FeatureCollection",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "EPSG:26986"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "59b8635f-aeb5-4242-bf66-f43c0187aa82",
+        "FID": 1245.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2766.0,
+        "STOP_NAME": "Newton St @ Concord Sq",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233101.804099999,
+          903003.096299998
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "bcc230f1-eac0-48a7-bddb-ce6f8b2b990d",
+        "FID": 1246.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2770.0,
+        "STOP_NAME": "Newton St @ Concord Sq",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233101.804099999,
+          903003.096299998
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "56a0ad53-4e2e-4b05-aefe-f092a5430ebe",
+        "FID": 1248.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2528.0,
+        "STOP_NAME": "Webster Ave @ Prospect St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233308.962499999,
+          903007.743500002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "7ec49c22-cb5f-41ee-88b8-9e0aad5833b3",
+        "FID": 1251.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2600.0,
+        "STOP_NAME": "O'Brien Hwy @ Medford St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233895.546599999,
+          903014.9615
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "258899d9-2e47-4b2c-a997-de5e5ebad0a2",
+        "FID": 1252.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2568.0,
+        "STOP_NAME": "Kirkland St @ Sumner Rd",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231934.281900004,
+          903019.764800001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "edb4a9c4-f5a7-4cde-a39a-a4f6bc517d81",
+        "FID": 1259.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2607.0,
+        "STOP_NAME": "McGrath Hwy @ Poplar St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233910.4428,
+          903034.414299998
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "0a74ce07-4304-4016-a655-7510290b30c6",
+        "FID": 1261.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2436.0,
+        "STOP_NAME": "Beacon St @ Smith Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232528.766099997,
+          903039.665800001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "2d29f94a-71a8-4220-8e94-f0265de2e4ad",
+        "FID": 1263.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2454.0,
+        "STOP_NAME": "Beacon St @ Calvin St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232522.315099999,
+          903046.000700001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "e5145a84-061f-42c7-a1c5-39239abe9a52",
+        "FID": 1274.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2765.0,
+        "STOP_NAME": "Newton St @ Clark St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233223.603600003,
+          903072.464699998
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "06c7fec4-7a38-41b9-a6b6-136303cc798e",
+        "FID": 1277.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2569.0,
+        "STOP_NAME": "Kirkland St @ Trowbridge St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232155.072800003,
+          903083.8794
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "31e96da3-1714-4363-85c2-ffa366611c49",
+        "FID": 1278.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2609.0,
+        "STOP_NAME": "Somerville Ave at McGrath Hwy",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233776.752999999,
+          903085.487799998
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "585b42f0-8ee1-4f43-8c09-838acd59510c",
+        "FID": 1280.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2547.0,
+        "STOP_NAME": "Kirkland St opp Trowbridge St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232174.623300001,
+          903089.423700001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "e16e2c1a-ae26-417a-91a1-9853fdc774b8",
+        "FID": 1282.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2599.0,
+        "STOP_NAME": "Somerville Ave opp Mansfield St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233748.8125,
+          903102.5002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "b9c31777-1f6f-472c-a5e1-cb2afe0564e3",
+        "FID": 1286.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2530.0,
+        "STOP_NAME": "Newton St @ Webster Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233275.8499,
+          903111.396200001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "d423140d-67dd-435d-b027-492f030732e5",
+        "FID": 1289.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2512.0,
+        "STOP_NAME": "25 Webster Ave @ Newton St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233280.921800002,
+          903127.187800001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "f7566bfe-f0c2-4cf7-b7ee-7bc8299358ab",
+        "FID": 1299.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2570.0,
+        "STOP_NAME": "Washington St @ Beacon St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232405.388899997,
+          903158.149099998
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "0439e7d7-e6a0-4bee-a816-169f41fdfabb",
+        "FID": 1301.0,
+        "LineCount": 1.0,
+        "STOP_ID": 12610.0,
+        "STOP_NAME": "Somerville Ave @ Merriam St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233625.857100002,
+          903160.800299998
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "80b18160-8b26-46aa-b8f7-bce8a0471677",
+        "FID": 1302.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2546.0,
+        "STOP_NAME": "Washington St @ Beacon St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232425.748899996,
+          903164.072000001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "b55e4ee2-d23e-4803-818f-5e615fe6aa07",
+        "FID": 1304.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2455.0,
+        "STOP_NAME": "Beacon St @ Washington St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232405.996600002,
+          903172.864500001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "f7c5c9ec-9cd0-475c-8813-2e94d6a2e0d8",
+        "FID": 1305.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2435.0,
+        "STOP_NAME": "Beacon St @ Washington St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232405.996600002,
+          903172.864500001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "25b8813d-1c25-4fd7-8fee-1d9c83cf56f8",
+        "FID": 1311.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2531.0,
+        "STOP_NAME": "30 Prospect St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233396.673199996,
+          903194.853799999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "f5bbc847-bbdd-43b7-ad90-7947d579ed7c",
+        "FID": 1312.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2598.0,
+        "STOP_NAME": "Somerville Ave @ Linden St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233545.498199999,
+          903197.649999999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "4c6222d1-cce3-45e3-8949-98b58351f521",
+        "FID": 1319.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2571.0,
+        "STOP_NAME": "Washington St @ Calvin St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232597.227899998,
+          903218.155099999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "3a581e1b-0ca6-4042-bc1a-0d56c3848da4",
+        "FID": 1322.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2545.0,
+        "STOP_NAME": "Washington St @ Dane St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232620.899999999,
+          903227.107900001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "c1797924-ad55-4a80-976b-2cb4496d3887",
+        "FID": 1325.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2511.0,
+        "STOP_NAME": "Webster Ave @ Washington St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233255.9899,
+          903238.2159
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "0eb89045-e1f5-4413-8796-95d414f970ba",
+        "FID": 1328.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2616.0,
+        "STOP_NAME": "Washington St @ Leland St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232720.462800004,
+          903262.421999998
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "4f5b2a7c-903f-4327-ba67-ce51509595a0",
+        "FID": 1332.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2615.0,
+        "STOP_NAME": "Washington St opp Parker St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232929.631999999,
+          903283.437899999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "7937f135-34c0-4296-82e2-fa179c2b9212",
+        "FID": 1333.0,
+        "LineCount": 1.0,
+        "STOP_ID": 25711.0,
+        "STOP_NAME": "Washington St @ Perry St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232814.037900001,
+          903285.351599999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "9651fd43-168a-487c-a3f3-86014fc7b559",
+        "FID": 1334.0,
+        "LineCount": 1.0,
+        "STOP_ID": 25712.0,
+        "STOP_NAME": "Washington St @ Parker St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232916.4428,
+          903285.765500002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "f8c56da6-2d2d-4500-acb1-6f2f4c76dc35",
+        "FID": 1337.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2434.0,
+        "STOP_NAME": "Opp 159 Beacon St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232299.779700004,
+          903289.021299999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "8fe39469-d733-44bc-a4de-8a11077b6552",
+        "FID": 2664.0,
+        "LineCount": 1.0,
+        "STOP_ID": 1413.0,
+        "STOP_NAME": "Cambridge St @ Sciarappa St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234453.260700002,
+          902390.220100001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "787b116f-6e6f-4d1c-a61d-65990a42cf79",
+        "FID": 2665.0,
+        "LineCount": 1.0,
+        "STOP_ID": 1417.0,
+        "STOP_NAME": "Cambridge St @ Sciarappa St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234453.260700002,
+          902390.220100001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "1ffdf318-d5de-4c44-b93b-ed8a81c6155c",
+        "FID": 2669.0,
+        "LineCount": 1.0,
+        "STOP_ID": 1412.0,
+        "STOP_NAME": "Cambridge St @ Fifth St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234319.288699999,
+          902412.694200002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "ed63d245-8dec-448c-ae75-d6a7cf550dff",
+        "FID": 2670.0,
+        "LineCount": 1.0,
+        "STOP_ID": 1418.0,
+        "STOP_NAME": "Cambridge St @ Fifth St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234319.288699999,
+          902412.694200002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "f93b9a17-6016-4419-9d9e-f81340949d86",
+        "FID": 2674.0,
+        "LineCount": 1.0,
+        "STOP_ID": 1419.0,
+        "STOP_NAME": "Cambridge St @ Sixth St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234208.976199999,
+          902430.302200001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "23a1fde8-3557-4f34-9a13-53dce5f27bb6",
+        "FID": 2675.0,
+        "LineCount": 1.0,
+        "STOP_ID": 1411.0,
+        "STOP_NAME": "Cambridge St @ Sixth St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234188.864100002,
+          902433.647599999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "19b109ea-da5c-4ccc-b1f8-00b42e9062e1",
+        "FID": 2678.0,
+        "LineCount": 1.0,
+        "STOP_ID": 1420.0,
+        "STOP_NAME": "Cambridge St @ Lambert St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233995.392499998,
+          902467.4553
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "1dfbbd4e-2391-445b-9ea3-67ee0807594f",
+        "FID": 3966.0,
+        "LineCount": 1.0,
+        "STOP_ID": 11410.0,
+        "STOP_NAME": "Cambridge St @ Max Ave",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233973.233000003,
+          902470.826699998
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "55ebfbae-8365-4b54-be3f-15b46b78718d",
+        "FID": 3970.0,
+        "LineCount": 1.0,
+        "STOP_ID": 1409.0,
+        "STOP_NAME": "Cambridge St @ Berkshire St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233801.146200001,
+          902500.137499999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "ba68eccc-ffbb-4604-84d2-a3c0d905bd71",
+        "FID": 3973.0,
+        "LineCount": 1.0,
+        "STOP_ID": 1421.0,
+        "STOP_NAME": "Cambridge St @ Berkshire St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233773.932599999,
+          902504.7414
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "8714312f-2710-4c6f-8be0-9b76c2ad6e34",
+        "FID": 3987.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2602.0,
+        "STOP_NAME": "O'Brien Hwy @ Winter St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234591.523199998,
+          902544.4527
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "9934db3a-3d97-47e1-893d-da5b5129491a",
+        "FID": 4014.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2515.0,
+        "STOP_NAME": "Windsor St @ Lincoln St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233446.031499997,
+          902360.672499999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "b03edd1a-4e3f-4611-9f70-2a54792d93ba",
+        "FID": 4017.0,
+        "LineCount": 1.0,
+        "STOP_ID": 1416.0,
+        "STOP_NAME": "Cambridge St @ Third St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234590.775200002,
+          902367.055500001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "a567b034-6ad0-456d-b32e-3b73e8eb88a2",
+        "FID": 4021.0,
+        "LineCount": 4.0,
+        "STOP_ID": 14150.0,
+        "STOP_NAME": "Lechmere Station - Outbound Side",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234831.100100003,
+          902372.374299999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "f9c869fc-65d2-4e92-bb34-1dcde7ed7066",
+        "FID": 4155.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2437.0,
+        "STOP_NAME": "Beacon St @ Cooney St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232618.9432,
+          902939.933699999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "64d2771f-aade-45d5-a22b-567f14f0dea6",
+        "FID": 4161.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2767.0,
+        "STOP_NAME": "Springfield St @ Newton St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232980.357100002,
+          902950.115400001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "0aa8c68d-8977-4e4c-853e-dfac4c22df5f",
+        "FID": 4166.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2769.0,
+        "STOP_NAME": "Springfield St @ Newton St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232982.238799997,
+          902956.365600001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "56a78df5-46a8-4c16-886b-490f5e12ab5b",
+        "FID": 4178.0,
+        "LineCount": 1.0,
+        "STOP_ID": 25713.0,
+        "STOP_NAME": "Washington St @ Kingman Rd",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233118.141500004,
+          903298.555199999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "9398ee45-d3b0-43d7-b5ea-2ddd91933c5f",
+        "FID": 4179.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2773.0,
+        "STOP_NAME": "Washington St @ Merriam St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233575.993299998,
+          903298.823199999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "036cfd6c-13c1-46cb-b1bd-166901b3cfb8",
+        "FID": 4180.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2610.0,
+        "STOP_NAME": "Washington St @ Washington Terr",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233528.203500003,
+          903299.871399999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "814eeacf-7c85-4dfd-bd7a-ba24825d418f",
+        "FID": 4181.0,
+        "LineCount": 5.0,
+        "STOP_ID": 2612.0,
+        "STOP_NAME": "Somerville Ave @ Stone Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233337.3248,
+          903300.340700001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "53ab3735-c8fa-40e4-b004-67c80719a823",
+        "FID": 4184.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2597.0,
+        "STOP_NAME": "Somerville Ave @ Prospect St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233326.107299998,
+          903306.635299999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "0ea0f6f8-dd8e-4ed3-94fd-7464fcf43667",
+        "FID": 4185.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2613.0,
+        "STOP_NAME": "Washington St @ Webster Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233198.202,
+          903309.491599999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "5b076dc5-dca2-4083-a733-9b87b7ac3e40",
+        "FID": 4187.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2763.0,
+        "STOP_NAME": "Washington St @ Boston St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233656.639600001,
+          903318.728300001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "cf852f60-db9f-400d-9ca5-1a008c80c0cb",
+        "FID": 4192.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2774.0,
+        "STOP_NAME": "Washington St @ McGrath Hwy",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233767.487099998,
+          903343.927900001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "e7f3655e-384f-4609-8b1d-45c80bb36066",
+        "FID": 4198.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2510.0,
+        "STOP_NAME": "Somerville Ave @ Union Square",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233215.722199999,
+          903360.052099999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "d22279bc-1ec3-4347-aea6-264691d2f635",
+        "FID": 4200.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2457.0,
+        "STOP_NAME": "Beacon St @ Park St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232232.653999999,
+          903362.2808
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "a38a3c4e-9f53-42f3-bbd2-280f444745b9",
+        "FID": 4204.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2762.0,
+        "STOP_NAME": "Washington St @ McGrath Hwy",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233752.8785,
+          903373.415399998
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "26024515-63cf-4704-9073-91a87ba18689",
+        "FID": 4207.0,
+        "LineCount": 2.0,
+        "STOP_ID": 26131.0,
+        "STOP_NAME": "Bow St @ Warren Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233216.262400001,
+          903383.137600001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "b73a1865-83eb-4d1c-9103-134d07de9a24",
+        "FID": 4211.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2433.0,
+        "STOP_NAME": "Park St @ Beacon St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232239.894400001,
+          903387.199999999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "d5baf57d-72d5-4bb1-b37d-e2790fe07ec2",
+        "FID": 4215.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2690.0,
+        "STOP_NAME": "Medford St @ Washington St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233764.8807,
+          903395.923300002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "ca27a4d3-6118-4f4c-91b1-9708e9d957c4",
+        "FID": 4224.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2775.0,
+        "STOP_NAME": "Washington St @ Joy St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233867.410099998,
+          903426.607999999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "7da2d0cf-40e3-444d-9591-7bcd0bc41f03",
+        "FID": 4240.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2761.0,
+        "STOP_NAME": "Washington St @ Tufts St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233973.295500003,
+          903471.893399999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "1318db33-682f-456d-99f1-430fbf2ffbb5",
+        "FID": 4241.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2659.0,
+        "STOP_NAME": "McGrath Hwy @ Alston St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233785.236500002,
+          903474.075100001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "66943fac-413f-473e-a62b-034a9541cd57",
+        "FID": 4246.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2595.0,
+        "STOP_NAME": "Somerville Ave @ Carlton St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232969.564900003,
+          903490.651799999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "f211dfa4-6cf7-461e-9d26-0f017ad2ad3c",
+        "FID": 4256.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2776.0,
+        "STOP_NAME": "Washington St @ New Washington St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234066.035400003,
+          903503.083799999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "c63b98e4-a25d-41ff-8963-83028fe79bd3",
+        "FID": 4262.0,
+        "LineCount": 1.0,
+        "STOP_ID": 12615.0,
+        "STOP_NAME": "Somerville Ave @ Church St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232913.081200004,
+          903517.381000001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "140acb48-489c-4b4a-8864-08c579246db4",
+        "FID": 4266.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2760.0,
+        "STOP_NAME": "Washington St @ Franklin St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234189.060999997,
+          903531.434799999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "a654783d-2948-4133-b489-a75e061ca638",
+        "FID": 4267.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2574.0,
+        "STOP_NAME": "51 Bow St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233062.176600002,
+          903531.968800001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "5929d75b-82a6-4402-8767-ed5a2abd538b",
+        "FID": 4276.0,
+        "LineCount": 1.0,
+        "STOP_ID": 1408.0,
+        "STOP_NAME": "Cambridge St @ Windsor St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233509.5995,
+          902550.169500001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "d430aa2d-9b9b-492c-9822-b86b6dfd2d97",
+        "FID": 4277.0,
+        "LineCount": 1.0,
+        "STOP_ID": 1422.0,
+        "STOP_NAME": "Cambridge St @ Windsor St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233509.5995,
+          902550.169500001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "77d1a812-b4fa-4330-9dd7-2354ed8b5fa6",
+        "FID": 4279.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2525.0,
+        "STOP_NAME": "Columbia St @ Cambridge St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233393.623599999,
+          902556.4703
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "077a3245-0466-4546-b8b8-df911970df2e",
+        "FID": 4283.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2514.0,
+        "STOP_NAME": "Webster Ave @ Cambridge St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233399.9155,
+          902575.580600001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "25459df1-4960-43ef-b97e-a5ba96ea9470",
+        "FID": 4284.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2606.0,
+        "STOP_NAME": "225 Msgr O'Brien Hwy",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234571.101599999,
+          902575.6644
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "686178f5-fd68-41f1-8dfe-b3a707313b5d",
+        "FID": 4292.0,
+        "LineCount": 1.0,
+        "STOP_ID": 1423.0,
+        "STOP_NAME": "Cambridge St @ Norfolk St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233264.982699998,
+          902591.376400001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "e0688f3d-d4d4-44ee-8a09-14b088ec1812",
+        "FID": 4293.0,
+        "LineCount": 1.0,
+        "STOP_ID": 1406.0,
+        "STOP_NAME": "Cambridge St @ Norfork St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233246.467200004,
+          902594.545000002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "80642740-0a4f-4f7c-ac5e-ff63306a1a6f",
+        "FID": 4302.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2439.0,
+        "STOP_NAME": "Hampshire St @ Inman St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232912.151699997,
+          902617.069800001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "855ea7bf-ec78-44ca-ab0e-0381d1494fde",
+        "FID": 4306.0,
+        "LineCount": 1.0,
+        "STOP_ID": 1424.0,
+        "STOP_NAME": "Cambridge St @ Prospect St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233110.797200002,
+          902618.552900001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "be95ef4f-d5e2-4c5b-8c74-e2b7957da051",
+        "FID": 4310.0,
+        "LineCount": 1.0,
+        "STOP_ID": 1405.0,
+        "STOP_NAME": "Cambridge St @ Prospect St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233091.155000001,
+          902622.048900001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "6dafe060-633d-4cdc-8919-ba9e4ff87f0a",
+        "FID": 4312.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2451.0,
+        "STOP_NAME": "Hampshire St @ Cambridge St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232907.402000003,
+          902622.244199999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "e32d6df9-3d68-4dcf-a0d0-b37746c7f480",
+        "FID": 4317.0,
+        "LineCount": 1.0,
+        "STOP_ID": 1404.0,
+        "STOP_NAME": "Cambridge St @ Hampshire St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232913.498599999,
+          902652.343199998
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "143c793d-ef1d-48cc-a8d4-a8e361fea226",
+        "FID": 4318.0,
+        "LineCount": 1.0,
+        "STOP_ID": 1425.0,
+        "STOP_NAME": "Cambridge St @ Springfield St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232913.498599999,
+          902652.343199998
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "eff05771-bb66-4fd0-99aa-6828790062d2",
+        "FID": 4328.0,
+        "LineCount": 1.0,
+        "STOP_ID": 14031.0,
+        "STOP_NAME": "Cambridge St @ Fayette St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232764.115800001,
+          902677.448100001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "d6864859-18e6-4dfc-8303-0ca66659c14f",
+        "FID": 4329.0,
+        "LineCount": 1.0,
+        "STOP_ID": 1426.0,
+        "STOP_NAME": "Cambridge St opp Fayette St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232757.949199997,
+          902678.425099999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "00d44888-0072-404a-9f46-d72be5504ea6",
+        "FID": 4333.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2601.0,
+        "STOP_NAME": "O'Brien Hwy @ Twin City Plaza",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234368.359099999,
+          902689.864
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "00a5a132-edb6-415b-9b86-1a830ee88495",
+        "FID": 4334.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2605.0,
+        "STOP_NAME": "245 O'Brien Hwy @ Twin City Plaza",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234376.763800003,
+          902702.344300002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "898f49be-1749-4d27-ba7d-3b3a9f07055b",
+        "FID": 4338.0,
+        "LineCount": 1.0,
+        "STOP_ID": 1403.0,
+        "STOP_NAME": "Cambridge St @ Highland Ave",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232572.441299997,
+          902709.3906
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "2ed94d6f-5c5e-498b-9680-f2fcbbbb8451",
+        "FID": 4341.0,
+        "LineCount": 1.0,
+        "STOP_ID": 1427.0,
+        "STOP_NAME": "Cambridge St @ Camelia Ave",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232530.900799997,
+          902716.035
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "c2bd71c5-fd77-472f-9a82-bbd2f876c8bb",
+        "FID": 4344.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2452.0,
+        "STOP_NAME": "Beacon St @ Dickinson St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232807.844099998,
+          902731.937600002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "a5c1d65c-12d7-4840-915a-89e8eb39fe29",
+        "FID": 4346.0,
+        "LineCount": 1.0,
+        "STOP_ID": 1402.0,
+        "STOP_NAME": "Cambridge St @ Dana St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232353.095299996,
+          902745.4047
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "68a234ce-5856-4dd2-b5e9-f4f16390979c",
+        "FID": 4351.0,
+        "LineCount": 1.0,
+        "STOP_ID": 1428.0,
+        "STOP_NAME": "Cambridge St @ Hovey Ave",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232288.123599999,
+          902757.5196
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "65a107fc-0b27-4258-931d-5caa572c515b",
+        "FID": 4365.0,
+        "LineCount": 1.0,
+        "STOP_ID": 1429.0,
+        "STOP_NAME": "Cambridge St @ Trowbridge St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232124.830499999,
+          902785.1756
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "d49184c0-e914-47f0-b5d8-71f3c42cbdb6",
+        "FID": 4371.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2438.0,
+        "STOP_NAME": "Beacon St opp Concord Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232743.650399998,
+          902801.840100002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "3afd2fa8-5aaa-4cc6-8b10-37843f5f433a",
+        "FID": 4372.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2527.0,
+        "STOP_NAME": "Webster Ave @ Columbia St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233358.042099997,
+          902802.057700001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "66b1f814-9b44-4183-8f30-d13051d9c779",
+        "FID": 4381.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2513.0,
+        "STOP_NAME": "Webster Ave @ Norfolk St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233353.325800002,
+          902822.0581
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "1eacd1c3-5ca5-4818-b179-c2cafd9b03ae",
+        "FID": 4388.0,
+        "LineCount": 1.0,
+        "STOP_ID": 12767.0,
+        "STOP_NAME": "Springfield St opp Houghton St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232944.084299996,
+          902828.940499999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "469ed05c-627e-43f9-8014-85232e664c0f",
+        "FID": 4392.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2768.0,
+        "STOP_NAME": "Springfield St @ Houghton St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232945.633500002,
+          902834.185600001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "18dda78a-6b37-41d5-8ce2-87afd55cd34a",
+        "FID": 4406.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2453.0,
+        "STOP_NAME": "45 Beacon St.",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232666.156800002,
+          902887.6952
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "b96443b0-e171-4aac-9f4f-72858149a4bb",
+        "FID": 4432.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2687.0,
+        "STOP_NAME": "Highland Ave @ Walnut St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233410.195600003,
+          903932.6631
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "3d64e53b-7859-418a-9132-1d3c74113dba",
+        "FID": 4436.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2532.0,
+        "STOP_NAME": "117 Summer St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232701.980099998,
+          903935.950599998
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "f0c9c866-862b-4a98-bf05-31622bf1d6b5",
+        "FID": 4445.0,
+        "LineCount": 6.0,
+        "STOP_ID": 2717.0,
+        "STOP_NAME": "Main St @ Dorrance St",
+        "TOWN": "BOSTON",
+        "TOWN_ID": 35.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234918.906099997,
+          903974.625100002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "1153bf69-27bd-43e1-b21c-7aded68dadf4",
+        "FID": 4451.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2394.0,
+        "STOP_NAME": "Pearl St @ Cross St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233925.220200002,
+          903997.364399999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "330392e5-d186-42ca-91b3-e21aeb3af01b",
+        "FID": 4452.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2750.0,
+        "STOP_NAME": "Cross St @ Pearl St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233942.669,
+          903997.4212
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "9a562d64-34e7-4dd2-acf3-04fe077ec8bb",
+        "FID": 4453.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2534.0,
+        "STOP_NAME": "Summer St opp Carter Terr",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232568.485600002,
+          903998.645599999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "f07c8dc5-8254-4528-a058-3fdb73b10c3a",
+        "FID": 4455.0,
+        "LineCount": 1.0,
+        "STOP_ID": 24581.0,
+        "STOP_NAME": "Somerville Ave @ Elm St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231760.3904,
+          904001.812800001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "d700b53f-f76c-4ba9-9f17-d7585a953096",
+        "FID": 4456.0,
+        "LineCount": 3.0,
+        "STOP_ID": 5502.0,
+        "STOP_NAME": "Alford St @ West St",
+        "TOWN": "BOSTON",
+        "TOWN_ID": 35.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          235130.234999999,
+          904004.7936
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "50cc8545-0870-4fc4-a5be-e80c4092fcde",
+        "FID": 4457.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2745.0,
+        "STOP_NAME": "Cross St @ Pearl St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233946.373000003,
+          904005.298099998
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "6e536c81-c093-4ce8-b42b-fb50b2c6bc2b",
+        "FID": 4458.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2432.0,
+        "STOP_NAME": "Somerville Ave opp Elm St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231754.987899996,
+          904005.794199999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "5c1d0df8-fc28-4c84-8b40-2a9daca55194",
+        "FID": 4461.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2588.0,
+        "STOP_NAME": "Elm St opp Porter St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231809.649700001,
+          904012.9815
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "3576576e-38d9-4bd2-bf3b-b11ac4ebd791",
+        "FID": 4462.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2686.0,
+        "STOP_NAME": "Highland Ave @ Vinal Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233254.9027,
+          904014.244399998
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "08c924d2-1fce-48cf-9b31-ccf4bd43c752",
+        "FID": 4464.0,
+        "LineCount": 3.0,
+        "STOP_ID": 5504.0,
+        "STOP_NAME": "Alford St @ Main St",
+        "TOWN": "BOSTON",
+        "TOWN_ID": 35.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          235200.582800001,
+          904033.214600001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "b08a53e5-1f25-4f2b-91dc-b24ea5116b98",
+        "FID": 4465.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2662.0,
+        "STOP_NAME": "75 Highland Ave opp Putnam St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233213.959700003,
+          904035.437899999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "ade03d98-f45e-4ceb-814c-7b19e9509298",
+        "FID": 4469.0,
+        "LineCount": 5.0,
+        "STOP_ID": 2714.0,
+        "STOP_NAME": "Broadway @ Mt Vernon St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234699.187700003,
+          904041.968899999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "5f96e892-8743-43fa-9654-841ed636aef0",
+        "FID": 4470.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2622.0,
+        "STOP_NAME": "Elm St @ Porter St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231790.854999997,
+          904042.209800001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "85eea1ed-eed1-4bba-b0eb-e97048d8ef13",
+        "FID": 4472.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2683.0,
+        "STOP_NAME": "Highland Ave @ Trull Ln",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232837.349399999,
+          904205.642299999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "18b34859-e78a-4c6f-984d-e3fa6884d99d",
+        "FID": 4473.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2875.0,
+        "STOP_NAME": "Mystic Ave @ Union St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234702.737899996,
+          904217.675000001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "ac203317-7f03-4fee-8194-00a04a3daf36",
+        "FID": 4474.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2623.0,
+        "STOP_NAME": "Elm St @ Cedar St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231673.330799997,
+          904219.794599999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "1cbadc43-caca-4501-a2da-426de611a819",
+        "FID": 4475.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2397.0,
+        "STOP_NAME": "Pearl St @ Bradley St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233380.436899997,
+          904222.2344
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "39f89330-e6cd-44a8-9b43-6a8b2a35a604",
+        "FID": 4476.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2389.0,
+        "STOP_NAME": "Pearl St @ Skilton Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233369.958300002,
+          904226.5436
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "a3975c09-87c5-4554-846d-8231015738fb",
+        "FID": 4478.0,
+        "LineCount": 4.0,
+        "STOP_ID": 2711.0,
+        "STOP_NAME": "Broadway @ Glen St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234231.585100003,
+          904231.855599999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "b8046ab7-7513-47b6-9510-3233553824f3",
+        "FID": 4479.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2587.0,
+        "STOP_NAME": "Elm St @ Mossland St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231659.809699997,
+          904240.444400001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "0e151fe8-8273-44ad-89de-3a872d6c7a13",
+        "FID": 4480.0,
+        "LineCount": 4.0,
+        "STOP_ID": 2720.0,
+        "STOP_NAME": "Broadway @ Michigan Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234234.749700002,
+          904245.500300001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "f576be91-f63c-4cf4-aa11-e3132ed29766",
+        "FID": 4483.0,
+        "LineCount": 2.0,
+        "STOP_ID": 12301.0,
+        "STOP_NAME": "Massachusetts Ave @ Upland Rd",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231332.389399998,
+          904261.690900002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "7993e726-1525-43cf-a534-5514db14dba7",
+        "FID": 4486.0,
+        "LineCount": 3.0,
+        "STOP_ID": 23151.0,
+        "STOP_NAME": "Massachusetts Ave @ Porter Red Line Sta",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231338.296499997,
+          904282.687899999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "8b0375d8-d298-462b-ba86-f50abb609211",
+        "FID": 4487.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2666.0,
+        "STOP_NAME": "Highland Ave @ Central St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232647.011100002,
+          904291.166099999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "16bec647-42e3-4b60-a7ae-9351bb42e699",
+        "FID": 4488.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2682.0,
+        "STOP_NAME": "Highland Ave @ Central St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232647.011100002,
+          904291.166099999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "d6bd6684-b942-4bba-b8d6-e20e8a6b90b7",
+        "FID": 4489.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2430.0,
+        "STOP_NAME": "Somerville Ave @ Massachusetts Ave",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231377.796999998,
+          904293.0502
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "7446a832-92ed-4587-acd7-e5680a3af301",
+        "FID": 4490.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2460.0,
+        "STOP_NAME": "Somerville Ave @ White St (Porter Sq)",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231377.796999998,
+          904293.0502
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "a9eba8f6-8756-41b8-831f-bfd929b62d65",
+        "FID": 4491.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2748.0,
+        "STOP_NAME": "Cross St @ Broadway",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234083.678599998,
+          904300.377799999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "e027fee7-5073-4c21-9b01-02cfef28d437",
+        "FID": 4494.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2747.0,
+        "STOP_NAME": "Cross St @ Broadway",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234087.075499997,
+          904307.531500001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "28247ba7-e671-4e92-b54d-c79e079a34e4",
+        "FID": 4499.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2710.0,
+        "STOP_NAME": "Broadway @ Cross St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234084.199000001,
+          904322.470199998
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "f54b92aa-20e0-497f-a728-96a8b8fe0fae",
+        "FID": 4500.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2721.0,
+        "STOP_NAME": "Broadway @ Cross St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234105.910800003,
+          904323.8532
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "47d31c5c-42e3-4213-8dd6-703480c866f8",
+        "FID": 4504.0,
+        "LineCount": 2.0,
+        "STOP_ID": 42876.0,
+        "STOP_NAME": "Mystic Ave @ Plaza Entrance - Home Depot",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234577.799099997,
+          904343.311799999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "ef98dfd0-b8cb-4409-be05-8c34f86cc36c",
+        "FID": 4506.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2667.0,
+        "STOP_NAME": "Highland Ave @ Benton Rd",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232516.6567,
+          904350.035100002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "6f644370-ea3a-45d6-be7f-bbf0c5ef5e88",
+        "FID": 4510.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2681.0,
+        "STOP_NAME": "Highland Ave @ Benton Rd",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232498.317699999,
+          904358.6844
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "33212b32-6916-42c7-9c70-2a9fed3ce308",
+        "FID": 4511.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2398.0,
+        "STOP_NAME": "Medford St @ School St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233178.8671,
+          904359.431000002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "7052e2d2-af8d-4c68-af88-59c094f6ccfb",
+        "FID": 4513.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2388.0,
+        "STOP_NAME": "Medford St @ School St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233166.714199997,
+          904374.749400001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "5329aafd-070d-4739-a1e5-c4f224523669",
+        "FID": 4514.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2316.0,
+        "STOP_NAME": "Massachusetts Ave @ Davenport St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231302.5656,
+          904378.824000001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "81e1cc54-29ef-41b7-a40f-2ad450b1beb9",
+        "FID": 4518.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2722.0,
+        "STOP_NAME": "Broadway @ Kensington Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233982.424199998,
+          904400.2412
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "b87d2ce3-d5b9-445c-84dd-cc24a603f6bd",
+        "FID": 4519.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2709.0,
+        "STOP_NAME": "Broadway St @ MacArthur St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233952.859300002,
+          904401.000300001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "b5db1254-5216-4bc5-8b57-f316479f1eb3",
+        "FID": 4521.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2586.0,
+        "STOP_NAME": "Elm St @ Porter Sq Shopping Ctr",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231546.788199998,
+          904401.657099999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "7441072a-478a-4b31-82d5-4db4ec9cde5f",
+        "FID": 4529.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2625.0,
+        "STOP_NAME": "Elm St @ Hancock St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231515.861000001,
+          904445.949299999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "61b46648-d11d-436b-9412-005787637710",
+        "FID": 4530.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2708.0,
+        "STOP_NAME": "Broadway @ McGrath Hwy",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233875.307700001,
+          904446.803300001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "e313253c-9bbe-4a1d-994c-ecfc12fad980",
+        "FID": 4531.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2300.0,
+        "STOP_NAME": "Massachusetts Ave opp Beech St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231234.109099999,
+          904454.312800001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "a81ac5b3-ace2-4d4b-b71c-831f69e64291",
+        "FID": 4534.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2387.0,
+        "STOP_NAME": "Medford St @ Thurston St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233097.028300002,
+          904463.474399999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "798b0b31-8e48-492e-bf15-c92b94e4a0a4",
+        "FID": 4538.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2680.0,
+        "STOP_NAME": "Highland Ave @ Lowell St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232297.204999998,
+          904475.470800001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "b668b6ba-65dc-419b-9f96-f86058666933",
+        "FID": 4539.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2668.0,
+        "STOP_NAME": "Highland Ave @ Lowell St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232291.397299998,
+          904478.9782
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "06eebd43-d236-4ccb-a5a4-2d75b4138455",
+        "FID": 4542.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2399.0,
+        "STOP_NAME": "Medford St @ Thurston St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233068.138400003,
+          904502.5658
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "8cc66f50-5d7e-4542-8fcc-5b701e452d48",
+        "FID": 4548.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2877.0,
+        "STOP_NAME": "Mystic Ave @ Middlesex Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234397.903399996,
+          904525.532200001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "bc94a1f7-72d6-4f0e-a037-e58aa2f00f5d",
+        "FID": 4550.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2679.0,
+        "STOP_NAME": "Highland Ave @ Tower St.",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232211.348099999,
+          904526.115600001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "f6f9628b-6293-489c-b81e-cd1fc131a0fd",
+        "FID": 4553.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2707.0,
+        "STOP_NAME": "Broadway @ Montgomery Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233741.976800002,
+          904529.026799999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "9f727a26-c0f2-4b0b-bb75-1742055c270d",
+        "FID": 4555.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2723.0,
+        "STOP_NAME": "Broadway @ Fellsway W",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233749.9586,
+          904547.9943
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "57c5936a-4c4c-4cdb-b4f8-f687bf50a181",
+        "FID": 4558.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2669.0,
+        "STOP_NAME": "235 Highland Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232170.9441,
+          904551.431400001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "f928dd2d-ca17-40c9-ab71-935784d8a4f7",
+        "FID": 4561.0,
+        "LineCount": 3.0,
+        "STOP_ID": 55011.0,
+        "STOP_NAME": "Alford St @ MWRA Pump Station",
+        "TOWN": "BOSTON",
+        "TOWN_ID": 35.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          235395.808300003,
+          904584.3277
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "89184997-1b01-4ecb-bedd-da48db48995b",
+        "FID": 4566.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2299.0,
+        "STOP_NAME": "Massachusetts Ave @ Walden St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231030.856700003,
+          904594.760200001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "496332a8-25a0-4034-b886-330f06b1d03f",
+        "FID": 4567.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2386.0,
+        "STOP_NAME": "Medford St @ Sycamore St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232995.560000002,
+          904597.7302
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "ee181a11-676f-4150-a37e-deeb278320dc",
+        "FID": 4568.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2400.0,
+        "STOP_NAME": "Medford St @ Sycamore St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232991.626199998,
+          904602.807100002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "8d1d25eb-c9fc-4e26-a335-0b0d298d1a68",
+        "FID": 4571.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2318.0,
+        "STOP_NAME": "Massachusetts Ave opp Walden St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231017.357299998,
+          904617.258299999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "b80fed15-1c35-4afd-a702-4ddd175548a7",
+        "FID": 4572.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2678.0,
+        "STOP_NAME": "Highland Ave @ Conwell St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232054.340000004,
+          904621.6547
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "a42a78ed-4723-4ff5-9ae1-048cdfc93a08",
+        "FID": 4573.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2670.0,
+        "STOP_NAME": "263 Highland Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232049.947700001,
+          904624.372200001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "ad223b3e-758f-4820-bc33-6d689fb2baed",
+        "FID": 4577.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2584.0,
+        "STOP_NAME": "Elm St @ Beech St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231355.168499999,
+          904643.530099999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "0225cbf1-5844-475f-93cc-ed392605328f",
+        "FID": 4579.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2724.0,
+        "STOP_NAME": "Broadway @ Grant St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233628.500200003,
+          904646.266600002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "dfd143b5-135f-4bd1-89aa-5476d7a29f7d",
+        "FID": 4580.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2626.0,
+        "STOP_NAME": "Elm St @ Saint James Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231344.4221,
+          904658.6756
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "1512ab95-d52f-45b6-babb-fe7e8a103f59",
+        "FID": 4586.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2902.0,
+        "STOP_NAME": "Mystic Ave @ Kensingston Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234178.192000002,
+          904688.640099999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "f87b2aa9-c69f-4433-abe4-17a21f1166d3",
+        "FID": 4588.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2677.0,
+        "STOP_NAME": "Highland Ave @ Cedar St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231929.754900001,
+          904697.603100002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "54f8fb0a-5abc-469d-ac79-0a27fcea9f64",
+        "FID": 4596.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2519.0,
+        "STOP_NAME": "Avon St @ Central St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232564.875600003,
+          904076.811999999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "93eddb18-41bc-450e-a9ef-51b740dd5f69",
+        "FID": 4598.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2395.0,
+        "STOP_NAME": "Pearl St @ McGrath Hwy",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233731.960500002,
+          904078.161800001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "703f7cc8-08ce-428a-9310-453b2b8fd091",
+        "FID": 4603.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2391.0,
+        "STOP_NAME": "Pearl St @ McGrath Hwy",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233687.039999999,
+          904096.467099998
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "1e2b1099-c2ac-4c9d-af40-b7e457cb19d4",
+        "FID": 4604.0,
+        "LineCount": 4.0,
+        "STOP_ID": 2713.0,
+        "STOP_NAME": "Broadway @ Lincoln St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234535.906000003,
+          904104.2502
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "994eee93-1c98-4e08-ab8b-842185046df9",
+        "FID": 4606.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2664.0,
+        "STOP_NAME": "Highland Ave @ School St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233052.678400002,
+          904109.719700001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "73d27af7-e99e-4ea6-ac19-7943304ac7e1",
+        "FID": 4607.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2684.0,
+        "STOP_NAME": "Highland Ave @ School St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233034.608400002,
+          904117.8356
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "52305e0a-096f-4db9-897c-66ea3e8c7cb5",
+        "FID": 4609.0,
+        "LineCount": 1.0,
+        "STOP_ID": 23951.0,
+        "STOP_NAME": "Pearl St @ Wesley St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233630.770499997,
+          904119.545299999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "48e16ff3-8e54-4908-8300-fdd47683dc19",
+        "FID": 4610.0,
+        "LineCount": 4.0,
+        "STOP_ID": 2718.0,
+        "STOP_NAME": "Broadway @ Austin St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234526.745800003,
+          904119.709199999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "13b30041-ad00-46fb-ba3d-f3b683661a95",
+        "FID": 4614.0,
+        "LineCount": 3.0,
+        "STOP_ID": 55012.0,
+        "STOP_NAME": "Alford St @ MBTA Charlestown Garage",
+        "TOWN": "BOSTON",
+        "TOWN_ID": 35.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          235178.483900003,
+          904129.937800001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "d36032d0-c9c5-4ae9-92b0-243f59dccbbe",
+        "FID": 4616.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2749.0,
+        "STOP_NAME": "Cross St @ Otis St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234013.3587,
+          904148.875
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "3e502019-18c1-4d51-824b-3a217a8d03ab",
+        "FID": 4617.0,
+        "LineCount": 4.0,
+        "STOP_ID": 2712.0,
+        "STOP_NAME": "Broadway @ Franklin St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234407.507299997,
+          904152.330699999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "8f2112c3-ee31-4749-a02e-e59a63055cde",
+        "FID": 4618.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2746.0,
+        "STOP_NAME": "Cross St @ Ellsworth St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234016.418499999,
+          904155.082400002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "1c0b73ad-d46c-45cf-8eea-5ad792688738",
+        "FID": 4619.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2431.0,
+        "STOP_NAME": "Somerville Ave opp Mossland St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231554.424400002,
+          904155.748
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "7abc1fff-f41d-4641-a7b7-b715bbc75ac6",
+        "FID": 4621.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2396.0,
+        "STOP_NAME": "Pearl St @ Walnut St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233510.059500001,
+          904170.142200001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "ab727a3b-bd9d-4844-82b8-04a5218f1f81",
+        "FID": 4623.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2390.0,
+        "STOP_NAME": "Pearl St @ Walnut St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233490.6325,
+          904178.161499999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "85afb984-6b72-415f-8bc4-00278016f5ba",
+        "FID": 4625.0,
+        "LineCount": 4.0,
+        "STOP_ID": 2719.0,
+        "STOP_NAME": "Broadway @ Indiana Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234377.156499997,
+          904179.451900002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "78c927f2-32c7-4de9-ba15-0efc1789b3d4",
+        "FID": 4627.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2459.0,
+        "STOP_NAME": "Somerville Ave @ Beacon Terr",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231509.520900004,
+          904188.009199999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "406bf6ef-f42d-4414-8532-b4de8ded553f",
+        "FID": 4629.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2665.0,
+        "STOP_NAME": "125 Highland Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232854.897,
+          904197.660300002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "390ca7a6-a6fd-4bf6-a5a8-ea08284c106c",
+        "FID": 4633.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2778.0,
+        "STOP_NAME": "Washington St opp Myrtle St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234252.809799999,
+          903543.146000002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "9ed36cae-484d-47ab-8af8-6a9730de8c99",
+        "FID": 4634.0,
+        "LineCount": 3.0,
+        "STOP_ID": 12759.0,
+        "STOP_NAME": "Washington St @ Myrtle St - Cobble Hill Apt",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234275.558899999,
+          903547.1701
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "10afb429-5f4a-43cd-bfb7-2e3746f7d9ea",
+        "FID": 4637.0,
+        "LineCount": 1.0,
+        "STOP_ID": 12616.0,
+        "STOP_NAME": "Somerville Ave @ School St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232785.507799998,
+          903569.602899998
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "f75d89ff-c277-4107-9b2d-619cbf6aabea",
+        "FID": 4639.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2594.0,
+        "STOP_NAME": "Somerville Ave opp School St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232764.017899998,
+          903579.016199999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "8d70197b-443e-4662-bd84-dc4d2a6c01c3",
+        "FID": 4641.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2759.0,
+        "STOP_NAME": "Washington St @ Mt Vernon St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234437.429700002,
+          903582.7401
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "9e0a5cd5-2732-4793-bab4-f828ce38f2c2",
+        "FID": 4645.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2614.0,
+        "STOP_NAME": "Summer St @ Wesley Park",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233084.286799997,
+          903589.813900001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "3030de94-31c6-46ce-b5ae-959c477c1c70",
+        "FID": 4647.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2777.0,
+        "STOP_NAME": "Washington St @ Inner Belt Rd",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234477.919699997,
+          903591.887499999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "de64c58c-edca-49be-a7cb-d341aacc993e",
+        "FID": 4654.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2508.0,
+        "STOP_NAME": "Summer St @ Vinal Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233070.790799998,
+          903608.971000001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "58593328-bf42-4513-a1b7-e1c3fc943eab",
+        "FID": 4657.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2758.0,
+        "STOP_NAME": "Cambridge St @ Parker St",
+        "TOWN": "BOSTON",
+        "TOWN_ID": 35.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234591.750399999,
+          903612.589200001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "b99b51fe-1a52-4188-bbc9-9b7e168c159b",
+        "FID": 4662.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2779.0,
+        "STOP_NAME": "Cambridge St @ Carter St",
+        "TOWN": "BOSTON",
+        "TOWN_ID": 35.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234667.368299998,
+          903626.3715
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "ffd8c551-5483-40fd-941b-36007fb68517",
+        "FID": 4664.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2754.0,
+        "STOP_NAME": "Cross St @ Chester Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233747.766999997,
+          903639.886399999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "777a9db2-8536-4c06-af76-f5c5cb915037",
+        "FID": 4666.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2757.0,
+        "STOP_NAME": "Cambridge St @ Brighton St",
+        "TOWN": "BOSTON",
+        "TOWN_ID": 35.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234721.600199997,
+          903644.028900001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "b90363ea-65d8-4fab-a42d-8841e325fe44",
+        "FID": 4667.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2392.0,
+        "STOP_NAME": "Cross St @ Alston St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233750.087200001,
+          903646.5634
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "39f884ba-5279-43fc-bf0b-9c912384e8df",
+        "FID": 4668.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2617.0,
+        "STOP_NAME": "Somerville Ave @ Loring St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232604.606600001,
+          903648.0748
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "50a4d4b2-06ea-49bd-958d-6501366793c6",
+        "FID": 4671.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2593.0,
+        "STOP_NAME": "Somerville Ave opp Loring St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232594.984099999,
+          903652.312399998
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "224fe0be-7e38-46dc-9736-3726c5643eee",
+        "FID": 4672.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2689.0,
+        "STOP_NAME": "422 McGrath Hwy",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233679.038400002,
+          903652.951499999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "48f3d813-224e-4868-8b19-7591172f695b",
+        "FID": 4690.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2591.0,
+        "STOP_NAME": "Somerville Ave opp Central St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232364.381399997,
+          903722.328000002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "4ba548e4-4519-4706-b466-71abc8589ca1",
+        "FID": 4692.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2618.0,
+        "STOP_NAME": "Somerville Ave @ Central St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232357.2117,
+          903724.515900001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "d7201db1-5069-4983-8c5d-b187d8d75bde",
+        "FID": 4705.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2753.0,
+        "STOP_NAME": "Cross St @ Auburn Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233804.691600002,
+          903774.734900001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "7990ee70-2866-461d-ad9b-a768f1acb344",
+        "FID": 4706.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2590.0,
+        "STOP_NAME": "594 Somerville Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232183.4745,
+          903776.557300001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "40280f41-5653-4724-a22c-265773aa59fd",
+        "FID": 4709.0,
+        "LineCount": 2.0,
+        "STOP_ID": 23921.0,
+        "STOP_NAME": "Cross St @ Fountain Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233807.429399997,
+          903779.815900002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "72b6ea6a-6cc1-4fdc-bb14-0d35a34fe56b",
+        "FID": 4712.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2620.0,
+        "STOP_NAME": "Somerville Ave @ Spring St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232141.579000004,
+          903788.5449
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "959754b3-233c-4050-8c12-009dd0b476e4",
+        "FID": 4713.0,
+        "LineCount": 13.0,
+        "STOP_ID": 2874.0,
+        "STOP_NAME": "Sullivan Station - Upper Busway",
+        "TOWN": "BOSTON",
+        "TOWN_ID": 35.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234874.499799997,
+          903801.437600002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "d1f032ef-6e93-4ebe-acf4-ec566dfff200",
+        "FID": 4714.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2688.0,
+        "STOP_NAME": "Medford St @ Highland Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233594.609899998,
+          903803.695999999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "5df8f88e-720c-4aba-a23c-90ef992cb5ef",
+        "FID": 4716.0,
+        "LineCount": 6.0,
+        "STOP_ID": 28741.0,
+        "STOP_NAME": "Sullivan Station - Lower Busway",
+        "TOWN": "BOSTON",
+        "TOWN_ID": 35.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234892.6721,
+          903821.210999999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "9978e805-ce9f-4b83-b059-76e932632271",
+        "FID": 4719.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2507.0,
+        "STOP_NAME": "Summer St @ School St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232913.121399999,
+          903828.874600001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "9e23fcb5-79ee-4b58-a8a1-4e03cc5565a0",
+        "FID": 4720.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2533.0,
+        "STOP_NAME": "Summer St @ School St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232913.121399999,
+          903828.874600001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "9e5dc55d-6ce6-47d2-a193-c3bfad612259",
+        "FID": 4722.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2393.0,
+        "STOP_NAME": "Cross St @ Oliver St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233843.2742,
+          903835.0999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "7fb250f1-c13d-4e6f-82b1-74e803ff991d",
+        "FID": 4728.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2304.0,
+        "STOP_NAME": "Massachusetts Ave @ Linnaean St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231333.2733,
+          903845.0876
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "65f71d4d-8761-4f82-bf4e-c59a70a6687e",
+        "FID": 4732.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2589.0,
+        "STOP_NAME": "Somerville Ave @ Sacramento St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231953.462800004,
+          903865.4998
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "4b7caf18-7db1-4d72-8b89-8a07bce0f221",
+        "FID": 4736.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2660.0,
+        "STOP_NAME": "Highland Ave @ Medford St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233531.057599999,
+          903869.261300001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "92e62d3b-a4b1-48a9-889c-45ced8229089",
+        "FID": 4737.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2621.0,
+        "STOP_NAME": "Somerville Ave @ Lowell St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231947.163599998,
+          903869.407900002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "c57bfa61-bfac-428a-83bb-72da133137d1",
+        "FID": 4738.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2752.0,
+        "STOP_NAME": "Cross St @ Flint St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233871.876500003,
+          903880.1215
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "627f52a0-1c6f-462e-97d1-dac1a1b7acd8",
+        "FID": 4739.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2314.0,
+        "STOP_NAME": "Massachusetts Ave @ Exeter Park",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231346.281400003,
+          903890.0568
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "c99748bf-4a7b-44d0-b99a-36675256ebd2",
+        "FID": 4744.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2520.0,
+        "STOP_NAME": "Avon St @ School St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232927.465300001,
+          903903.8369
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "ec5fff7f-4833-4864-99d2-4b46d85852ba",
+        "FID": 4751.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2661.0,
+        "STOP_NAME": "Highland Ave @ Walnut St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233428.553000003,
+          903922.994100001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "ff0fad0d-f6ae-4dac-b4d6-aa519e2daa45",
+        "FID": 5299.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2578.0,
+        "STOP_NAME": "Holland St @ Moore St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230722.091200002,
+          905843.226799998
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "2b73decc-6b4f-4074-ba99-9095447bb793",
+        "FID": 5300.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2896.0,
+        "STOP_NAME": "Mystic Ave opp Fulbright St",
+        "TOWN": "MEDFORD",
+        "TOWN_ID": 176.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233037.547600001,
+          905860.897999998
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "84a68011-c8ce-4080-9687-25923dd6bc40",
+        "FID": 5301.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2275.0,
+        "STOP_NAME": "Massachusetts Ave @ Teel St",
+        "TOWN": "ARLINGTON",
+        "TOWN_ID": 10.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          229767.041299999,
+          905862.635400001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "1fb20a27-83ce-495a-9993-6ec013492086",
+        "FID": 5303.0,
+        "LineCount": 3.0,
+        "STOP_ID": 22661.0,
+        "STOP_NAME": "Massachusetts Ave @ Thorndike St",
+        "TOWN": "ARLINGTON",
+        "TOWN_ID": 10.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          229756.191,
+          905874.1556
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "e2d9b6cc-6436-4aee-aa7b-5497f2180c49",
+        "FID": 5309.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2744.0,
+        "STOP_NAME": "Broadway @ Westminster Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230758.012400001,
+          905889.904100001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "830f2b83-dd29-4297-8122-21a69a8efd8d",
+        "FID": 5320.0,
+        "LineCount": 4.0,
+        "STOP_ID": 2634.0,
+        "STOP_NAME": "Broadway @ Curtis St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230677.350000001,
+          905936.486299999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "3b6d61fc-35db-4135-ba37-be828f63467b",
+        "FID": 5322.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2577.0,
+        "STOP_NAME": "Broadway @ Holland St - Teele Sq",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230668.2104,
+          905941.624200001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "226ac8a7-63df-4e2b-87ef-2c0773ed2226",
+        "FID": 5334.0,
+        "LineCount": 4.0,
+        "STOP_ID": 2635.0,
+        "STOP_NAME": "Broadway @ Dickson St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230579.327699997,
+          906000.000399999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "f105866b-7b3e-4780-9f51-3886edf102a9",
+        "FID": 5463.0,
+        "LineCount": 4.0,
+        "STOP_ID": 2576.0,
+        "STOP_NAME": "Broadway @ Weston Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230563.181500003,
+          906015.340500001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "fbbbd506-d1a2-4257-a948-05033f1b73ff",
+        "FID": 5489.0,
+        "LineCount": 4.0,
+        "STOP_ID": 2575.0,
+        "STOP_NAME": "Broadway @ Garrison Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230443.905699998,
+          906133.0625
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "f7d78332-8cc4-4fea-8bd5-310cd9ade800",
+        "FID": 5494.0,
+        "LineCount": 4.0,
+        "STOP_ID": 2715.0,
+        "STOP_NAME": "Broadway @ Belknap St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230431.155900002,
+          906145.624899998
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "a854a188-aeee-4032-8463-0aa4e711d9c8",
+        "FID": 5495.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2406.0,
+        "STOP_NAME": "College Ave @ Dearborn Rd",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231498.123999998,
+          906145.6525
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "220dd209-02e6-441a-a21b-990141b538d3",
+        "FID": 5630.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2380.0,
+        "STOP_NAME": "College Ave @ Professors Row",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231493.2645,
+          906185.078499999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "3c6b625b-b03d-4f69-982a-85af10dea605",
+        "FID": 5637.0,
+        "LineCount": 4.0,
+        "STOP_ID": 2636.0,
+        "STOP_NAME": "Broadway @ North St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230334.699199997,
+          906219.901700001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "447a96cb-d7d9-4402-a8a8-aff0933c6422",
+        "FID": 5641.0,
+        "LineCount": 4.0,
+        "STOP_ID": 2637.0,
+        "STOP_NAME": "Clarendon Hill Busway",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230266.5123,
+          906241.3387
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "828c966d-2fa1-4c38-9014-36e0137809ea",
+        "FID": 5647.0,
+        "LineCount": 1.0,
+        "STOP_ID": 12636.0,
+        "STOP_NAME": "Broadway opp Clarendon Hill Busway",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230245.727399997,
+          906277.658199999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "9bf78760-e644-44ce-9408-3d33e17ca97c",
+        "FID": 5650.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2379.0,
+        "STOP_NAME": "College Ave @ Boston Ave",
+        "TOWN": "MEDFORD",
+        "TOWN_ID": 176.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231528.943400003,
+          906292.194499999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "30b59d09-4cd9-40ca-b3c3-aa004f174282",
+        "FID": 5660.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2407.0,
+        "STOP_NAME": "College Ave @ Boston Ave",
+        "TOWN": "MEDFORD",
+        "TOWN_ID": 176.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231539.0154,
+          906309.562199999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "5b815c95-01e7-4745-850c-d1c2ae488418",
+        "FID": 5790.0,
+        "LineCount": 1.0,
+        "STOP_ID": 12654.0,
+        "STOP_NAME": "Broadway opp Sunnyside Ave",
+        "TOWN": "ARLINGTON",
+        "TOWN_ID": 10.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230086.188600004,
+          906377.1677
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "4a380d89-7c3f-4f3a-a2bc-3482bf005970",
+        "FID": 5792.0,
+        "LineCount": 1.0,
+        "STOP_ID": 12637.0,
+        "STOP_NAME": "Broadway @ Sunnyside Ave",
+        "TOWN": "ARLINGTON",
+        "TOWN_ID": 10.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230079.573299997,
+          906381.242800001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "8f82386f-d119-4681-93a3-b21a42d5fa99",
+        "FID": 5805.0,
+        "LineCount": 1.0,
+        "STOP_ID": 12653.0,
+        "STOP_NAME": "Broadway opp Silk St",
+        "TOWN": "ARLINGTON",
+        "TOWN_ID": 10.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          229971.306999996,
+          906449.4265
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "1cc3ffe0-d20e-456e-b023-bb4fb11d4b4f",
+        "FID": 5806.0,
+        "LineCount": 1.0,
+        "STOP_ID": 12638.0,
+        "STOP_NAME": "Broadway @ Silk St",
+        "TOWN": "ARLINGTON",
+        "TOWN_ID": 10.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          229963.418099999,
+          906454.361699998
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "2054fbe6-9a8d-4b72-99c4-efa042eb853d",
+        "FID": 5816.0,
+        "LineCount": 1.0,
+        "STOP_ID": 12652.0,
+        "STOP_NAME": "Broadway @ Cleveland St",
+        "TOWN": "ARLINGTON",
+        "TOWN_ID": 10.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          229858.720200002,
+          906521.433600001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "fcb9fd6f-e8d8-48fc-ad5b-851f6c3da1f0",
+        "FID": 5821.0,
+        "LineCount": 1.0,
+        "STOP_ID": 12639.0,
+        "STOP_NAME": "Broadway opp Cleveland St",
+        "TOWN": "ARLINGTON",
+        "TOWN_ID": 10.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          229830.826800004,
+          906539.099199999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "3916262e-d40b-4a74-9382-a7dea1db9552",
+        "FID": 5946.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2378.0,
+        "STOP_NAME": "Boston Ave @ Tufts Garage",
+        "TOWN": "MEDFORD",
+        "TOWN_ID": 176.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231440.043200001,
+          906545.284200002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "98bfdfe9-f6f3-431c-927d-78b6ad01fc0b",
+        "FID": 5947.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2408.0,
+        "STOP_NAME": "Boston Ave @ Tufts Garage",
+        "TOWN": "MEDFORD",
+        "TOWN_ID": 176.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231440.043200001,
+          906545.284200002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "9798f053-903b-4690-a59b-1e9c71b9ec63",
+        "FID": 6133.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2377.0,
+        "STOP_NAME": "Boston Ave @ Fairmount St",
+        "TOWN": "MEDFORD",
+        "TOWN_ID": 176.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231273.675800003,
+          906731.720899999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "6e572329-39d5-4ba4-8534-c28f89646362",
+        "FID": 6134.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2409.0,
+        "STOP_NAME": "372 Boston Ave opp Fairmount St",
+        "TOWN": "MEDFORD",
+        "TOWN_ID": 176.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231268.727799997,
+          906735.9553
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "5dab86fd-05dd-417b-998b-bd62ec12fbd8",
+        "FID": 6287.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2376.0,
+        "STOP_NAME": "Boston Ave @ Winthrop St",
+        "TOWN": "MEDFORD",
+        "TOWN_ID": 176.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231145.9256,
+          906838.068799999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "83d538cb-bb7d-40cc-b69f-42da4eb93031",
+        "FID": 6291.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2410.0,
+        "STOP_NAME": "Boston Ave @ Winthrop St",
+        "TOWN": "MEDFORD",
+        "TOWN_ID": 176.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231140.857600003,
+          906842.5625
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "c9c803fa-eedb-4f9e-af6f-e5131be86dc6",
+        "FID": 6459.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2411.0,
+        "STOP_NAME": "Boston Ave @ Piggott Rd",
+        "TOWN": "MEDFORD",
+        "TOWN_ID": 176.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230974.633000001,
+          906987.8946
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "4e615432-697d-40f5-8fe2-525dcb81aac5",
+        "FID": 6461.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2375.0,
+        "STOP_NAME": "Boston Ave @ Hillsdale Rd",
+        "TOWN": "MEDFORD",
+        "TOWN_ID": 176.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230958.932099998,
+          907001.4604
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "ee3b404d-1d49-468e-881f-4b4778289559",
+        "FID": 6630.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2412.0,
+        "STOP_NAME": "Boston Ave @ North St",
+        "TOWN": "MEDFORD",
+        "TOWN_ID": 176.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230808.412299998,
+          907134.4899
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "9e0961c0-3f19-41b0-bf70-b78fff8da9ce",
+        "FID": 6633.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2374.0,
+        "STOP_NAME": "Boston Ave @ North St",
+        "TOWN": "MEDFORD",
+        "TOWN_ID": 176.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230792.9485,
+          907147.780400001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "d709533e-d3e0-4199-8e8e-2ef38eb0a56f",
+        "FID": 6722.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2706.0,
+        "STOP_NAME": "Broadway @ Marshall St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233530.917099997,
+          904713.1217
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "79029d3b-d70b-43e1-9eda-116521b2d530",
+        "FID": 6723.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2671.0,
+        "STOP_NAME": "Highland Ave @ Cedar St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231901.313500002,
+          904714.2892
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "15575e3e-6b9a-43bb-81ac-8e8ed858078c",
+        "FID": 6724.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2461.0,
+        "STOP_NAME": "Rindge Ave @ Massachusetts Ave",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230837.154799998,
+          904741.548900001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "e4314247-8df7-4b75-bc9d-f63c19bf8633",
+        "FID": 6725.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2429.0,
+        "STOP_NAME": "Rindge Ave @ Pemberton St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230844.913099997,
+          904742.1734
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "0cb0d4b4-80a7-4471-8f92-5b12861807e8",
+        "FID": 6726.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2725.0,
+        "STOP_NAME": "Broadway @ Temple St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233512.075499997,
+          904743.163199998
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "ac095bbd-d6df-4f4b-85f6-cd8361cc713e",
+        "FID": 6730.0,
+        "LineCount": 3.0,
+        "STOP_ID": 5501.0,
+        "STOP_NAME": "Opp 173 Alford St",
+        "TOWN": "BOSTON",
+        "TOWN_ID": 35.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          235488.307400003,
+          904745.402399998
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "d67aec1f-3d17-4cf0-a9a7-75a65a32d39a",
+        "FID": 6731.0,
+        "LineCount": 3.0,
+        "STOP_ID": 5505.0,
+        "STOP_NAME": "173 Alford St",
+        "TOWN": "BOSTON",
+        "TOWN_ID": 35.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          235488.307400003,
+          904745.402399998
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "2ddabc38-108d-4780-a788-c9a0c71211eb",
+        "FID": 6732.0,
+        "LineCount": 1.0,
+        "STOP_ID": 24281.0,
+        "STOP_NAME": "Rindge Ave @ Haskell St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230657.183799997,
+          904746.5942
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "7ea7a05a-c8ab-4e84-ab11-887de4494156",
+        "FID": 6733.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2385.0,
+        "STOP_NAME": "Medford St @ Central St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232883.267700002,
+          904747.673700001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "01fe0a56-958e-46d3-a47f-01fababa0429",
+        "FID": 6735.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2401.0,
+        "STOP_NAME": "Medford St @ Central St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232880.269100003,
+          904752.925500002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "0896ad40-2d49-4ae9-aab5-c75fbb07835c",
+        "FID": 6737.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2705.0,
+        "STOP_NAME": "Broadway opp Temple St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233470.352499999,
+          904756.231600001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "2aeec632-3012-43ee-8e4a-eb5942e9199b",
+        "FID": 6738.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2298.0,
+        "STOP_NAME": "Massachusetts Ave @ Rindge Ave",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230868.577600002,
+          904758.080800001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "c8d78f42-9733-4911-87a6-6414403bb00a",
+        "FID": 6739.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2936.0,
+        "STOP_NAME": "Mystic Ave opp Kensington Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234245.680500001,
+          904758.344500002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "765da48d-47d8-4c55-8414-901e0266c6ca",
+        "FID": 6744.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2319.0,
+        "STOP_NAME": "Massachusetts Ave opp Rindge Ave",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230877.089699998,
+          904766.658100002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "efde195f-cc7e-4d14-9bb4-c685b338c5f5",
+        "FID": 6745.0,
+        "LineCount": 2.0,
+        "STOP_ID": 28743.0,
+        "STOP_NAME": "Grand Union Blvd @ Foley St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234544.247299999,
+          904769.66
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "8aaa57d9-b2f3-4b7d-a41e-d9fd2ef519bb",
+        "FID": 6750.0,
+        "LineCount": 1.0,
+        "STOP_ID": 24610.0,
+        "STOP_NAME": "Rindge Ave @ Hollis St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230560.782200001,
+          904778.625100002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "a4697f88-568e-409b-b04d-8cb26a1fcea0",
+        "FID": 6751.0,
+        "LineCount": 2.0,
+        "STOP_ID": 28742.0,
+        "STOP_NAME": "Grand Union Blvd @ Foley St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234540.4582,
+          904787.538699999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "84da1cf8-7e9f-4b43-a7e2-0a4bd66969ad",
+        "FID": 6752.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2676.0,
+        "STOP_NAME": "Highland Ave @ Cherry St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231771.3103,
+          904787.682100002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "06d7e5b5-026b-4f69-8252-e8fd8ee8865e",
+        "FID": 6753.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2672.0,
+        "STOP_NAME": "Highland Ave @ Cherry St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231766.558300003,
+          904790.480099998
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "c7a14eaa-2804-4727-9ec0-c056c06384cc",
+        "FID": 6757.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2726.0,
+        "STOP_NAME": "Broadway @ Langmaid Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233411.893799998,
+          904811.2366
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "5b53b625-28ba-47ce-86ab-b900d3de41a3",
+        "FID": 6793.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2373.0,
+        "STOP_NAME": "Boston Ave @ Stoughton St",
+        "TOWN": "MEDFORD",
+        "TOWN_ID": 176.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230636.678199999,
+          907286.987300001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "c9be8aa9-368d-4b4a-a82c-6751241a0a85",
+        "FID": 6797.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2413.0,
+        "STOP_NAME": "196 Boston Ave opp Stoughton St",
+        "TOWN": "MEDFORD",
+        "TOWN_ID": 176.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230629.952699997,
+          907292.500300001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "4e1abcf4-84d8-4f11-98f7-121a98c78a2a",
+        "FID": 6885.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2583.0,
+        "STOP_NAME": "Elm St @ Russell St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231223.333300002,
+          904860.769000001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "fa44028d-f304-4b40-9a62-7d572ecfc70c",
+        "FID": 6886.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2627.0,
+        "STOP_NAME": "Elm St @ Cutter Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231223.333300002,
+          904860.769000001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "85a3bb08-9321-4a9e-a03b-7c91d0465da6",
+        "FID": 6896.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2704.0,
+        "STOP_NAME": "Broadway @ Thurston St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233273.881399997,
+          904893.180500001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "ecbeb9c3-c8d3-4500-a12f-5955eecab08c",
+        "FID": 6902.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2384.0,
+        "STOP_NAME": "Medford St @ Bartlett St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232792.069799997,
+          904903.507399999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "7aa88e54-bba5-4adf-87cc-337537ab1f0f",
+        "FID": 6903.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2675.0,
+        "STOP_NAME": "Highland Ave @ Willow Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231565.531900004,
+          904906.4267
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "f26376f3-8b21-4750-a7a7-0876183ac3a1",
+        "FID": 6905.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2727.0,
+        "STOP_NAME": "Broadway @ Fenwick St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233272.544699997,
+          904908.871399999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "4e309075-7b6a-4d7c-b67e-76a84f20bcb0",
+        "FID": 6908.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2673.0,
+        "STOP_NAME": "Highland Ave @ Willow Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231536.876900002,
+          904922.896499999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "58d9ffce-9965-4941-9e20-d612142a43c5",
+        "FID": 6912.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2901.0,
+        "STOP_NAME": "Mystic Ave @ Wheatland St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233988.618299998,
+          904930.118099999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "5638a3fb-d5d6-4e91-801c-c4ccb4836b14",
+        "FID": 6914.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2402.0,
+        "STOP_NAME": "Medford St @ Bartlett St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232775.339400001,
+          904932.8288
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "4484de1f-50ac-4681-aa88-67971e35aa95",
+        "FID": 6915.0,
+        "LineCount": 2.0,
+        "STOP_ID": 28745.0,
+        "STOP_NAME": "Grand Union Blvd @ Canal St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234507.7984,
+          904940.808800001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "700d0fa4-6052-4372-b65c-9f2e906e0d43",
+        "FID": 6916.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2297.0,
+        "STOP_NAME": "Massachusetts Ave @ Haskell St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230716.398699999,
+          904943.3851
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "d801c4c2-79ef-4f61-beaf-3fa87abc68b4",
+        "FID": 6919.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2320.0,
+        "STOP_NAME": "Massachusetts Ave @ Dover St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230721.622299999,
+          904952.0086
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "d1343c64-01cb-4a78-ac99-24074a83ae0f",
+        "FID": 6947.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2372.0,
+        "STOP_NAME": "Boston Ave @ Mystic Valley Pkwy",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230514.262500003,
+          907394.611699998
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "40f1eb69-0dc9-4b58-a437-9cc52e3721ac",
+        "FID": 6949.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2414.0,
+        "STOP_NAME": "Boston Ave @ Mystic Valley Pkwy",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230509.103200004,
+          907399.193599999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "039bb0dc-9973-4660-b295-40b8c063eb61",
+        "FID": 7047.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2878.0,
+        "STOP_NAME": "Mystic Ave opp Fellsway W",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233949.678300001,
+          904990.315400001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "cb5390f8-5098-4ea0-ad41-ed360a1406e4",
+        "FID": 7048.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2729.0,
+        "STOP_NAME": "Broadway @ Main St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233149.5832,
+          904992.4738
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "e9a9439a-8e12-4ba4-9283-d26aabb62c3c",
+        "FID": 7049.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2703.0,
+        "STOP_NAME": "Broadway opp Main St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233120.315800004,
+          904996.167100001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "71220abb-8f4e-4245-b029-133109a130dc",
+        "FID": 7050.0,
+        "LineCount": 2.0,
+        "STOP_ID": 28746.0,
+        "STOP_NAME": "Grand Union Blvd opp Artisan Way",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234496.204800002,
+          904996.1752
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "07e6fe93-54cf-4c6f-b2e7-b1a48060c73a",
+        "FID": 7059.0,
+        "LineCount": 6.0,
+        "STOP_ID": 2582.0,
+        "STOP_NAME": "Elm St @ Chester St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231146.413099997,
+          905025.286200002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "9c850b58-ffe3-4431-be68-9b75761801d8",
+        "FID": 7060.0,
+        "LineCount": 1.0,
+        "STOP_ID": 5303.0,
+        "STOP_NAME": "Main St @ Broadway",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233128.812200002,
+          905027.625300001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "4e9fbfc5-3a50-4644-b374-383e9529aaf3",
+        "FID": 7064.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2674.0,
+        "STOP_NAME": "Highland Ave @ Cutter Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231346.382600002,
+          905032.451299999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "c8151e2b-b887-4176-b065-f30f050780b0",
+        "FID": 7075.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2879.0,
+        "STOP_NAME": "Mystic Ave @ Temple Rd",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233842.296499997,
+          905078.8125
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "13e96d6f-1217-40c9-9e4e-fe7685be5508",
+        "FID": 7076.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2900.0,
+        "STOP_NAME": "Mystic Ave @ Temple Rd",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233842.296499997,
+          905078.8125
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "bf265279-2e63-4b52-ba97-fe3eff2f14f2",
+        "FID": 7078.0,
+        "LineCount": 1.0,
+        "STOP_ID": 23821.0,
+        "STOP_NAME": "Medford St @ Trull St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232683.7817,
+          905087.623
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "bcf128f5-bc82-4343-9128-c04233577611",
+        "FID": 7080.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2730.0,
+        "STOP_NAME": "Broadway opp Adams St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232978.490500003,
+          905088.5251
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "762e9a0b-53e2-4b52-b758-19f838f2b7f3",
+        "FID": 7082.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2296.0,
+        "STOP_NAME": "Massachusetts Ave @ Norris St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230574.7619,
+          905111.892900001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "2c54b804-3be5-4889-868a-010f054a97d3",
+        "FID": 7115.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2415.0,
+        "STOP_NAME": "Boston Ave @ Arlington St",
+        "TOWN": "MEDFORD",
+        "TOWN_ID": 176.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230345.9661,
+          907544.674800001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "e1446dcc-2e9e-46d6-8371-520e7a8ab565",
+        "FID": 7119.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2371.0,
+        "STOP_NAME": "Boston Ave @ Arlington St",
+        "TOWN": "MEDFORD",
+        "TOWN_ID": 176.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230330.715400003,
+          907558.055799998
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "87d70b67-92bc-414c-9395-afc814dc91cf",
+        "FID": 7206.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2702.0,
+        "STOP_NAME": "Broadway @ Bartlett St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232929.796800002,
+          905116.7502
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "0cad15b4-d862-44a1-8918-a8d1a54b126a",
+        "FID": 7207.0,
+        "LineCount": 6.0,
+        "STOP_ID": 2628.0,
+        "STOP_NAME": "Grove St @ Highland Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231263.795900002,
+          905127.565400001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "b49d3cfa-ed22-477b-848f-f0583c17bdd2",
+        "FID": 7212.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2731.0,
+        "STOP_NAME": "Broadway opp Glenwood Rd",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232848.473499998,
+          905160.837699998
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "eaba6c5b-f699-41b1-9234-4a383947d7e2",
+        "FID": 7217.0,
+        "LineCount": 1.0,
+        "STOP_ID": 5302.0,
+        "STOP_NAME": "Main St opp Moreland St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233040.387500003,
+          905166.931200001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "fbdfeaa5-3e5c-4377-b076-63e617247ab2",
+        "FID": 7219.0,
+        "LineCount": 1.0,
+        "STOP_ID": 5305.0,
+        "STOP_NAME": "Main St @ Moreland St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233035.575000003,
+          905172.899700001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "77de557a-8017-4d54-8c70-c84ca2ac3263",
+        "FID": 7223.0,
+        "LineCount": 6.0,
+        "STOP_ID": 5104.0,
+        "STOP_NAME": "Davis Square Busway",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231130.524499997,
+          905191.398800001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "d3d179ce-7acc-4bf0-9818-e0febb026be7",
+        "FID": 7225.0,
+        "LineCount": 1.0,
+        "STOP_ID": 12295.0,
+        "STOP_NAME": "North Cambridge Carhouse",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230538.843000002,
+          905199.938499998
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "dcaf87d1-16f2-43c6-aa95-61853d6b0b65",
+        "FID": 7226.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2701.0,
+        "STOP_NAME": "Broadway @ Norwood Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232748.783600003,
+          905204.719300002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "8685d5cf-81cd-4115-8135-beff29acc95b",
+        "FID": 7228.0,
+        "LineCount": 3.0,
+        "STOP_ID": 5015.0,
+        "STOP_NAME": "College Ave @ Highland Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231112.2597,
+          905209.282299999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "c7c2adcf-db48-4814-a700-d7bcf6a56203",
+        "FID": 7231.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2732.0,
+        "STOP_NAME": "Broadway opp Norwood Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232721.495700002,
+          905216.184
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "096fd3a5-aaf6-4878-b37e-e32a307d1f14",
+        "FID": 7233.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2581.0,
+        "STOP_NAME": "Holland St @ Dover St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231048.724299997,
+          905230.248599999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "5cac6f2b-bd83-468e-8c50-bf31af356af2",
+        "FID": 7238.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2404.0,
+        "STOP_NAME": "Medford St @ Broadway - Magoun Sq",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232587.796099998,
+          905250.1373
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "efca580c-fce2-4261-be4b-12eac6545d85",
+        "FID": 7242.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2899.0,
+        "STOP_NAME": "Mystic Ave opp Shore Dr",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233662.8068,
+          905260.366099998
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "ff4826e5-5aec-4cea-a82e-3f6c29254304",
+        "FID": 7244.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2880.0,
+        "STOP_NAME": "Mystic Ave @ Shore Dr",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233657.451700002,
+          905265.7212
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "84497429-daf7-4944-af30-d6b3dbcc4668",
+        "FID": 7271.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2416.0,
+        "STOP_NAME": "Boston Ave @ Holton St",
+        "TOWN": "MEDFORD",
+        "TOWN_ID": 176.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230216.747199997,
+          907653.952399999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "f7d25ea3-cdcb-4ba2-a4bd-c63f4715b09c",
+        "FID": 7280.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2370.0,
+        "STOP_NAME": "Boston Ave @ Holton St",
+        "TOWN": "MEDFORD",
+        "TOWN_ID": 176.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230201.2531,
+          907666.003600001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "ca62f199-b571-4794-a6e6-2c0a46791141",
+        "FID": 7366.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2700.0,
+        "STOP_NAME": "Broadway @ Medford St - Magoun Sq",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232598.191,
+          905269.4811
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "d830e844-90c6-404e-9028-3c59061b431f",
+        "FID": 7367.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2733.0,
+        "STOP_NAME": "Broadway @ Medford St - Magoun Sq",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232591.5638,
+          905272.226399999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "1d78040b-31c5-4806-8008-66ee80afe329",
+        "FID": 7368.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2271.0,
+        "STOP_NAME": "Massachusetts Ave @ Cameron Ave",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230451.461800002,
+          905272.2399
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "f0378c3e-2736-47a4-b0d1-a0eec8542759",
+        "FID": 7371.0,
+        "LineCount": 1.0,
+        "STOP_ID": 5306.0,
+        "STOP_NAME": "Main St @ Henry St",
+        "TOWN": "MEDFORD",
+        "TOWN_ID": 176.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232935.282899998,
+          905290.896200001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "cf1f28b3-ee81-429a-9d27-ebaad9cd990f",
+        "FID": 7374.0,
+        "LineCount": 1.0,
+        "STOP_ID": 5301.0,
+        "STOP_NAME": "Main St opp Henry St",
+        "TOWN": "MEDFORD",
+        "TOWN_ID": 176.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232921.766599998,
+          905306.267000001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "7379dc77-32e7-4654-927b-6642824f3009",
+        "FID": 7375.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2699.0,
+        "STOP_NAME": "Broadway @ Hinckley St - Magoun Sq",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232508.221799999,
+          905307.133400001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "36db7c4b-9a94-45c5-8651-85e115e673a7",
+        "FID": 7378.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2734.0,
+        "STOP_NAME": "Broadway @ William St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232442.927199997,
+          905333.9274
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "e3bef039-a227-4d51-b105-af5b488459de",
+        "FID": 7380.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2270.0,
+        "STOP_NAME": "Massachusetts Ave @ Cedar St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230377.397799999,
+          905343.197900001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "57dc1a1d-fc42-4161-bd79-b1fed8e9555e",
+        "FID": 7381.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2630.0,
+        "STOP_NAME": "Holland St @ Wallace St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230975.136299998,
+          905348.517000001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "6987e508-52de-49e8-845c-449e34cb70d0",
+        "FID": 7392.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2735.0,
+        "STOP_NAME": "Broadway @ Alfred St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232306.627800003,
+          905392.417100001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "8fa8b2ff-51de-4818-abec-902b66561cac",
+        "FID": 7394.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2698.0,
+        "STOP_NAME": "Broadway @ Cedar St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232291.237300001,
+          905398.351
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "5a09ec8f-57ee-46be-a3e2-e52a1c629ce0",
+        "FID": 7396.0,
+        "LineCount": 3.0,
+        "STOP_ID": 5014.0,
+        "STOP_NAME": "College Ave @ Chapel St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231211.249899998,
+          905404.500300001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "1a15c23b-22bf-49c1-816d-5f265de78610",
+        "FID": 7397.0,
+        "LineCount": 3.0,
+        "STOP_ID": 5019.0,
+        "STOP_NAME": "College Ave @ Hall Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231211.249899998,
+          905404.500300001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "4817cba3-c251-479a-a5d9-a1ae579e16f5",
+        "FID": 7402.0,
+        "LineCount": 1.0,
+        "STOP_ID": 5307.0,
+        "STOP_NAME": "Main St @ Dexter St",
+        "TOWN": "MEDFORD",
+        "TOWN_ID": 176.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232770.2544,
+          905451.093400002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "34ab1fa4-584b-4bb2-b3ca-2bfa5d68c4b6",
+        "FID": 7405.0,
+        "LineCount": 1.0,
+        "STOP_ID": 5300.0,
+        "STOP_NAME": "Main St @ Dexter St",
+        "TOWN": "MEDFORD",
+        "TOWN_ID": 176.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232754.410999998,
+          905464.269099999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "af2c6a7b-0086-4704-8a97-5e9bff9274df",
+        "FID": 7434.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2417.0,
+        "STOP_NAME": "Boston Ave @ Harvard Ave",
+        "TOWN": "MEDFORD",
+        "TOWN_ID": 176.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230088.144400001,
+          907753.085000001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "bc1e0325-7ca9-4565-8ba0-3280c1cb19e3",
+        "FID": 7529.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2580.0,
+        "STOP_NAME": "Holland St @ Jay St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230894.745999999,
+          905481.195500001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "9ffb82f4-b268-47b0-a445-0277d84da4bc",
+        "FID": 7531.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2898.0,
+        "STOP_NAME": "Mystic Ave @ Mystic Housing",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233414.546599999,
+          905483.373399999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "b6e8ba07-315c-4122-bf2c-3f6622458cb5",
+        "FID": 7533.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2269.0,
+        "STOP_NAME": "Massachusetts Ave @ Cottage Park Ave",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230210.074000001,
+          905509.633200001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "d2ff7c11-0b99-48fd-a704-5174687d7740",
+        "FID": 7535.0,
+        "LineCount": 3.0,
+        "STOP_ID": 5013.0,
+        "STOP_NAME": "College Ave @ Summit St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231380.547600001,
+          905511.692299999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "37a5dace-15ff-4b7d-88b1-5d25a3295e99",
+        "FID": 7537.0,
+        "LineCount": 3.0,
+        "STOP_ID": 5020.0,
+        "STOP_NAME": "College Ave @ Kidder Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231386.118199997,
+          905516.5189
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "07a5759c-4f2b-4671-8687-9e71a26251a4",
+        "FID": 7540.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2273.0,
+        "STOP_NAME": "Massachusetts Ave @ Churchill Ave",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230188.524999999,
+          905539.123500001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "fb8ffb38-7b13-43f2-9cae-0c07784bf6b1",
+        "FID": 7541.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2631.0,
+        "STOP_NAME": "Holland St @ Paulina St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230859.442000002,
+          905540.336399999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "9b1013ad-a4f0-4bc4-89b6-ce5563eca8ea",
+        "FID": 7543.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2697.0,
+        "STOP_NAME": "Broadway @ Josephine Ave - Ball Sq",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231958.489699997,
+          905547.617800001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "9a34f22f-86e1-4eef-a5e0-dff39fa2678b",
+        "FID": 7544.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2897.0,
+        "STOP_NAME": "Mystic Ave @ Moreland St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233305.695900001,
+          905556.2575
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "7b6cd7d7-7e70-4831-8ac8-931c99e18110",
+        "FID": 7545.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2736.0,
+        "STOP_NAME": "Broadway @ Boston Ave - Ball Sq",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231927.304200001,
+          905561.8387
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "6e15e9dc-efd2-46df-8c2a-77a331cae13d",
+        "FID": 7552.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2268.0,
+        "STOP_NAME": "Massachusetts Ave @ Magoun St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230026.482900001,
+          905622.4791
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "9a07c816-98ac-415f-8fc5-7bc7a13c445e",
+        "FID": 7553.0,
+        "LineCount": 3.0,
+        "STOP_ID": 5012.0,
+        "STOP_NAME": "College Ave @ Broadway",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231503.1237,
+          905625.467500001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "4d9bf334-0cec-4692-9a6e-ef2d42958993",
+        "FID": 7554.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2274.0,
+        "STOP_NAME": "Massachusetts Ave @ Gladstone St",
+        "TOWN": "CAMBRIDGE",
+        "TOWN_ID": 49.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230033.593099996,
+          905630.809700001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "bf49135a-b8fb-491c-b1fc-8567bfc4e9f2",
+        "FID": 7557.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2737.0,
+        "STOP_NAME": "Broadway @ Pearson Rd",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231770.624700002,
+          905630.9375
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "5c8fad65-8bfa-40fd-87f1-95b0f96d21ce",
+        "FID": 7559.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2696.0,
+        "STOP_NAME": "Broadway @ Bay State Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231740.875600003,
+          905643.914999999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "1056cccd-232d-4898-8370-c6fb1691c8bb",
+        "FID": 7561.0,
+        "LineCount": 1.0,
+        "STOP_ID": 5299.0,
+        "STOP_NAME": "Main St @ Bow St",
+        "TOWN": "MEDFORD",
+        "TOWN_ID": 176.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232557.463200003,
+          905655.731899999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "386901de-ba70-46e1-84b8-cd9ee9c8d1ab",
+        "FID": 7562.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2693.0,
+        "STOP_NAME": "Broadway @ Billingham St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231358.952699997,
+          905657.5625
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "34dba92e-b521-4e0a-b90a-f4c9b3c2f08d",
+        "FID": 7563.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2740.0,
+        "STOP_NAME": "Broadway @ Walker St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231424.974699996,
+          905659.5
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "16271ede-f8b1-4ec5-960e-9471c30cd8d0",
+        "FID": 7565.0,
+        "LineCount": 1.0,
+        "STOP_ID": 5308.0,
+        "STOP_NAME": "Main St @ Hicks Ave",
+        "TOWN": "MEDFORD",
+        "TOWN_ID": 176.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232552.745899998,
+          905660.565000001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "ac1a5bba-6718-46b6-9937-4793cc637940",
+        "FID": 7566.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2694.0,
+        "STOP_NAME": "Broadway @ College Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231484.687100001,
+          905663.312800001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "5ac7e05e-d434-47ed-8340-57ade5c84e83",
+        "FID": 7689.0,
+        "LineCount": 2.0,
+        "STOP_ID": 5021.0,
+        "STOP_NAME": "College Ave @ Broadway - Powder House Sq",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231534.221699998,
+          905664.311700001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "ee4bc053-27b8-49bb-9468-86d89a227800",
+        "FID": 7690.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2739.0,
+        "STOP_NAME": "Broadway @ Powder House Blvd",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231511.910599999,
+          905665.7852
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "9726a5fc-ae8b-445b-8bed-bdf4e6422f1f",
+        "FID": 7691.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2579.0,
+        "STOP_NAME": "Holland St @ Cameron Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230786.223999999,
+          905666.488299999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "475cb4ac-ba95-461d-a8ab-d9c53549e4ee",
+        "FID": 7695.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2632.0,
+        "STOP_NAME": "Holland St opp Cameron Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230776.765100002,
+          905683.437399998
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "1f7b23c2-d1ad-4377-90f6-e12b07b79269",
+        "FID": 7696.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2695.0,
+        "STOP_NAME": "Broadway opp Warner St - Powder House Sq",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231596.417300001,
+          905689.346700002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "f50d8d1a-319a-46d0-ab7d-87ee351d619b",
+        "FID": 7697.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2738.0,
+        "STOP_NAME": "Broadway @ Warner St - Powder House Sq",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231591.017300002,
+          905690.2399
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "1ee2b714-c6f4-4368-9303-094dd7eae0c3",
+        "FID": 7699.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2741.0,
+        "STOP_NAME": "Broadway @ Leonard St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231208.201899998,
+          905694.703699999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "cce4bd69-c8bb-4a7d-90dd-956460598979",
+        "FID": 7702.0,
+        "LineCount": 3.0,
+        "STOP_ID": 22751.0,
+        "STOP_NAME": "Massachusetts Ave @ Route 16",
+        "TOWN": "ARLINGTON",
+        "TOWN_ID": 10.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          229897.0088,
+          905718.614399999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "48295a73-2390-49a9-b0ad-edccbfac9e37",
+        "FID": 7703.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2692.0,
+        "STOP_NAME": "Broadway @ Simpson Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231116.983599998,
+          905723.532900002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "7b1acc6f-2055-4374-8c3c-4b35cbac5e1e",
+        "FID": 7705.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2742.0,
+        "STOP_NAME": "Broadway @ Mason St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231051.306400001,
+          905745.255899999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "d0086fae-59cf-4309-98e7-056e03e06fb1",
+        "FID": 7706.0,
+        "LineCount": 3.0,
+        "STOP_ID": 22671.0,
+        "STOP_NAME": "Massachusetts Ave @ Lafayette St",
+        "TOWN": "ARLINGTON",
+        "TOWN_ID": 10.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          229865.961999997,
+          905750.925900001
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "e1cc7ba8-21e7-4b95-8c58-756426e1dbe0",
+        "FID": 7707.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2381.0,
+        "STOP_NAME": "College Ave @ Powder House Sq",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231542.142399997,
+          905753.253199998
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "3b79cbac-e49f-4713-8a24-afdbdbbcc46c",
+        "FID": 7710.0,
+        "LineCount": 3.0,
+        "STOP_ID": 2405.0,
+        "STOP_NAME": "College Ave @ Warner St",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231541.408,
+          905759.284499999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "a6fceb73-814e-403b-a519-38c67abceea2",
+        "FID": 7717.0,
+        "LineCount": 1.0,
+        "STOP_ID": 5298.0,
+        "STOP_NAME": "Main St @ Medford St",
+        "TOWN": "MEDFORD",
+        "TOWN_ID": 176.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232407.691200003,
+          905807.674699999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "03615c81-118e-4bca-9c7a-cda0f7ab4272",
+        "FID": 7718.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2691.0,
+        "STOP_NAME": "Broadway opp Packard Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230890.654200003,
+          905812.2172
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "8c4cd5c6-d33d-4bd0-b7c2-cadeda01b1af",
+        "FID": 7721.0,
+        "LineCount": 2.0,
+        "STOP_ID": 2743.0,
+        "STOP_NAME": "Broadway @ Packard Ave",
+        "TOWN": "SOMERVILLE",
+        "TOWN_ID": 274.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230884.4692,
+          905815.5962
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "2d9de0ed-e27c-4a76-af10-d6f7d5c2315f",
+        "FID": 7722.0,
+        "LineCount": 1.0,
+        "STOP_ID": 5309.0,
+        "STOP_NAME": "Main St @ Medford St",
+        "TOWN": "MEDFORD",
+        "TOWN_ID": 176.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232398.019900002,
+          905816.050799999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "78ab2b33-afa0-4df7-9ed8-4cb8332ed7d9",
+        "FID": 7727.0,
+        "LineCount": 1.0,
+        "STOP_ID": 2883.0,
+        "STOP_NAME": "Mystic Ave @ Fulbright St",
+        "TOWN": "MEDFORD",
+        "TOWN_ID": 176.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233077.932400003,
+          905823.3094
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "fd04e31d-b59b-4f10-a36d-23d78b7771d5",
+        "FID": 7745.0,
+        "LineCount": 4.0,
+        "STOP_ID": 6302.0,
+        "STOP_NAME": "High St @ Allston St",
+        "TOWN": "MEDFORD",
+        "TOWN_ID": 176.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230555.1523,
+          907954.8039
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "b5c35dc6-6eb1-439e-832f-55090a10162b",
+        "FID": 7746.0,
+        "LineCount": 3.0,
+        "STOP_ID": 6317.0,
+        "STOP_NAME": "High St @ Allston St",
+        "TOWN": "MEDFORD",
+        "TOWN_ID": 176.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230560.9912,
+          907956.0766
+        ]
+      }
+    }
+  ]
+}

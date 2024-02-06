@@ -142,7 +142,7 @@ You should get a message indicating successful installation of Madina and its de
 2) Install VScode and Run Example
 ----------------------------------------------
 
-* Download `The example folder <https://www.dropbox.com/scl/fi/6dilb8o02gq5q5i75fdx5/examples.zip?rlkey=qiewt7o1non5nxk845o7gcmoq&dl=1>`_, and unzip it.
+* Download `The notebook folder <https://www.dropbox.com/scl/fo/vvhukdl6vc2wcprzp9kwc/h?rlkey=3zteo0dj08d5mhbeyo95v8qd2&dl=1>`_.
 
 
 * Download `Visual Studio Code <https://code.visualstudio.com/>`_, a simple and powerful code editor. 
@@ -164,14 +164,14 @@ You should get a message indicating successful installation of Madina and its de
   :width: 400
   :alt: Open Folder
 
-* Navigate to the unzipped ``examples`` folder, and select open folder. 
+* Navigate to the  ``notebooks`` folder you just downloaded, and select open folder. 
 
 .. image:: img/4-select-folder.png
   :width: 400
   :alt: Select Folder
 
 
-* Navigate to the ``Explorer`` side panels. notice that example notebooks have the extension ``.ipynb`` and scripts have the extension ``.py``. Open an example notebooks
+* Navigate to the ``Explorer`` side panels. notice that example notebooks have the extension ``.ipynb``.  Open an example notebooks.
 
 .. image:: img/5-open-notebook.png
   :width: 400

@@ -1,0 +1,683 @@
+{
+  "type": "FeatureCollection",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "EPSG:26986"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "96b23814-31e0-47f5-8b01-b58710d9cd4d",
+        "AC": " ",
+        "ADDRESS": "4040 Mystic Valley Parkway",
+        "ADDRESS_PO": 0.0,
+        "BMC": " ",
+        "CITY": "Medford",
+        "COUNTY": "Middlesex",
+        "COURTROOM": "Y",
+        "DC": "Y",
+        "DELIVROUTE": 0.0,
+        "DEPT_FULL": "DC",
+        "FID": 18.0,
+        "HC": " ",
+        "JC": " ",
+        "LC": " ",
+        "LIBKEY": 0.0,
+        "MAD_ID": 2575906.0,
+        "NAME": "Cambridge District Court",
+        "NETWORK": 0.0,
+        "OWNER": "CC Industries",
+        "PFC": " ",
+        "REGION": 0.0,
+        "SATELLITE": " ",
+        "SC": " ",
+        "SJC": " ",
+        "STATE": 0.0,
+        "TOWN": 0.0,
+        "TYPE": 0.0,
+        "WEBSITE": 0.0,
+        "ZIP": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233977.672600001,
+          906113.9252
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "821be088-d803-40cf-808a-5c6282272ba1",
+        "AC": " ",
+        "ADDRESS": "3 City Square",
+        "ADDRESS_PO": 0.0,
+        "BMC": "Y",
+        "CITY": "Charlestown",
+        "COUNTY": "Suffolk",
+        "COURTROOM": "Y",
+        "DC": " ",
+        "DELIVROUTE": 0.0,
+        "DEPT_FULL": "BMC",
+        "FID": 34.0,
+        "HC": " ",
+        "JC": " ",
+        "LC": " ",
+        "LIBKEY": 0.0,
+        "MAD_ID": 35343608.0,
+        "NAME": "Charlestown Division, Boston Municipal Court",
+        "NETWORK": 0.0,
+        "OWNER": "Commonwealth of Massachusetts",
+        "PFC": " ",
+        "REGION": 0.0,
+        "SATELLITE": " ",
+        "SC": " ",
+        "SJC": " ",
+        "STATE": 0.0,
+        "TOWN": 0.0,
+        "TYPE": 0.0,
+        "WEBSITE": 0.0,
+        "ZIP": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          236035.436899997,
+          902485.834199999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "80d9f8a0-5753-4125-9572-6eaa267513ba",
+        "AC": " ",
+        "ADDRESS": "121 Third Street",
+        "ADDRESS_PO": 0.0,
+        "BMC": " ",
+        "CITY": "Cambridge",
+        "COUNTY": "Middlesex",
+        "COURTROOM": "Y",
+        "DC": " ",
+        "DELIVROUTE": 0.0,
+        "DEPT_FULL": "JC/PFC",
+        "FID": 51.0,
+        "HC": " ",
+        "JC": "Y",
+        "LC": " ",
+        "LIBKEY": 0.0,
+        "MAD_ID": 3625048.0,
+        "NAME": "Cambridge Juvenile Court",
+        "NETWORK": 0.0,
+        "OWNER": "Commonwealth of Massachusetts",
+        "PFC": "Y",
+        "REGION": 0.0,
+        "SATELLITE": " ",
+        "SC": " ",
+        "SJC": " ",
+        "STATE": 0.0,
+        "TOWN": 0.0,
+        "TYPE": 0.0,
+        "WEBSITE": 0.0,
+        "ZIP": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234542.8684,
+          902179.740699999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "b2468bd7-6b37-4335-b54e-f13b893623d7",
+        "AC": " ",
+        "ADDRESS": "208 Cambridge Street",
+        "ADDRESS_PO": 0.0,
+        "BMC": " ",
+        "CITY": "Cambridge",
+        "COUNTY": "Middlesex",
+        "COURTROOM": "Y",
+        "DC": " ",
+        "DELIVROUTE": 0.0,
+        "DEPT_FULL": "PFC",
+        "FID": 73.0,
+        "HC": " ",
+        "JC": " ",
+        "LC": " ",
+        "LIBKEY": 0.0,
+        "MAD_ID": 3611253.0,
+        "NAME": "Middlesex Probate and Family Court",
+        "NETWORK": 0.0,
+        "OWNER": "Commonwealth of Massachusetts",
+        "PFC": "Y",
+        "REGION": 0.0,
+        "SATELLITE": " ",
+        "SC": " ",
+        "SJC": " ",
+        "STATE": 0.0,
+        "TOWN": 0.0,
+        "TYPE": 0.0,
+        "WEBSITE": 0.0,
+        "ZIP": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234650.907899998,
+          902317.520799998
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "37b1b28e-15f7-44da-b4db-471a932d06b8",
+        "AC": " ",
+        "ADDRESS": "175 Fellsway",
+        "ADDRESS_PO": 0.0,
+        "BMC": " ",
+        "CITY": "Somerville",
+        "COUNTY": "Middlesex",
+        "COURTROOM": "Y",
+        "DC": "Y",
+        "DELIVROUTE": 0.0,
+        "DEPT_FULL": "DC",
+        "FID": 97.0,
+        "HC": " ",
+        "JC": " ",
+        "LC": " ",
+        "LIBKEY": 0.0,
+        "MAD_ID": 3226121.0,
+        "NAME": "Somerville District Court",
+        "NETWORK": 0.0,
+        "OWNER": "Commonwealth of Massachusetts",
+        "PFC": " ",
+        "REGION": 0.0,
+        "SATELLITE": " ",
+        "SC": " ",
+        "SJC": " ",
+        "STATE": 0.0,
+        "TOWN": 0.0,
+        "TYPE": 0.0,
+        "WEBSITE": 0.0,
+        "ZIP": 0.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234217.312200002,
+          905087.760699999
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "b8b8c624-2480-4297-a8da-007f73b2ca8b",
+        "AC": 0.0,
+        "ADDRESS": "175 MASSACHUSETTS AVENUE",
+        "ADDRESS_PO": "M_229501_906188",
+        "BMC": 0.0,
+        "CITY": 0.0,
+        "COUNTY": 0.0,
+        "COURTROOM": 0.0,
+        "DC": 0.0,
+        "DELIVROUTE": "Metrowest Region",
+        "DEPT_FULL": 0.0,
+        "FID": 110.0,
+        "HC": 0.0,
+        "JC": 0.0,
+        "LC": 0.0,
+        "LIBKEY": "PU-ARLINGTO-ROBBINS",
+        "MAD_ID": 0.0,
+        "NAME": "EDITH M. FOX LIBRARY",
+        "NETWORK": "MLN",
+        "OWNER": 0.0,
+        "PFC": 0.0,
+        "REGION": "Metrowest",
+        "SATELLITE": 0.0,
+        "SC": 0.0,
+        "SJC": 0.0,
+        "STATE": "MA",
+        "TOWN": "ARLINGTON",
+        "TYPE": "PUBLIC BRANCH",
+        "WEBSITE": "http://www.robbinslibrary.org",
+        "ZIP": 2474.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          229501.2234824,
+          906188.44217483
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "c5d5c21a-99a2-4143-bdd5-b113437343f4",
+        "AC": 0.0,
+        "ADDRESS": "70 RINDGE AVENUE",
+        "ADDRESS_PO": "M_230600_904672",
+        "BMC": 0.0,
+        "CITY": 0.0,
+        "COUNTY": 0.0,
+        "COURTROOM": 0.0,
+        "DC": 0.0,
+        "DELIVROUTE": "Metrowest Region",
+        "DEPT_FULL": 0.0,
+        "FID": 114.0,
+        "HC": 0.0,
+        "JC": 0.0,
+        "LC": 0.0,
+        "LIBKEY": "PU-CAMBRIDG-PUBLIC",
+        "MAD_ID": 0.0,
+        "NAME": "O'NEILL BRANCH LIBRARY",
+        "NETWORK": "MLN",
+        "OWNER": 0.0,
+        "PFC": 0.0,
+        "REGION": "Metrowest",
+        "SATELLITE": 0.0,
+        "SC": 0.0,
+        "SJC": 0.0,
+        "STATE": "MA",
+        "TOWN": "CAMBRIDGE",
+        "TYPE": "PUBLIC BRANCH",
+        "WEBSITE": "http://www.cambridgepubliclibrary.org",
+        "ZIP": 2140.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          230600.448571429,
+          904672.445629418
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "e063f06e-0d7a-4d77-b20e-9985ca67f1e1",
+        "AC": 0.0,
+        "ADDRESS": "826 CAMBRIDGE STREET",
+        "ADDRESS_PO": "M_233629_902472",
+        "BMC": 0.0,
+        "CITY": 0.0,
+        "COUNTY": 0.0,
+        "COURTROOM": 0.0,
+        "DC": 0.0,
+        "DELIVROUTE": "Metrowest Region",
+        "DEPT_FULL": 0.0,
+        "FID": 183.0,
+        "HC": 0.0,
+        "JC": 0.0,
+        "LC": 0.0,
+        "LIBKEY": "PU-CAMBRIDG-PUBLIC",
+        "MAD_ID": 0.0,
+        "NAME": "VALENTE BRANCH LIBRARY",
+        "NETWORK": "MLN",
+        "OWNER": 0.0,
+        "PFC": 0.0,
+        "REGION": "Metrowest",
+        "SATELLITE": 0.0,
+        "SC": 0.0,
+        "SJC": 0.0,
+        "STATE": "MA",
+        "TOWN": "CAMBRIDGE",
+        "TYPE": "PUBLIC BRANCH",
+        "WEBSITE": "http://www.cambridgepubliclibrary.org",
+        "ZIP": 2141.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233738.274366349,
+          902480.162619378
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "337e345a-e75d-4ff8-9a98-9841388107d4",
+        "AC": 0.0,
+        "ADDRESS": "179 MAIN STREET",
+        "ADDRESS_PO": " ",
+        "BMC": 0.0,
+        "CITY": 0.0,
+        "COUNTY": 0.0,
+        "COURTROOM": 0.0,
+        "DC": 0.0,
+        "DELIVROUTE": "Boston Region",
+        "DEPT_FULL": 0.0,
+        "FID": 249.0,
+        "HC": 0.0,
+        "JC": 0.0,
+        "LC": 0.0,
+        "LIBKEY": "PU-BOSTON-PUBLIC",
+        "MAD_ID": 0.0,
+        "NAME": "CHARLESTOWN BRANCH LIBRARY",
+        "NETWORK": "MBLN",
+        "OWNER": 0.0,
+        "PFC": 0.0,
+        "REGION": "Boston",
+        "SATELLITE": 0.0,
+        "SC": 0.0,
+        "SJC": 0.0,
+        "STATE": "MA",
+        "TOWN": "BOSTON",
+        "TYPE": "PUBLIC BRANCH",
+        "WEBSITE": "http://www.bpl.org",
+        "ZIP": 2129.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          235875.700928338,
+          902908.938299775
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "2e482144-5f0c-4b10-a6bb-82033fa30b8a",
+        "AC": 0.0,
+        "ADDRESS": "40 COLLEGE AVENUE",
+        "ADDRESS_PO": "M_231145_905360",
+        "BMC": 0.0,
+        "CITY": 0.0,
+        "COUNTY": 0.0,
+        "COURTROOM": 0.0,
+        "DC": 0.0,
+        "DELIVROUTE": "Metrowest Region",
+        "DEPT_FULL": 0.0,
+        "FID": 326.0,
+        "HC": 0.0,
+        "JC": 0.0,
+        "LC": 0.0,
+        "LIBKEY": "PU-SOMERVIL-PUBLIC",
+        "MAD_ID": 0.0,
+        "NAME": "WEST BRANCH LIBRARY",
+        "NETWORK": "MLN",
+        "OWNER": 0.0,
+        "PFC": 0.0,
+        "REGION": "Metrowest",
+        "SATELLITE": 0.0,
+        "SC": 0.0,
+        "SJC": 0.0,
+        "STATE": "MA",
+        "TOWN": "SOMERVILLE",
+        "TYPE": "PUBLIC BRANCH",
+        "WEBSITE": "http://www.somervillepubliclibrary.org/",
+        "ZIP": 2144.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          231144.84997993,
+          905359.848382059
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "828e7941-c2db-4798-a087-0177bccfc7a7",
+        "AC": 0.0,
+        "ADDRESS": "79 HIGHLAND AVENUE",
+        "ADDRESS_PO": "M_233399_903999",
+        "BMC": 0.0,
+        "CITY": 0.0,
+        "COUNTY": 0.0,
+        "COURTROOM": 0.0,
+        "DC": 0.0,
+        "DELIVROUTE": "Metrowest Region",
+        "DEPT_FULL": 0.0,
+        "FID": 327.0,
+        "HC": 0.0,
+        "JC": 0.0,
+        "LC": 0.0,
+        "LIBKEY": "PU-SOMERVIL-PUBLIC",
+        "MAD_ID": 0.0,
+        "NAME": "SOMERVILLE PUBLIC LIBRARY",
+        "NETWORK": "MLN",
+        "OWNER": 0.0,
+        "PFC": 0.0,
+        "REGION": "Metrowest",
+        "SATELLITE": 0.0,
+        "SC": 0.0,
+        "SJC": 0.0,
+        "STATE": "MA",
+        "TOWN": "SOMERVILLE",
+        "TYPE": "PUBLIC",
+        "WEBSITE": "http://www.somervillepubliclibrary.org/",
+        "ZIP": 2143.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233399.061054029,
+          903999.344444793
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "6e018e4c-2710-499e-9098-368f2a57b19a",
+        "AC": 0.0,
+        "ADDRESS": "449 BROADWAY",
+        "ADDRESS_PO": "M_232050_902689",
+        "BMC": 0.0,
+        "CITY": 0.0,
+        "COUNTY": 0.0,
+        "COURTROOM": 0.0,
+        "DC": 0.0,
+        "DELIVROUTE": "Metrowest Region",
+        "DEPT_FULL": 0.0,
+        "FID": 343.0,
+        "HC": 0.0,
+        "JC": 0.0,
+        "LC": 0.0,
+        "LIBKEY": "PU-CAMBRIDG-PUBLIC",
+        "MAD_ID": 0.0,
+        "NAME": "CAMBRIDGE PUBLIC LIBRARY",
+        "NETWORK": "MLN",
+        "OWNER": 0.0,
+        "PFC": 0.0,
+        "REGION": "Metrowest",
+        "SATELLITE": 0.0,
+        "SC": 0.0,
+        "SJC": 0.0,
+        "STATE": "MA",
+        "TOWN": "CAMBRIDGE",
+        "TYPE": "PUBLIC",
+        "WEBSITE": "http://www.cambridgepubliclibrary.org",
+        "ZIP": 2138.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232050.166204773,
+          902689.047995571
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "eca4ae03-2502-470c-8257-9859ae391f12",
+        "AC": 0.0,
+        "ADDRESS": "115 BROADWAY",
+        "ADDRESS_PO": "M_234291_904241",
+        "BMC": 0.0,
+        "CITY": 0.0,
+        "COUNTY": 0.0,
+        "COURTROOM": 0.0,
+        "DC": 0.0,
+        "DELIVROUTE": "Metrowest Region",
+        "DEPT_FULL": 0.0,
+        "FID": 371.0,
+        "HC": 0.0,
+        "JC": 0.0,
+        "LC": 0.0,
+        "LIBKEY": "PU-SOMERVIL-PUBLIC",
+        "MAD_ID": 0.0,
+        "NAME": "EAST BRANCH LIBRARY",
+        "NETWORK": "MLN",
+        "OWNER": 0.0,
+        "PFC": 0.0,
+        "REGION": "Metrowest",
+        "SATELLITE": 0.0,
+        "SC": 0.0,
+        "SJC": 0.0,
+        "STATE": "MA",
+        "TOWN": "SOMERVILLE",
+        "TYPE": "PUBLIC BRANCH",
+        "WEBSITE": "http://www.somervillepubliclibrary.org/",
+        "ZIP": 2145.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234291.186366864,
+          904240.953149017
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "ad1d526d-9ecf-435b-998f-e25978782794",
+        "AC": 0.0,
+        "ADDRESS": "48 SIXTH STREET",
+        "ADDRESS_PO": "M_234197_902300",
+        "BMC": 0.0,
+        "CITY": 0.0,
+        "COUNTY": 0.0,
+        "COURTROOM": 0.0,
+        "DC": 0.0,
+        "DELIVROUTE": "Metrowest Region",
+        "DEPT_FULL": 0.0,
+        "FID": 436.0,
+        "HC": 0.0,
+        "JC": 0.0,
+        "LC": 0.0,
+        "LIBKEY": "PU-CAMBRIDG-PUBLIC",
+        "MAD_ID": 0.0,
+        "NAME": "O'CONNELL BRANCH LIBRARY",
+        "NETWORK": "MLN",
+        "OWNER": 0.0,
+        "PFC": 0.0,
+        "REGION": "Metrowest",
+        "SATELLITE": 0.0,
+        "SC": 0.0,
+        "SJC": 0.0,
+        "STATE": "MA",
+        "TOWN": "CAMBRIDGE",
+        "TYPE": "PUBLIC BRANCH",
+        "WEBSITE": "http://www.cambridgepubliclibrary.org",
+        "ZIP": 2141.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          234197.397438772,
+          902300.06815521
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "c4df9941-be7a-44bd-972f-00d08247cc7d",
+        "AC": 0.0,
+        "ADDRESS": "93 HIGHLAND AVENUE",
+        "ADDRESS_PO": "M_233086_904153",
+        "BMC": 0.0,
+        "CITY": "SOMERVILLE",
+        "COUNTY": 0.0,
+        "COURTROOM": 0.0,
+        "DC": 0.0,
+        "DELIVROUTE": 0.0,
+        "DEPT_FULL": 0.0,
+        "FID": 231.0,
+        "HC": 0.0,
+        "JC": 0.0,
+        "LC": 0.0,
+        "LIBKEY": 0.0,
+        "MAD_ID": 0.0,
+        "NAME": "SOMERVILLE CITY HALL",
+        "NETWORK": 0.0,
+        "OWNER": 0.0,
+        "PFC": 0.0,
+        "REGION": 0.0,
+        "SATELLITE": 0.0,
+        "SC": 0.0,
+        "SJC": 0.0,
+        "STATE": 0.0,
+        "TOWN": 0.0,
+        "TYPE": 0.0,
+        "WEBSITE": 0.0,
+        "ZIP": 2143.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          233086.447340399,
+          904153.339606002
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "__GUID": "89acab9f-5767-4460-b360-d95b63f99ff4",
+        "AC": 0.0,
+        "ADDRESS": "795 MASSACHUSETTS AVENUE",
+        "ADDRESS_PO": "M_232481_901917",
+        "BMC": 0.0,
+        "CITY": "CAMBRIDGE",
+        "COUNTY": 0.0,
+        "COURTROOM": 0.0,
+        "DC": 0.0,
+        "DELIVROUTE": 0.0,
+        "DEPT_FULL": 0.0,
+        "FID": 272.0,
+        "HC": 0.0,
+        "JC": 0.0,
+        "LC": 0.0,
+        "LIBKEY": 0.0,
+        "MAD_ID": 0.0,
+        "NAME": "CAMBRIDGE CITY HALL",
+        "NETWORK": 0.0,
+        "OWNER": 0.0,
+        "PFC": 0.0,
+        "REGION": 0.0,
+        "SATELLITE": 0.0,
+        "SC": 0.0,
+        "SJC": 0.0,
+        "STATE": 0.0,
+        "TOWN": 0.0,
+        "TYPE": 0.0,
+        "WEBSITE": 0.0,
+        "ZIP": 2139.0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          232481.281246647,
+          901917.077418502
+        ]
+      }
+    }
+  ]
+}

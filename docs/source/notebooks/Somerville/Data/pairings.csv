@@ -1,0 +1,8 @@
+,Flow_Name,Network_File,Network_Cost,Origin_File,Origin_Name,Origin_Weight,Destination_File,Destination_Name,Destination_Weight,Radius,Beta,Decay,Decay_Mode,Closest_destination,Detour,Elastic_Weights,KNN_Weight,Plateau,Turns,Turn_Threshold,Turn_Penalty
+0,Somerville_Bus_Subway_Geometric,network.geojson,Geometric,bus.geojson,Bus,LineCount,subway.geojson,Subway,Count,400,0.001,TRUE,exponent,FALSE,1.15,FALSE,,,FALSE,0,0
+1,Somerville_Bus_Subway,network.geojson,PercLen,bus.geojson,Bus,LineCount,subway.geojson,Subway,Count,400,0.001,TRUE,exponent,FALSE,1.15,FALSE,,,FALSE,0,0
+2,Somerville_Homes_Subway,network.geojson,PercLen,homes.geojson,Homes,RES_2020B,subway.geojson,Subway,Count,800,0.001,TRUE,exponent,FALSE,1.15,FALSE,,,FALSE,0,0
+3,Somerville_Jobs_Subway,network.geojson,PercLen,jobs.geojson,Jobs,EMPNUM,subway.geojson,Subway,Count,800,0.001,TRUE,exponent,FALSE,1.15,FALSE,,,FALSE,0,0
+4,Somerville_Amenities_Amenities,network.geojson,PercLen,amenities.geojson,Amenities,Count,amenities.geojson,Amenities,Count,800,0.001,TRUE,exponent,FALSE,1.15,FALSE,,,FALSE,0,0
+5,Somerville_CensusBlock_Parks,network.geojson,PercLen,CensusBlock.geojson,CensusBlock,POP20,parks.geojson,Parks,Count,800,0.001,TRUE,exponent,FALSE,1.15,FALSE,,,FALSE,0,0
+6,Somerville_Institutions_Subway,network.geojson,PercLen,institutions.geojson,Institutions,Count,subway.geojson,Subway,Count,800,0.001,TRUE,exponent,FALSE,1.15,FALSE,,,FALSE,0,0
