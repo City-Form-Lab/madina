@@ -55,7 +55,7 @@ def accessibility(
     :param zonal: A zonal object populated with a network, origins, destinations and a graph
     :type zonal: Zonal
     :param search_radius: the maximum search distance for accessible destinations from an origin, measured as a network distance in the same units as the network's CRS, defaults to None
-    :type search_radius: float, optional
+    :type search_radius: float | int, optional
     :param destination_weight: destination weight, must be an attribute in the destination layer, defaults to None: equal weight of 1 for all destinations by default.
     :type weight: str, optional
     :param alpha: in gravity calculations, the alpha term increases the importance of destination weight by applying a power. default is 1, destination weight is not adjusted, defaults to 1
@@ -65,6 +65,12 @@ def accessibility(
     :param save_reach_as: Save the reach metric back to the origin layer as a column with this name, defaults to None
     :type save_reach_as: str, optional
     :param save_gravity_as: Save the gravity metric back to the origin layer as a column with this name, defaults to None
+    :type save_gravity_as: str, optional
+    :param knn_weights: A list of the form [0.5, 0.25, 0.25], where the length of the list represent the number of suffecient destinations. the values in the list represent each weight the nth destination is given in the KNN access score. , defaults to None
+    :type knn_weights: list | str, optional
+    :param knn_plateau: apply a decay penalty for destinations that are further than the specified plateau. if set to 0, a distance penalty is applied to all destinations. Cannot be larger than the search radius. Defaults to be equal to the search radius which means no penalty is applied. 
+    :type knn_plateau: float | int, optional
+    :param save_knn_access_as: Save the KNN Access metric back to the origin layer as a column with this name, defaults to None
     :type save_gravity_as: str, optional
     :param closest_facility: restrict reach and access such that a destination is assigned its closest origin, defaults to False
     :type closest_facility: bool, optional

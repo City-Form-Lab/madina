@@ -17,7 +17,7 @@ Madina **(Arabic for the word 'city')** is a python package of classes and funct
 
 Examples and Notebooks
 =========================
-The example notebooks and the datat needed to run them are available in the `github repository  <https://github.com/City-Form-Lab/madina/tree/main/examples>`_
+The example notebooks and the datat needed to run them are available in the `github repository  <https://github.com/City-Form-Lab/madina/tree/main/examples>`_, or could be  `downloaded from this link <https://www.dropbox.com/scl/fi/6dilb8o02gq5q5i75fdx5/examples.zip?rlkey=qiewt7o1non5nxk845o7gcmoq&dl=0>`_
 
 .. toctree::
    :maxdepth: 2

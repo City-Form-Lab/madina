@@ -142,7 +142,7 @@ You should get a message indicating successful installation of Madina and its de
 2) Install VScode and Run Example
 ----------------------------------------------
 
-* Download `The example folder <https://www.dropbox.com/scl/fi/1fbidbc5bqz7ccn61u1yq/examples.zip?rlkey=y0ppgukbyck0scw6pakrcn7f5&dl=1>`_, and unzip it.
+* Download `The example folder <https://www.dropbox.com/scl/fi/6dilb8o02gq5q5i75fdx5/examples.zip?rlkey=qiewt7o1non5nxk845o7gcmoq&dl=1>`_, and unzip it.
 
 
 * Download `Visual Studio Code <https://code.visualstudio.com/>`_, a simple and powerful code editor. 
