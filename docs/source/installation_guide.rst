@@ -33,6 +33,13 @@ Run the next command to install madina from a test repository. Keep in mind that
     pip install -i https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple madina
 
 
+If you're using a shared computer (Like the DUSP computer labs), you might also need to run the following command 
+
+.. code-block:: console
+
+    ipython kernel install --name madina_env --user
+
+
 
 3) Run an example
 -----------------------
