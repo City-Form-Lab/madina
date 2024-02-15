@@ -463,16 +463,19 @@ def KNN_accessibility(
     # Shaqra is a town in Saudi Arabia. this name would be used to reference a generic place that we're running a simulation for
     shaqra = Zonal()
 
-    shaqra.load_layer(
-        name='streets',
-        source=os.path.join(data_folder,  pairings.at[0, "Network_File"])
-    )
-    logger.log(f"network FIle Loaded, Projection: {shaqra.layers['streets'].gdf.crs}", pairing)
+
 
 
     for pairing_idx, pairing in pairings.iterrows():
-        
-        if (pairing_idx == 0) or (pairings.at[pairing_idx, 'Network_Cost'] != pairings.at[pairing_idx-1, 'Network_Cost']):
+        if (pairing_idx == 0) or (pairings.at[pairing_idx, 'Network_File'] != pairings.at[pairing_idx-1, 'Network_File']):
+            shaqra.load_layer(
+                name='streets',
+                source=os.path.join(data_folder,  pairings.at[0, "Network_File"])
+            )
+            logger.log(f"network FIle Loaded, Projection: {shaqra.layers['streets'].gdf.crs}", pairing)
+
+
+        if (pairing_idx == 0) or (pairings.at[pairing_idx, 'Network_Cost'] != pairings.at[pairing_idx-1, 'Network_Cost']): 
             shaqra.create_street_network(
                 source_layer='streets',
                 weight_attribute=pairings.at[pairing_idx, 'Network_Cost'] if pairings.at[pairing_idx, 'Network_Cost'] != "Geometric" else None,

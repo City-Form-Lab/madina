@@ -35,6 +35,33 @@ Here is a link to a generated map : `Light Map <_static/flow_map_light.html>`_  
 
 
 
+UNA Access Metrics Workflow
+===================================
+The package provides a streamlined way to measure multiple access metrics from one origin to multiple destinations 
+
+* Prepare input data files (Network, origin and destination layers) inside a folder  ``Cities/city_name/Data``
+* Prepare and fill a pairing table and save it in the input folder
+* Run this code snippet::
+
+   from madina.una.workflows import betweenness_flow_simulation
+
+    KNN_accessibility(
+        city_name='Somerville',
+        pairings_file="pairing.csv",
+        num_cores=8,
+    )
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Instructions for Preparing and Running Accessibility workflows:
+
+   ped_access
+
+
+.. image:: img//access_map_3_panels.png
+  :width: 600
+  :alt: Instruction Guide
+
 
 UNA Pedestrain Flow Simulation
 ====================================

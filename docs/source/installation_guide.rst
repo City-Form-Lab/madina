@@ -5,6 +5,7 @@ Quick Installation Guide
 --------------
 * Download and install `Visual Studio Code <https://code.visualstudio.com/>`_
 * Download and install ``Miniconda`` from here: `Installing Miniconda <https://docs.conda.io/projects/miniconda/en/latest/miniconda-install.html>`_: click ``Download the installer``, and find thew right version for your OS.
+
 Once you're done, continute to the next section.
 
 2) Install Madina
