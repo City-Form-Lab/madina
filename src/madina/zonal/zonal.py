@@ -14,8 +14,8 @@ from .utils import prepare_geometry, color_gdf, create_deckGL_map, DEFAULT_COLOR
 from .layer import Layer, Layers
 
 
-VERSION = '0.0.14'
-RELEASE_DATE = '2023-02-06'
+VERSION = '0.0.15'
+RELEASE_DATE = '2023-02-16'
 
 
 class Zonal:

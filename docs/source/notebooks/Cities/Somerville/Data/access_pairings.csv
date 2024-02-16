@@ -1,8 +1,8 @@
 ,Flow_Name,Network_File,Network_Cost,Origin_File,Origin_Name,Origin_Weight,Destination_File,Destination_Name,Destination_Weight,Radius,Beta,KNN_Weight,Plateau,Turns,Turn_Threshold,Turn_Penalty
-0,Homes_to_Subway,network.geojson,Geometric,homes.geojson,Homes,RES_2020B,subway.geojson,Subway,Count,1600,0.001,"[0.75, 0.25]",800,FALSE,0,0
-1,Homes_to_Bus,network.geojson,Geometric,homes.geojson,Homes,RES_2020B,bus.geojson,Bus,Count,1600,0.001,"[0.4, 0.3, 0.2, 0.1]",800,FALSE,0,0
-2,Homes_to_Jobs,network.geojson,Geometric,homes.geojson,Homes,RES_2020B,jobs.geojson,Jobs,Count,1600,0.001,"[0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]",800,FALSE,0,0
-3,Homes_to_Amenities,network.geojson,Geometric,homes.geojson,Homes,RES_2020B,amenities.geojson,Amenities,Count,1600,0.001,"[.75, .45, .25, .25, .225, .225, .225, .225, .2, .2]",800,FALSE,0,0
-4,Homes_to_Institutions,network.geojson,Geometric,homes.geojson,Homes,RES_2020B,institutions.geojson,Institutions,Count,1600,0.001,[1],800,FALSE,0,0
-5,Homes_to_Parks,network.geojson,Geometric,homes.geojson,Homes,RES_2020B,parks.geojson,Parks,Count,1600,0.001,[1],800,FALSE,0,0
-6,Homes_to_Schools,network.geojson,Geometric,homes.geojson,Homes,RES_2020B,schools.geojson,Schools,Count,1600,0.001,[1],800,FALSE,0,0
+0,Homes_to_Subway,network.geojson,Geometric,homes.geojson,Homes,Count,subway.geojson,Subway,Count,800,0.001,"[0.75, 0.25]",400,FALSE,0,0
+1,Homes_to_Bus,network.geojson,Geometric,homes.geojson,Homes,Count,bus.geojson,Bus,Count,800,0.001,"[0.4, 0.3, 0.2, 0.1]",400,FALSE,0,0
+2,Homes_to_Jobs,network.geojson,Geometric,homes.geojson,Homes,Count,jobs.geojson,Jobs,Count,800,0.001,"[0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1]",400,FALSE,0,0
+3,Homes_to_Amenities,network.geojson,Geometric,homes.geojson,Homes,Count,amenities.geojson,Amenities,Count,800,0.001,"[.75, .45, .25, .25, .225, .225, .225, .225, .2, .2]",400,FALSE,0,0
+4,Homes_to_Institutions,network.geojson,Geometric,homes.geojson,Homes,Count,institutions.geojson,Institutions,Count,800,0.001,[1],400,FALSE,0,0
+5,Homes_to_Parks,network.geojson,Geometric,homes.geojson,Homes,Count,parks.geojson,Parks,Count,800,0.001,[1],400,FALSE,0,0
+6,Homes_to_Schools,network.geojson,Geometric,homes.geojson,Homes,Count,schools.geojson,Schools,Count,800,0.001,[1],400,FALSE,0,0

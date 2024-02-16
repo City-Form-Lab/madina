@@ -5,7 +5,8 @@ The Accessibility workflow is meant to sreamline the process of generating vario
 * **Reach**: The Reach index, also known as a “cumulative opportunities accessibility index” captures the number of destinations that can be reached from each origin within a given network radius, optionally weighted by numeric destination attributes. 
 * **Gravity**: The gravity index additionally accounts for travel costs required to reach each of the destinations. It therefore offers a more precise definition of accessibility, where each spatially separated origin has a unique accessibility to surrounding destinations due to differences in travel costs.
 * **KNN Access**: K-Nearest-Neighbor (KNN) accessibility metric is similar to the Gravity index, with the  exception that only K nearest destinations (e.g. three nearest bus stops) are used to compute the index, ignoring the rest, and the relative impact of each of the K nearest destinations is controlled by predefined weights.
-* **KNN Weight**: This is simply the resilt of multiplying an origin's **KNN Access** by the origin weight. This metric could be used as an origin weight, for instance, to represent elastic trip generation: Origins generate trips based on how well they score on KNN access: Origins with perfect KNN access score generate thier full potential; origins with less KNN access generate less trips.
+..
+    * **KNN Weight**: This is simply the resilt of multiplying an origin's **KNN Access** by the origin weight. This metric could be used as an origin weight, for instance, to represent elastic trip generation: Origins generate trips based on how well they score on KNN access: Origins with perfect KNN access score generate thier full potential; origins with less KNN access generate less trips.
 
 
 1) Workflow Summary
@@ -106,7 +107,8 @@ if the inpt data is placed inside ``Cities/Somerville/Data``, and the pairing ta
     * ``Homes_to_Subway_reach``: this is the reach accessibility metric using the specified parameters in the pair named ``Homes_to_Subway```. between the specified origin and destination, reach accessibility is sensitive to these paramerers: ``Destination_Weight``, ``Radius``, ``Turns``, ``Turn_Threshold``, ``Turn_Penalty``.
     * ``Homes_to_Subway_gravity``: this is the gravity accessibility metric uaing the specified parameters in the pair named ``Homes_to_Subway``. Between the specified origin and destination, gravity accessibility is sensitive to these paramerers: ``Destination_Weight``, ``Radius``, ``Beta``, ``Turns``, ``Turn_Threshold``, ``Turn_Penalty``.
     * ``Homes_to_Subway_knn_access``: this is the KNN-access metric uaing the specified parameters in the pair named ``Homes_to_Subway``. Between the specified origin and destination, KNN-access is sensitive to these paramerers: ``Destination_Weight``, ``Radius``, ``Beta``, ``KNN_Weight``, ``Plateau``, ``Turns``, ``Turn_Threshold``, ``Turn_Penalty``.
-    * ``Homes_to_Subway_knn_weight``: this is the KNN weight metric uaing the specified parameters in the pair named ``Homes_to_Subway``. Between the specified origin and destination, KNN weight is sensitive to these paramerers: ``Origin_Weight``, ``Destination_Weight``, ``Radius``, ``Beta``, ``KNN_Weight``, ``Plateau``, ``Turns``, ``Turn_Threshold``, ``Turn_Penalty``.
+..
+        * ``Homes_to_Subway_knn_weight``: this is the KNN weight metric uaing the specified parameters in the pair named ``Homes_to_Subway``. Between the specified origin and destination, KNN weight is sensitive to these paramerers: ``Origin_Weight``, ``Destination_Weight``, ``Radius``, ``Beta``, ``KNN_Weight``, ``Plateau``, ``Turns``, ``Turn_Threshold``, ``Turn_Penalty``.
 
 
 
@@ -143,20 +145,24 @@ if the inpt data is placed inside ``Cities/Somerville/Data``, and the pairing ta
 
 ``Origin_Weight``
 ---------------------
-* The origin weight is only used to calculate a metric called ``knn_weight``:
+..    
+    * The origin weight is only used to calculate a metric called ``knn_weight``:
 
-    * The **keyword** ``Count``: Sets all origin weights to 1 and in this case ``knn_weight`` would be equal to ``knn_access``
-    * A name of a column in the file specified in ``Origin_File``, for example: ``pop_total``. in this case, ``knn_weight`` = ``pop_total`` * ``knn_access``. 
-    * The ``knn_weight`` is useful to approximat an origin's trip generation potential depending on the destinations it can access. 
+        * The **keyword** ``Count``: Sets all origin weights to 1 and in this case ``knn_weight`` would be equal to ``knn_access``
+        * A name of a column in the file specified in ``Origin_File``, for example: ``pop_total``. in this case, ``knn_weight`` = ``pop_total`` * ``knn_access``. 
+        * The ``knn_weight`` is useful to approximat an origin's trip generation potential depending on the destinations it can access. 
 
-* origin weight only have an impact on ``knn_weight``, but not on ``reach``, ``gravity``, and ``knn_access``.
-
-
-.. note:: 
+    * origin weight only have an impact on ``knn_weight``, but not on ``reach``, ``gravity``, and ``knn_access``.
+    
+    
+    .. note:: 
     ``Origin_Weight`` is accounted for in the ``KNN_accessibility()`` workflow starting in version 0.0.15. To check your current verison:
 
     * ``import madina as md``
     * ``print (md.zonal.VERSION)``
+
+Origin weights have no impact on accesibility metrics, feel free to use the **keyword** ``Count``: Sets all origin weights to 1
+
 
 ``Destination_File``
 ----------------------
@@ -176,7 +182,7 @@ A name for your destination, this name would be used to name the destination lay
     * The **keyword** ``Count``: Sets all destination weights to 1, and all destinations are weighted equally. 
     * Using a name of a column in the file specified in ``Destination_File``. This would be used to weigh destination differently based on their importance for the reach and gravity accesibility metrics. 
 
-* destination weight only have an impact on ``reach`` and  ``gravity``, but not on ``knn_weight`` and ``knn_access``.
+* destination weight only have an impact on ``reach`` and  ``gravity``, but not on ``knn_access``.
 
 
 .. note:: 
