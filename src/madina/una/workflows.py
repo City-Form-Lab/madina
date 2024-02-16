@@ -18,13 +18,8 @@ import shapely.geometry as geo
 from datetime import datetime
 from pydeck.types import String
 from pathlib import Path
-from .tools import betweenness
-from .betweenness import  get_origin_properties
-from .paths import turn_o_scope
+from .tools import betweenness, accessibility
 from ..zonal import Zonal, VERSION, RELEASE_DATE
-
-
-
 
 class Logger():
     def __init__(self, output_folder, pairing_table):
@@ -422,8 +417,6 @@ def betweenness_flow_simulation(
     logger.simulation_end(shaqra)
     return 
 
-
-
 def KNN_accessibility(
         city_name=None,
         data_folder=None,
@@ -509,7 +502,7 @@ def KNN_accessibility(
         shaqra.insert_node(
             layer_name=pairing['Origin_Name'], 
             label='origin', 
-            weight_attribute=None
+            weight_attribute=pairing['Origin_Weight'] if pairing['Origin_Weight'] != "Count" else None
         )
         shaqra.insert_node(
             layer_name=pairing['Destination_Name'], 
@@ -526,168 +519,39 @@ def KNN_accessibility(
             turn_threshold_degree=pairing['Turn_Threshold'],
         )
 
-        shaqra.network.knn_weight = pairing['KNN_Weight']
-        shaqra.network.knn_plateau = pairing['Plateau']
-
-        origin_gdf = parallel_access(
-            shaqra,
-            num_cores=num_cores,
+        accessibility(
+            zonal=shaqra,
             search_radius=pairing['Radius'],
-            beta=pairing['Beta'],
+            destination_weight = None,
+            alpha=1,
+            beta=pairing['Beta'], 
+            save_reach_as=pairing['Flow_Name']+"_reach", 
+            save_gravity_as=pairing['Flow_Name']+"_gravity",
+            knn_weights=pairing['KNN_Weight'],
+            knn_plateau=pairing['Plateau'],
+            save_knn_access_as=pairing['Flow_Name']+"_knn_access",
+            closest_facility = False,
+            save_closest_facility_as=None, 
+            save_closest_facility_distance_as=None, 
             turn_penalty=pairing['Turns'],
+            num_cores=num_cores,
         )
 
-        # bring back results to layer...
-
-        saved_attributes = {metric: pairing['Flow_Name']+"_"+metric for metric in ['reach', 'gravity', 'knn_access', 'knn_weight']}
-
-        for key, value in saved_attributes.items():
-            origin_gdf[key] = origin_gdf[key].fillna(0)
-            if value in shaqra[pairing['Origin_Name']].gdf.columns:
-                shaqra[pairing['Origin_Name']].gdf.drop(columns=[value], inplace=True)
-
-
-        shaqra[pairing['Origin_Name']].gdf = shaqra[pairing['Origin_Name']].gdf.join(origin_gdf[['source_id'] + list(saved_attributes.keys()) ].set_index("source_id").rename(columns=saved_attributes))
-        shaqra[pairing['Origin_Name']].gdf.index = shaqra[pairing['Origin_Name']].gdf.index.astype(int)
-        
-
+        # Save the origin layer.
     
         Path(logger.output_folder).mkdir(parents=True, exist_ok=True)
         shaqra[pairing['Origin_Name']].gdf.to_csv(os.path.join(logger.output_folder, "origin_record.csv"))
         logger.log("accissibility calculated.", pairing)    
 
     shaqra[pairing['Origin_Name']].gdf['total_knn_access']= shaqra[pairing['Origin_Name']].gdf[[flow_name+"_knn_access" for flow_name in pairings['Flow_Name']]].sum(axis=1)
+    total_knn_access = shaqra[pairing['Origin_Name']].gdf['total_knn_access']
+    shaqra[pairing['Origin_Name']].gdf['normalized_knn_access'] = (total_knn_access-total_knn_access.min())/(total_knn_access.max() - total_knn_access.min())
     shaqra[pairing['Origin_Name']].gdf.to_file(os.path.join(logger.output_folder, "origin_record.geoJSON"), driver="GeoJSON",  engine='pyogrio')
+    shaqra[pairing['Origin_Name']].gdf.to_csv(os.path.join(logger.output_folder, "origin_record.csv"))
     logger.log_df.to_csv(os.path.join(logger.output_folder, "time_log.csv"))
     logger.log("Output saved: ALL DONE")
     return 
 
-
-
-
-
-
-
-
-def one_access(
-    self: Zonal,
-    origin_queue = None,
-    search_radius: float = 0, 
-    beta: float = 0, 
-    turn_penalty: bool = False, 
-    reporting: bool = False, 
-    ):
-
-    node_gdf = self.network.nodes
-    origin_gdf=node_gdf[node_gdf['type'] == 'origin']
-
-    o_graph = self.network.d_graph
-    
-    start = time.time()
-    i = 0
-    processed_origins = []
-    try: 
-        while True:
-            origin_idx = origin_queue.get()
-
-            if origin_idx == "done":
-                origin_queue.task_done()
-                break
-            processed_origins.append(origin_idx)
-
-            if reporting:
-                print (f"Time spent: {round(time.time()-start):,}s [Done {i:,} of {origin_gdf.shape[0]:,} origins ({i  /origin_gdf.shape[0] * 100:4.2f}%)]",  end='\r')
-                i = i + 1
-
-            self.network.add_node_to_graph(o_graph, origin_idx)
-
-
-
-            d_idxs, _, _ = turn_o_scope(
-                network=self.network,
-                o_idx=origin_idx,
-                search_radius=search_radius,
-                detour_ratio=1,
-                turn_penalty=turn_penalty,
-                o_graph=o_graph,
-                return_paths=False
-            )
-
-            get_origin_properties(
-                self,
-                search_radius=search_radius,
-                beta=beta,
-                turn_penalty=turn_penalty,
-                o_idx=origin_idx,
-                o_graph=o_graph,
-                d_idxs=d_idxs,
-            )
-
-            self.network.remove_node_to_graph(o_graph, origin_idx)
-
-    except Exception as ex:
-        print ('Issues in one access...')
-        import traceback
-        traceback.print_exc()
-
-    return node_gdf.loc[processed_origins]
-
-
-import multiprocessing as mp
-import concurrent
-#from concurrent import futures
-
-def parallel_access(
-    self: Zonal,
-    num_cores: int = 1,
-    search_radius: float = 0, 
-    beta: float = 0, 
-    turn_penalty: bool = False, 
-):
-    node_gdf = self.network.nodes
-    origins = node_gdf[node_gdf["type"] == "origin"]
-    origins = origins.sample(frac=1)
-    origins.index = origins.index.astype("int")
-
-    
-    with mp.Manager() as manager:
-
-        origin_queue = manager.Queue()
-
-        for o_idx in origins.index:
-            origin_queue.put(o_idx)
-
-        for core_index in range(num_cores):
-            origin_queue.put("done")
-
-        ## TODO: possible to implement single core without needing to create external process, use a thread?
-
-        with concurrent.futures.ProcessPoolExecutor(max_workers=num_cores) as executor:        
-            execution_results = [
-                executor.submit(
-                    one_access,
-                    self=self,
-                    origin_queue=origin_queue,
-                    search_radius=search_radius,
-                    beta=beta,
-                    turn_penalty=turn_penalty,
-                ) for core_index in range(num_cores)
-            ]
-
-            # Progress update and raising exceptions..
-            start = time.time()
-            while not all([future.done() for future in execution_results]):
-                time.sleep(0.5)
-                print (f"Time spent: {round(time.time()-start):,}s [Done {max(origins.shape[0] - origin_queue.qsize(), 0):,} of {origins.shape[0]:,} origins ({max(origins.shape[0] - origin_queue.qsize(), 0)/origins.shape[0] * 100:4.2f}%)]",  end='\r')
-                for future in [f for f in execution_results if f.done() and (f.exception() is not None)]: # if a process is done and have an exception, raise it
-                    raise (future.exception())
-        
-            origin_gdf = pd.concat([result.result() for result in concurrent.futures.as_completed(execution_results)])
-
-
-        
-
-    return origin_gdf
 
 
 
