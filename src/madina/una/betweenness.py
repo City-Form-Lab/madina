@@ -1039,40 +1039,46 @@ def get_origin_properties(
         )
     ## K-neareast Neighbor
     if self.network.knn_weight is not None:
-        if isinstance(self.network.knn_weight, str):
-            knn_weights = self.network.knn_weight[1:-1].split(',')
-            knn_weights = [float(x) for x in knn_weights]
-        elif isinstance(self.network.knn_weight, list):
-            knn_weights = self.network.knn_weight
-        else:
-            raise ValueError("knn_weight should be a list of numerical values like [0.5, 0.25, 0.25]")
+
         
         knn_weight = 0
-        for neighbor_weight, neighbor_distance in zip(knn_weights, d_idxs.values()):
+        for neighbor_weight, neighbor_distance in zip(self.network.knn_weight, d_idxs.values()):
             if neighbor_distance < self.network.knn_plateau:
                 knn_weight += neighbor_weight
             else:
                 knn_weight += neighbor_weight / pow(math.e, (beta * (neighbor_distance-self.network.knn_plateau)))
+
+        ## Vectorizing this could improve effeciency
+        #eligible_neighbors = min (len(d_idxs), len(knn_weights))
+        #neighbor_weights  = np.array(knn_weights[:eligible_neighbors])
+        #neighbor_distances = np.array(list(d_idxs.values())[:eligible_neighbors])
+        #knn_weight = neighbor_weights/ pow(math.e, beta * max(neighbor_distances-self.network.knn_plateau, 0))
+
         node_gdf.at[o_idx, "knn_weight"] = knn_weight *  node_gdf.at[o_idx, "weight"]
         node_gdf.at[o_idx, "knn_access"] = knn_weight
 
-
+    
     #node_gdf.at[o_idx, "gravity"] = sum(1.0 / pow(math.e, (beta * np.array(list(d_idxs.values())))))
     #node_gdf.at[o_idx, "reach"] = int(len(d_idxs))
+        
+    
 
     o_closest_destinations = list(d_idxs.keys())
     o_destination_distances = np.array(list(d_idxs.values()))
     if destination_weight is None:
-        o_destination_weights = node_gdf.loc[o_closest_destinations]["weight"].values
+        #o_destination_weights = node_gdf.loc[o_closest_destinations, "weight"].values
+        o_destination_weights = np.array([node_gdf.at[idx, 'weight'] for idx in o_closest_destinations], dtype=np.float64)
     else:
+        ## This case could be optimized. Optimal to determine weights at node insertion..
         destination_gdf=node_gdf[node_gdf['type'] == 'destination']
         destination_layer = destination_gdf.iloc[0]['source_layer']
-        source_ids = list(node_gdf.loc[o_closest_destinations]["source_id"])
-        o_destination_weights = self[destination_layer].gdf.loc[source_ids][destination_weight].fillna(0).values
+        source_ids = list(node_gdf.loc[o_closest_destinations, "source_id"])
+        o_destination_weights = self[destination_layer].gdf.loc[source_ids, destination_weight].fillna(0).values
     
-    node_gdf.at[o_idx, "reach"] = sum(o_destination_weights)
+    node_gdf.at[o_idx, "reach"] = o_destination_weights.sum()
     if beta is not None:
-        node_gdf.at[o_idx, "gravity"] = sum(pow(o_destination_weights, alpha) / pow(math.e, beta * o_destination_distances))
+        node_gdf.at[o_idx, "gravity"] = (np.power(o_destination_weights, alpha) / np.power(math.e, beta * o_destination_distances)).sum()
+
 
     return
 
@@ -1104,7 +1110,7 @@ def one_access(
     o_graph = self.network.d_graph
     
     start = time.time()
-    i = 0
+    i = 1
     processed_origins = []
     try: 
         while True:
@@ -1115,12 +1121,9 @@ def one_access(
                 break
             processed_origins.append(origin_idx)
 
-            if reporting:
-                print (f"Time spent: {round(time.time()-start):,}s [Done {i:,} of {origin_gdf.shape[0]:,} origins ({i  /origin_gdf.shape[0] * 100:4.2f}%)]",  end='\r')
-                i = i + 1
+
 
             self.network.add_node_to_graph(o_graph, origin_idx)
-
             d_idxs, _, _ = turn_o_scope(
                 network=self.network,
                 o_idx=origin_idx,
@@ -1130,6 +1133,13 @@ def one_access(
                 o_graph=o_graph,
                 return_paths=False
             )
+            self.network.remove_node_to_graph(o_graph, origin_idx)
+
+            if len(d_idxs) == 0:
+                continue
+
+            d_idxs = dict(sorted(d_idxs.items(), key=lambda item: item[1]))
+
 
             if closest_facility:
                 for d_idx in d_idxs:
@@ -1155,7 +1165,9 @@ def one_access(
                     alpha=alpha
                 )
 
-            self.network.remove_node_to_graph(o_graph, origin_idx)
+            if reporting:
+                print (f"Time spent: {round(time.time()-start):,}s [Done {i:,} of {origin_gdf.shape[0]:,} origins ({i  /origin_gdf.shape[0] * 100:4.2f}%)]",  end='\r')
+                i = i + 1
 
     except Exception as ex:
         print ('Issues in one access...')
@@ -1236,7 +1248,7 @@ def parallel_access(
                 start = time.time()
                 while not all([future.done() for future in execution_results]):
                     time.sleep(0.5)
-                    done_so_far = max(origin_gdf.shape[0] - origin_queue.qsize() + num_cores, 0)
+                    done_so_far = origin_gdf.shape[0] - max(origin_queue.qsize() - num_cores, 0)
                     print (f"Time spent: {round(time.time()-start):,}s [Done {done_so_far:,} of {origin_gdf.shape[0]:,} origins ({done_so_far/origin_gdf.shape[0] * 100:4.2f}%)]",  end='\r')
                     for future in [f for f in execution_results if f.done() and (f.exception() is not None)]: # if a process is done and have an exception, raise it
                         raise (future.exception())
@@ -1253,6 +1265,12 @@ def parallel_access(
                    core_destination_gdfs.append(d_gdf)
 
                 origin_gdf = pd.concat(core_origin_gdfs)
+
+                node_gdf['reach'] = origin_gdf['reach']
+                node_gdf['gravity'] = origin_gdf['gravity']
+                if knn_weights is not None:
+                    node_gdf["knn_weight"] = origin_gdf["knn_weight"]
+                    node_gdf["knn_access"] = origin_gdf["knn_access"]
 
                 if closest_facility:
                     # extracting closest facility over multiple destination_gdf coming from different cores, think about a panda solution instead of nested loops.
@@ -1295,10 +1313,10 @@ def parallel_access(
                 origin_id = node_gdf.at[o_idx, "source_id"]
                 node_gdf.at[d_idx, "closest_facility"] = origin_id
 
-    
+
     self.network.nodes = node_gdf
 
-    return origin_gdf, node_gdf[node_gdf["type"] == "destination"]
+    return
 
 
 

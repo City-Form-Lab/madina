@@ -102,7 +102,15 @@ class Network:
             graph_nodes = graph.graph["added_nodes"]
 
             edge_id = int(node_gdf.at[node_idx, "nearest_edge_id"])
-            neigoboring_nodes = list(set(node_gdf[node_gdf['nearest_edge_id'] == edge_id].index).intersection(graph_nodes))
+
+            #neigoboring_nodes = list(set(node_gdf[node_gdf['nearest_edge_id'] == edge_id].index).intersection(graph_nodes))
+            
+            #graph_nodex_gdf = node_gdf.loc[graph_nodes, 'nearest_edge_id']
+            #neigoboring_nodes = list(graph_nodex_gdf[graph_nodex_gdf == edge_id].index)
+            
+            neigoboring_nodes = [graph_node for graph_node in graph_nodes if node_gdf.at[graph_node, 'nearest_edge_id'] == edge_id]
+
+
             #print (neigoboring_nodes, edge_id, graph_nodes)
         except Exception as e:
             print(e.__doc__)

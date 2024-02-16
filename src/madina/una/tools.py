@@ -120,7 +120,9 @@ def accessibility(
         
 
     ##KNN input validation: 
-    if save_knn_access_as is not None:
+    if save_knn_access_as is None:
+        knn_weights=None
+    else:
         if knn_weights is None:
             raise ValueError("Please specify parameter 'knn_weights' when 'save_knn_access_as' is provided")
         elif isinstance(knn_weights, str):
@@ -162,12 +164,7 @@ def accessibility(
         raise TypeError(f"Parameter 'turn_penalty' must either be a boolean True or False, {type(turn_penalty)} was given.")
 
     
-    ## code at the bottom should go into ome access
-
-    
-    #### todo: replace top code by 
-    
-    origin_gdf, destination_gdf = parallel_access(
+    parallel_access(
         zonal,
         search_radius=search_radius,
         destination_weight=destination_weight,
@@ -179,7 +176,7 @@ def accessibility(
         turn_penalty=turn_penalty,
         num_cores=num_cores,
     )
-    
+
 
 
     # todo: isolate this into network.save_from_nodes_to_layer(zonal, layer_name, name_map={result:param_name..})
@@ -539,8 +536,14 @@ def betweenness(
     if elastic_weight:
         if knn_weight is None:
             raise ValueError(f"Parameter 'elastic_weight': must be provided if `elastic_weight=True`")
-        if not isinstance(knn_weight, (str, list)):
-            raise TypeError(f"Parameter 'knn_weight' must be either {str, list}. {type(knn_weight)} was given.")
+        elif isinstance(knn_weight, str):
+            knn_weight = knn_weight[1:-1].split(',')
+            knn_weight = [float(x) for x in knn_weight]
+        elif isinstance(knn_weight, list):
+            knn_weight = knn_weight
+        else:
+            raise ValueError(f"Parameter 'knn_weight' must be either {str, list} of numerical values like [0.5, 0.25, 0.25]. {type(knn_weight)} was given.")
+
 
         if not isinstance(knn_plateau, (int, float)):
             raise TypeError(f"Parameter 'knn_plateau' must be either {int, float}. {type(knn_plateau)} was given.")

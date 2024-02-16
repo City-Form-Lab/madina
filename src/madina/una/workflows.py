@@ -468,7 +468,7 @@ def KNN_accessibility(
             logger.log(f"network FIle Loaded, Projection: {shaqra.layers['streets'].gdf.crs}", pairing)
 
 
-        if (pairing_idx == 0) or (pairings.at[pairing_idx, 'Network_Cost'] != pairings.at[pairing_idx-1, 'Network_Cost']): 
+        if (pairing_idx == 0) or (pairings.at[pairing_idx, 'Network_Cost'] != pairings.at[pairing_idx-1, 'Network_Cost']) or (pairings.at[pairing_idx, 'Network_File'] != pairings.at[pairing_idx-1, 'Network_File']): 
             shaqra.create_street_network(
                 source_layer='streets',
                 weight_attribute=pairings.at[pairing_idx, 'Network_Cost'] if pairings.at[pairing_idx, 'Network_Cost'] != "Geometric" else None,
@@ -514,10 +514,11 @@ def KNN_accessibility(
         shaqra.create_graph()
         logger.log("NetworkX Graphs Created.", pairing)
 
-        shaqra.set_turn_parameters(
-            turn_penalty_amount=pairing['Turn_Penalty'], 
-            turn_threshold_degree=pairing['Turn_Threshold'],
-        )
+        if pairing['Turns']:
+            shaqra.set_turn_parameters(
+                turn_penalty_amount=pairing['Turn_Penalty'], 
+                turn_threshold_degree=pairing['Turn_Threshold'],
+            )
 
         accessibility(
             zonal=shaqra,
