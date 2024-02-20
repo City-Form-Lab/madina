@@ -192,6 +192,7 @@ A name for your destination, this name would be used to name the destination lay
     * ``print (md.zonal.VERSION)``
 
     if the version is older than 0.0.15, run the following commands in your terminal to update to the latest release:
+    
     * ``conda activate madina_env``
     * ``pip install -i https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple madina --upgrade``
 ``Radius``
