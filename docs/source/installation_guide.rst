@@ -41,6 +41,12 @@ If you're using a shared computer (Like the DUSP computer labs), you might also 
     ipython kernel install --name madina_env --user
 
 
+In case you needed to update to a newer version, run the following command:
+
+.. code-block:: console
+
+  pip install -i https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple madina --upgrade
+
 
 3) Run an example
 -----------------------
