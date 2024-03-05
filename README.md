@@ -57,5 +57,5 @@ Detailed instructions are available in the documentation here
 If you find this package useful in your research, feel free to read and reference this paper (Link).
 
 ```
-Bibtex ENTRY PLACEHOLDER
+Alhassan, Abdulaziz and Sevtsuk, Andres, Madina Python Package: Scalable Urban Network Analysis for Modeling Pedestrian and Bicycle Trips in Cities. Available at SSRN: https://ssrn.com/abstract=4748255 or http://dx.doi.org/10.2139/ssrn.4748255
 ```
