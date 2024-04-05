@@ -15,24 +15,6 @@ Madina **(Arabic for the word 'city')** is a python package of classes and funct
 
 
 
-Examples and Notebooks
-=========================
-The example notebooks and the datat needed to run them are available in the `github repository  <https://github.com/City-Form-Lab/madina/tree/main/docs/source/notebooks>`_, or could be  `downloaded from this link <https://www.dropbox.com/scl/fo/vvhukdl6vc2wcprzp9kwc/h?rlkey=3zteo0dj08d5mhbeyo95v8qd2&dl=1>`_
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Notebooks:
-
-   notebooks/1-loading_data.ipynb
-   notebooks/2-creating_networks.ipynb
-   notebooks/3-UNA_tools_access.ipynb
-   notebooks/4-UNA_tools_paths.ipynb
-   notebooks/5-Pedestrian_flow_multiple_ODs.ipynb
-   notebooks/6-UNA_workflows.ipynb
-
-
-Here is a link to a generated map : `Light Map <_static/flow_map_light.html>`_  and  `Dark Map <_static/flow_map_dark.html>`_
-
 Referencing in Your Workflow
 =======================================
 
@@ -51,6 +33,27 @@ To reference this package in your research, you can cite the paper available on 
    url={https://ssrn.com/abstract=4748255}
    }
 
+
+
+
+
+Examples and Notebooks
+=========================
+The example notebooks and the datat needed to run them are available in the `github repository  <https://github.com/City-Form-Lab/madina/tree/main/docs/source/notebooks>`_, or could be  `downloaded from this link <https://www.dropbox.com/scl/fo/vvhukdl6vc2wcprzp9kwc/h?rlkey=3zteo0dj08d5mhbeyo95v8qd2&dl=1>`_
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Notebooks:
+
+   notebooks/1-loading_data.ipynb
+   notebooks/2-creating_networks.ipynb
+   notebooks/3-UNA_tools_access.ipynb
+   notebooks/4-UNA_tools_paths.ipynb
+   notebooks/5-Pedestrian_flow_multiple_ODs.ipynb
+   notebooks/6-UNA_workflows.ipynb
+
+
+Here is a link to a generated map : `Light Map <_static/flow_map_light.html>`_  and  `Dark Map <_static/flow_map_dark.html>`_
 
 
 
@@ -112,7 +115,7 @@ The package enables modelling pedestrian accessibility and movement in urban are
   :width: 600
   :alt: Instruction Guide
 
-.. image:: img//NYC_homes_to_amenities.jpeg.png
+.. image:: img//NYC_homes_to_amenities.jpeg
   :width: 600
   :alt: Instruction Guide
 
