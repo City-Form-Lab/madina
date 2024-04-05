@@ -5,7 +5,7 @@
 
 Madina
 ============
-Madina **(Arabic for the word 'city')** is a python package of classes and functions to streamline the representation and analysis of urban data. The package enables layer management (Similar to layers in CAD/GIS), spatial network representation, and spatial visualizations. The package also includes a Python implemetation of the **Urban Network Analysis** tools (`Homepage <https://unatoolbox.notion.site/>`_). The source code for Madina is available `on github <https://github.com/City-Form-Lab/madina>`_.
+Madina *(Arabic for the word 'city')* is a package of classes and functions to streamline the representation and analysis of urban networks. The package includes a python implemetation of the **Urban Network Analysis** tools (`Homepage <https://unatoolbox.notion.site/>`_). The source code for Madina is available `on github <https://github.com/City-Form-Lab/madina>`_.
 
 .. toctree::
    :maxdepth: 2
@@ -15,7 +15,7 @@ Madina **(Arabic for the word 'city')** is a python package of classes and funct
 
 
 
-Referencing in Your Workflow
+Referencing in Your Research
 =======================================
 
 To reference this package in your research, you can cite the paper available on SSRN:
@@ -25,12 +25,12 @@ To reference this package in your research, you can cite the paper available on 
 
    @article{alhassan2024madina,
    title={Madina Python Package: Scalable Urban Network Analysis for Modeling Pedestrian and Bicycle Trips in Cities},
-   author={Alhassan, Abdulaziz and Sevtsuk, Andres},
-   journal={SSRN},
-   year={2024},
-   publisher={Elsevier}, 
-   doi={10.2139/ssrn.4748255},
-   url={https://ssrn.com/abstract=4748255}
+      author={Alhassan, Abdulaziz and Sevtsuk, Andres},
+      journal={SSRN},
+      year={2024},
+      publisher={Elsevier}, 
+      doi={10.2139/ssrn.4748255},
+      url={https://ssrn.com/abstract=4748255}
    }
 
 
