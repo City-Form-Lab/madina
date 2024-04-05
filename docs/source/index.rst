@@ -33,6 +33,25 @@ The example notebooks and the datat needed to run them are available in the `git
 
 Here is a link to a generated map : `Light Map <_static/flow_map_light.html>`_  and  `Dark Map <_static/flow_map_dark.html>`_
 
+Referencing in Your Workflow
+=======================================
+
+To reference this package in your research, you can cite the paper available on SSRN:
+
+* Alhassan, Abdulaziz and Sevtsuk, Andres, **Madina Python Package: Scalable Urban Network Analysis for Modeling Pedestrian and Bicycle Trips in Cities.** Available at SSRN: https://ssrn.com/abstract=4748255 or http://dx.doi.org/10.2139/ssrn.4748255 ::
+
+
+   @article{alhassan2024madina,
+   title={Madina Python Package: Scalable Urban Network Analysis for Modeling Pedestrian and Bicycle Trips in Cities},
+   author={Alhassan, Abdulaziz and Sevtsuk, Andres},
+   journal={SSRN},
+   year={2024},
+   publisher={Elsevier}, 
+   doi={10.2139/ssrn.4748255},
+   url={https://ssrn.com/abstract=4748255}
+   }
+
+
 
 
 UNA Access Metrics Workflow
@@ -88,7 +107,12 @@ The package enables modelling pedestrian accessibility and movement in urban are
    ped_flow
 
 
-.. image:: img//nyc_flow.png
+
+.. image:: img//flow_map_3_panels.png
+  :width: 600
+  :alt: Instruction Guide
+
+.. image:: img//NYC_homes_to_amenities.jpeg.png
   :width: 600
   :alt: Instruction Guide
 
