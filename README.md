@@ -1,12 +1,33 @@
 # Madina
-Madina *(Arabic for the word 'city')* is a package of classes and functions to streamline the representation and analysis of urban data. The package provide layer management (Similar to layers in CAD/GIS), urban network representation and visualization. The package also includes a python implemetation of the ***Urban Network Analysis Toolbox*** ([Homepage](https://cityform.mit.edu/projects/una-rhino-toolbox) - [User Guide](https://unatoolbox.notion.site/)).
 
-More detailed documentation of the package is available [here](https://madinadocs.readthedocs.io/)
+
+![Example of trip flows generated for New York City](/docs/source/img/NYCFlows.jpeg "Example of flows generated for New York CIty")
+
+
+
+Madina *(Arabic for the word 'city')* is a package of classes and functions to streamline the representation and analysis of urban networks. The package provide layer management (Similar to layers in CAD/GIS), urban network representation and visualization. The package also includes a python implemetation of the ***Urban Network Analysis Toolbox*** ([Homepage](https://cityform.mit.edu/projects/una-rhino-toolbox) - [User Guide](https://unatoolbox.notion.site/)). More detailed documentation of the package is available [here](https://madinadocs.readthedocs.io/)
+
+To reference this package in your research, you can cite the paper available on SSRN:
+
+Alhassan, Abdulaziz and Sevtsuk, Andres, **Madina Python Package: Scalable Urban Network Analysis for Modeling Pedestrian and Bicycle Trips in Cities.** Available at SSRN: https://ssrn.com/abstract=4748255 or http://dx.doi.org/10.2139/ssrn.4748255
+
+```
+@article{alhassan2024madina,
+  title={Madina Python Package: Scalable Urban Network Analysis for Modeling Pedestrian and Bicycle Trips in Cities},
+  author={Alhassan, Abdulaziz and Sevtsuk, Andres},
+  journal={SSRN},
+  year={2024},
+  publisher={Elsevier}, 
+  doi={10.2139/ssrn.4748255},
+  url={https://ssrn.com/abstract=4748255}
+}
+```
+
 
 ## HIghlights
 * Organization of data layers using [Geopandas](https://geopandas.org/en/stable)
 * Creation of topological (Routable) networks from a geometric representaion. Network is represented using [NetworkX](https://networkx.org/)
-* Insertion of origin and destination poitnts from data layers into topological network
+* Insertion of origin and destination points from data layers into topological network
 * Creating maps using [DeckGL](https://deck.gl/) with various streamlined styling options
 * Improved implementation of [UNA Tools](https://cityform.mit.edu/projects/una-rhino-toolbox) that uses multiprocessing and novel path generation algorithoms to enable effecient betweenness flow simulations on large scale.
 * Added functionalities for UNA including percieved distance, elastic trip generation, turn penalties,
@@ -25,10 +46,10 @@ betweenness_flow_simulation(
 )
 ```
 * Output would be saved in `Cities/city_name/Simulations`.
-* More instructions on running a pedestrain flow simulation, preparing data and creating the pairing table are found in the documentation here
+* More instructions on running a pedestrain flow simulation, preparing data and creating the pairing table are found in the documentation [here](https://madinadocs.readthedocs.io/)
 
 
-![Simulated Flow in New York City](docs/source//img//nyc_flow.png)
+![Simulated Flow in New York City](docs/source//img//NYC_homes_to_amenities.jpeg)
 
 ## Installation
 First, install geopandas through conda in a new environment
@@ -53,9 +74,3 @@ Detailed instructions are available in the documentation here
 * `UNA` Module: A set of functions implementing the UNA functionalities. Each function tales a `Zonal` object as input.
 * `Workflows` module: A set of standarized workdlows that takes a set of structured inpurs. Examples for Pedesstrain flow simulartiob
 
-## Referencing this work
-If you find this package useful in your research, feel free to read and reference this paper (Link).
-
-```
-Bibtex ENTRY PLACEHOLDER
-```
