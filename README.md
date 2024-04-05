@@ -66,7 +66,7 @@ Install Madina through pip
 pip install -i https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple madina
 ```
 
-Detailed instructions are available in the documentation here
+Detailed instructions are available in the documentation [here](https://madinadocs.readthedocs.io/).
 
 ## Library Structure
 * `Zonal` class: This is the main class that the user interacts with. A user would create a Zonal object, populate it with data layers and calls functions to create a network object within a Zonal object. 
