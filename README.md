@@ -5,7 +5,7 @@
 
 
 
-Madina *(Arabic for the word 'city')* is a package of classes and functions to streamline the representation and analysis of urban networks. The package includes a python implemetation of the ***Urban Network Analysis Toolbox*** ([Homepage](https://cityform.mit.edu/projects/una-rhino-toolbox) - [User Guide](https://unatoolbox.notion.site/)). More detailed documentation of the package is available [here](https://madinadocs.readthedocs.io/).
+Madina *(Arabic for the word 'city')* is a package of classes and functions to streamline the representation and analysis of urban networks. The package includes a python implementation of the ***Urban Network Analysis Toolbox*** ([Homepage](https://cityform.mit.edu/projects/una-rhino-toolbox) - [User Guide](https://unatoolbox.notion.site/)). More detailed documentation of the package is available [here](https://madinadocs.readthedocs.io/).
 
 To reference this package in your research, you can cite the paper available on SSRN:
 
