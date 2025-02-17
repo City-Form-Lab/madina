@@ -20,18 +20,18 @@ Referencing in Your Research
 
 To reference this package in your research, you can cite the paper available on SSRN:
 
-* Alhassan, Abdulaziz and Sevtsuk, Andres, **Madina Python Package: Scalable Urban Network Analysis for Modeling Pedestrian and Bicycle Trips in Cities.** Available at SSRN: https://ssrn.com/abstract=4748255 or http://dx.doi.org/10.2139/ssrn.4748255 ::
+* Sevtsuk, A., & Alhassan, A. (2025). Madina Python Package: Scalable Urban Network Analysis for Modeling Pedestrian and Bicycle Trips in Cities. Journal of Transportation Geography, Online (Feb 2025). https://doi.org/10.1016/j.jtrangeo.2025.104130 ::
 
 
-   @article{alhassan2024madina,
-   title={Madina Python Package: Scalable Urban Network Analysis for Modeling Pedestrian and Bicycle Trips in Cities},
-      author={Alhassan, Abdulaziz and Sevtsuk, Andres},
-      journal={SSRN},
-      year={2024},
-      publisher={Elsevier}, 
-      doi={10.2139/ssrn.4748255},
-      url={https://ssrn.com/abstract=4748255}
-   }
+   @article{Sevtsuk2025,
+   author = {Andres Sevtsuk and Abdulaziz Alhassan},
+   journal = {Journal of Transportation Geography},
+   title = {Madina Python Package: Scalable Urban Network Analysis for Modeling Pedestrian and Bicycle Trips in Cities},
+   volume = {Online (Feb 2025)},
+   url = {https://doi.org/10.1016/j.jtrangeo.2025.104130},
+   year = {2025},
+}
+
 
 
 
