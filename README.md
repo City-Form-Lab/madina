@@ -3,24 +3,33 @@
 
 ![Example of trip flows generated for New York City](/docs/source/img/NYCFlows.jpeg "Example of flows generated for New York CIty")
 
+> [!IMPORTANT]
+> **Madina has been superseded by the [UNA Python package](https://github.com/City-Form-Lab/urban_network_analysis)**,
+> which continues its development under a new API with expanded accessibility metrics,
+> a scalable aggregate-flow engine, and full documentation at
+> [urban-network-analysis.readthedocs.io](https://urban-network-analysis.readthedocs.io).
+> This repository is preserved for reference and for reproducibility of
+> Sevtsuk & Alhassan (2025), *Journal of Transport Geography*, which describes it.
+> New users should start with UNA.
 
+**About the Archived Madina Version**
 
 Madina *(Arabic for the word 'city')* is a package of classes and functions to streamline the representation and analysis of urban networks. The package includes a python implemetation of the ***Urban Network Analysis Toolbox*** ([Homepage](https://cityform.mit.edu/projects/una-rhino-toolbox) - [User Guide](https://unatoolbox.notion.site/)). More detailed documentation of the package is available [here](https://madinadocs.readthedocs.io/).
 
 To reference this package in your research, you can cite the paper available on SSRN:
 
-Alhassan, Abdulaziz and Sevtsuk, Andres, **Madina Python Package: Scalable Urban Network Analysis for Modeling Pedestrian and Bicycle Trips in Cities.** Available at SSRN: https://ssrn.com/abstract=4748255 or http://dx.doi.org/10.2139/ssrn.4748255
+Sevtsuk, A., & Alhassan, A. (2025). **Madina Python Package: Scalable Urban Network Analysis for Modeling Pedestrian and Bicycle Trips in Cities.** Journal of Transportation Geography, Online (Feb 2025). https://doi.org/10.1016/j.jtrangeo.2025.104130
 
 ```
-@article{alhassan2024madina,
-  title={Madina Python Package: Scalable Urban Network Analysis for Modeling Pedestrian and Bicycle Trips in Cities},
-  author={Alhassan, Abdulaziz and Sevtsuk, Andres},
-  journal={SSRN},
-  year={2024},
-  publisher={Elsevier}, 
-  doi={10.2139/ssrn.4748255},
-  url={https://ssrn.com/abstract=4748255}
+ @article{Sevtsuk2025,
+   author = {Andres Sevtsuk and Abdulaziz Alhassan},
+   journal = {Journal of Transportation Geography},
+   title = {Madina Python Package: Scalable Urban Network Analysis for Modeling Pedestrian and Bicycle Trips in Cities},
+   volume = {Online (Feb 2025)},
+   url = {https://doi.org/10.1016/j.jtrangeo.2025.104130},
+   year = {2025}
 }
+
 ```
 
 
