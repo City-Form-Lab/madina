@@ -136,7 +136,7 @@ class Zonal:
         :type weight_attribute: str, optional
         :param node_snapping_tolerance: Tolerance for snapping nodes. Default is 0.0 assuming that line geometries that are connected share identical common start/end points, defaults to 0.0
         :type node_snapping_tolerance: int | float, optional
-        :param redundant_edge_treatment: Due to current limitations, only one edge can exist between a pair of nodes. Three options: "keep": redundant edges will be kept, posing a risk for error in network construction/calculations. "discard": The shortest edge of redundant edges will be kept. others are discarded. is kept if set to True. "split": Split redundant edges by thier centroids into non-redundant segments. Default "split".
+        :param redundant_edge_treatment: Due to current limitations, only one edge can exist between a pair of nodes. Three options: "keep": redundant edges will be kept, posing a risk for error in network construction/calculations. "discard": The shortest edge of redundant edges will be kept. others are discarded. is kept if set to True. "split": Split redundant edges by thier centroids into non-redundant segments. Default "discard".
         :type redundant_edge_treatment: str, optional
         :param turn_threshold_degree: Degree threshold for considering a turn. Default is 45. This threshold would only be used whem enabling turn penalty in UNA operations. The angle is measured as the deviation from a straight line. Can only be between 0-180. 90 degrees means a right or left turn, a 180 degree means a full U-turn
         :type turn_threshold_degree: int | float,  optional
