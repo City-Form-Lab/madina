@@ -10,7 +10,7 @@ from shapely.ops import split, snap
 def node_edge_builder(geometry_gdf, weight_attribute=None, tolerance=0.0, source_layer: str =None):
     if tolerance == 0.0:
         # use vectorized implementaytion
-        point_xy = GeoPandaExtractor(geometry_gdf.geometry.values.data)
+        point_xy = GeoPandaExtractor(np.array([geom for geom in geometry_gdf.geometry.values]))
         node_indexer, node_points, node_dgree, edge_start_node, edge_end_node = vectorized_node_edge_builder(point_xy)
         # use spatial index implementation
         # could this gain effeciency by being sorted?
