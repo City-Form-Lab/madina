@@ -10,7 +10,7 @@ from shapely.ops import split, snap
 def node_edge_builder(geometry_gdf, weight_attribute=None, tolerance=0.0, source_layer: str =None):
     if tolerance == 0.0:
         # use vectorized implementaytion
-        point_xy = GeoPandaExtractor(geometry_gdf.geometry.values.data)
+        point_xy = GeoPandaExtractor(geometry_gdf.geometry.values)
         node_indexer, node_points, node_dgree, edge_start_node, edge_end_node = vectorized_node_edge_builder(point_xy)
         # use spatial index implementation
         # could this gain effeciency by being sorted?
@@ -23,18 +23,18 @@ def node_edge_builder(geometry_gdf, weight_attribute=None, tolerance=0.0, source
         edge_count = geometry_gdf.shape[0]
         index = pd.Index(np.arange(edge_count, dtype=int), dtype=int, name="id")
         length = pd.Series(
-            geometry_gdf["geometry"].length.values, fastpath=True, index=index)
+            geometry_gdf["geometry"].length.values, index=index)
         edge_gdf = gpd.GeoDataFrame(
             {
                 "length": length,
                 "weight": length if weight_attribute is None else geometry_gdf.apply(
                     lambda x: max(x[weight_attribute], 0.01) if x[weight_attribute] != 0 else x["geometry"].length,
                     axis=1),
-                "type": pd.Series(np.repeat(np.array(["street"], dtype=object), repeats=edge_count), fastpath=True,
+                "type": pd.Series(np.repeat(np.array(["street"], dtype=object), repeats=edge_count),
                                   index=index, dtype="category"),
-                "parent_street_id": pd.Series(geometry_gdf.index.values,dtype=int,  fastpath=True, index=index),
-                "start": pd.Series(edge_start_node, dtype=np.int32, fastpath=True, index=index),
-                "end": pd.Series(edge_end_node, dtype=np.int32, fastpath=True, index=index),
+                "parent_street_id": pd.Series(geometry_gdf.index.values,dtype=int,  index=index),
+                "start": pd.Series(edge_start_node, dtype=np.int32, index=index),
+                "end": pd.Series(edge_end_node, dtype=np.int32, index=index),
             },
             index=index,
             geometry=geometry_gdf["geometry"]
@@ -45,16 +45,16 @@ def node_edge_builder(geometry_gdf, weight_attribute=None, tolerance=0.0, source
         node_gdf = gpd.GeoDataFrame(
             {
                 "source_layer": pd.Series(np.repeat(np.array([source_layer], dtype=object), repeats=node_count),
-                                          fastpath=True, index=index, dtype="category"),
-                "source_id": pd.Series(np.repeat(np.array([0], dtype=np.int32), repeats=node_count), fastpath=True,
+                                          index=index, dtype="category"),
+                "source_id": pd.Series(np.repeat(np.array([0], dtype=np.int32), repeats=node_count),
                                        index=index, dtype=np.int32),
-                "type": pd.Series(np.repeat(np.array(["street_node"], dtype=object), repeats=node_count), fastpath=True,
+                "type": pd.Series(np.repeat(np.array(["street_node"], dtype=object), repeats=node_count),
                                   index=index, dtype="category"),
-                "weight": pd.Series(np.repeat(np.array([0.0], dtype=np.float32), repeats=node_count), fastpath=True,
+                "weight": pd.Series(np.repeat(np.array([0.0], dtype=np.float32), repeats=node_count),
                                     index=index, dtype=np.float32),
-                # "nearest_street_id": pd.Series(np.repeat(np.array([0], dtype=np.int32), repeats=node_count), fastpath=True, index=index, dtype=np.int32),
-                # "nearest_street_node_distance": pd.Series(np.repeat(np.array([{}], dtype=object), repeats=node_count), fastpath=True, index=index),
-                "degree": pd.Series(node_dgree, fastpath=True, index=index),
+                # "nearest_street_id": pd.Series(np.repeat(np.array([0], dtype=np.int32), repeats=node_count), index=index, dtype=np.int32),
+                # "nearest_street_node_distance": pd.Series(np.repeat(np.array([{}], dtype=object), repeats=node_count), index=index),
+                "degree": pd.Series(node_dgree, index=index),
                 # "connected_edges": connected_edges
             },
             index=index,
@@ -397,15 +397,15 @@ def _split_redundant_edges(node_gdf: GeoDataFrame, edge_gdf: GeoDataFrame):
     )
     new_node_gdf = gpd.GeoDataFrame(
         {
-            "source_layer": pd.Series(np.repeat(np.array(["streets"], dtype=object), repeats=node_count), fastpath=True,
+            "source_layer": pd.Series(np.repeat(np.array(["streets"], dtype=object), repeats=node_count),
                                       index=node_index, dtype="category"),
-            "source_id": pd.Series(np.repeat(np.array([0], dtype=np.int32), repeats=node_count), fastpath=True,
+            "source_id": pd.Series(np.repeat(np.array([0], dtype=np.int32), repeats=node_count),
                                    index=node_index, dtype=np.int32),
-            "type": pd.Series(np.repeat(np.array(["street_node"], dtype=object), repeats=node_count), fastpath=True,
+            "type": pd.Series(np.repeat(np.array(["street_node"], dtype=object), repeats=node_count),
                               index=node_index, dtype="category"),
-            "weight": pd.Series(np.repeat(np.array([0.0], dtype=np.float32), repeats=node_count), fastpath=True,
+            "weight": pd.Series(np.repeat(np.array([0.0], dtype=np.float32), repeats=node_count),
                                 index=node_index, dtype=np.float32),
-            "degree": pd.Series(np.repeat(np.array([2], dtype=np.int32), repeats=node_count), fastpath=True,
+            "degree": pd.Series(np.repeat(np.array([2], dtype=np.int32), repeats=node_count),
                                 index=node_index),
         },
         index=node_index,
@@ -421,16 +421,16 @@ def _split_redundant_edges(node_gdf: GeoDataFrame, edge_gdf: GeoDataFrame):
         index=edge_index,
         crs=edge_gdf.crs
     )
-    length = pd.Series(edge_geometry_series.length.values, fastpath=True, index=edge_index)
+    length = pd.Series(edge_geometry_series.length.values, index=edge_index)
     new_edge_gdf = gpd.GeoDataFrame(
         {
             "length": length,
-            "weight": pd.Series(np.array(edge_weights), fastpath=True, index=edge_index),
-            "type": pd.Series(np.repeat(np.array(["street"], dtype=object), repeats=edge_count), fastpath=True,
+            "weight": pd.Series(np.array(edge_weights), index=edge_index),
+            "type": pd.Series(np.repeat(np.array(["street"], dtype=object), repeats=edge_count),
                               index=edge_index, dtype="category"),
-            "parent_street_id": pd.Series(np.array(edge_parent_street_ids, dtype=int), fastpath=True, index=edge_index),
-            "start": pd.Series(np.array(edge_starts, dtype=np.int32), fastpath=True, index=edge_index),
-            "end": pd.Series(np.array(edge_ends, dtype=np.int32), fastpath=True, index=edge_index),
+            "parent_street_id": pd.Series(np.array(edge_parent_street_ids, dtype=int), index=edge_index),
+            "start": pd.Series(np.array(edge_starts, dtype=np.int32), index=edge_index),
+            "end": pd.Series(np.array(edge_ends, dtype=np.int32), index=edge_index),
         },
         index=edge_index,
         geometry=edge_geometry_series
@@ -500,20 +500,20 @@ def efficient_node_insertion(n_node_gdf: GeoDataFrame, n_edge_gdf: GeoDataFrame,
     node_gdf = gpd.GeoDataFrame(
         {
             "source_layer": pd.Series(np.repeat(np.array([layer_name], dtype=object), repeats=node_count),
-                                      fastpath=True, index=index, dtype="category"),
-            "source_id": pd.Series(node_source_ids, fastpath=True, index=index, dtype=np.int32),
-            "type": pd.Series(np.repeat(np.array([label], dtype=object), repeats=node_count), fastpath=True,
+                                      index=index, dtype="category"),
+            "source_id": pd.Series(node_source_ids, index=index, dtype=np.int32),
+            "type": pd.Series(np.repeat(np.array([label], dtype=object), repeats=node_count),
                               index=index, dtype="category"),
-            "weight": pd.Series(node_weight, fastpath=True, index=index, dtype=np.float32),
-            "nearest_edge_id": pd.Series(closest_edge_ids, fastpath=True, index=index, dtype=np.int32),
-            "edge_start_node": pd.Series(closest_edge_starts, fastpath=True, index=index, dtype=np.int32),
-            "weight_to_start": pd.Series(weight_to_start, fastpath=True, index=index, dtype=np.float32),
-            "edge_end_node": pd.Series(closest_edge_ends, fastpath=True, index=index, dtype=np.int32),
-            "weight_to_end": pd.Series(weight_to_end, fastpath=True, index=index, dtype=np.float32),
-            "degree": pd.Series(np.zeros(node_count, dtype=np.int32), fastpath=True, index=index),
+            "weight": pd.Series(node_weight, index=index, dtype=np.float32),
+            "nearest_edge_id": pd.Series(closest_edge_ids, index=index, dtype=np.int32),
+            "edge_start_node": pd.Series(closest_edge_starts, index=index, dtype=np.int32),
+            "weight_to_start": pd.Series(weight_to_start, index=index, dtype=np.float32),
+            "edge_end_node": pd.Series(closest_edge_ends, index=index, dtype=np.int32),
+            "weight_to_end": pd.Series(weight_to_end, index=index, dtype=np.float32),
+            "degree": pd.Series(np.zeros(node_count, dtype=np.int32), index=index),
         },
         index=index,
         crs=source_gdf.crs,
-        geometry=pd.Series(point_on_nearest_edge, fastpath=True, index=index)
+        geometry=pd.Series(point_on_nearest_edge, index=index)
     )
     return node_gdf
